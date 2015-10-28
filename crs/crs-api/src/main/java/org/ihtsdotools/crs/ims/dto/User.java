@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.ihtsdotools.crs.common.ims.dto;
+package org.ihtsdotools.crs.ims.dto;
 
 import java.util.Set;
 

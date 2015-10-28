@@ -1,4 +1,4 @@
-package org.ihtsdotools.crs.common;
+package org.ihtsdotools.crs;
 
 /**
  * Hello world!

@@ -14,11 +14,10 @@
 	<version>${project.parent.version}</version>
 	<packaging>war</packaging>
 	<name>crs-ws</name>
-	<url>http://maven.apache.org</url>
 	<dependencies>
 		<dependency>
 			<groupId>org.ihtsdotools</groupId>
-			<artifactId>crs-common</artifactId>
+			<artifactId>crs-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

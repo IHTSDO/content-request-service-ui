@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.ihtsdotools.crs.common.jira.dto;
+package org.ihtsdotools.crs.jira.dto;
 
 import java.util.Date;
 

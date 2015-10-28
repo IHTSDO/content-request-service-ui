@@ -12,7 +12,6 @@
 	<version>${project.parent.version}</version>
 	<artifactId>crs-ims</artifactId>
 	<name>crs-ims</name>
-	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -46,6 +45,11 @@
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpasyncclient</artifactId>
 			<version>4.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ihtsdotools</groupId>
+			<artifactId>crs-api</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 </project>

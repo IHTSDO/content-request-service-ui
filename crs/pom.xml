@@ -6,7 +6,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<modules>
-		<module>crs-common</module>
+		<module>crs-api</module>
 		<module>crs-jira</module>
 		<module>crs-ims</module>
 		<module>crs-ws</module>

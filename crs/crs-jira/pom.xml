@@ -12,7 +12,6 @@
 	<version>${project.parent.version}</version>
 	<artifactId>crs-jira</artifactId>
 	<name>crs-jira</name>
-	<url>http://maven.apache.org</url>
 	<dependencies>
 		<dependency>
 			<groupId>com.atlassian.jira</groupId>
@@ -21,7 +20,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.ihtsdotools</groupId>
-			<artifactId>crs-common</artifactId>
+			<artifactId>crs-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		

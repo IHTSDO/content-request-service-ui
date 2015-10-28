@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.ihtsdotools.crs.common.dto;
+package org.ihtsdotools.crs.dto;
 
 import java.io.Serializable;
 import java.util.Collection;

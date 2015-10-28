@@ -13,6 +13,6 @@
 
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<mvc:annotation-driven />
-	<context:component-scan base-package="org.ihtsdotools.crs.ws.controller" />
+	<context:component-scan base-package="org.ihtsdotools.crs.ws" />
 
 </beans>

@@ -1,9 +1,9 @@
 /**
  * 
  */
-package org.ihtsdotools.crs.common.jira.api;
+package org.ihtsdotools.crs.jira.api;
 
-import org.ihtsdotools.crs.common.jira.dto.Issue;
+import org.ihtsdotools.crs.jira.dto.Issue;
 
 /**
  * @author Hunter Macdonald

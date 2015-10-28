@@ -1,13 +1,13 @@
 /**
  * 
  */
-package org.ihtsdotools.crs.ws.controller;
+package org.ihtsdotools.crs.ws;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import org.ihtsdotools.crs.common.dto.Project;
-import org.ihtsdotools.crs.common.dto.Request;
+import org.ihtsdotools.crs.dto.Project;
+import org.ihtsdotools.crs.dto.Request;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
