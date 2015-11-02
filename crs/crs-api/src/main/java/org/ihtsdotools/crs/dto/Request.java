@@ -58,6 +58,8 @@ public class Request implements Serializable {
 	 */
 	List<Status> statusLog;
 	
+	Project project;
+	
 	/**
 	 * TODO: remove from here
 	 */
@@ -190,6 +192,12 @@ public class Request implements Serializable {
 	}
 	public void setWorkItems(List<RequestItem> workItems) {
 		this.workItems = workItems;
+	}
+	public Project getProject() {
+		return project;
+	}
+	public void setProject(Project project) {
+		this.project = project;
 	}
 	
 	

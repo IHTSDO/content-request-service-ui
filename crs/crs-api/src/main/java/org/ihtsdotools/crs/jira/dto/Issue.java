@@ -14,9 +14,10 @@ import java.util.Set;
  */
 public class Issue {
 
+	private String key;
 	private Status status;
 	private IssueType issueType;
-	private String projectId;
+	private String projectKey;
 	private String summary;
 	private String description;
 	private String assigneeUserId;
@@ -28,6 +29,13 @@ public class Issue {
 	private List<Comment> comments;
 	private Set<Issue> relatedIssues;
 	private Set<String> labels;
+	
+	public String getKey() {
+		return key;
+	}
+	public void setKey(String key) {
+		this.key = key;
+	}
 	public Status getStatus() {
 		return status;
 	}
@@ -40,11 +48,11 @@ public class Issue {
 	public void setIssueType(IssueType issueType) {
 		this.issueType = issueType;
 	}
-	public String getProjectId() {
-		return projectId;
+	public String getProjectKey() {
+		return projectKey;
 	}
-	public void setProjectId(String projectId) {
-		this.projectId = projectId;
+	public void setProjectKey(String projectId) {
+		this.projectKey = projectId;
 	}
 	public String getSummary() {
 		return summary;

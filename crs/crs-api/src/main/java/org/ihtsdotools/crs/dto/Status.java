@@ -19,8 +19,9 @@ public class Status implements Serializable {
 	private Long id;
 	private String status;
 	private Date statusDate;
-	private Long rfcNumber; //FK to Request. Should be Null if workItemId not null
-	private Long workItemId; //FK to workItem. Should be Null if rfcNumber not null
+	private Request request; //FK to Request. Should be Null if workItemId not null
+	private RequestItem requestItem; //FK to workItem. Should be Null if rfcNumber not null
+	private String authorUserId;
 	
 	public Long getId() {
 		return id;
@@ -40,16 +41,23 @@ public class Status implements Serializable {
 	public void setStatusDate(Date statusDate) {
 		this.statusDate = statusDate;
 	}
-	public Long getRfcNumber() {
-		return rfcNumber;
+	
+	public String getAuthorUserId() {
+		return authorUserId;
 	}
-	public void setRfcNumber(Long rfcNumber) {
-		this.rfcNumber = rfcNumber;
+	public void setAuthorUserId(String authorUserId) {
+		this.authorUserId = authorUserId;
 	}
-	public Long getWorkItemId() {
-		return workItemId;
+	public Request getRequest() {
+		return request;
 	}
-	public void setWorkItemId(Long workItemId) {
-		this.workItemId = workItemId;
+	public void setRequest(Request request) {
+		this.request = request;
+	}
+	public RequestItem getRequestItem() {
+		return requestItem;
+	}
+	public void setRequestItem(RequestItem requestItem) {
+		this.requestItem = requestItem;
 	}
 }

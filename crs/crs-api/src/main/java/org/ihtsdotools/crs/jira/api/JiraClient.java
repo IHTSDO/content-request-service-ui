@@ -10,7 +10,7 @@ import org.ihtsdotools.crs.jira.dto.Issue;
  *
  */
 public interface JiraClient {
-	public Issue getIssueById(Long id);
 	public Issue getIssueByKey(String key);
 	public Issue createIssue(Issue issue);
+	public void close();
 }

@@ -4,6 +4,7 @@
 package org.ihtsdotools.crs.dto;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -26,7 +27,8 @@ public class RequestItem implements Serializable {
 
 	//REQUEST ITEM INFORMATION:
 	private Long id; //Primary key
-	private Long rfcNumber; //Foreign key to Request
+	//private Long rfcNumber; //Foreign key to Request
+	private Request request;
 	private String requestorInternalId;
 	private String requestorInternalTerm;
 	private String requestType;
@@ -36,7 +38,7 @@ public class RequestItem implements Serializable {
 	private String description;
 	private String justifDescription;
 	private String notes;
-	private String references;
+	private String reference;
 	private Date appealDate;
 	private Date targetReleaseDate;
 	//REQUEST ITEM INFORMATION END
@@ -77,6 +79,7 @@ public class RequestItem implements Serializable {
 	private Long relationshipGroup;
 	//RELATIONSHIP INFORMATION END
 	
+	Collection<Status> statusLog;
 	/**
 	 * Primary key.
 	 * Request Work Item ID, the identifier of the work item associated with the <br>
@@ -97,12 +100,6 @@ public class RequestItem implements Serializable {
 	 */
 	public void setId(Long id) {
 		this.id = id;
-	}
-	public Long getRfcNumber() {
-		return rfcNumber;
-	}
-	public void setRfcNumber(Long rfcNumber) {
-		this.rfcNumber = rfcNumber;
 	}
 	
 	/**
@@ -255,12 +252,12 @@ public class RequestItem implements Serializable {
 		this.notes = notes;
 	}
 
-	public String getReferences() {
-		return references;
+	public String getReference() {
+		return reference;
 	}
 
-	public void setReferences(String references) {
-		this.references = references;
+	public void setReference(String reference) {
+		this.reference = reference;
 	}
 
 	public String getConceptId() {
@@ -421,6 +418,29 @@ public class RequestItem implements Serializable {
 
 	public void setRelationshipGroup(Long relationshipGroup) {
 		this.relationshipGroup = relationshipGroup;
+	}
+
+/*	public Long getRfcNumber() {
+		return rfcNumber;
+	}
+	public void setRfcNumber(Long rfcNumber) {
+		this.rfcNumber = rfcNumber;
+	}
+*/
+	public Request getRequest() {
+		return request;
+	}
+
+	public void setRequest(Request request) {
+		this.request = request;
+	}
+
+	public Collection<Status> getStatusLog() {
+		return statusLog;
+	}
+
+	public void setStatusLog(Collection<Status> statusLog) {
+		this.statusLog = statusLog;
 	}
 
 }
