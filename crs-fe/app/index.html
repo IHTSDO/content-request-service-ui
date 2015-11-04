@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/ng-table/dist/ng-table.min.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+
+    <!-- make sure ng-cloak works before angularjs finish loading -->
+    <style>
+        [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+            display: none !important;
+        }
+    </style>
+</head>
+<body class="crs-default">
+<!--[if lte IE 8]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<!-- Add your site or application content here -->
+<header>
+    <div ng-include="'layout/header/header.html'"></div>
+</header>
+<div class="crs-theme-wrapper">
+    <div class="content">
+        <div ng-cloak ng-view></div>
+    </div>
+</div>
+<footer>
+    <div ng-include="'layout/footer/footer.html'"></div>
+</footer>
+<div ng-show="showSplash" ng-include="'layout/splash/splash.html'"></div>
+
+
+<!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+<script>
+    !function (A, n, g, u, l, a, r) {
+        A.GoogleAnalyticsObject = l, A[l] = A[l] || function () {
+            (A[l].q = A[l].q || []).push(arguments)
+        }, A[l].l = +new Date, a = n.createElement(g),
+                r = n.getElementsByTagName(g)[0], a.src = u, r.parentNode.insertBefore(a, r)
+    }(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-XXXXX-X');
+    ga('send', 'pageview');
+</script>
+
+<!-- build:js(.) scripts/vendor.js -->
+<!-- bower:js -->
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
+<script src="bower_components/angular-animate/angular-animate.js"></script>
+<script src="bower_components/angular-cookies/angular-cookies.js"></script>
+<script src="bower_components/angular-messages/angular-messages.js"></script>
+<script src="bower_components/angular-resource/angular-resource.js"></script>
+<script src="bower_components/angular-route/angular-route.js"></script>
+<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="bower_components/ng-table/dist/ng-table.min.js"></script>
+<!-- endbower -->
+<!-- endbuild -->
+
+<!-- build:js({.tmp,app}) scripts/scripts.js -->
+<script src="app.js"></script>
+
+<script src="components/dashboard/dashboard.js"></script>
+<script src="components/request/request.js"></script>
+<script src="components/user-preferences/user-preferences.js"></script>
+<script src="components/request/modal-create-request.js"></script>
+<script src="components/request/request-service.js"></script>
+<script src="components/request/request-list.js"></script>
+<script src="components/batch/batch.js"></script>
+<script src="components/batch/batch-list.js"></script>
+<script src="components/batch/batch-service.js"></script>
+<script src="components/notification/notification-service.js"></script>
+
+<script src="shared/configuration/config-service.js"></script>
+<script src="shared/ims/ims.js"></script>
+<script src="shared/ims/account-service.js"></script>
+
+<script src="layout/header/header.js"></script>
+<!-- endbuild -->
+
+<script type="application/javascript">
+    (function ($) {
+        angular.element(document).ready(function () {
+            $.get('config.json', function (data) {
+
+                angular.module('conceptRequestServiceApp')
+                        .config(['configServiceProvider', function (configServiceProvider) {
+                            configServiceProvider.config(data);
+                }]);
+
+                angular.bootstrap(document, ['conceptRequestServiceApp']);
+            });
+        });
+    })(jQuery);
+</script>
+</body>
+</html>

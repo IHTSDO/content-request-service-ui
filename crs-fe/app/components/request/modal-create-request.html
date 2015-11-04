@@ -1,0 +1,53 @@
+<div id="userPreferencesModal">
+
+
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="modal.closeModal()">&times;</button>
+        <h4 class="modal-title">Create New Request</h4>
+    </div>
+
+    <div class="modal-body">
+        <div class="col-md-12">
+            <form class="form-floating">
+                <div class="form-group">
+                    <label for="requestTypeSelect">Request Type</label>
+                    <select id="requestTypeSelect" name="select-request-type" class="form-control"
+                            ng-model="modal.requestType">
+                        <option value="0">New Concept</option>
+                        <option value="1">New Description</option>
+                        <option value="2">New Relationship</option>
+                        <option value="3">Change Concept</option>
+                        <option value="4">Change Description</option>
+                        <option value="5">Change Relationship</option>
+                        <option value="6">Retire Concept</option>
+                        <option value="7">Retire Description</option>
+                        <option value="8">Retire Relationship</option>
+                        <option value="9">Other</option>
+                    </select>
+
+                    <br>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-12 alert alert-success" ng-show="modal.msgSuccess">{{modal.msgSuccess}}</div>
+        <div class="col-md-12 alert alert-danger" ng-show="modal.msgError">{{modal.msgError}}</div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="col-md-6">
+            <button type="button" ng-disabled="disabled" class="col-md-12 btn btn-info no-margin "
+                    ng-click="modal.createNewRequest()">Create Request
+            </button>
+        </div>
+        <div class="col-md-6">
+            <button type="button" ng-disabled="disabled" class=" col-md-12 btn btn-danger no-margin "
+                    ng-click="modal.closeModal()">Cancel
+            </button>
+        </div>
+    </div>
+
+</div>
+
+
+</div>

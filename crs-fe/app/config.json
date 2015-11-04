@@ -1,0 +1,6 @@
+{
+    "endpoint": {
+        "crs": "http://localhost:8080/crs/",
+        "ims": "https://dev-ims.ihtsdotools.org/"
+    }
+}
