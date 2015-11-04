@@ -17,8 +17,8 @@
      
     <tx:annotation-driven />
     <context:annotation-config />
-    <context:component-scan base-package="org.ihtsdotools.crs.dao" />
-    <context:component-scan base-package="org.ihtsdotools.crs.api.impl" />
+    <context:component-scan base-package="org.ihtsdotools.crs.dao, org.ihtsdotools.crs.api.impl" />
+
  	
  	<jpa:repositories base-package="org.ihtsdotools.crs.dao" />
  	
@@ -61,8 +61,12 @@
         <property name="entityManagerFactory" ref="entityManagerFactory" />
     </bean>
     
-    <bean id="newConceptRB" class="org.ihtsdotools.crs.dto.helper.NewConceptRequestBuilder" />
-    <bean id="newRelationshipRB" class="org.ihtsdotools.crs.dto.helper.NewRelationshipRequestBuilder" />
+    <bean id="newConceptRB" class="org.ihtsdotools.crs.dto.helper.NewConceptRequestBuilder">
+        <constructor-arg value="NEW_CONCEPT"/>
+    </bean>
+    <bean id="newRelationshipRB" class="org.ihtsdotools.crs.dto.helper.NewRelationshipRequestBuilder">
+        <constructor-arg value="NEW_RELATIONSHIP"/>
+    </bean>
     <bean id="rbLocator" class="org.ihtsdotools.crs.dto.helper.RequestBuilderLocator" >
     	<constructor-arg>
     		<map>
@@ -70,5 +74,14 @@
     			<entry key="NEW_RELATIONSHIP" value-ref="newRelationshipRB"/>
     		</map>
     	</constructor-arg>
+    </bean>
+
+    <bean id="requestConfigLoader" class="org.ihtsdotools.crs.dto.helper.config.RequestItemConfig">
+        <constructor-arg>
+            <map>
+                <entry key="NEW_CONCEPT" value="classpath:requestItemConfig/NewConcept.xml"/>
+                <entry key="NEW_DESCRIPTION" value="classpath:requestItemConfig/NewDescription.xml"/>
+            </map>
+        </constructor-arg>
     </bean>
 </beans>

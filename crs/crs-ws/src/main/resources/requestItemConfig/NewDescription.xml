@@ -1,0 +1,11 @@
+<fields>
+   <field name="requestorInternalId"/>
+   <field name="conceptId" required="true"/>
+   <field name="proposedFSN" required="true"/>
+   <field name="proposedDescription" required="true"/>
+   <field name="descriptionIsPT"/>
+   <field name="proposedDefinition"/>
+   <field name="reasonForChange"/>
+   <field name="notes"/>
+   <field name="reference"/>
+</fields>

@@ -3,8 +3,6 @@
  */
 package org.ihtsdotools.crs.dto.helper;
 
-import java.util.Map;
-
 import org.ihtsdotools.crs.dto.Request;
 
 /**
@@ -13,10 +11,13 @@ import org.ihtsdotools.crs.dto.Request;
  */
 public class NewRelationshipRequestBuilder extends RequestBuilder{
 
+	public NewRelationshipRequestBuilder(String requestType) {
+		super(requestType);
+	}
+
 	@Override
-	public void setSpecificProperties(Request request, Map<String, Object> requestInput) {
-		// TODO Auto-generated method stub
-		
+	public boolean validateRequest(Request request) {
+		return false;
 	}
 
 }

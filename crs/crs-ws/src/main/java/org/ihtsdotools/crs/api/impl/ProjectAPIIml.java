@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.ihtsdotools.crs.api.iml;
+package org.ihtsdotools.crs.api.impl;
 
 import java.util.Collection;
 

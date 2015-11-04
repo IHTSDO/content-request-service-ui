@@ -4,6 +4,7 @@
 package org.ihtsdotools.crs.api;
 
 import java.util.Collection;
+import java.util.Map;
 
 import org.ihtsdotools.crs.dto.Request;
 
@@ -12,7 +13,7 @@ import org.ihtsdotools.crs.dto.Request;
  *
  */
 public interface RequestAPI {
-	public Request createRequest(Request requestInfo);
+	public Request createRequest(String requestType, Map<String, Object> requestInfo);
 	
 	/**
 	 * TODO: Clarify this use-case
