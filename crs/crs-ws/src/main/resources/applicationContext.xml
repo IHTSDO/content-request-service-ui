@@ -6,6 +6,7 @@
     xmlns:tx="http://www.springframework.org/schema/tx" 
     xmlns:jdbc="http://www.springframework.org/schema/jdbc"
     xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:s="http://www.springframework.org/schema/security"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="
                 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
@@ -13,10 +14,34 @@
                 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
                 http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
                 http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
-                http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+                http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+				http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+    <context:property-placeholder location="classpath:application.properties"/>
      
     <tx:annotation-driven />
     <context:annotation-config />
+    
+	<import resource="classpath:application-im-common-security-config.xml" />
+	<import resource="classpath:applicationContext-CrowdClient.xml" />
+	
+	<s:global-method-security pre-post-annotations="enabled"/>
+    
+    <s:http pattern="/api/**" create-session="stateless" auto-config="false" 
+    		entry-point-ref="restAuthenticationEntryPoint"
+    		security-context-repository-ref="securityContextHolder">
+		<s:custom-filter ref="tokenTaker" position="FIRST"/>
+		<security:access-denied-handler error-page="/error/401"/>
+		<s:intercept-url pattern="/api/project/topsecret" access="ROLE_ihtsdo-ops-admin" />
+		<s:intercept-url pattern="/api/project/**" access="ROLE_ihtsdo-sca-author" />
+	</s:http>
+	<s:http pattern="/error/**" security="none" />
+    
+    <bean id="tokenTaker" class="org.ihtsdotools.crs.filter.TokenFilter">
+    	<constructor-arg name="userService" ref="crowdUserDetailsService"/>
+    </bean>
+    <bean id="securityContextHolder" class="org.ihtsdotools.crs.security.CrsStatelessSCRepository"/>
+    <bean id="restAuthenticationEntryPoint" class="org.ihtsdotools.crs.security.RestAuthenEntryPoint" />
+    
     <context:component-scan base-package="org.ihtsdotools.crs.dao" />
     <context:component-scan base-package="org.ihtsdotools.crs.api.impl" />
  	

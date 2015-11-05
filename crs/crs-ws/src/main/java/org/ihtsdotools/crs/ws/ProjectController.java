@@ -3,11 +3,14 @@
  */
 package org.ihtsdotools.crs.ws;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.ihtsdotools.crs.dto.Project;
 import org.ihtsdotools.crs.dto.Request;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -47,5 +50,12 @@ public class ProjectController {
 		
 		project.setRequests(reqs);
 		return project;
+	}
+	@RequestMapping(value = "/topsecret", method = RequestMethod.GET, headers = "Accept=application/json")
+	@ResponseBody
+	public Map<String, String> getTopSecret(){
+		Map<String, String> map = new HashMap<>();
+		map.put("TOPSECRET_KEY", "Sorry! No one know");
+		return map;
 	}
 }

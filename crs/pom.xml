@@ -8,11 +8,12 @@
 	<modules>
 		<module>crs-api</module>
 		<module>crs-jira</module>
-		<module>crs-ims</module>
+		<!-- <module>crs-ims</module> -->
 		<module>crs-ws</module>
   </modules>
 	<properties>
 		<spring.version>4.2.1.RELEASE</spring.version>
+		<spring.security.version>3.2.5.RELEASE</spring.security.version>
 		<hibernate.version>5.0.2.Final</hibernate.version>
 	    <org.aspectj.version>1.7.4</org.aspectj.version>
         <org.slf4j.version>1.7.5</org.slf4j.version>
@@ -24,6 +25,7 @@
 		<jira.compiler.version>3.3</jira.compiler.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jdk.version>1.7</jdk.version>
+		<servlet.version>3.1.0</servlet.version>
 	</properties>
 
 	<build>
@@ -46,5 +48,11 @@
 			<id>spring.io</id>
 			<url>https://repo.spring.io/libs-release-remote/</url>
 		</repository>
+		<repository>
+			<id>ihtsdo-public-nexus</id>
+			<name>IHTSDO Public Nexus Releases</name>
+			<url>https://maven.ihtsdotools.org/content/repositories/releases/</url>
+		</repository>
 	</repositories>
+
 </project>

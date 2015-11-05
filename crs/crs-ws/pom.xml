@@ -14,6 +14,7 @@
 	<version>${project.parent.version}</version>
 	<packaging>war</packaging>
 	<name>crs-ws</name>
+	
 	<dependencies>
 		<!-- Dependent modules: common APIs, IMS & Jira adaptors -->
 		<dependency>
@@ -26,10 +27,44 @@
 			<artifactId>crs-jira</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		
+		<!-- IMS dependencies and resources for Spring-Security -->
 		<dependency>
-			<groupId>org.ihtsdotools</groupId>
-			<artifactId>crs-ims</artifactId>
-			<version>${project.version}</version>
+			<groupId>org.ihtsdo.otf</groupId>
+			<artifactId>ihtsdo-crowd-resources</artifactId>
+			<version>0.0.4</version>
+			<classifier>resources</classifier>
+			<type>zip</type>
+			<!-- >scope>provided</scope -->
+		</dependency>
+		
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>${servlet.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.ihtsdo.otf</groupId>
+			<artifactId>ihtsdo-crowd-bridge</artifactId>
+			<version>0.0.4</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>guava</artifactId>
+					<groupId>com.google.guava</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>15.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>${httpcore.version}</version>
 		</dependency>
 		
         <!-- JSON renderer & parser -->
@@ -65,6 +100,21 @@
             <version>${spring.version}</version>
         </dependency>
         <dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
             <version>${spring.version}</version>
@@ -80,6 +130,12 @@
             <artifactId>hibernate-entitymanager</artifactId>
             <version>${hibernate.version}</version>
         </dependency>
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+			<version>2.10.1</version>
+		</dependency>
+        
         <!-- DB connection driver -->
         <dependency>
             <groupId>org.hsqldb</groupId>
@@ -101,5 +157,88 @@
             <scope>test</scope>
         </dependency>		
 	</dependencies>
+	<build>
+		<resources>
+			<resource>
+				<directory>${basedir}/src/main/resources</directory>
+			</resource>
+			<resource>
+				<directory>${project.build.directory}/generated-resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.10</version>
+				<executions>
+					<execution>
+						<id>unpack-crowd-resources</id>
+						<goals>
+							<goal>unpack-dependencies</goal>
+						</goals>
+						<phase>generate-resources</phase>
+						<configuration>
+							<outputDirectory>${project.build.directory}/generated-resources</outputDirectory>
+							<includeArtifacIds>ihtsdo-crowd-resources</includeArtifacIds>
+							<excludeArtifactIds>*</excludeArtifactIds>
+							<excludeTransitive>true</excludeTransitive>
+							<scope>provided</scope>
 
+							<includes>crowd.properties,
+								application-im-common-security-config.xml,
+								applicationContext-CrowdClient.xml,
+								crowd-ehcache.xml
+							</includes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<configuration>
+						<argLine>-DcrowdPropertiesFileLocation=C:/exec</argLine>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.apache.maven.plugins
+										</groupId>
+										<artifactId>
+											maven-dependency-plugin
+										</artifactId>
+										<versionRange>
+											[2.10,)
+										</versionRange>
+										<goals>
+											<goal>
+												unpack-dependencies
+											</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<execute>
+										</execute>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 </project>

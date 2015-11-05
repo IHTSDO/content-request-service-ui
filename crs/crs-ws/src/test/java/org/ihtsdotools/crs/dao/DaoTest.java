@@ -5,8 +5,11 @@ package org.ihtsdotools.crs.dao;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
+
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +42,9 @@ public class DaoTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
+		System.setProperty("crowdPropertiesFileLocation", 
+				"/" + new File(".").getAbsolutePath() + "\\src\\main\\resources");
+		System.out.println(System.getProperty("crowdPropertiesFileLocation"));
 	}
 
 	/**
