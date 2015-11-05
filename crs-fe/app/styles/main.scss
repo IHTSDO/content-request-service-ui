@@ -1,0 +1,105 @@
+$icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
+$fa-font-path: "../bower_components/font-awesome/fonts";
+// bower:scss
+@import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
+@import "font-awesome/scss/font-awesome.scss";
+// endbower
+
+@import url(https://fonts.googleapis.com/css?family=Cabin+Condensed);
+
+@import "home.scss";
+@import "ihtsdo.scss";
+@import "fonts.scss";
+@import "edit.scss";
+@import "dark.scss";
+@import "light.scss";
+@import "colors.scss";
+@import "tables.scss";
+@import "tooltips.scss";
+
+.browsehappy {
+  margin: 0.2em 0;
+  background: #ccc;
+  color: #000;
+  padding: 0.2em 0;
+}
+
+
+html {
+  height: 100%;
+}
+
+body {
+  padding: 0;
+  height: 100%;
+  -webkit-font-smoothing: antialiased !important;
+}
+
+.crs-theme-wrapper {
+  height: 100%;
+}
+
+.crs-theme-wrapper .content {
+  overflow:auto;
+  padding-bottom: 40px;
+  padding-top: 66px;
+  height: 100%;
+}
+
+footer {
+  position: fixed;
+  height: 40px;
+  clear:both;
+  bottom: 0;
+  width: 100%;
+
+  .navbar {
+    min-height: 40px;
+  }
+}
+
+/* Added by PWG to work around fixed sidebar */
+.crs-container {
+  position:absolute;
+  padding-top: 64px;
+  bottom:0px;
+  width:100%;
+  height:100%;
+
+}
+
+.crs-column {
+  position: relative;
+  height:100%;
+  /*overflow-y:scroll;*/
+  /*margin-bottom:32px;*/
+}
+
+.row {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.In.Progress.badge {
+  background-color: #E68FBB;
+}
+
+.Promoted.badge {
+  background-color: #F3CB67;
+}
+
+.New.badge {
+  background-color: #F3CB67;
+}
+
+.In.Review.badge {
+  background-color: #8bc34a;
+}
+
+.Review.Completed.badge {
+  background-color: #01A2E1;
+}
+
+.Promoted.badge {
+  background-color: cyan;
+}

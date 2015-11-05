@@ -38,13 +38,17 @@
 	<entity class="org.ihtsdotools.crs.dto.Request">
 		<table name="Request" />
 		<attributes>
-			<id name="id">
+			<id name="rfcNumber">
 				<generated-value strategy="AUTO" />
 			</id>
 			<many-to-one fetch="LAZY" name="project">
 				<join-column name="projectId" />
 			</many-to-one>
-			<one-to-many mapped-by="request" name="workItems" />
+			<one-to-many mapped-by="request" name="workItems">
+				<cascade>
+					<cascade-all/>
+				</cascade>
+			</one-to-many>
 			<one-to-many mapped-by="request" name="statusLog" />
 		</attributes>
 	</entity>

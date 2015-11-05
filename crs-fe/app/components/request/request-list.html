@@ -1,0 +1,64 @@
+<!-- My Requests -->
+<div ng-controller="RequestListCtrl as vm">
+    <section class="tables-data">
+        <div class="card">
+            <div class="row">
+                <div class="col-md-4 no-padding">
+                    <h3 class="table-title p-20">My Requests</h3>
+                </div>
+                <div class="col-md-6">
+                    <div class="table-search">
+                        <input type="text" ng-model="vm.tableParams.filter()['search']" class="form-control"
+                               placeholder="Search My Requests" autofocus/>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="pull-right p-t-20">
+                        <button type="button" class="btn btn-round btn-info ng-scope " title="Number of requests" title="Total Request Count">
+                            {{vm.requests.length}} <div class="ripple-wrapper"></div>
+                        </button>
+                        <button type="button" class="btn btn-round btn-default " title="Create New Request" ng-click="dashboard.openCreateRequestModal()">
+                            <span class="md md-add"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive white">
+                <table ng-table="vm.tableParams" template-pagination="layout/template/data-table-pager.html"
+                       class="table table-full table-full-small">
+                    {{$data}}
+                    <tr ng-repeat="request in $data">
+
+                        <td data-title="'Batch Id'" sortable="'batchId'" >
+                            <a class="tooltips-right" ng-href="#/batches/{{request.batchId}}/view">{{request.id}} <span> Click to open batch details view</span></a>
+                        </td>
+                        <td data-title="'Request Id'" sortable="'id'" >
+                            <a class="tooltips-right" ng-href="#/requests/{{request.id}}/edit">{{request.id}} <span> Click to open request editing view</span></a>
+                        </td>
+                        <td data-title="'Full Specific Name'" sortable="'fsn'" >
+                            {{request.fsn}}
+                        </td>
+                        <td data-title="'Last Modified'" sortable="'modifiedDate'" >
+                            {{request.modifiedDate}}
+                        </td>
+                        <td data-title="'Request Type'" sortable="'requestType'" >
+                            {{request.requestType}}
+                        </td>
+                        <td data-title="'Status'" sortable="'status'">
+                                <span ng-if="request.status === 'IN_REVIEW' && !request.reviewer"
+                                      class="badge {{request.status}}"> Ready for Review </span>
+                                <span ng-if="request.status === 'IN_REVIEW' && request.reviewer"
+                                      class="badge {{request.status}}"> {{request.status}} </span>
+                                <span ng-if="request.status !== 'IN_REVIEW'"
+                                      class="badge {{request.status}}"> {{request.status}} </span>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+        </div>
+    </section>
+</div>

@@ -1,0 +1,13 @@
+{
+  "fields": [
+    {"name": "requestorInternalId"},
+    {"name": "conceptId", "required": true},
+    {"name": "proposedFSN", "required": true},
+    {"name": "proposedDescription", "required": true},
+    {"name": "descriptionIsPT"},
+    {"name": "proposedDefinition"},
+    {"name": "reasonForChange"},
+    {"name": "notes"},
+    {"name": "reference"}
+  ]
+}

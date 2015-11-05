@@ -1,0 +1,106 @@
+<div class=" col-md-12 no-padding " ng-controller="searchPanelCtrl">
+
+
+  <div class="row no-padding">
+    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 no-padding">
+      <input type="search" class="form-control m-5" placeholder="Enter at least three characters" ng-model="searchStr"
+             ng-change="search()" ng-model-options="{ debounce: 500 }"/>
+
+    </div>
+    <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 col-xl-1 no-padding">
+      <button class="btn btn-default md md-close" ng-click="clearSearch()" style="background: transparent"></button>
+    </div>
+    <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 col-xl-1 no-padding">
+      <button class="btn btn-default md md-check-box tooltips-right tooltips-light normal-case"
+              ng-click="toggleGroupByConcept()" ng-if="userOptions.groupByConcept" style="background: transparent">
+        <span>View Matching Terms</span></button>
+      <button class="btn btn-default md md-check-box-outline-blank tooltips-right tooltips-light normal-case"
+              ng-click="toggleGroupByConcept()"
+              ng-if="!userOptions.groupByConcept" style="background: transparent"><span>Group by Concept</span></button>
+    </div>
+
+  </div>
+
+
+  <div class="col-md-12 no-padding" ng-if="searchStatus">{{searchStatus}}</div>
+
+  <div ng-show="results.length > 0" class="m-l-10">
+
+    <!-- headers -->
+    <div class="row no-padding">
+
+      <div class="col-md-4 no-padding" ng-if="!userOptions.groupByConcept">
+        <div class="p-5"><strong>Term</strong></div>
+      </div>
+      <div class="col-md-1 no-padding">
+        <!-- No content -->
+      </div>
+      <div class="no-padding"
+           ng-class="[{'col-md-5' : !userOptions.groupByConcept}, {'col-md-9' : userOptions.groupByConcept}]">
+        <div class="p-5"><strong>FSN</strong></div>
+      </div>
+
+
+      <div class="col-md-1 no-padding">
+        <!-- No content -->
+      </div>
+      <div class="col-md-1 no-padding">
+        <!-- No content -->
+      </div>
+
+    </div>
+
+    <!-- results -->
+    <div ng-repeat="result in results">
+
+      <div class="row">
+        <div class="col-md-4 no-padding text-muted" ng-if="!userOptions.groupByConcept">
+          <div class="p-5 wordbreak">{{result.term}}</div>
+        </div>
+        <div class="col-md-1 no-padding">
+           <span class="badge alert-warning" ng-show="result.concept.definitionStatus === 'PRIMITIVE'" title="Primitive"
+                 ng-click="openConceptInformationModal(result)">&nbsp;</span>
+          <span class="badge alert-warning" ng-show="result.concept.definitionStatus !== 'PRIMITIVE'"
+                title="Fully Defined"
+                ng-click="openConceptInformationModal(result)">&equiv;</span>
+        </div>
+        <div class="no-padding"
+             ng-class="[{'col-md-5' : !userOptions.groupByConcept}, {'col-md-9' : userOptions.groupByConcept}]">
+
+
+          <div class="p-5 wordbreak" ui-draggable="true" style="display:inline"
+               drag="getConceptPropertiesObj(result.concept)" drag-channel="conceptPropertiesObj"
+               drag-image="result.concept.fsn">{{result.concept.fsn}}
+          </div>
+        </div>
+        <div class="col-md-1 no-padding">
+          <button ng-if="!result.concept.active"
+                  type="button"
+                  class="p-5 transparent md md-dnd-forwardslash tooltips-right tooltips-light normal-case"><span>Inactive Concept</span>
+          </button>
+        </div>
+        <div class="col-md-1 no-padding">
+          <button type="button"
+                  ng-click="addItemToSavedList(result)"
+                  ng-disabled="findItemInSavedList(result.concept.conceptId)"
+                  class="addButton btn btn-round btn-default widget-button grey lighten-5 md md-playlist-add  tooltips-right tooltips-light normal-case">
+            <span>Add to Saved List</span></button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- load more button -->
+  <button
+    ng-show="loadPerformed"
+    class="btn btn-default classify m-5"
+    ng-click="loadMore()"
+    ng-disabled="!loadMoreEnabled">
+    <span ng-if="loadMoreEnabled" class="button-link">Load Next {{resultsSize}}</span>
+    <span ng-if="!loadMoreEnabled">End of Results</span>
+  </button>
+
+</div>
+
