@@ -10,19 +10,14 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Date: 11/2/2015
  * Time: 3:12 PM
  */
-@XmlRootElement(name = "field")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Field {
 
-   @XmlAttribute(name = "name")
    //Field name
    private String name;
 
-   @XmlAttribute(name = "required")
    //Is the field required
    private boolean required;
 
-   @XmlAttribute(name = "updatable")
    //Is the field can be changed
    private boolean updatable = true;
 

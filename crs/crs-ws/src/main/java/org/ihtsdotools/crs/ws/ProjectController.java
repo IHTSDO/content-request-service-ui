@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/project")
 public class ProjectController {
 
-	@RequestMapping(value = "/hi", method = RequestMethod.GET)
+	/*@RequestMapping(value = "/hi", method = RequestMethod.GET)
 	public String greeting(){
 		return "Hello, Fox";
 	}
@@ -47,5 +47,5 @@ public class ProjectController {
 		
 		project.setRequests(reqs);
 		return project;
-	}
+	}*/
 }

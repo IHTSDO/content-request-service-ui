@@ -12,7 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
  * Time: 11:34 AM
  */
 @RunWith(org.springframework.test.context.junit4.SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:applicationContext.xml")
+@ContextConfiguration("classpath:testApplicationContext.xml")
 public class RequestConfigLoaderTest {
 
    @Autowired

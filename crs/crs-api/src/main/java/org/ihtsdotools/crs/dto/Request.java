@@ -59,27 +59,7 @@ public class Request implements Serializable {
 	List<Status> statusLog;
 	
 	Project project;
-	
-	/**
-	 * TODO: remove from here
-	 */
-	private Long id;
-	private String summary;
 
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	public String getSummary() {
-		return summary;
-	}
-	public void setSummary(String summary) {
-		this.summary = summary;
-	}
-	/**TODO: remove to here **/
-	
 	// REQUEST HEADER
 	public String getApprovalAuthorityId() {
 		return approvalAuthorityId;

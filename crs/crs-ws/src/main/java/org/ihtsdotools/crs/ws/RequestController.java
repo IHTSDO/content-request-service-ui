@@ -19,6 +19,7 @@ import java.util.Map;
  * Time: 2:14 PM
  */
 @RestController
+@RequestMapping("/api/request")
 public class RequestController {
 
    @Autowired
@@ -27,7 +28,7 @@ public class RequestController {
    @Autowired
    private DozerBeanMapper dozerBeanMapper;
 
-   @RequestMapping(value = "/api/request", method = RequestMethod.POST)
+   @RequestMapping(method = RequestMethod.POST)
    public RequestDto createRequest(@RequestParam("requestType") String requestType, @RequestBody Map<String, Object> requestInfo)  {
       Request request = requestAPI.createRequest(requestType, requestInfo);
       RequestDto requestDto = dozerBeanMapper.map(request, RequestDto.class);

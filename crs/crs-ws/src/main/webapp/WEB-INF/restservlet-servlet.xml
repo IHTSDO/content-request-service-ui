@@ -12,7 +12,14 @@
 			http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
 
 	<!-- Enables the Spring MVC @Controller programming model -->
-	<mvc:annotation-driven />
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+			<!-- Jackson converter for HTTP messages -->
+			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="objectMapper" ref="objectMapper" />
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
 	<context:component-scan base-package="org.ihtsdotools.crs.ws" />
 
 </beans>

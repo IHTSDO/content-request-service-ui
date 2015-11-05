@@ -7,7 +7,9 @@ package org.ihtsdotools.crs.exception;
  */
 public enum CRSError {
    SERVER_RUNTIME_ERROR(10000, "Server runtime error"),
-   REQUEST_REQUIRED_FIELD_MISSING(10100, "Missing required field(s)")
+   REQUEST_REQUIRED_FIELD_MISSING(10100, "Missing required field(s)"),
+   REQUEST_INVALID(10101, "Invalid Request"),
+   REQUEST_TYPE_INVALID(10102, "Invalid Request Type")
    ;
 
    private int code;

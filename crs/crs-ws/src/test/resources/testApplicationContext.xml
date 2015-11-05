@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:aop="http://www.springframework.org/schema/aop" 
-    xmlns:context="http://www.springframework.org/schema/context"
-    xmlns:security="http://www.springframework.org/schema/security"
-    xmlns:tx="http://www.springframework.org/schema/tx" 
-    xmlns:jdbc="http://www.springframework.org/schema/jdbc"
-    xmlns:jpa="http://www.springframework.org/schema/data/jpa"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
                 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
                 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
                 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
                 http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
                 http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
                 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
-     
+
     <tx:annotation-driven />
     <context:annotation-config />
     <context:component-scan base-package="org.ihtsdotools.crs.dao, org.ihtsdotools.crs.api.impl" />
 
- 	
- 	<jpa:repositories base-package="org.ihtsdotools.crs.dao" />
- 	
+
+    <jpa:repositories base-package="org.ihtsdotools.crs.dao" />
+
     <bean id="dataSource"
-        class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName">
             <value>org.hsqldb.jdbcDriver</value>
         </property>
@@ -37,14 +37,14 @@
             <value></value>
         </property>
     </bean>
- 
+
     <bean id="entityManagerFactory"
-        class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource" />
         <property name="persistenceUnitName" value="crsdb" />
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-            	<property name="generateDdl" value="true" />
+                <property name="generateDdl" value="true" />
             </bean>
         </property>
         <property name="jpaProperties">
@@ -56,32 +56,42 @@
             </props>
         </property>
     </bean>
- 
+
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory" />
     </bean>
-    
-    <bean id="newConceptRB" class="org.ihtsdotools.crs.dto.helper.NewConceptRequestBuilder">
-        <constructor-arg value="NEW_CONCEPT"/>
-    </bean>
-    <bean id="newRelationshipRB" class="org.ihtsdotools.crs.dto.helper.NewRelationshipRequestBuilder">
-        <constructor-arg value="NEW_RELATIONSHIP"/>
-    </bean>
-    <bean id="rbLocator" class="org.ihtsdotools.crs.dto.helper.RequestBuilderLocator" >
-    	<constructor-arg>
-    		<map>
-    			<entry key="NEW_CONCEPT" value-ref="newConceptRB"/>
-    			<entry key="NEW_RELATIONSHIP" value-ref="newRelationshipRB"/>
-    		</map>
-    	</constructor-arg>
-    </bean>
+
 
     <bean id="requestConfigLoader" class="org.ihtsdotools.crs.dto.helper.config.RequestItemConfig">
         <constructor-arg>
             <map>
-                <entry key="NEW_CONCEPT" value="classpath:requestItemConfig/NewConcept.xml"/>
-                <entry key="NEW_DESCRIPTION" value="classpath:requestItemConfig/NewDescription.xml"/>
+                <entry key="NEW_CONCEPT" value="classpath:requestItemConfig/NewConcept.json"/>
+                <entry key="NEW_DESCRIPTION" value="classpath:requestItemConfig/NewDescription.json"/>
             </map>
         </constructor-arg>
+    </bean>
+
+    <bean id="dozerBeanMapper" class="org.dozer.DozerBeanMapper">
+        <property name="mappingFiles">
+            <list>
+                <value>dozer-mapping.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="requestBuilder" class="org.ihtsdotools.crs.dto.helper.RequestBuilder"/>
+    <bean id="requestItemValidator" class="org.ihtsdotools.crs.dto.helper.validation.RequestItemValidator"/>
+
+    <!-- Jackson Mapper -->
+    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper" />
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="targetObject" ref="objectMapper" />
+        <property name="targetMethod" value="configure" />
+        <property name="arguments">
+            <list>
+                <value type="com.fasterxml.jackson.databind.DeserializationFeature">FAIL_ON_UNKNOWN_PROPERTIES</value>
+                <value>false</value>
+            </list>
+        </property>
     </bean>
 </beans>

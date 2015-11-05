@@ -1,11 +1,10 @@
 package org.ihtsdotools.crs.dto.helper.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 
 import javax.annotation.PostConstruct;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,22 +20,20 @@ public class RequestItemConfig {
 
    private final Map<String, Fields> requestItemConfigMap = new HashMap<>();
 
+   @Autowired
+   private ObjectMapper objectMapper;
+
    public RequestItemConfig(Map<String, Resource> configFiles) {
       this.configFiles = configFiles;
    }
 
-   //Load XML config of a Request Item Type to build a Request
    @PostConstruct
    public void loadConfig() {
       try {
-         JAXBContext jaxbContext = JAXBContext.newInstance(Fields.class);
-         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
          for (String key : configFiles.keySet()) {
-            Fields fields = (Fields) unmarshaller.unmarshal(configFiles.get(key).getInputStream());
+            Fields fields = objectMapper.readValue(configFiles.get(key).getInputStream(), Fields.class);
             requestItemConfigMap.put(key, fields);
          }
-      } catch (JAXBException e) {
-         e.printStackTrace();
       } catch (IOException e) {
          e.printStackTrace();
       }

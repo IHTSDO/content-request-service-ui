@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  */
 @RunWith(org.springframework.test.context.junit4.SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:applicationContext.xml")
+@ContextConfiguration("classpath:testApplicationContext.xml")
 @Transactional
 public class DaoTest {
 	

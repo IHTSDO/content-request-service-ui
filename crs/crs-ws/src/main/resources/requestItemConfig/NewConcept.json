@@ -1,0 +1,13 @@
+{
+  "fields": [
+    {"name": "requestorInternalId"},
+    {"name": "parentId"},
+    {"name": "proposedFSN", "required": true},
+    {"name": "conceptPT", "required": true},
+    {"name": "proposedSynonym"},
+    {"name": "proposedDefinition"},
+    {"name": "reasonForChange"},
+    {"name": "notes"},
+    {"name": "reference"}
+  ]
+}
