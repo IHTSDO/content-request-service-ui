@@ -17,8 +17,8 @@
 
     <tx:annotation-driven />
     <context:annotation-config />
-    <context:component-scan base-package="org.ihtsdotools.crs.dao, org.ihtsdotools.crs.api.impl" />
-
+   <import resource="classpath*:spring-beans.xml"/>
+   <context:component-scan base-package="org.ihtsdotools.crs.dao, org.ihtsdotools.crs.api.impl" />
 
     <jpa:repositories base-package="org.ihtsdotools.crs.dao" />
 

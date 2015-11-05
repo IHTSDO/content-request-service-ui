@@ -3,15 +3,24 @@
  */
 package org.ihtsdotools.crs.api.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.dozer.DozerBeanMapper;
 import org.ihtsdotools.crs.api.RequestAPI;
 import org.ihtsdotools.crs.dao.RequestDao;
 import org.ihtsdotools.crs.dto.Request;
+import org.ihtsdotools.crs.dto.RequestItem;
 import org.ihtsdotools.crs.dto.enumeration.StatusValues;
 import org.ihtsdotools.crs.dto.helper.RequestBuilder;
 import org.ihtsdotools.crs.dto.helper.validation.RequestItemValidator;
 import org.ihtsdotools.crs.exception.CRSError;
 import org.ihtsdotools.crs.exception.CRSRuntimeException;
+import org.ihtsdotools.crs.jira.api.JiraClient;
+import org.ihtsdotools.crs.jira.dto.Issue;
+import org.ihtsdotools.crs.jira.dto.IssueType;
+import org.ihtsdotools.crs.ws.dto.RequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +43,15 @@ public class RequestAPIImpl implements RequestAPI {
 
 	@Autowired
 	private RequestDao requestDao;
+
+	@Autowired
+	private JiraClient jiraClient;
+
+	@Autowired
+	private ObjectMapper objectMapper;
+
+	@Autowired
+	private DozerBeanMapper dozerBeanMapper;
 
 	/* (non-Javadoc)
 	 * @see org.ihtsdotools.crs.api.RequestAPI#createRequest(org.ihtsdotools.crs.dto.Request)
@@ -58,7 +76,25 @@ public class RequestAPIImpl implements RequestAPI {
 		request.setStatus(StatusValues.SUBMITTED.toString());
 		request.setStatusDate(new Date());
 		request = requestDao.save(request);
+		createJiraIssue(request);
 		return request;
+	}
+
+	private void createJiraIssue(Request request) {
+		Issue issue = new Issue();
+		IssueType issueType = new IssueType(10101L, "SCT Content Request Batch", false, "A batch of SCT Content Requests");
+		issue.setIssueType(issueType);
+		issue.setProjectKey("CRT");
+		RequestItem requestItem = request.getWorkItems().get(0);
+		issue.setSummary(new StringBuilder().append(requestItem.getRequestType()).toString());
+		RequestDto requestDto = dozerBeanMapper.map(request, RequestDto.class);
+		try {
+			issue.setDescription(objectMapper.writer().withDefaultPrettyPrinter().writeValueAsString(requestDto));
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		jiraClient.createIssue(issue);
+		jiraClient.close();
 	}
 
 
