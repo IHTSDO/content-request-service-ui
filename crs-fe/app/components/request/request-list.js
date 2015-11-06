@@ -11,12 +11,12 @@ angular
             var vm = this;
 
             var loadRequests = function () {
-                notificationService.sendMessage('Loading requests...', 0);
+                notificationService.sendMessage('crs.request.message.listLoading', 0);
 
                 vm.requests = null;
                 requestService.getRequests().then(function (requests) {
                     vm.requests = requests;
-                    notificationService.sendMessage('All requests loaded', 5000);
+                    notificationService.sendMessage('crs.request.message.listLoaded', 5000);
                     if (vm.tableParams) {
                         vm.tableParams.reload();
                     }

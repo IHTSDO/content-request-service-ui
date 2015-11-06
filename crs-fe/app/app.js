@@ -20,6 +20,7 @@ angular
         // dependencies
         'ui.bootstrap',
         'ngTable',
+        'pascalprecht.translate',
 
         // layouts
 
@@ -35,7 +36,7 @@ angular
         'conceptRequestServiceApp.configuration'
 
     ])
-    .config(function ($routeProvider, $modalProvider) {
+    .config(function ($routeProvider, $modalProvider, $translateProvider) {
         // set the default redirect/route
         $routeProvider
             .otherwise({
@@ -46,6 +47,20 @@ angular
         // due to current angular-ui bug where the
         // animation prevents removal of grey backdrop on close
         $modalProvider.options.animation = false;
+
+        //
+        $translateProvider
+            .registerAvailableLanguageKeys(['en'], {
+                'en-*': 'en',
+                'en_*': 'en'
+            })
+            .useStaticFilesLoader({
+                prefix: 'translations/locale-',
+                suffix: '.json'
+            })
+            .uniformLanguageTag('bcp47')
+            .determinePreferredLanguage()
+            .fallbackLanguage('en');
     })
     .run([
         '$rootScope',
