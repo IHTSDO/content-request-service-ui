@@ -41,6 +41,8 @@
     </bean>
     <bean id="securityContextHolder" class="org.ihtsdotools.crs.security.CrsStatelessSCRepository"/>
     <bean id="restAuthenticationEntryPoint" class="org.ihtsdotools.crs.security.RestAuthenEntryPoint" />
+    	
+    <import resource="classpath*:spring-beans.xml"/>
     
     <context:component-scan base-package="org.ihtsdotools.crs.dao" />
     <context:component-scan base-package="org.ihtsdotools.crs.api.impl" />
@@ -86,14 +88,36 @@
         <property name="entityManagerFactory" ref="entityManagerFactory" />
     </bean>
     
-    <bean id="newConceptRB" class="org.ihtsdotools.crs.dto.helper.NewConceptRequestBuilder" />
-    <bean id="newRelationshipRB" class="org.ihtsdotools.crs.dto.helper.NewRelationshipRequestBuilder" />
-    <bean id="rbLocator" class="org.ihtsdotools.crs.dto.helper.RequestBuilderLocator" >
-    	<constructor-arg>
-    		<map>
-    			<entry key="NEW_CONCEPT" value-ref="newConceptRB"/>
-    			<entry key="NEW_RELATIONSHIP" value-ref="newRelationshipRB"/>
-    		</map>
-    	</constructor-arg>
+     <bean id="requestConfigLoader" class="org.ihtsdotools.crs.dto.helper.config.RequestItemConfig">
+        <constructor-arg>
+            <map>
+                <entry key="NEW_CONCEPT" value="classpath:requestItemConfig/NewConcept.json"/>
+                <entry key="NEW_DESCRIPTION" value="classpath:requestItemConfig/NewDescription.json"/>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="dozerBeanMapper" class="org.dozer.DozerBeanMapper">
+        <property name="mappingFiles">
+            <list>
+                <value>dozer-mapping.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="requestBuilder" class="org.ihtsdotools.crs.dto.helper.RequestBuilder"/>
+    <bean id="requestItemValidator" class="org.ihtsdotools.crs.dto.helper.validation.RequestItemValidator"/>
+
+    <!-- Jackson Mapper -->
+    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper" />
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="targetObject" ref="objectMapper" />
+        <property name="targetMethod" value="configure" />
+        <property name="arguments">
+            <list>
+                <value type="com.fasterxml.jackson.databind.DeserializationFeature">FAIL_ON_UNKNOWN_PROPERTIES</value>
+                <value>false</value>
+            </list>
+        </property>
     </bean>
 </beans>

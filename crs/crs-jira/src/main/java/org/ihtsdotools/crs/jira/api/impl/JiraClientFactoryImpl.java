@@ -2,38 +2,39 @@ package org.ihtsdotools.crs.jira.api.impl;
 
 import java.net.URI;
 
+import org.ihtsdo.otf.im.domain.IHTSDOUser;
 import org.ihtsdotools.crs.jira.api.JiraClient;
 import org.ihtsdotools.crs.jira.api.JiraClientFactory;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import com.atlassian.jira.rest.client.api.AuthenticationHandler;
-import com.atlassian.jira.rest.client.api.JiraRestClient;
-import com.atlassian.jira.rest.client.auth.BasicHttpAuthenticationHandler;
-import com.atlassian.jira.rest.client.internal.async.AsynchronousJiraRestClientFactory;
+import net.rcarz.jiraclient.Resource;
 
 @Component
 public class JiraClientFactoryImpl implements JiraClientFactory {
 	
 	private final String jiraUriStr = "https://dev-jira.ihtsdotools.org"; //TODO: load from app properties
-	private final String jiraLogin = "pbui"; //TODO: load from app properties
-	private final String password = "Sn0m3dCT"; //TODO: load from app properties
+	private final String apiRevision = "2";
 
 	private final URI jiraUri = URI.create(jiraUriStr);
-	private final AuthenticationHandler jiraAuthHandler = 
-			new BasicHttpAuthenticationHandler(jiraLogin, password);
-	private final AsynchronousJiraRestClientFactory factory = new AsynchronousJiraRestClientFactory();
 	
-	private JiraRestClient getRestClient() {
-		//TODO: Rest Client Pooling
-
-		return factory.create(jiraUri, jiraAuthHandler);
+	public JiraClientFactoryImpl() {
+		Resource.setApiRev(apiRevision);
 	}
-			
+	
 	@Override
 	public JiraClient getClient() {
-		JiraClientImpl client = new JiraClientImpl();
-		client.setRestClient(getRestClient());
-		return client;
+		String token = "", username = "";
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth != null) {
+			IHTSDOUser user = (IHTSDOUser) auth.getPrincipal();
+			username = user.getUsername();
+			token = auth.getCredentials().toString();
+		}
+		
+		JiraTokenCredentials credentials = new JiraTokenCredentials(token, username);
+		return new JiraClientImpl(credentials, jiraUri);
 	}
 
 }

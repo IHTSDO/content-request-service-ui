@@ -3,29 +3,29 @@
  */
 package org.ihtsdotools.crs.jira.api.impl;
 
-import java.io.IOException;
+import java.net.URI;
 
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.ihtsdotools.crs.jira.api.JiraClient;
 import org.ihtsdotools.crs.jira.dto.Issue;
 import org.ihtsdotools.crs.jira.util.BeanUtil;
-import org.springframework.stereotype.Component;
 
-import com.atlassian.jira.rest.client.api.IssueRestClient;
-import com.atlassian.jira.rest.client.api.JiraRestClient;
-import com.atlassian.jira.rest.client.api.domain.BasicIssue;
-import com.atlassian.jira.rest.client.api.domain.input.IssueInput;
-import com.atlassian.jira.rest.client.api.domain.input.IssueInputBuilder;
-import com.atlassian.util.concurrent.Promise;
+import net.rcarz.jiraclient.Field;
+import net.rcarz.jiraclient.JiraException;
+import net.rcarz.jiraclient.RestClient;
+
 
 /**
  * @author Hunter Macdonald
  *
  */
 public class JiraClientImpl implements JiraClient {
-	private JiraRestClient restClient;
+	private final RestClient restClient;
+	private final JiraTokenCredentials credentials;
 	
-	protected void setRestClient(JiraRestClient restClient) {
-		this.restClient = restClient;
+	JiraClientImpl(JiraTokenCredentials credentials, URI uri) {
+		this.credentials = credentials;
+		this.restClient = new RestClient(new DefaultHttpClient(), credentials, uri);
 	}
 
 	/* (non-Javadoc)
@@ -33,15 +33,15 @@ public class JiraClientImpl implements JiraClient {
 	 */
 	@Override
 	public Issue getIssueByKey(String key) {
-		// TODO Auto-generated method stub
-		IssueRestClient issueClient = restClient.getIssueClient();
-		Promise<com.atlassian.jira.rest.client.api.domain.Issue> promise = issueClient.getIssue(key);
+		net.rcarz.jiraclient.Issue rcarz;
 		try {
-			com.atlassian.jira.rest.client.api.domain.Issue jiraIssue = promise.get();
-			return BeanUtil.createIssueDTO(jiraIssue);
-		} catch (Exception e) {
+			rcarz = net.rcarz.jiraclient.Issue.get(restClient, key);
+			return BeanUtil.createIssueDTO(rcarz);
+		} catch (JiraException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 			throw new RuntimeException(e);
-		} 
+		}
 	}
 
 	/* (non-Javadoc)
@@ -49,40 +49,26 @@ public class JiraClientImpl implements JiraClient {
 	 */
 	@Override
 	public Issue createIssue(Issue issue) {
-		IssueRestClient issueClient = restClient.getIssueClient();
-		
-		IssueInputBuilder issueBuilder = new IssueInputBuilder(issue.getProjectKey(), issue.getIssueType().getId());
-		issueBuilder.setSummary(issue.getSummary());
-		issueBuilder.setDescription(issue.getDescription());
-		//TODO: build all other properties
-		//...
-		IssueInput issueInput = issueBuilder.build();
-		Promise<BasicIssue> promise = issueClient.createIssue(issueInput);
+		net.rcarz.jiraclient.Issue rcarz;
 		try {
-			BasicIssue basicIssue = promise.get();
-			issue.setKey(basicIssue.getKey());
-		} catch (Exception e) {
-			//TODO: handle exception
+			rcarz = net.rcarz.jiraclient.Issue.create(
+					restClient, issue.getProjectKey(), issue.getIssueType().getName())
+			        .field(Field.SUMMARY, issue.getSummary())
+			        .field(Field.DESCRIPTION, issue.getDescription())
+			        .field(Field.REPORTER, credentials.getLogonName())
+			        .execute();
+		} catch (JiraException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-		
+		issue.setKey(rcarz.getKey());
 		return issue;
 	}
 
 	@Override
 	public void close() {
-		try {
-			restClient.close();
-		} catch (IOException e) {
-			//TODO: handle exception
-			throw new RuntimeException(e);
-		}
-	}
-
-	@Override
-	protected void finalize() throws Throwable {
-		restClient.close();
-		super.finalize();
+		
 	}
 
 }

@@ -14,15 +14,10 @@
 	<name>crs-jira</name>
 	<dependencies>
 		<dependency>
-			<groupId>com.atlassian.jira</groupId>
-			<artifactId>jira-rest-java-client-api</artifactId>
-			<version>${jiraclient.version}</version>
+			<groupId>net.rcarz</groupId>
+			<artifactId>jira-client</artifactId>
+			<version>0.6.1-IHTSDO</version>
 		</dependency>
-		<dependency>
-            <groupId>com.atlassian.jira</groupId>
-            <artifactId>jira-rest-java-client-core</artifactId>
-            <version>${jiraclient.version}</version>
-        </dependency>		
 		<dependency>
 			<groupId>org.ihtsdotools</groupId>
 			<artifactId>crs-api</artifactId>
@@ -34,6 +29,22 @@
             <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>
         </dependency>
+        <dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ihtsdo.otf</groupId>
+			<artifactId>ihtsdo-crowd-bridge</artifactId>
+			<version>0.0.4</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>guava</artifactId>
+					<groupId>com.google.guava</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 		
 		<!-- Dependencies for testing -->
         <!-- Test -->
