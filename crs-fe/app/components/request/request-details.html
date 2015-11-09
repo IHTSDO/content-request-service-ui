@@ -9,22 +9,24 @@
             <div class="container">
                 <div class="col-md-12">
 
-                    <div class="alert alert-success" ng-show="requestVM.msgSuccess">{{requestVM.msgSuccess}}</div>
-                    <div class="alert alert-danger" ng-show="requestVM.msgError">{{requestVM.msgError}}</div>
+                    <div class="alert alert-success" ng-show="requestVM.msgSuccess">{{requestVM.msgSuccess | translate}}</div>
+                    <div class="alert alert-danger" ng-show="requestVM.msgError">{{requestVM.msgError | translate}}</div>
 
                     <div ng-include="requestVM.requestType.form.template"></div>
 
-                    <div >
+                    <div ng-show="requestVM.isValidViewParams">
                         <div class="col-md-4">
-                            <button type="button" class="col-md-12 btn btn-info no-margin ">{{'crs.request.details.button.save' | translate}}
+                            <button type="button" class="col-md-12 btn btn-info no-margin " ng-click="requestVM.saveRequest()">
+                                {{'crs.request.details.button.save' | translate}}
                             </button>
                         </div>
                         <div class="col-md-4" ng-show="requestVM.pageMode !== 'new'">
-                            <button type="button" class="col-md-12 btn btn-info no-margin ">{{'crs.request.details.button.submit' | translate}}
+                            <button type="button" class="col-md-12 btn btn-info no-margin " ng-click="requestVM.submitRequest()">{{'crs.request.details.button.submit' | translate}}
                             </button>
                         </div>
                         <div class="col-md-4">
-                            <button type="button" class=" col-md-12 btn btn-danger no-margin ">{{'crs.request.details.button.cancel' | translate}}
+                            <button type="button" class=" col-md-12 btn btn-danger no-margin" ng-click="requestVM.cancelEditing()">
+                                {{'crs.request.details.button.cancel' | translate}}
                             </button>
                         </div>
                     </div>

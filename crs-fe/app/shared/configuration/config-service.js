@@ -26,12 +26,16 @@ angular
                     } else {
                         return config.endpoint[endPoint];
                     }
+                };
 
+                var getRequestTimeout = function () {
+                    return config.xhrTimeout;
                 };
 
                 return {
                     getConfig: getConfig,
-                    getEndpointConfig: getEndpointConfig
+                    getEndpointConfig: getEndpointConfig,
+                    getRequestTimeout: getRequestTimeout
                 };
             }
         ];

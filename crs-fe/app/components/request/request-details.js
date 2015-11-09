@@ -34,10 +34,10 @@ angular
                 }
 
                 // check valid param
-                if (mode = REQUEST_MODE.NEW) {
-                    isValidParam = (requestService.identifyRequestType(requestType) !== null);
+                if (mode === REQUEST_MODE.NEW) {
+                    isValidParam = (requestService.identifyRequestType(param) !== null);
                 } else {
-                    isValidParam = (!isNaN(param) && param > 0)
+                    isValidParam = (param !== undefined && param !== null)
                 }
 
                 return isValidMode && isValidParam;
@@ -62,7 +62,9 @@ angular
             };
 
             var initView = function () {
-                if (!isValidViewParams) {
+                var isValid = isValidViewParams();
+
+                if (!isValid) {
                     showErrorMessage('crs.request.message.error.invalidPage');
                 } else {
                     if (mode === REQUEST_MODE.NEW) {
@@ -76,6 +78,7 @@ angular
                         };
 
                         vm.requestType = requestType;
+                        vm.isValidViewParams = isValid;
                     } else if (mode === REQUEST_MODE.EDIT) {
                         requestId = param;
                         $rootScope.pageTitles = ['crs.request.details.title.edit', requestId];
@@ -87,8 +90,9 @@ angular
 
                             if (requestType) {
                                 vm.requestType = requestType;
+                                vm.isValidViewParams = isValid;
                             } else {
-                                showErrorMessage('crs.request.details.error.invalidPage');
+                                showErrorMessage('crs.request.message.error.invalidPage');
                             }
                         });
                     }
@@ -98,12 +102,13 @@ angular
             };
 
             var loadRequest = function () {
-                notificationService.sendMessage('crs.request.message.requestLoading...', 0);
+                notificationService.sendMessage('crs.request.message.requestLoading', 0);
 
                 vm.request = null;
 
                 return requestService.getRequest(requestId).then(function (request) {
-                    vm.request = request;
+                    vm.request = request.workItems[0];
+                    vm.request.rfcNumber = request.rfcNumber;
                     notificationService.sendMessage('crs.request.message.requestLoaded', 5000);
                 });
             };
@@ -113,7 +118,29 @@ angular
                 $location.path('/dashboard');
             };
 
+            var saveRequest = function () {
+                requestService.saveRequest(vm.request)
+                    .then(function (response) {
+                        notificationService.sendMessage('crs.request.message.requestSaved', 5000);
+                        $location.path('/dashboard');
+                    }, function (e) {
+                        console.log(e);
+                    });
+            };
+
+            var submitRequest = function () {
+                requestService.submitRequest(vm.request.rfcNumber)
+                    .then(function (response) {
+                        notificationService.sendMessage('crs.request.message.requestSubmitted', 5000);
+                        $location.path('/dashboard');
+                    }, function (e) {
+                        console.log(e);
+                    });
+            };
+
             vm.cancelEditing = cancelEditing;
+            vm.saveRequest = saveRequest;
+            vm.submitRequest = submitRequest;
             initView();
         }
     ]);

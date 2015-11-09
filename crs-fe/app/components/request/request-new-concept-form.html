@@ -2,32 +2,78 @@
 <form class="form-floating">
 
     <div class="form-group">
-        <label for="">New Concept FSN</label>
-        <input class="form-control" type="text" ng-model="requestVM.request.fsn"/>
-        <br>
+        <form-control type="text"
+                      ng-model="requestVM.request.requestorInternalId"
+                      label="crs.request.details.label.requestorInternalId"
+                      name="txtRequestorInternalId"></form-control>
 
-        <label for="">Preferred Term</label>
-        <input class="form-control" type="text" />
-        <br>
+        <!--<label for="">Requestor Internal Id</label>
+        <input class="form-control" type="text" ng-model="requestVM.request.requestorInternalId"/>
+        <br>-->
+
+        <div>
+            <div>
+                <label for="">Parent Concept Id</label>
+                <input class="form-control" type="text" ng-model="requestVM.request.parentId"/>
+            </div>
+            <div>
+                <label for="">Parent Concept FSN</label>
+                <input class="form-control" type="text" ng-model="requestVM.request.fsn"/>
+            </div>
+        </div>
+        <br/>
+
+        <form-control type="text"
+                      ng-model="requestVM.request.proposedFSN"
+                      label="crs.request.details.label.proposedFSN"
+                      name="txtFSN"></form-control>
+
+        <!--<label for="">New Concept FSN</label>
+        <input class="form-control" type="text" ng-model="requestVM.request.proposedFSN"/>
+        <br>-->
+
+        <form-control type="text"
+                      ng-model="requestVM.request.conceptPT"
+                      label="crs.request.details.label.conceptPT"
+                      name="txtPT"></form-control>
+
+        <!--<label for="">Preferred Term</label>
+        <input class="form-control" type="text" ng-model="requestVM.request.conceptPT"/>
+        <br>-->
 
         <label for="">Synonym</label>
-        <input class="form-control" type="text" />
+        <input class="form-control" type="text" ng-model="requestVM.request.proposedSynonym"/>
         <br>
 
-        <label for="">Definition</label>
-        <input class="form-control" type="text" />
-        <br>
+        <form-control type="text"
+                      ng-model="requestVM.request.proposedDefinition"
+                      label="crs.request.details.label.proposedDefinition"
+                      name="txtDefinition"></form-control>
 
-        <label for="">Reason of Changes</label>
-        <input class="form-control" type="text" />
-        <br>
+        <!--<label for="">Definition</label>
+        <input class="form-control" type="text" ng-model="requestVM.request.proposedDefinition"/>
+        <br>-->
+
+        <form-control type="text"
+                      ng-model="requestVM.request.reasonForChange"
+                      label="crs.request.details.label.reasonForChange"
+                      name="txtReasonForChange"></form-control>
+
+        <!--<label for="">Reason of Changes</label>
+        <input class="form-control" type="text" ng-model="requestVM.request.reasonForChange"/>
+        <br>-->
 
         <label for="">Notes</label>
-        <textarea class="form-control" type="text" ></textarea>
+        <textarea class="form-control" type="text" ng-model="requestVM.request.notes"></textarea>
         <br>
 
-        <label for="">References</label>
-        <input class="form-control" type="text" />
-        <br>
+        <form-control type="text"
+                      ng-model="requestVM.request.reference"
+                      label="crs.request.details.label.reference"
+                      name="txtReference"></form-control>
+
+        <!--<label for="">Reference</label>
+        <input class="form-control" type="text" ng-model="requestVM.request.reference"/>
+        <br>-->
     </div>
 </form>

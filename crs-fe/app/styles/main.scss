@@ -117,3 +117,19 @@ footer {
 .Promoted.badge {
   background-color: cyan;
 }
+
+.form-control-element {
+  margin-bottom: 20px;
+}
+
+.requestStatus {
+  &.DRAFT {
+    background-color: white;
+    color: black;
+  }
+
+  &.NEW {
+    background-color: black;
+    color: white;
+  }
+}

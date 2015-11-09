@@ -25,6 +25,8 @@ angular
         // layouts
 
         // components
+        'conceptRequestServiceApp.crs',
+        'conceptRequestServiceApp.error',
         'conceptRequestServiceApp.dashboard',
         'conceptRequestServiceApp.userPreferences',
         'conceptRequestServiceApp.request',
@@ -33,7 +35,8 @@ angular
 
         // shared
         'conceptRequestServiceApp.imsAuthentication',
-        'conceptRequestServiceApp.configuration'
+        'conceptRequestServiceApp.configuration',
+        'conceptRequestServiceApp.formControl'
 
     ])
     .config(function ($routeProvider, $modalProvider, $translateProvider) {

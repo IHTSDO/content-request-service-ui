@@ -32,14 +32,15 @@
                 "tip": {
                     "count": "Number of requests",
                     "create": "Create New Request",
-                    "requestId": "Click to open request editing view",
+                    "requestorInternalId": "Click to open request editing view",
                     "batchId": "Click to open batch details view"
                 },
                 "searchPlaceHolder": "Search My Requests",
                 "tableHeader": {
                     "batchId": "Batch Id",
-                    "requestId": "Request Id",
-                    "fullSpecificName": "Full Specific Name",
+                    "requestorInternalId": "Requestor Interal Id",
+                    "ticketId": "Ticket Id",
+                    "description": "Description",
                     "lastModified": "Last Modified",
                     "requestType": "Request Type",
                     "status": "Status"
@@ -54,6 +55,14 @@
                     "save": "Save Request",
                     "submit": "Submit Request",
                     "cancel": "Cancel"
+                },
+                "label": {
+                    "requestorInternalId": "Requestor Internal Id",
+                    "proposedFSN": "New Concept FSN",
+                    "conceptPT": "Preferred Term",
+                    "proposedDefinition": "Definition",
+                    "reasonForChange": "Reason of Changes",
+                    "reference": "Reference"
                 }
             },
             "createModal": {
@@ -71,6 +80,8 @@
                 "listLoaded": "All requests loaded",
                 "requestLoading": "Loading request {{requestId}}...",
                 "requestLoaded": "Request {{requestId}} loaded",
+                "requestSaved": "Request has successfully saved",
+                "requestSubmitted": "Request has successfully submitted",
 
                 "error": {
                     "requestTypeRequired": "Please select request type",
@@ -85,6 +96,10 @@
                 "changeRetireConcept": "Change or Retire Concept",
                 "changeRetireDescription": "Change or Retire Description",
                 "changeRetireRelationship": "Change or Retire Relationship"
+            },
+            "requestStatus": {
+                "draft": "Draft",
+                "new": "New"
             }
         },
         "batch": {
@@ -101,6 +116,7 @@
                     "uploaded": "Uploaded On",
                     "submitted": "Submitted On",
                     "lastModified": "Last Modified",
+
                     "status": "Status"
                 }
             },

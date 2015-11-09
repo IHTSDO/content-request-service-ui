@@ -26,7 +26,7 @@ angular
             var requestTableParams = new ngTableParams({
                     page: 1,
                     count: 10,
-                    sorting: {modifiedDate: 'desc', batchId: 'asc', id: 'asc'}
+                    sorting: {requestDate: 'desc', batchId: 'asc', requestorInternalId: 'asc'}
                 },
                 {
                     filterDelay: 50,
@@ -42,8 +42,8 @@ angular
 
                             if (searchStr) {
                                 mydata = vm.requests.filter(function (item) {
-                                    return (item.id + '').indexOf(searchStr.toLowerCase()) > -1
-                                        || item.fsn.toLowerCase().indexOf(searchStr.toLowerCase()) > -1;
+                                    return (item.requestorInternalId + '').indexOf(searchStr.toLowerCase()) > -1 ||
+                                        (item.ticketId || '').toLowerCase().indexOf(searchStr.toLowerCase()) > -1;
                                 });
                             } else {
                                 mydata = vm.requests;

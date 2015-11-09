@@ -50,6 +50,16 @@ angular
         }
 
     })
+    .value('REQUEST_STATUS', {
+        DRAFT: {
+            value: 'DRAFT',
+            langKey: 'crs.request.requestStatus.draft'
+        },
+        NEW: {
+            value: 'NEW',
+            langKey: 'crs.request.requestStatus.new'
+        }
+    })
     .config(function ($routeProvider) {
         $routeProvider
             .when('/requests/:mode/:param', {
