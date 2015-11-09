@@ -68,4 +68,11 @@ public class RequestBuilder {
 		setSpecificProperties(request, requestType, requestInput);
 		return request;
 	}
+
+	public Request build(Request request, Map<String, Object> requestInput) {
+		String requestType = request.retrieveSingleRequestWorkItem().getRequestType();
+		setCommonProperties(request, requestType, requestInput);
+		setSpecificProperties(request, requestType, requestInput);
+		return request;
+	}
 }

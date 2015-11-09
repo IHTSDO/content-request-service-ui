@@ -28,7 +28,7 @@ public class Request implements Serializable {
 	/**
 	 * REQUEST HEADER
 	 */
-	private Long rfcNumber; //Primary Key
+	private String rfcNumber; //Primary Key
 	private String approvalAuthorityId;
 	private String ogirinatorId;
 	private String requestorId;
@@ -67,10 +67,10 @@ public class Request implements Serializable {
 	public void setApprovalAuthorityId(String approvalAuthorityId) {
 		this.approvalAuthorityId = approvalAuthorityId;
 	}
-	public Long getRfcNumber() {
+	public String getRfcNumber() {
 		return rfcNumber;
 	}
-	public void setRfcNumber(Long rfcNumber) {
+	public void setRfcNumber(String rfcNumber) {
 		this.rfcNumber = rfcNumber;
 	}
 	public String getOgirinatorId() {
@@ -178,6 +178,10 @@ public class Request implements Serializable {
 	}
 	public void setProject(Project project) {
 		this.project = project;
+	}
+
+	public RequestItem retrieveSingleRequestWorkItem() {
+		return workItems.get(0);
 	}
 	
 	

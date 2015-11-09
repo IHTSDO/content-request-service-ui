@@ -39,7 +39,6 @@
 		<table name="Request" />
 		<attributes>
 			<id name="rfcNumber">
-				<generated-value strategy="AUTO" />
 			</id>
 			<many-to-one fetch="LAZY" name="project">
 				<join-column name="projectId" />

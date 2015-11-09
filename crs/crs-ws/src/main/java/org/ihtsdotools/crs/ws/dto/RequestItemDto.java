@@ -12,7 +12,7 @@ public class RequestItemDto {
    //REQUEST ITEM INFORMATION:
    private Long id; //Primary key
    //private Long rfcNumber; //Foreign key to Request
-   private Long request;
+   private String request;
    private String requestorInternalId;
    private String requestorInternalTerm;
    private String requestType;
@@ -72,11 +72,11 @@ public class RequestItemDto {
       this.id = id;
    }
 
-   public Long getRequest() {
+   public String getRequest() {
       return request;
    }
 
-   public void setRequest(Long request) {
+   public void setRequest(String request) {
       this.request = request;
    }
 

@@ -20,8 +20,8 @@ public interface RequestAPI {
 	 * @param requestId
 	 * @return
 	 */
-	public Request submitRequest(Long requestId);
-	public Request updateRequest(Request requestInfo);
+	public Request submitRequest(String requestId);
+	public Request updateRequest(String requestId, Map<String, Object> requestInfo);
 	
 	public Collection<Request> getAllRequests();
 	public Collection<Request> getRequestByProject(Long projectId);

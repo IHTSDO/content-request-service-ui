@@ -22,11 +22,11 @@
 			<artifactId>crs-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<dependency>
+		<!--<dependency>
 			<groupId>org.ihtsdotools</groupId>
 			<artifactId>crs-jira</artifactId>
 			<version>${project.version}</version>
-		</dependency>
+		</dependency>-->
 		
 		<!-- IMS dependencies and resources for Spring-Security -->
 		<dependency>

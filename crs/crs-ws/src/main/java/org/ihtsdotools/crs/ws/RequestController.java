@@ -35,8 +35,15 @@ public class RequestController {
       return requestDto;
    }
 
+   @RequestMapping(method = RequestMethod.PUT)
+   public RequestDto updateRequest(@RequestParam("requestId") String requestId, @RequestBody Map<String, Object> requestInfo)  {
+      Request request = requestAPI.updateRequest(requestId, requestInfo);
+      RequestDto requestDto = dozerBeanMapper.map(request, RequestDto.class);
+      return requestDto;
+   }
+
    @RequestMapping(value = "/submit", method = RequestMethod.POST)
-   public RequestDto submitRequest(@RequestParam("rfcNumber") Long requestId) {
+   public RequestDto submitRequest(@RequestParam("requestId") String requestId) {
       Request request = requestAPI.submitRequest(requestId);
       RequestDto requestDto = dozerBeanMapper.map(request, RequestDto.class);
       return  requestDto;

@@ -1,8 +1,5 @@
 package org.ihtsdotools.crs.ws.dto;
 
-import org.ihtsdotools.crs.dto.RequestItem;
-
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,7 +11,7 @@ public class RequestDto {
    /**
     * REQUEST HEADER
     */
-   private Long rfcNumber; //Primary Key
+   private String rfcNumber; //Primary Key
    private String approvalAuthorityId;
    private String ogirinatorId;
    private String requestorId;
@@ -39,11 +36,11 @@ public class RequestDto {
 
    private List<RequestItemDto> workItems;
 
-   public Long getRfcNumber() {
+   public String getRfcNumber() {
       return rfcNumber;
    }
 
-   public void setRfcNumber(Long rfcNumber) {
+   public void setRfcNumber(String rfcNumber) {
       this.rfcNumber = rfcNumber;
    }
 
