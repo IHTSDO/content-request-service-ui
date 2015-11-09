@@ -4,7 +4,8 @@ angular.module('conceptRequestServiceApp.request')
     .service('requestService', [
         '$rootScope',
         '$q',
-        function ($rootScope, $q) {
+        'REQUEST_TYPE',
+        function ($rootScope, $q, REQUEST_TYPE) {
 
             // mock requests
             var requests = [
@@ -50,6 +51,17 @@ angular.module('conceptRequestServiceApp.request')
                 }
             ];
 
+            var identifyRequestType = function (value) {
+                for (var requestTypeKey in REQUEST_TYPE) {
+                    if (REQUEST_TYPE.hasOwnProperty(requestTypeKey) &&
+                        REQUEST_TYPE[requestTypeKey].value === value) {
+                        return REQUEST_TYPE[requestTypeKey];
+                    }
+                }
+
+                return null;
+            };
+
             var getRequests = function () {
                 var deferred = $q.defer();
 
@@ -75,6 +87,7 @@ angular.module('conceptRequestServiceApp.request')
             };
 
             return {
+                identifyRequestType: identifyRequestType,
                 getRequest: getRequest,
                 getRequests: getRequests
             };

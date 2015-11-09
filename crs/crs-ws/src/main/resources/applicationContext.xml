@@ -20,7 +20,6 @@
      
     <tx:annotation-driven />
     <context:annotation-config />
-    
 	<import resource="classpath:application-im-common-security-config.xml" />
 	<import resource="classpath:applicationContext-CrowdClient.xml" />
 	
@@ -41,9 +40,7 @@
     </bean>
     <bean id="securityContextHolder" class="org.ihtsdotools.crs.security.CrsStatelessSCRepository"/>
     <bean id="restAuthenticationEntryPoint" class="org.ihtsdotools.crs.security.RestAuthenEntryPoint" />
-    	
     <import resource="classpath*:spring-beans.xml"/>
-    
     <context:component-scan base-package="org.ihtsdotools.crs.dao" />
     <context:component-scan base-package="org.ihtsdotools.crs.api.impl" />
  	
@@ -89,6 +86,8 @@
     </bean>
     
      <bean id="requestConfigLoader" class="org.ihtsdotools.crs.dto.helper.config.RequestItemConfig">
+
+    <bean id="requestConfigLoader" class="org.ihtsdotools.crs.dto.helper.config.RequestItemConfig">
         <constructor-arg>
             <map>
                 <entry key="NEW_CONCEPT" value="classpath:requestItemConfig/NewConcept.json"/>

@@ -12,11 +12,8 @@ import org.springframework.test.context.ContextConfiguration;
 /**
  * Unit test for simple App.
  */
-//@RunWith(org.springframework.test.context.junit4.SpringJUnit4ClassRunner.class)
-//@ContextConfiguration("/spring-beans.xml")
 public class AppTest {
 	
-	//@Autowired
 	JiraClient jiraClient;
 	
 	//@Test

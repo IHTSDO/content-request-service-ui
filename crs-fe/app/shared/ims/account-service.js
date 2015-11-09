@@ -16,7 +16,7 @@ angular
             var loginStatus = LOGIN_STATUS.UNDEFINED;
             var accountDetails = null;
 
-            var imsEndpoint = configService.getEndpointConfig('ims');
+            var imsApiEndpoint = configService.getEndpointConfig('ims-api');
 
             var isCredentialChecked = function () {
                 return loginStatus !== LOGIN_STATUS.UNDEFINED;
@@ -46,7 +46,7 @@ angular
             };
 
             var getAccountInfo = function () {
-                var getAccountAPI = 'api/account';
+                var getAccountAPI = 'account';
                 var deferred = $q.defer();
 
                 if (accountDetails !== null) {
@@ -54,7 +54,7 @@ angular
                     return deferred.promise;
                 }
 
-                return $http.get(imsEndpoint + getAccountAPI, {withCredentials: true})
+                return $http.get(imsApiEndpoint + getAccountAPI, {withCredentials: true})
                     .success(function (data) {
                         accountDetails = data;
                     })

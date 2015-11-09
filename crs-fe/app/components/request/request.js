@@ -3,39 +3,58 @@
 angular
     .module('conceptRequestServiceApp.request', [
     ])
+    .value('REQUEST_TYPE',{
+        NEW_CONCEPT: {
+            value: 'NEW_CONCEPT',
+            langKey: 'crs.request.requestType.newConcept',
+            form: {
+                template: 'components/request/request-new-concept-form.html',
+                fields: [
+                    { name: 'requestorInternalId'},
+                    { name: 'parentId'},
+                    { name: 'proposedFSN', required: true},
+                    { name: 'conceptPT', required: true},
+                    { name: 'proposedSynonym'},
+                    { name: 'proposedDefinition'},
+                    { name: 'reasonForChange'},
+                    { name: 'notes'},
+                    { name: 'reference'}
+                ]
+            }
+            
+        },
+        NEW_DESCRIPTION: {
+            value: 'NEW_DESCRIPTION',
+            langKey: 'crs.request.requestType.newDescription',
+            form: 'components/request/request-new-description-form.html'
+        },
+        NEW_RELATIONSHIP: {
+            value: 'NEW_RELATIONSHIP',
+            langKey: 'crs.request.requestType.newRelationship',
+            form: 'components/request/request-new-relationship-form.html'
+        },
+        CHANGE_RETIRE_CONCEPT: {
+            value: 'CHANGE_RETIRE_CONCEPT',
+            langKey: 'crs.request.requestType.changeRetireConcept',
+            form: 'components/request/request-change-concept-form.html'
+        },
+        CHANGE_RETIRE_DESCRIPTION: {
+            value: 'CHANGE_RETIRE_DESCRIPTION',
+            langKey: 'crs.request.requestType.changeRetireDescription',
+            form: 'components/request/request-change-description-form.html'
+        },
+        CHANGE_RETIRE_RELATIONSHIP: {
+            value: 'CHANGE_RETIRE_RELATIONSHIP',
+            langKey: 'crs.request.requestType.changeRetireRelationship',
+            form: 'components/request/request-change-relationship-form.html'
+        }
+
+    })
     .config(function ($routeProvider) {
         $routeProvider
-            .when('/requests/:requestId/:mode', {
+            .when('/requests/:mode/:param', {
                 templateUrl: 'components/request/request-details.html',
-                controller: 'RequestCtrl',
-                controllerAs: 'request'
+                controller: 'RequestDetailsCtrl',
+                controllerAs: 'requestVM'
             });
-    })
-    .controller('RequestCtrl', [
-        '$rootScope',
-        '$routeParams',
-        'requestService',
-        'notificationService',
-        function ($rootScope, $routeParams, requestService, notificationService) {
-            var vm = this;
-            var requestId =  $routeParams.requestId;
-
-            var initView = function () {
-                $rootScope.pageTitles = ['Edit Requests', requestId];
-                loadRequest();
-            };
-
-            var loadRequest = function () {
-                notificationService.sendMessage('Loading request ' + requestId + '...', 0);
-
-                vm.request = null;
-                requestService.getRequest(requestId).then(function (request) {
-                    vm.request = request;
-
-                    notificationService.sendMessage('Request loaded', 5000);
-                });
-            };
-
-            initView();
-        }
-    ]);
+    });

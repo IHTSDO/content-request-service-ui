@@ -21,23 +21,28 @@ angular
         '$rootScope',
         '$uibModal',
         '$routeParams',
-        function ($rootScope, $uibModal, $routeParams) {
+        '$location',
+        function ($rootScope, $uibModal, $routeParams, $location) {
             var vm = this;
 
             var initView = function () {
                 var list = $routeParams.list;
                 switch (list) {
                     case 'batches':
-                        $rootScope.pageTitles = ['My Batches'];
+                        $rootScope.pageTitles = ['crs.request.batch.title'];
                         vm.listView = 'components/batch/batch-list.html';
                         break;
                     case 'requests':
                     default:
-                        $rootScope.pageTitles = ['My Requests'];
+                        $rootScope.pageTitles = ['crs.request.list.title'];
                         vm.listView = 'components/request/request-list.html';
                         break;
                 }
 
+            };
+
+            var createRequest = function (requestType) {
+                $location.path('requests/new/' + requestType);
             };
 
             var openCreateRequestModal = function () {
@@ -46,11 +51,10 @@ angular
                     controller: 'ModalCreateRequestCtrl as modal'
                 });
 
-                modalInstance.result.then(function (response) {
-                    if (response) {
+                modalInstance.result.then(function (selectedRequestType) {
+                    if (selectedRequestType !== undefined && selectedRequestType !== null) {
+                        createRequest(selectedRequestType);
                     }
-                }, function () {
-
                 });
             };
 

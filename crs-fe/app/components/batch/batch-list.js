@@ -11,12 +11,12 @@ angular
             var vm = this;
 
             var loadBatches = function () {
-                notificationService.sendMessage('Loading batches...', 0);
+                notificationService.sendMessage('crs.batch.message.listLoading', 0);
 
                 vm.batches = null;
                 batchService.getBatches().then(function (batches) {
                     vm.batches = batches;
-                    notificationService.sendMessage('All batches loaded', 5000);
+                    notificationService.sendMessage('crs.batch.message.listLoaded', 5000);
                     if (vm.tableParams) {
                         vm.tableParams.reload();
                     }

@@ -5,8 +5,31 @@
              ng-include="'components/request/request-details-sidebar.html'"
              style="height: 100%"></div>
         <!-- edit form -->
-        <div class="col-md-9 editpanel crs-column no-padding"
-             ng-include="'components/request/request-details-editform.html'"
-             style="height: 100%"></div>
+        <div class="col-md-9 editpanel crs-column no-padding" style="height: 100%">
+            <div class="container">
+                <div class="col-md-12">
+
+                    <div class="alert alert-success" ng-show="requestVM.msgSuccess">{{requestVM.msgSuccess}}</div>
+                    <div class="alert alert-danger" ng-show="requestVM.msgError">{{requestVM.msgError}}</div>
+
+                    <div ng-include="requestVM.requestType.form.template"></div>
+
+                    <div >
+                        <div class="col-md-4">
+                            <button type="button" class="col-md-12 btn btn-info no-margin ">{{'crs.request.details.button.save' | translate}}
+                            </button>
+                        </div>
+                        <div class="col-md-4" ng-show="requestVM.pageMode !== 'new'">
+                            <button type="button" class="col-md-12 btn btn-info no-margin ">{{'crs.request.details.button.submit' | translate}}
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="button" class=" col-md-12 btn btn-danger no-margin ">{{'crs.request.details.button.cancel' | translate}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+         </div>
     </div>
 </div>

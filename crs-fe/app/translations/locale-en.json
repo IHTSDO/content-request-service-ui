@@ -1,0 +1,113 @@
+{
+    "crs": {
+        "message": {
+            "unknownUser": "Logged in as unknown user",
+            "profileTip":"display name will link to profile services in later updates"
+        },
+        "link": {
+            "logout": "Logout",
+            "login": "Login",
+            "help": "Help",
+            "tos": "Terms of Service",
+            "policy": "Privacy Policy",
+            "contact": "Contact Us",
+            "feedback": "Feedback"
+        },
+        "app": {
+            "name": "Concept Request Service",
+            "copyright": "Copyright IHTSDO 2015"
+        },
+        "dashboard": {
+            "title": "Dashboard",
+            "sidebar": {
+                "myRequest": "My Submitted Requests",
+                "myBatch": "My Batch Requests",
+                "createRequest": "Create New Request",
+                "importBatch": "New Batch Import"
+            }
+        },
+        "request": {
+            "list": {
+                "title": "My Requests",
+                "tip": {
+                    "count": "Number of requests",
+                    "create": "Create New Request",
+                    "requestId": "Click to open request editing view",
+                    "batchId": "Click to open batch details view"
+                },
+                "searchPlaceHolder": "Search My Requests",
+                "tableHeader": {
+                    "batchId": "Batch Id",
+                    "requestId": "Request Id",
+                    "fullSpecificName": "Full Specific Name",
+                    "lastModified": "Last Modified",
+                    "requestType": "Request Type",
+                    "status": "Status"
+                }
+            },
+            "details": {
+                "title": {
+                    "new": "New Request",
+                    "edit": "Edit Request"
+                },
+                "button": {
+                    "save": "Save Request",
+                    "submit": "Submit Request",
+                    "cancel": "Cancel"
+                }
+            },
+            "createModal": {
+                "title": "Create New Request",
+                "requestType": {
+                    "label": "Request Type"
+                },
+                "button": {
+                    "createRequest": "Create Request",
+                    "cancel": "Cancel"
+                }
+            },
+            "message": {
+                "listLoading": "Loading requests...",
+                "listLoaded": "All requests loaded",
+                "requestLoading": "Loading request {{requestId}}...",
+                "requestLoaded": "Request {{requestId}} loaded",
+
+                "error": {
+                    "requestTypeRequired": "Please select request type",
+                    "invalidPage": "The page you request is not available"
+                }
+
+            },
+            "requestType": {
+                "newConcept": "New Concept",
+                "newDescription": "New Description",
+                "newRelationship": "New Relationship",
+                "changeRetireConcept": "Change or Retire Concept",
+                "changeRetireDescription": "Change or Retire Description",
+                "changeRetireRelationship": "Change or Retire Relationship"
+            }
+        },
+        "batch": {
+            "list": {
+                "title": "My Batches",
+                "tip": {
+                    "count": "Number of batches",
+                    "create": "Import batch",
+                    "batchId": "Click to open batch details view"
+                },
+                "searchPlaceHolder": "Search Batches",
+                "tableHeader": {
+                    "batchId": "Batch Id",
+                    "uploaded": "Uploaded On",
+                    "submitted": "Submitted On",
+                    "lastModified": "Last Modified",
+                    "status": "Status"
+                }
+            },
+            "message": {
+                "listLoading": "Loading batches...",
+                "listLoaded": "All batches loaded"
+            }
+        }
+    }
+}

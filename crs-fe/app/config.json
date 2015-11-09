@@ -1,6 +1,8 @@
 {
     "endpoint": {
         "crs": "http://localhost:8080/crs/",
-        "ims": "https://dev-ims.ihtsdotools.org/"
+        "ims": "https://dev-ims.ihtsdotools.org/",
+        "snowowl": "https://dev-term.ihtsdotools.org/snowowl/",
+        "ims-api": "https://dev-term.ihtsdotools.org/ims-api/"
     }
 }

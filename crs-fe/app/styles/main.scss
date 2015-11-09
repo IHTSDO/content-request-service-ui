@@ -37,13 +37,21 @@ body {
 
 .crs-theme-wrapper {
   height: 100%;
+  padding-top: 64px;
+  padding-bottom: 40px;
+
+  .content {
+    overflow:auto;
+    height: 100%;
+  }
 }
 
-.crs-theme-wrapper .content {
-  overflow:auto;
-  padding-bottom: 40px;
-  padding-top: 66px;
-  height: 100%;
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 66px;
+  z-index: 99;
 }
 
 footer {
@@ -60,19 +68,25 @@ footer {
 
 /* Added by PWG to work around fixed sidebar */
 .crs-container {
-  position:absolute;
+  /*position:absolute;
   padding-top: 64px;
   bottom:0px;
   width:100%;
-  height:100%;
+  height:100%;*/
+  min-height: 100%;
+  display: table;
+  width: 100%;
 
-}
-
-.crs-column {
-  position: relative;
-  height:100%;
-  /*overflow-y:scroll;*/
-  /*margin-bottom:32px;*/
+  .crs-column {
+    /*position: relative;
+    height:100%;*/
+    /*overflow-y:scroll;*/
+    /*margin-bottom:32px;*/
+    display: table-cell;
+    float: initial;
+    min-height: 100%;
+    padding-bottom: 10px !important;
+  }
 }
 
 .row {
