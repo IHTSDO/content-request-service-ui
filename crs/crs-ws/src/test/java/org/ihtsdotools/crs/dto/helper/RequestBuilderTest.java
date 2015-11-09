@@ -35,8 +35,9 @@ public class RequestBuilderTest {
       valueMap.put("reasonForChange","reasonForChange");
       valueMap.put("notes","notes");
       valueMap.put("reference","reference");
+      valueMap.put("requestType", "NEW_CONCEPT");
 
-      Request request = requestBuilder.build("NEW_CONCEPT", valueMap);
+      Request request = requestBuilder.build(valueMap);
       Assert.assertNotNull(request);
       RequestItem requestItem = request.getWorkItems().get(0);
       Assert.assertEquals(requestItem.getRequestorInternalId(), "requestorInternalId");

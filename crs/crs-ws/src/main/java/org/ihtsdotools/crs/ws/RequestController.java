@@ -1,20 +1,21 @@
 package org.ihtsdotools.crs.ws;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
 import org.dozer.DozerBeanMapper;
 import org.ihtsdotools.crs.api.RequestAPI;
 import org.ihtsdotools.crs.dto.Request;
 import org.ihtsdotools.crs.ws.dto.RequestDto;
+import org.ihtsdotools.crs.ws.dto.RequestListItemDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 /**
  * User: huyle
@@ -32,36 +33,43 @@ public class RequestController {
    private DozerBeanMapper dozerBeanMapper;
 
    @RequestMapping(method = RequestMethod.POST)
-   public RequestDto createRequest(@RequestParam("requestType") String requestType, @RequestBody Map<String, Object> requestInfo)  {
-      Request request = requestAPI.createRequest(requestType, requestInfo);
+   public RequestDto createRequest(@RequestBody Map<String, Object> requestInfo)  {
+      Request request = requestAPI.createRequest(requestInfo);
       RequestDto requestDto = dozerBeanMapper.map(request, RequestDto.class);
       return requestDto;
    }
 
-   @RequestMapping(method = RequestMethod.PUT)
-   public RequestDto updateRequest(@RequestParam("requestId") String requestId, @RequestBody Map<String, Object> requestInfo)  {
+   @RequestMapping(value = "/{requestId}", method = RequestMethod.PUT)
+   public RequestDto updateRequest(@PathVariable String requestId, @RequestBody Map<String, Object> requestInfo)  {
       Request request = requestAPI.updateRequest(requestId, requestInfo);
       RequestDto requestDto = dozerBeanMapper.map(request, RequestDto.class);
       return requestDto;
    }
 
-   @RequestMapping(value = "/submit", method = RequestMethod.POST)
-   public RequestDto submitRequest(@RequestParam("requestId") String requestId) {
+   @RequestMapping(value = "/{requestId}", method = RequestMethod.GET)
+   public RequestDto getRequestDetails(@PathVariable String requestId) {
+      Request request = requestAPI.getRequestDetails(requestId);
+      RequestDto requestDto = dozerBeanMapper.map(request, RequestDto.class);
+      return requestDto;
+   }
+
+   @RequestMapping(value = "/list", method = RequestMethod.GET)
+   public List<RequestListItemDto> getSubmittedRequests() {
+      Collection<Request> requests = requestAPI.getSubmitedRequests();
+      List<RequestListItemDto> requestListItemDtos = new ArrayList<>();
+      for (Request request : requests) {
+         requestListItemDtos.add(dozerBeanMapper.map(request, RequestListItemDto.class));
+      }
+      return requestListItemDtos;
+   }
+
+
+   @RequestMapping(value = "/{requestId}/submit", method = RequestMethod.POST)
+   public RequestDto submitRequest(@PathVariable String requestId) {
       Request request = requestAPI.submitRequest(requestId);
       RequestDto requestDto = dozerBeanMapper.map(request, RequestDto.class);
       return  requestDto;
    }
-   
-   @RequestMapping(value = "/submiter/{userId}", method = RequestMethod.GET)
-   public List<RequestDto> getBySubmiter(@RequestParam("userId") String userId) {
-	   List<RequestDto> dtos = new ArrayList<RequestDto>();
-	   
-	   Collection<Request> requests = requestAPI.getSubmitedRequest(userId);
-	   if(requests == null)
-		   return dtos;
-	   for(Request request : requests) {
-		   dtos.add(dozerBeanMapper.map(request, RequestDto.class));
-	   }
-	   return dtos;
-   }
+
+
 }

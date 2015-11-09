@@ -25,6 +25,9 @@ public class RequestItem implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
+	//JIRA ticket ID
+	private String ticketId;
+
 	//REQUEST ITEM INFORMATION:
 	private Long id; //Primary key
 	//private Long rfcNumber; //Foreign key to Request
@@ -443,5 +446,11 @@ public class RequestItem implements Serializable {
 		this.statusLog = statusLog;
 	}
 
+	public String getTicketId() {
+		return ticketId;
+	}
 
+	public void setTicketId(String ticketId) {
+		this.ticketId = ticketId;
+	}
 }

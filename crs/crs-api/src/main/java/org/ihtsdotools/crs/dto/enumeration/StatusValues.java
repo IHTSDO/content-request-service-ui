@@ -7,7 +7,7 @@ package org.ihtsdotools.crs.dto.enumeration;
  */
 public enum StatusValues {
 
-   NEW,SUBMITTED
+   DRAFT, NEW
    ;
 
 }

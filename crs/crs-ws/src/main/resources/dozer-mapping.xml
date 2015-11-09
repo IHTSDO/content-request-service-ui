@@ -35,5 +35,29 @@
       </field>
    </mapping>
 
+   <mapping>
+      <class-a>org.ihtsdotools.crs.dto.Request</class-a>
+      <class-b>org.ihtsdotools.crs.ws.dto.RequestListItemDto</class-b>
+      <field custom-converter="org.ihtsdotools.crs.ws.dto.converter.DateAndLongConverter">
+         <a>requestDate</a>
+         <b>requestDate</b>
+      </field>
+      <field custom-converter="org.ihtsdotools.crs.ws.dto.converter.DateAndLongConverter">
+         <a>statusDate</a>
+         <b>statusDate</b>
+      </field>
+      <field>
+         <a>workItems[0].ticketId</a>
+         <b>ticketId</b>
+      </field>
+      <field>
+         <a>workItems[0].requestType</a>
+         <b>requestType</b>
+      </field>
+      <field>
+         <a>workItems[0].requestorInternalId</a>
+         <b>requestorInternalId</b>
+      </field>
+   </mapping>
 
 </mappings>

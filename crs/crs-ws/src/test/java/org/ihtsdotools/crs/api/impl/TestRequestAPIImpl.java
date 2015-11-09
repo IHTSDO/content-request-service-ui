@@ -39,8 +39,9 @@ public class TestRequestAPIImpl {
       valueMap.put("reasonForChange","reasonForChange");
       valueMap.put("notes","notes");
       valueMap.put("reference","reference");
+      valueMap.put("requestType", "NEW_CONCEPT");
 
-      Request request = requestAPI.createRequest("NEW_CONCEPT", valueMap);
+      Request request = requestAPI.createRequest(valueMap);
       Assert.assertNotNull(request);
       RequestItem requestItem = request.getWorkItems().get(0);
       Assert.assertEquals(requestItem.getRequestorInternalId(), "requestorInternalId");
@@ -66,10 +67,10 @@ public class TestRequestAPIImpl {
       valueMap.put("reasonForChange","reasonForChange");
       valueMap.put("notes","notes");
       valueMap.put("reference","reference");
-
-      Request request = requestAPI.createRequest("NEW_CONCEPT", valueMap);
+      valueMap.put("requestType", "NEW_CONCEPT");
+      Request request = requestAPI.createRequest(valueMap);
       request = requestAPI.submitRequest(request.getRfcNumber());
-      Assert.assertEquals(StatusValues.SUBMITTED.toString(), request.getStatus());
+      Assert.assertEquals(StatusValues.NEW.toString(), request.getStatus());
    }
 
 }
