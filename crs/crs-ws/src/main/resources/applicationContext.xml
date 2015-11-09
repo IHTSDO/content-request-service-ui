@@ -85,8 +85,6 @@
         <property name="entityManagerFactory" ref="entityManagerFactory" />
     </bean>
     
-     <bean id="requestConfigLoader" class="org.ihtsdotools.crs.dto.helper.config.RequestItemConfig">
-
     <bean id="requestConfigLoader" class="org.ihtsdotools.crs.dto.helper.config.RequestItemConfig">
         <constructor-arg>
             <map>
