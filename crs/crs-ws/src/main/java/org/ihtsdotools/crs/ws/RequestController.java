@@ -1,5 +1,10 @@
 package org.ihtsdotools.crs.ws;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
 import org.dozer.DozerBeanMapper;
 import org.ihtsdotools.crs.api.RequestAPI;
 import org.ihtsdotools.crs.dto.Request;
@@ -10,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 /**
  * User: huyle
@@ -47,5 +50,18 @@ public class RequestController {
       Request request = requestAPI.submitRequest(requestId);
       RequestDto requestDto = dozerBeanMapper.map(request, RequestDto.class);
       return  requestDto;
+   }
+   
+   @RequestMapping(value = "/submiter/{userId}", method = RequestMethod.GET)
+   public List<RequestDto> getBySubmiter(@RequestParam("userId") String userId) {
+	   List<RequestDto> dtos = new ArrayList<RequestDto>();
+	   
+	   Collection<Request> requests = requestAPI.getSubmitedRequest(userId);
+	   if(requests == null)
+		   return dtos;
+	   for(Request request : requests) {
+		   dtos.add(dozerBeanMapper.map(request, RequestDto.class));
+	   }
+	   return dtos;
    }
 }

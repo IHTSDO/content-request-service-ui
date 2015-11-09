@@ -117,8 +117,7 @@ public class RequestAPIImpl implements RequestAPI {
 
 	@Override
 	public Collection<Request> getSubmitedRequest(String userId) {
-		// TODO Auto-generated method stub
-		return null;
+		return requestDao.findBySubmiter(userId);
 	}
 
 
