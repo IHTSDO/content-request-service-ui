@@ -31,7 +31,7 @@ public class JiraClientFactoryImpl implements JiraClientFactory {
 		if(auth != null) {
 			IHTSDOUser user = (IHTSDOUser) auth.getPrincipal();
 			username = user.getUsername();
-			token = auth.getCredentials().toString();
+			//token = auth.getCredentials().toString(); TODO: uncomment this to enable SSO
 		}
 		
 		JiraTokenCredentials credentials = new JiraTokenCredentials(token, username);
