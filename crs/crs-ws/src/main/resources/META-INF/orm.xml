@@ -13,7 +13,7 @@
 		<table name="Status" />
 		<attributes>
 			<id name="id">
-				<generated-value strategy="AUTO" />
+				<generated-value strategy="IDENTITY" />
 			</id>
 			<many-to-one fetch="LAZY" name="request">
 				<join-column name="requestId" />
@@ -27,7 +27,7 @@
 		<table name="RequestItem" />
 		<attributes>
 			<id name="id">
-				<generated-value strategy="AUTO" />
+				<generated-value strategy="IDENTITY" />
 			</id>
 			<many-to-one fetch="LAZY" name="request">
 				<join-column name="requestId" />
@@ -55,7 +55,7 @@
 		<table name="Project" />
 		<attributes>
 			<id name="id">
-				<generated-value strategy="AUTO" />
+				<generated-value strategy="IDENTITY" />
 			</id>
 			<one-to-many mapped-by="project" name="requests" />
 		</attributes>
