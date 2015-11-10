@@ -40,7 +40,7 @@
             </column>
             <column name="appealDate" type="datetime"/>
             <column name="artifactReleaseVersion" type="VARCHAR(255)"/>
-            <column name="caseSignificance" type="VARCHAR(255)"/>
+            <column name="proposedCaseSignificance" type="VARCHAR(255)"/>
             <column name="characteristicType" type="VARCHAR(255)"/>
             <column name="conceptDescription" type="VARCHAR(255)"/>
             <column name="conceptFSN" type="VARCHAR(255)"/>
@@ -49,7 +49,7 @@
             <column name="description" type="VARCHAR(255)"/>
             <column name="descriptionId" type="VARCHAR(255)"/>
             <column name="descriptionIsPT" type="BIT(1)"/>
-            <column name="descriptionStatus" type="VARCHAR(255)"/>
+            <column name="proposedDescriptionStatus" type="VARCHAR(255)"/>
             <column name="destConceptId" type="VARCHAR(255)"/>
             <column name="historyAttribute" type="VARCHAR(255)"/>
             <column name="historyAttributeValue" type="VARCHAR(255)"/>
@@ -64,7 +64,7 @@
             <column name="proposedSynonym" type="VARCHAR(255)"/>
             <column name="reasonForChange" type="VARCHAR(255)"/>
             <column name="reference" type="VARCHAR(255)"/>
-            <column name="refinable" type="BIT(1)"/>
+            <column name="refinability" type="VARCHAR(255)"/>
             <column name="rejectionImpact" type="VARCHAR(255)"/>
             <column name="relationshipGroup" type="BIGINT"/>
             <column name="relationshipType" type="VARCHAR(255)"/>
@@ -74,6 +74,8 @@
             <column name="targetReleaseDate" type="datetime"/>
             <column name="ticketId" type="VARCHAR(255)"/>
             <column name="requestId" type="VARCHAR(255)"/>
+            <column name="relationshipStatus" type="VARCHAR(255)"/>
+            <column name="relationshipId" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
     <changeSet author="Hunter Macdonald (generated)" id="1447143823692-5">

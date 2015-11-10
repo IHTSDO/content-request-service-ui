@@ -1,7 +1,8 @@
 {
   "fields": [
     {"name": "requestorInternalId"},
-    {"name": "conceptId"},
+    {"name": "parentId"},
+    {"name": "parentFSN"},
     {"name": "proposedFSN", "required": true},
     {"name": "conceptPT", "required": true},
     {"name": "proposedSynonym"},
