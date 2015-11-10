@@ -3,8 +3,10 @@
     {"name": "requestorInternalId"},
     {"name": "conceptId", "required": true},
     {"name": "conceptFSN", "required": true},
-    {"name": "proposedDescription", "required": true},
-    {"name": "descriptionIsPT"},
+    {"name": "proposedFSN"},
+    {"name": "proposedStatus"},
+    {"name": "historyAttribute"},
+    {"name": "historyAttributeValue"},
     {"name": "reasonForChange"},
     {"name": "notes"},
     {"name": "reference"}

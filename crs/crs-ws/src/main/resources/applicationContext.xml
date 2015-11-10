@@ -112,6 +112,10 @@
             <map>
                 <entry key="NEW_CONCEPT" value="classpath:requestItemConfig/NewConcept.json"/>
                 <entry key="NEW_DESCRIPTION" value="classpath:requestItemConfig/NewDescription.json"/>
+                <entry key="NEW_RELATIONSHIP" value="classpath:requestItemConfig/NewRelationship.json"/>
+                <entry key="CHANGE_RETIRE_CONCEPT" value="classpath:requestItemConfig/ChangeRetireConcept.json"/>
+                <entry key="CHANGE_RETIRE_DESCRIPTION" value="classpath:requestItemConfig/ChangeRetireDescription.json"/>
+                <entry key="CHANGE_RETIRE_RELATIONSHIP" value="classpath:requestItemConfig/ChangeRetireRelationship.json"/>
             </map>
         </constructor-arg>
     </bean>
