@@ -55,7 +55,7 @@ public class JiraClientImpl implements JiraClient {
 					restClient, issue.getProjectKey(), issue.getIssueType().getName())
 			        .field(Field.SUMMARY, issue.getSummary())
 			        .field(Field.DESCRIPTION, issue.getDescription())
-			        .field(Field.REPORTER, credentials.getLogonName())
+			       // .field(Field.REPORTER, credentials.getLogonName())
 			        .execute();
 		} catch (JiraException e) {
 			// TODO Auto-generated catch block
