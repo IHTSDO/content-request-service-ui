@@ -17,7 +17,7 @@
 
     <tx:annotation-driven />
     <context:annotation-config />
-    <!-- <import resource="classpath*:spring-beans.xml"/> --> <!-- TODO: Need to mock SpringContextHolder -->
+    <import resource="classpath*:spring-beans.xml"/>
     <context:component-scan base-package="org.ihtsdotools.crs.dao, org.ihtsdotools.crs.api.impl" />
 
     <jpa:repositories base-package="org.ihtsdotools.crs.dao" />

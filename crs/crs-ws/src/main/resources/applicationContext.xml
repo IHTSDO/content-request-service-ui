@@ -46,7 +46,7 @@
  	
  	<jpa:repositories base-package="org.ihtsdotools.crs.dao" />
  	
-    <bean id="dataSource"
+    <!-- <bean id="dataSource"
         class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName">
             <value>org.hsqldb.jdbcDriver</value>
@@ -60,7 +60,29 @@
         <property name="password">
             <value></value>
         </property>
+    </bean> -->
+    <bean id="dataSource"
+        class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName">
+            <value>${datasource.driver-class-name}</value>
+        </property>
+        <property name="url">
+            <value>${datasource.url}</value>
+        </property>
+        <property name="username">
+            <value>${datasource.username}</value>
+        </property>
+        <property name="password">
+            <value>${datasource.password}</value>
+        </property>
     </bean>
+    <!-- <jdbc:initialize-database data-source="dataSource">
+    	<jdbc:script location="classpath:dbscripts/db_init.sql"/>
+    </jdbc:initialize-database> -->
+	<bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
+		<property name="dataSource" ref="dataSource" />
+		<property name="changeLog" value="classpath:dbscripts/crs-changelog.xml" />
+	</bean>
  
     <bean id="entityManagerFactory"
         class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
@@ -68,15 +90,15 @@
         <property name="persistenceUnitName" value="crsdb" />
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-            	<property name="generateDdl" value="true" />
+            	<property name="generateDdl" value="false" />
             </bean>
         </property>
         <property name="jpaProperties">
             <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
                 <prop key="hibernate.show_sql">true</prop>
                 <prop key="hibernate.format_sql">true</prop>
-                <prop key="hibernate.hbm2ddl.auto">create-drop</prop>
+                <prop key="hibernate.hbm2ddl.auto">none</prop>
             </props>
         </property>
     </bean>
