@@ -7,7 +7,5 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
 
 	<bean id="jiraClientFactory" class="org.ihtsdotools.crs.jira.api.impl.JiraClientFactoryImpl" />
-	<bean id="jiraClient" class="org.ihtsdotools.crs.jira.api.JiraClient" 
-		factory-bean="jiraClientFactory" factory-method="getClient"/>
 
 </beans>

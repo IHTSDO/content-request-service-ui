@@ -16,6 +16,7 @@ import org.ihtsdotools.crs.dto.helper.validation.RequestItemValidator;
 import org.ihtsdotools.crs.exception.CRSError;
 import org.ihtsdotools.crs.exception.CRSRuntimeException;
 import org.ihtsdotools.crs.jira.api.JiraClient;
+import org.ihtsdotools.crs.jira.api.JiraClientFactory;
 import org.ihtsdotools.crs.jira.dto.Issue;
 import org.ihtsdotools.crs.jira.dto.IssueType;
 import org.ihtsdotools.crs.security.AuthenticationUtils;
@@ -24,8 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
@@ -47,8 +46,8 @@ public class RequestAPIImpl implements RequestAPI {
 	@Autowired
 	private RequestDao requestDao;
 
-	/*@Autowired
-	private JiraClient jiraClient;*/
+	@Autowired
+	private JiraClientFactory jiraClientFactory;
 
 	@Autowired
 	private ObjectMapper objectMapper;
@@ -83,12 +82,12 @@ public class RequestAPIImpl implements RequestAPI {
 		request.setStatus(StatusValues.NEW.toString());
 		request.setStatusDate(new Date());
 		request = requestDao.save(request);
-		/*Issue issue = createJiraIssue(request);
-		request.retrieveSingleRequestWorkItem().setTicketId(issue.getKey());*/
+		Issue issue = createJiraIssue(request);
+		request.retrieveSingleRequestWorkItem().setTicketId(issue.getKey());
 		return request;
 	}
 
-	/*private Issue createJiraIssue(Request request) {
+	private Issue createJiraIssue(Request request) {
 		Issue issue = new Issue();
 		IssueType issueType = new IssueType(10101L, "SCT Content Request Batch", false, "A batch of SCT Content Requests");
 		issue.setIssueType(issueType);
@@ -101,10 +100,11 @@ public class RequestAPIImpl implements RequestAPI {
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
+		JiraClient jiraClient = jiraClientFactory.getClient();
 		jiraClient.createIssue(issue);
 		jiraClient.close();
 		return issue;
-	}*/
+	}
 
 	@Override
 	@Transactional
