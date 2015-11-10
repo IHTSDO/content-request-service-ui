@@ -25,20 +25,25 @@ public class RequestItemValidator {
    private RequestItemConfig requestItemConfig;
 
    public void validateRequestItems(Request request) {
-      List<RequestItem> requestItems = new ArrayList<>();
+      List<RequestItem> requestItems = request.getWorkItems();
       for (RequestItem requestItem : requestItems) {
          Fields fields = requestItemConfig.getRequestItemConfig(requestItem.getRequestType());
          if(fields == null) throw new CRSRuntimeException(CRSError.REQUEST_TYPE_INVALID);
          List<Field> fieldList = fields.getFields();
          for (Field field : fieldList) {
+
             try {
                if(field.isRequired() && BeanUtils.getProperty(requestItem, field.getName()) == null) {
                   throw new CRSRuntimeException(CRSError.REQUEST_REQUIRED_FIELD_MISSING);
                }
-            } catch (Exception e) {
-               e.printStackTrace();
+            } catch (IllegalAccessException e) {
+               throw new CRSRuntimeException(CRSError.SERVER_RUNTIME_ERROR, e);
+            } catch (InvocationTargetException e) {
+               throw new CRSRuntimeException(CRSError.SERVER_RUNTIME_ERROR, e);
+            } catch (NoSuchMethodException e) {
                throw new CRSRuntimeException(CRSError.SERVER_RUNTIME_ERROR, e);
             }
+
          }
       }
    }

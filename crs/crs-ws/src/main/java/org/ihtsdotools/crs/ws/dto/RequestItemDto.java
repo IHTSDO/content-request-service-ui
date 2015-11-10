@@ -1,7 +1,5 @@
 package org.ihtsdotools.crs.ws.dto;
 
-import java.util.List;
-
 /**
  * User: huyle
  * Date: 11/4/2015
@@ -46,8 +44,8 @@ public class RequestItemDto {
 
    //DESCRIPTION INFO
    private String descriptionId;
-   private String caseSignificance;
-   private String descriptionStatus;
+   private String proposedCaseSignificance;
+   private String proposedDescriptionStatus;
    //DESCRIPTION INFO END
 
    //TODO: REFSET INFO
@@ -59,10 +57,11 @@ public class RequestItemDto {
    private String destConceptId;
    private String relationshipType;
    private String characteristicType;
-   private Boolean refinable;
+   private String refinability;
    private Long relationshipGroup;
 
-   private List<RequestItemDto> workItems;
+   private String relationshipStatus;
+   private String relationshipId;
 
    public Long getId() {
       return id;
@@ -296,20 +295,20 @@ public class RequestItemDto {
       this.descriptionId = descriptionId;
    }
 
-   public String getCaseSignificance() {
-      return caseSignificance;
+   public String getProposedCaseSignificance() {
+      return proposedCaseSignificance;
    }
 
-   public void setCaseSignificance(String caseSignificance) {
-      this.caseSignificance = caseSignificance;
+   public void setProposedCaseSignificance(String proposedCaseSignificance) {
+      this.proposedCaseSignificance = proposedCaseSignificance;
    }
 
-   public String getDescriptionStatus() {
-      return descriptionStatus;
+   public String getProposedDescriptionStatus() {
+      return proposedDescriptionStatus;
    }
 
-   public void setDescriptionStatus(String descriptionStatus) {
-      this.descriptionStatus = descriptionStatus;
+   public void setProposedDescriptionStatus(String proposedDescriptionStatus) {
+      this.proposedDescriptionStatus = proposedDescriptionStatus;
    }
 
    public String getDestConceptId() {
@@ -336,12 +335,12 @@ public class RequestItemDto {
       this.characteristicType = characteristicType;
    }
 
-   public Boolean getRefinable() {
-      return refinable;
+   public String getRefinability() {
+      return refinability;
    }
 
-   public void setRefinable(Boolean refinable) {
-      this.refinable = refinable;
+   public void setRefinability(String refinability) {
+      this.refinability = refinability;
    }
 
    public Long getRelationshipGroup() {
@@ -352,11 +351,20 @@ public class RequestItemDto {
       this.relationshipGroup = relationshipGroup;
    }
 
-   public List<RequestItemDto> getWorkItems() {
-      return workItems;
+   public String getRelationshipStatus() {
+      return relationshipStatus;
    }
 
-   public void setWorkItems(List<RequestItemDto> workItems) {
-      this.workItems = workItems;
+   public void setRelationshipStatus(String relationshipStatus) {
+      this.relationshipStatus = relationshipStatus;
    }
+
+   public String getRelationshipId() {
+      return relationshipId;
+   }
+
+   public void setRelationshipId(String relationshipId) {
+      this.relationshipId = relationshipId;
+   }
+
 }

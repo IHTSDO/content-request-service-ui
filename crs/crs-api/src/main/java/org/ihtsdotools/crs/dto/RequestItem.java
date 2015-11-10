@@ -457,4 +457,12 @@ public class RequestItem implements Serializable {
 	public void setRelationshipStatus(String relationshipStatus) {
 		this.relationshipStatus = relationshipStatus;
 	}
+
+	public String getRelationshipId() {
+		return relationshipId;
+	}
+
+	public void setRelationshipId(String relationshipId) {
+		this.relationshipId = relationshipId;
+	}
 }
