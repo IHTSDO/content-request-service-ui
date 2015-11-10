@@ -82,8 +82,8 @@ public class RequestAPIImpl implements RequestAPI {
 		request.setStatus(StatusValues.NEW.toString());
 		request.setStatusDate(new Date());
 		request = requestDao.save(request);
-		Issue issue = createJiraIssue(request);
-		request.retrieveSingleRequestWorkItem().setTicketId(issue.getKey());
+		/*Issue issue = createJiraIssue(request);
+		request.retrieveSingleRequestWorkItem().setTicketId(issue.getKey());*/
 		return request;
 	}
 

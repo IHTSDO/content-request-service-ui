@@ -65,8 +65,8 @@ public class RequestItem implements Serializable {
 	
 	//DESCRIPTION INFO
 	private String descriptionId;
-	private String caseSignificance;
-	private String descriptionStatus;
+	private String proposedCaseSignificance;
+	private String proposedDescriptionStatus;
 	//DESCRIPTION INFO END
 	
 	//TODO: REFSET INFO	
@@ -78,8 +78,11 @@ public class RequestItem implements Serializable {
 	private String destConceptId;
 	private String relationshipType;
 	private String characteristicType;
-	private Boolean refinable;
+	private String refinability;
 	private Long relationshipGroup;
+
+	private String relationshipStatus;
+	private String relationshipId;
 	//RELATIONSHIP INFORMATION END
 	
 	Collection<Status> statusLog;
@@ -367,20 +370,20 @@ public class RequestItem implements Serializable {
 		this.descriptionId = descriptionId;
 	}
 
-	public String getCaseSignificance() {
-		return caseSignificance;
+	public String getProposedCaseSignificance() {
+		return proposedCaseSignificance;
 	}
 
-	public void setCaseSignificance(String caseSignificance) {
-		this.caseSignificance = caseSignificance;
+	public void setProposedCaseSignificance(String proposedCaseSignificance) {
+		this.proposedCaseSignificance = proposedCaseSignificance;
 	}
 
-	public String getDescriptionStatus() {
-		return descriptionStatus;
+	public String getProposedDescriptionStatus() {
+		return proposedDescriptionStatus;
 	}
 
-	public void setDescriptionStatus(String descriptionStatus) {
-		this.descriptionStatus = descriptionStatus;
+	public void setProposedDescriptionStatus(String proposedDescriptionStatus) {
+		this.proposedDescriptionStatus = proposedDescriptionStatus;
 	}
 
 	public String getDestConceptId() {
@@ -407,12 +410,12 @@ public class RequestItem implements Serializable {
 		this.characteristicType = characteristicType;
 	}
 
-	public Boolean getRefinable() {
-		return refinable;
+	public String getRefinability() {
+		return refinability;
 	}
 
-	public void setRefinable(Boolean refinable) {
-		this.refinable = refinable;
+	public void setRefinability(String refinability) {
+		this.refinability = refinability;
 	}
 
 	public Long getRelationshipGroup() {
@@ -423,13 +426,6 @@ public class RequestItem implements Serializable {
 		this.relationshipGroup = relationshipGroup;
 	}
 
-/*	public Long getRfcNumber() {
-		return rfcNumber;
-	}
-	public void setRfcNumber(Long rfcNumber) {
-		this.rfcNumber = rfcNumber;
-	}
-*/
 	public Request getRequest() {
 		return request;
 	}
@@ -452,5 +448,13 @@ public class RequestItem implements Serializable {
 
 	public void setTicketId(String ticketId) {
 		this.ticketId = ticketId;
+	}
+
+	public String getRelationshipStatus() {
+		return relationshipStatus;
+	}
+
+	public void setRelationshipStatus(String relationshipStatus) {
+		this.relationshipStatus = relationshipStatus;
 	}
 }

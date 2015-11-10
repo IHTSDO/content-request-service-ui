@@ -1,0 +1,14 @@
+{
+  "fields": [
+    {"name": "requestorInternalId"},
+    {"name": "conceptId", "required": true},
+    {"name": "relationshipType", "required": true},
+    {"name": "destConceptId", "required": true},
+    {"name": "characteristicType"},
+    {"name": "refinability"},
+    {"name": "relationshipGroup"},
+    {"name": "reasonForChange"},
+    {"name": "notes"},
+    {"name": "reference"}
+  ]
+}
