@@ -54,13 +54,20 @@ public class JiraTokenCredentials implements ICredentials {
     }
 
     public void initialize(RestClient client) throws JiraException {
-    	//DO NOTHING
+    	//if(token != null)
+    	//	return; //Do nothing
+    	
+        try {
+        	login(client);
+        } catch (Exception ex) {
+            throw new JiraException("Failed to login", ex);
+        }
     }
     
     public void login(RestClient client) throws RestException, IOException, URISyntaxException{
         JSONObject req = new JSONObject();
-        req.put("username", username);
-        req.put("password", password);
+        req.put("username", "pbui");
+        req.put("password", "Sn0m3dCT");
         JSON json = client.post("/rest/auth/1/session", req);
         if (json instanceof JSONObject) {
             JSONObject jso = (JSONObject) json;

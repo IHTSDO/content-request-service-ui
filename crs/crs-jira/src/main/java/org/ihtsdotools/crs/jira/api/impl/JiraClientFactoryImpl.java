@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import net.rcarz.jiraclient.JiraException;
 import net.rcarz.jiraclient.Resource;
 
 @Component
@@ -34,7 +35,13 @@ public class JiraClientFactoryImpl implements JiraClientFactory {
 		}
 		
 		JiraTokenCredentials credentials = new JiraTokenCredentials(token, username);
-		return new JiraClientImpl(credentials, jiraUri);
+		try {
+			return new JiraClientImpl(credentials, jiraUri);
+		} catch (JiraException e) {
+			
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
 	}
 
 }

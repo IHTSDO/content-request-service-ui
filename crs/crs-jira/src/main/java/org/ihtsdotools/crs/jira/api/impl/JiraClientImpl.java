@@ -23,9 +23,10 @@ public class JiraClientImpl implements JiraClient {
 	private final RestClient restClient;
 	private final JiraTokenCredentials credentials;
 	
-	JiraClientImpl(JiraTokenCredentials credentials, URI uri) {
-		this.credentials = credentials;
+	JiraClientImpl(JiraTokenCredentials credentials, URI uri) throws JiraException {
 		this.restClient = new RestClient(new DefaultHttpClient(), credentials, uri);
+		this.credentials = credentials;
+		this.credentials.initialize(restClient);
 	}
 
 	/* (non-Javadoc)
