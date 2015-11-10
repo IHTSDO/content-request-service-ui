@@ -6,6 +6,7 @@ package org.ihtsdotools.crs.dao;
 import java.util.List;
 
 import org.ihtsdotools.crs.dto.Request;
+import org.ihtsdotools.crs.dto.enumeration.StatusValues;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -25,6 +26,6 @@ public interface RequestDao extends CrudRepository<Request, String> {
    @Query("select distinct r from Request as r left join fetch r.workItems where r.requestorId = :requestorId or r.ogirinatorId = :requestorId")
    public List<Request> findBySubmiter(@Param("requestorId") String requestorId);
 
-   @Query("select  distinct r from Request as r left join fetch r.workItems order by r.statusDate desc")
+   @Query("select  distinct r from Request as r left join fetch r.workItems where r.status <> 'DRAFT' order by r.statusDate desc")
    public List<Request> findAllRequests();
 }

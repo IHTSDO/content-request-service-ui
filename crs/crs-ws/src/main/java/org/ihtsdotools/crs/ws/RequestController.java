@@ -63,6 +63,16 @@ public class RequestController {
       return requestListItemDtos;
    }
 
+   @RequestMapping(value = "/list/submitted", method = RequestMethod.GET)
+   public List<RequestListItemDto> getAllRequests() {
+      Collection<Request> requests = requestAPI.getAllRequests();
+      List<RequestListItemDto> requestListItemDtos = new ArrayList<>();
+      for (Request request : requests) {
+         requestListItemDtos.add(dozerBeanMapper.map(request, RequestListItemDto.class));
+      }
+      return requestListItemDtos;
+   }
+
 
    @RequestMapping(value = "/{requestId}/submit", method = RequestMethod.POST)
    public RequestDto submitRequest(@PathVariable String requestId) {

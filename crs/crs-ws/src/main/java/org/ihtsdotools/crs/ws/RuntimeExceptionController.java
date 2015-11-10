@@ -27,8 +27,8 @@ public class RuntimeExceptionController {
 	      CRSError crsError = e.getCrsError();
 	      CRSErrorResponse crsErrorResponse = new CRSErrorResponse();
 	      crsErrorResponse.setErrorCode(crsError.getCode());
-	      if(crsError == CRSError.SERVER_RUNTIME_ERROR || e.getCause() != null) {
-	         crsErrorResponse.setMessage(e.getMessage());
+	      if(e.getCause() != null) {
+	         crsErrorResponse.setMessage(e.getCause().getMessage());
 	      } else {
 	         crsErrorResponse.setMessage(crsError.getMessage());
 	      }
