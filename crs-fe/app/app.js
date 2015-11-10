@@ -21,6 +21,7 @@ angular
         'ui.bootstrap',
         'ngTable',
         'pascalprecht.translate',
+        'angular-loading-bar',
 
         // layouts
 
@@ -39,7 +40,7 @@ angular
         'conceptRequestServiceApp.formControl'
 
     ])
-    .config(function ($routeProvider, $modalProvider, $translateProvider) {
+    .config(function ($routeProvider, $modalProvider, $translateProvider, cfpLoadingBarProvider) {
         // set the default redirect/route
         $routeProvider
             .otherwise({
@@ -64,6 +65,9 @@ angular
             .uniformLanguageTag('bcp47')
             .determinePreferredLanguage()
             .fallbackLanguage('en');
+
+        // loading bar
+        cfpLoadingBarProvider.includeSpinner = false;
     })
     .run([
         '$rootScope',

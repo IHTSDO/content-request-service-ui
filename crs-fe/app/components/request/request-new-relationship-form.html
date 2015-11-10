@@ -1,0 +1,61 @@
+<h3 translate="crs.request.requestType.newRelationship"></h3>
+<form class="form-floating">
+
+    <div class="form-group">
+        <form-control type="text"
+                      model="requestVM.request.requestorInternalId"
+                      label="crs.request.details.label.requestorInternalId"
+                      name="txtRequestorInternalId"></form-control>
+
+        <div class="form-control-element required">
+            <label for="">Source Concept Id</label>
+            <input class="form-control" type="text" ng-model="requestVM.request.conceptId"/>
+        </div>
+        <br/>
+
+        <form-control type="select"
+                      model="requestVM.request.relationshipType"
+                      options="relationshipType for relationshipType in requestVM.relationshipTypes"
+                      label="crs.request.details.label.relationshipType"
+                      name="slRelationshipType"
+                      required></form-control>
+
+        <div class="form-control-element required">
+            <label for="">Destination Concept Id</label>
+            <input class="form-control" type="text" ng-model="requestVM.request.destConceptId"/>
+        </div>
+        <br/>
+
+        <form-control type="select"
+                      model="requestVM.request.characteristicType"
+                      options="characteristicType for characteristicType in requestVM.characteristicTypes"
+                      label="crs.request.details.label.characteristicType"
+                      name="slCharacteristicType"></form-control>
+
+        <form-control type="select"
+                      model="requestVM.request.refinability"
+                      options="refinability for refinability in requestVM.refinabilities"
+                      label="crs.request.details.label.refinability"
+                      name="slRefinability"></form-control>
+
+        <form-control type="text"
+                      model="requestVM.request.relationshipGroup"
+                      label="crs.request.details.label.relationshipGroup"
+                      name="txtRelationshipGroup"></form-control>
+
+        <form-control type="text"
+                      model="requestVM.request.reasonForChange"
+                      label="crs.request.details.label.reasonForChange"
+                      name="txtReasonForChange"></form-control>
+
+        <form-control type="textarea"
+                      model="requestVM.request.notes"
+                      label="crs.request.details.label.notes"
+                      name="txtNotes"></form-control>
+
+        <form-control type="text"
+                      model="requestVM.request.reference"
+                      label="crs.request.details.label.reference"
+                      name="txtReference"></form-control>
+    </div>
+</form>

@@ -1,30 +1,32 @@
-<div class="crs-container">
+<div style="height: 100%">
     <div class="row no-gutter" style="height: 100%">
         <!-- sidebar -->
-        <div class="col-md-3 editpanel crs-column no-padding"
+        <div class="col-sm-4 editpanel no-padding"
              ng-include="'components/request/request-details-sidebar.html'"
-             style="height: 100%"></div>
-        <!-- edit form -->
-        <div class="col-md-9 editpanel crs-column no-padding" style="height: 100%">
-            <div class="container">
-                <div class="col-md-12">
+             style="height: 100%;background-color:#eee"></div>
 
+        <!-- edit form -->
+        <div class="col-sm-8 editpanel no-padding" style="height: 100%;overflow:auto">
+            <div class="row" style="padding:5px 25px 30px 10px">
+                <div class="col-sm-12">
+
+                    <div id="messagePaneLocation" ></div>
                     <div class="alert alert-success" ng-show="requestVM.msgSuccess">{{requestVM.msgSuccess | translate}}</div>
                     <div class="alert alert-danger" ng-show="requestVM.msgError">{{requestVM.msgError | translate}}</div>
 
                     <div ng-include="requestVM.requestType.form.template"></div>
 
                     <div ng-show="requestVM.isValidViewParams">
-                        <div class="col-md-4">
+                        <div class="col-sm-4">
                             <button type="button" class="col-md-12 btn btn-info no-margin " ng-click="requestVM.saveRequest()">
                                 {{'crs.request.details.button.save' | translate}}
                             </button>
                         </div>
-                        <div class="col-md-4" ng-show="requestVM.pageMode !== 'new'">
+                        <div class="col-sm-4">
                             <button type="button" class="col-md-12 btn btn-info no-margin " ng-click="requestVM.submitRequest()">{{'crs.request.details.button.submit' | translate}}
                             </button>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-sm-4">
                             <button type="button" class=" col-md-12 btn btn-danger no-margin" ng-click="requestVM.cancelEditing()">
                                 {{'crs.request.details.button.cancel' | translate}}
                             </button>

@@ -25,16 +25,23 @@ angular
                 return angular.extend({
                         type: ERROR_TYPE.CUSTOM
                     },
-                    errorDef,
-                    findErrorDef(errorDef.code));
+                    findErrorDef(errorDef.errorCode));
             };
 
             var buildHttpError = function (httpErrorResponse, errorStatus) {
+                if (angular.isObject(httpErrorResponse) && angular.isDefined(httpErrorResponse.errorCode)) {
+                    return angular.extend({
+                            type: ERROR_TYPE.CUSTOM
+                        },
+                        findErrorDef(httpErrorResponse.errorCode));
+                }
+
                 return {
                     type: ERROR_TYPE.HTTP,
                     code: errorStatus,
                     message: 'Cannot connect to server.'
                 };
+
             };
 
             return {

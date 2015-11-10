@@ -8,7 +8,8 @@ angular
         CUSTOM: 1
     })
     .value('CUSTOM_ERROR_DEF', {
-        SERVER_ERROR: {code: 10000, message: 'Server error'},
-        INVALID_USER: {code: 10101, message: 'Invalid user'},
-        USER_NOT_REGISTERED: {code: 10102, message: 'User is not registered'}
+        SERVER_RUNTIME_ERROR: {code: 10000, message: 'Server runtime error'},
+        REQUEST_REQUIRED_FIELD_MISSING: {code: 10100, message: 'Missing required field(s)'},
+        REQUEST_INVALID: {code: 10101, message: 'Invalid Request'},
+        REQUEST_TYPE_INVALID: {code: 10102, message: 'Invalid Request Type'}
     });
