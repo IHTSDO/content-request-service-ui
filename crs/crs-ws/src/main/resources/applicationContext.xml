@@ -25,13 +25,19 @@
 	
 	<s:global-method-security pre-post-annotations="enabled"/>
     
-    <s:http pattern="/api/**" create-session="stateless" auto-config="false" 
+    <s:http pattern="/api/**" create-session="stateless" auto-config="false"
     		entry-point-ref="restAuthenticationEntryPoint"
     		security-context-repository-ref="securityContextHolder">
 		<s:custom-filter ref="tokenTaker" position="FIRST"/>
 		<security:access-denied-handler error-page="/error/401"/>
-		<s:intercept-url pattern="/api/project/topsecret" access="ROLE_ihtsdo-ops-admin" />
-		<s:intercept-url pattern="/api/project/**" access="ROLE_ihtsdo-sca-author" />
+		<s:intercept-url pattern="/api/project/hi" access="ROLE_ihtstdo-crs-viewers" />
+		<s:intercept-url pattern="/api/project/topsecret" access="ROLE_ihtsdo-crs-administrators" />
+		<s:intercept-url pattern="/api/request/list" method="GET" 
+			access="ROLE_ihtsdo-crs-administrators" />
+		<s:intercept-url pattern="/api/request/**" method="GET" 
+			access="ROLE_ihtsdo-crs-administrators, ROLE_ihtsdo-crs-managers, ROLE_ihtsdo-crs-members, ROLE_ihtsdo-crs-staff, ROLE_ihtsdo-crs-requestors, ROLE_ihtsdo-crs-partners, ROLE_ihtstdo-crs-viewers" />
+		<s:intercept-url pattern="/api/request/**" method="POST" 
+			access="ROLE_ihtsdo-crs-administrators, ROLE_ihtsdo-crs-managers, ROLE_ihtsdo-crs-members, ROLE_ihtsdo-crs-staff, ROLE_ihtsdo-crs-requestors, ROLE_ihtsdo-crs-partners" />
 	</s:http>
 	<s:http pattern="/error/**" security="none" />
     
