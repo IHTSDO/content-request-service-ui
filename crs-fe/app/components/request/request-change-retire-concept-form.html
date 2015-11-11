@@ -1,0 +1,59 @@
+<h3 translate="crs.request.requestType.changeRetireConcept"></h3>
+<form class="form-floating">
+
+    <div class="form-group">
+        <form-control type="text"
+                      model="requestVM.request.requestorInternalId"
+                      label="crs.request.details.label.requestorInternalId"
+                      name="txtRequestorInternalId"></form-control>
+        <div>
+            <div class="form-control-element required">
+                <label for="">Concept Id</label>
+                <input class="form-control" type="text" ng-model="requestVM.request.conceptId"/>
+            </div>
+            <div class="form-control-element required">
+                <label for="">Concept FSN</label>
+                <input class="form-control" type="text" ng-model="requestVM.request.conceptFSN"/>
+            </div>
+        </div>
+        <br/>
+
+        <form-control type="text"
+                      model="requestVM.request.proposedFSN"
+                      label="crs.request.details.label.proposedFSN"
+                      name="txtFSN"></form-control>
+
+        <form-control type="select"
+                      model="requestVM.request.proposedStatus"
+                      options="newConceptStatus for newConceptStatus in requestVM.newConceptStatuses"
+                      label="crs.request.details.label.proposedStatus"
+                      name="slNewConceptStatus"></form-control>
+
+        <form-control type="select"
+                      model="requestVM.request.historyAttribute"
+                      options="historyAttribute for historyAttribute in requestVM.historyAttributes"
+                      label="crs.request.details.label.historyAttribute"
+                      name="slHistoryAttribute"></form-control>
+
+
+        <form-control type="text"
+                      model="requestVM.request.historyAttributeValue"
+                      label="crs.request.details.label.historyAttributeValue"
+                      name="txtHistoryAttributeValue"></form-control>
+
+        <form-control type="text"
+                      model="requestVM.request.reasonForChange"
+                      label="crs.request.details.label.reasonForChange"
+                      name="txtReasonForChange"></form-control>
+
+        <form-control type="textarea"
+                      model="requestVM.request.notes"
+                      label="crs.request.details.label.notes"
+                      name="txtNotes"></form-control>
+
+        <form-control type="text"
+                      model="requestVM.request.reference"
+                      label="crs.request.details.label.reference"
+                      name="txtReference"></form-control>
+    </div>
+</form>

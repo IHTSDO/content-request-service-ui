@@ -3556,7 +3556,7 @@ a.thumbnail:hover {
   border-color: transparent;
 }
 .alert {
-  padding: 15px;
+  padding: 10px 15px;
 }
 .alert h4 {
   margin-top: 0;
@@ -5973,7 +5973,7 @@ input[type=checkbox]:after {
 input[type=checkbox]:checked:before {
   content: "";
   position: absolute;
-  top: 3px;
+  top: 6px;
   left: 10px;
   display: table;
   width: 6px;

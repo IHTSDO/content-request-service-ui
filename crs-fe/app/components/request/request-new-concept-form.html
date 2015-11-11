@@ -3,77 +3,55 @@
 
     <div class="form-group">
         <form-control type="text"
-                      ng-model="requestVM.request.requestorInternalId"
+                      model="requestVM.request.requestorInternalId"
                       label="crs.request.details.label.requestorInternalId"
                       name="txtRequestorInternalId"></form-control>
-
-        <!--<label for="">Requestor Internal Id</label>
-        <input class="form-control" type="text" ng-model="requestVM.request.requestorInternalId"/>
-        <br>-->
-
         <div>
-            <div>
+            <div class="form-control-element">
                 <label for="">Parent Concept Id</label>
                 <input class="form-control" type="text" ng-model="requestVM.request.parentId"/>
             </div>
-            <div>
+            <div class="form-control-element">
                 <label for="">Parent Concept FSN</label>
-                <input class="form-control" type="text" ng-model="requestVM.request.fsn"/>
+                <input class="form-control" type="text" ng-model="requestVM.request.parentFSN"/>
             </div>
         </div>
         <br/>
 
         <form-control type="text"
-                      ng-model="requestVM.request.proposedFSN"
+                      model="requestVM.request.proposedFSN"
                       label="crs.request.details.label.proposedFSN"
-                      name="txtFSN"></form-control>
-
-        <!--<label for="">New Concept FSN</label>
-        <input class="form-control" type="text" ng-model="requestVM.request.proposedFSN"/>
-        <br>-->
-
+                      name="txtFSN"
+                      required></form-control>
         <form-control type="text"
-                      ng-model="requestVM.request.conceptPT"
+                      model="requestVM.request.conceptPT"
                       label="crs.request.details.label.conceptPT"
-                      name="txtPT"></form-control>
+                      name="txtPT"
+                      required></form-control>
 
-        <!--<label for="">Preferred Term</label>
-        <input class="form-control" type="text" ng-model="requestVM.request.conceptPT"/>
-        <br>-->
-
-        <label for="">Synonym</label>
-        <input class="form-control" type="text" ng-model="requestVM.request.proposedSynonym"/>
-        <br>
+        <div class="form-control-element">
+            <label for="">Synonym</label>
+            <input class="form-control" type="text" ng-model="requestVM.request.proposedSynonym"/>
+        </div>
 
         <form-control type="text"
-                      ng-model="requestVM.request.proposedDefinition"
+                      model="requestVM.request.proposedDefinition"
                       label="crs.request.details.label.proposedDefinition"
                       name="txtDefinition"></form-control>
 
-        <!--<label for="">Definition</label>
-        <input class="form-control" type="text" ng-model="requestVM.request.proposedDefinition"/>
-        <br>-->
-
         <form-control type="text"
-                      ng-model="requestVM.request.reasonForChange"
+                      model="requestVM.request.reasonForChange"
                       label="crs.request.details.label.reasonForChange"
                       name="txtReasonForChange"></form-control>
 
-        <!--<label for="">Reason of Changes</label>
-        <input class="form-control" type="text" ng-model="requestVM.request.reasonForChange"/>
-        <br>-->
-
-        <label for="">Notes</label>
-        <textarea class="form-control" type="text" ng-model="requestVM.request.notes"></textarea>
-        <br>
+        <form-control type="textarea"
+                      model="requestVM.request.notes"
+                      label="crs.request.details.label.notes"
+                      name="txtNotes"></form-control>
 
         <form-control type="text"
-                      ng-model="requestVM.request.reference"
+                      model="requestVM.request.reference"
                       label="crs.request.details.label.reference"
                       name="txtReference"></form-control>
-
-        <!--<label for="">Reference</label>
-        <input class="form-control" type="text" ng-model="requestVM.request.reference"/>
-        <br>-->
     </div>
 </form>

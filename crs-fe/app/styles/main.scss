@@ -11,6 +11,7 @@ $fa-font-path: "../bower_components/font-awesome/fonts";
 @import "ihtsdo.scss";
 @import "fonts.scss";
 @import "edit.scss";
+@import "editpanel.scss";
 @import "dark.scss";
 @import "light.scss";
 @import "colors.scss";
@@ -131,5 +132,21 @@ footer {
   &.NEW {
     background-color: black;
     color: white;
+  }
+}
+
+@media (max-width: 1793px) {
+  .nav > li > a {
+    position: relative;
+    display: block;
+    font-size: 12px;
+    padding: 10px 5px;
+  }
+}
+@media (min-width: 1701px) {
+  .nav > li > a {
+    position: relative;
+    display: block;
+    padding: 10px 12px;
   }
 }

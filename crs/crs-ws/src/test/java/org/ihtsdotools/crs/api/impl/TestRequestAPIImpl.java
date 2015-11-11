@@ -60,6 +60,7 @@ public class TestRequestAPIImpl {
       Map<String, Object> valueMap = new HashMap<>();
       valueMap.put("requestorInternalId","requestorInternalId");
       valueMap.put("parentId","parentId");
+      valueMap.put("parentFSN","parentFSN");
       valueMap.put("proposedFSN","proposedFSN");
       valueMap.put("conceptPT","conceptPT");
       valueMap.put("proposedSynonym","proposedSynonym");

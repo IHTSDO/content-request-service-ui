@@ -53,7 +53,7 @@
                 },
                 "button": {
                     "save": "Save Request",
-                    "submit": "Submit Request",
+                    "submit": "Save and Submit Request",
                     "cancel": "Cancel"
                 },
                 "label": {
@@ -62,7 +62,25 @@
                     "conceptPT": "Preferred Term",
                     "proposedDefinition": "Definition",
                     "reasonForChange": "Reason of Changes",
-                    "reference": "Reference"
+                    "reference": "Reference",
+                    "description": "Description",
+                    "descriptionId": "Description Id",
+                    "currentDescription": "Current Description",
+                    "proposedDescription": "Proposed New Description",
+                    "relationshipGroup": "Relationship Group",
+                    "relationshipId": "Relationship Id",
+                    "historyAttributeValue": "History Attribute Value",
+                    "notes": "Notes",
+                    "relationshipType": "Relationship Type",
+                    "characteristicType": "Characteristic Type",
+                    "refinability": "Refinability",
+                    "newRefinability": "New Refinability",
+                    "proposedStatus": "New Concept Status",
+                    "historyAttribute": "History Attribute",
+                    "proposedCaseSignificance": "New Case Significance",
+                    "descriptionStatus": "New Description Status",
+                    "relationshipStatus": "Relationship Status"
+
                 }
             },
             "createModal": {
