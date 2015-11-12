@@ -1,0 +1,13 @@
+{
+  "fields": [
+    {"name": "requestorInternalId"},
+    {"name": "conceptId", "required": true},
+    {"name": "conceptFSN", "required": true},
+    {"name": "relationshipId", "required": true},
+    {"name": "refinability"},
+    {"name": "relationshipStatus"},
+    {"name": "reasonForChange"},
+    {"name": "notes"},
+    {"name": "reference"}
+  ]
+}

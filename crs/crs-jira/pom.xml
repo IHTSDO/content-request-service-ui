@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.ihtsdotools</groupId>
+		<artifactId>crs</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<groupId>${project.parent.groupId}</groupId>
+	<version>${project.parent.version}</version>
+	<artifactId>crs-jira</artifactId>
+	<name>crs-jira</name>
+	<dependencies>
+		<dependency>
+			<groupId>net.rcarz</groupId>
+			<artifactId>jira-client</artifactId>
+			<version>0.6.1-IHTSDO</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ihtsdotools</groupId>
+			<artifactId>crs-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ihtsdo.otf</groupId>
+			<artifactId>ihtsdo-crowd-bridge</artifactId>
+			<version>0.0.4</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>guava</artifactId>
+					<groupId>com.google.guava</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<!-- Dependencies for testing -->
+        <!-- Test -->
+	    <dependency>
+	  		<groupId>org.springframework</groupId>
+	  		<artifactId>spring-test</artifactId>
+	  		<version>${spring.version}</version>
+	  		<scope>test</scope>
+	  	</dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>		
+
+	</dependencies>
+</project>

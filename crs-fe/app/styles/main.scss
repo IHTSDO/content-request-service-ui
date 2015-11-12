@@ -1,0 +1,152 @@
+$icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
+$fa-font-path: "../bower_components/font-awesome/fonts";
+// bower:scss
+@import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
+@import "font-awesome/scss/font-awesome.scss";
+// endbower
+
+@import url(https://fonts.googleapis.com/css?family=Cabin+Condensed);
+
+@import "home.scss";
+@import "ihtsdo.scss";
+@import "fonts.scss";
+@import "edit.scss";
+@import "editpanel.scss";
+@import "dark.scss";
+@import "light.scss";
+@import "colors.scss";
+@import "tables.scss";
+@import "tooltips.scss";
+
+.browsehappy {
+  margin: 0.2em 0;
+  background: #ccc;
+  color: #000;
+  padding: 0.2em 0;
+}
+
+
+html {
+  height: 100%;
+}
+
+body {
+  padding: 0;
+  height: 100%;
+  -webkit-font-smoothing: antialiased !important;
+}
+
+.crs-theme-wrapper {
+  height: 100%;
+  padding-top: 64px;
+  padding-bottom: 40px;
+
+  .content {
+    overflow:auto;
+    height: 100%;
+  }
+}
+
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 66px;
+  z-index: 99;
+}
+
+footer {
+  position: fixed;
+  height: 40px;
+  clear:both;
+  bottom: 0;
+  width: 100%;
+
+  .navbar {
+    min-height: 40px;
+  }
+}
+
+/* Added by PWG to work around fixed sidebar */
+.crs-container {
+  /*position:absolute;
+  padding-top: 64px;
+  bottom:0px;
+  width:100%;
+  height:100%;*/
+  min-height: 100%;
+  display: table;
+  width: 100%;
+
+  .crs-column {
+    /*position: relative;
+    height:100%;*/
+    /*overflow-y:scroll;*/
+    /*margin-bottom:32px;*/
+    display: table-cell;
+    float: initial;
+    min-height: 100%;
+    padding-bottom: 10px !important;
+  }
+}
+
+.row {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.In.Progress.badge {
+  background-color: #E68FBB;
+}
+
+.Promoted.badge {
+  background-color: #F3CB67;
+}
+
+.New.badge {
+  background-color: #F3CB67;
+}
+
+.In.Review.badge {
+  background-color: #8bc34a;
+}
+
+.Review.Completed.badge {
+  background-color: #01A2E1;
+}
+
+.Promoted.badge {
+  background-color: cyan;
+}
+
+.form-control-element {
+  margin-bottom: 20px;
+}
+
+.requestStatus {
+  &.DRAFT {
+    background-color: white;
+    color: black;
+  }
+
+  &.NEW {
+    background-color: black;
+    color: white;
+  }
+}
+
+@media (max-width: 1793px) {
+  .nav > li > a {
+    position: relative;
+    display: block;
+    font-size: 12px;
+    padding: 10px 5px;
+  }
+}
+@media (min-width: 1701px) {
+  .nav > li > a {
+    position: relative;
+    display: block;
+    padding: 10px 12px;
+  }
+}

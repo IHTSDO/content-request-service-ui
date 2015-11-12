@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.ihtsdotools</groupId>
+	<artifactId>crs</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<modules>
+		<module>crs-api</module>
+		<module>crs-jira</module>
+		<!-- <module>crs-ims</module> -->
+		<module>crs-ws</module>
+  </modules>
+	<properties>
+		<spring.version>4.2.1.RELEASE</spring.version>
+		<spring.security.version>3.2.5.RELEASE</spring.security.version>
+		<hibernate.version>5.0.2.Final</hibernate.version>
+	    <org.aspectj.version>1.7.4</org.aspectj.version>
+        <org.slf4j.version>1.7.5</org.slf4j.version>
+        <jackson.databind.version>2.2.3</jackson.databind.version>
+		<httpcore.version>4.4.1</httpcore.version>
+		<junit.version>4.12</junit.version>
+		<assertj.core.version>3.1.0</assertj.core.version>
+		<jiraclient.version>3.0.0</jiraclient.version>
+		<jira.compiler.version>3.3</jira.compiler.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jdk.version>1.7</jdk.version>
+		<servlet.version>3.1.0</servlet.version>
+	</properties>
+
+	<build>
+		<pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${jira.compiler.version}</version>
+				<configuration>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+				</configuration>
+			</plugin>
+		</plugins>
+		</pluginManagement>
+	</build>
+	<repositories>
+		<repository>
+			<id>spring.io</id>
+			<url>https://repo.spring.io/libs-release-remote/</url>
+		</repository>
+		<repository>
+			<id>ihtsdo-public-nexus</id>
+			<name>IHTSDO Public Nexus Releases</name>
+			<url>https://maven.ihtsdotools.org/content/repositories/releases/</url>
+		</repository>
+	</repositories>
+
+</project>

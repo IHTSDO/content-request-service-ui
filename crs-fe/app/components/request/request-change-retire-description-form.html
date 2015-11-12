@@ -1,0 +1,65 @@
+<h3 translate="crs.request.requestType.changeRetireDescription"></h3>
+<form class="form-floating">
+
+    <div class="form-group">
+        <form-control type="text"
+                      model="requestVM.request.requestorInternalId"
+                      label="crs.request.details.label.requestorInternalId"
+                      name="txtRequestorInternalId"></form-control>
+        <div>
+            <div class="form-control-element required">
+                <label for="">Concept Id</label>
+                <input class="form-control" type="text" ng-model="requestVM.request.conceptId"/>
+            </div>
+            <div class="form-control-element required">
+                <label for="">Concept FSN</label>
+                <input class="form-control" type="text" ng-model="requestVM.request.conceptFSN"/>
+            </div>
+        </div>
+        <br/>
+
+        <form-control type="text"
+                      model="requestVM.request.descriptionId"
+                      label="crs.request.details.label.descriptionId"
+                      name="txtDescriptionId"
+                      required></form-control>
+
+        <form-control type="text"
+                      model="requestVM.request.description"
+                      label="crs.request.details.label.currentDescription"
+                      name="txtDescription"
+                      required></form-control>
+
+        <form-control type="text"
+                      model="requestVM.request.proposedDescription"
+                      label="crs.request.details.label.proposedDescription"
+                      name="txtProposedDescription"></form-control>
+
+        <form-control type="select"
+                      model="requestVM.request.proposedCaseSignificance"
+                      options="caseSignificance for caseSignificance in requestVM.caseSignificances"
+                      label="crs.request.details.label.proposedCaseSignificance"
+                      name="slCaseSignificance"></form-control>
+
+        <form-control type="select"
+                      model="requestVM.request.descriptionStatus"
+                      options="descriptionStatus for descriptionStatus in requestVM.descriptionStatuses"
+                      label="crs.request.details.label.descriptionStatus"
+                      name="slDescriptionStatus"></form-control>
+
+        <form-control type="text"
+                      model="requestVM.request.reasonForChange"
+                      label="crs.request.details.label.reasonForChange"
+                      name="txtReasonForChange"></form-control>
+
+        <form-control type="textarea"
+                      model="requestVM.request.notes"
+                      label="crs.request.details.label.notes"
+                      name="txtNotes"></form-control>
+
+        <form-control type="text"
+                      model="requestVM.request.reference"
+                      label="crs.request.details.label.reference"
+                      name="txtReference"></form-control>
+    </div>
+</form>

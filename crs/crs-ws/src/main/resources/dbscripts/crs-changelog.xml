@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+    
+    <changeSet author="Hunter Macdonald (generated)" id="1447143823692-2">
+        <createTable tableName="project">
+            <column name="id" autoIncrement="true" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PROJECT" />
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Hunter Macdonald (generated)" id="1447143823692-3">
+        <createTable tableName="request">
+            <column name="rfcNumber" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_REQUEST"/>
+            </column>
+            <column name="approvalAuthorityId" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="firstName" type="VARCHAR(255)"/>
+            <column name="jobTitle" type="VARCHAR(255)"/>
+            <column name="justifCategory" type="VARCHAR(255)"/>
+            <column name="lastName" type="VARCHAR(255)"/>
+            <column name="ogirinatorId" type="VARCHAR(255)"/>
+            <column name="organization" type="VARCHAR(255)"/>
+            <column name="phone" type="VARCHAR(255)"/>
+            <column name="phoneType" type="VARCHAR(255)"/>
+            <column name="requestDate" type="datetime"/>
+            <column name="requestorId" type="VARCHAR(255)"/>
+            <column name="status" type="VARCHAR(255)"/>
+            <column name="statusDate" type="datetime"/>
+            <column name="userId" type="VARCHAR(255)"/>
+            <column name="projectId" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Hunter Macdonald (generated)" id="1447143823692-4">
+        <createTable tableName="requestitem">
+            <column name="id" autoIncrement="true" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_REQUESTITEM"/>
+            </column>
+            <column name="appealDate" type="datetime"/>
+            <column name="artifactReleaseVersion" type="VARCHAR(255)"/>
+            <column name="proposedCaseSignificance" type="VARCHAR(255)"/>
+            <column name="characteristicType" type="VARCHAR(255)"/>
+            <column name="conceptDescription" type="VARCHAR(255)"/>
+            <column name="conceptFSN" type="VARCHAR(255)"/>
+            <column name="conceptId" type="VARCHAR(255)"/>
+            <column name="conceptPT" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="descriptionId" type="VARCHAR(255)"/>
+            <column name="descriptionIsPT" type="BIT(1)"/>
+            <column name="proposedDescriptionStatus" type="VARCHAR(255)"/>
+            <column name="destConceptId" type="VARCHAR(255)"/>
+            <column name="historyAttribute" type="VARCHAR(255)"/>
+            <column name="historyAttributeValue" type="VARCHAR(255)"/>
+            <column name="justifDescription" type="VARCHAR(255)"/>
+            <column name="notes" type="VARCHAR(255)"/>
+            <column name="parentFSN" type="VARCHAR(255)"/>
+            <column name="parentId" type="VARCHAR(255)"/>
+            <column name="proposedDefinition" type="VARCHAR(255)"/>
+            <column name="proposedDescription" type="VARCHAR(255)"/>
+            <column name="proposedFSN" type="VARCHAR(255)"/>
+            <column name="proposedStatus" type="VARCHAR(255)"/>
+            <column name="proposedSynonym" type="VARCHAR(255)"/>
+            <column name="reasonForChange" type="VARCHAR(255)"/>
+            <column name="reference" type="VARCHAR(255)"/>
+            <column name="refinability" type="VARCHAR(255)"/>
+            <column name="rejectionImpact" type="VARCHAR(255)"/>
+            <column name="relationshipGroup" type="BIGINT"/>
+            <column name="relationshipType" type="VARCHAR(255)"/>
+            <column name="requestType" type="VARCHAR(255)"/>
+            <column name="requestorInternalId" type="VARCHAR(255)"/>
+            <column name="requestorInternalTerm" type="VARCHAR(255)"/>
+            <column name="targetReleaseDate" type="datetime"/>
+            <column name="ticketId" type="VARCHAR(255)"/>
+            <column name="requestId" type="VARCHAR(255)"/>
+            <column name="relationshipStatus" type="VARCHAR(255)"/>
+            <column name="relationshipId" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Hunter Macdonald (generated)" id="1447143823692-5">
+        <createTable tableName="status">
+            <column name="id" autoIncrement="true" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_STATUS"/>
+            </column>
+            <column name="authorUserId" type="VARCHAR(255)"/>
+            <column name="status" type="VARCHAR(255)"/>
+            <column name="statusDate" type="datetime"/>
+            <column name="requestId" type="VARCHAR(255)"/>
+            <column name="requestItemId" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Hunter Macdonald (generated)" id="1447143823692-10">
+        <addForeignKeyConstraint baseColumnNames="requestId" baseTableName="requestitem" constraintName="FK6qh1f90s4wgoqqp6q65h1qy6y" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="rfcNumber" referencedTableName="request"/>
+    </changeSet>
+    <changeSet author="Hunter Macdonald (generated)" id="1447143823692-11">
+        <addForeignKeyConstraint baseColumnNames="requestItemId" baseTableName="status" constraintName="FKbiuwtjr9rpyutbnhuy8avo2ed" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="requestitem"/>
+    </changeSet>
+    <changeSet author="Hunter Macdonald (generated)" id="1447143823692-12">
+        <addForeignKeyConstraint baseColumnNames="requestId" baseTableName="status" constraintName="FKfahnwjx1m430namlphrhfhyui" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="rfcNumber" referencedTableName="request"/>
+    </changeSet>
+    <changeSet author="Hunter Macdonald (generated)" id="1447143823692-13">
+        <addForeignKeyConstraint baseColumnNames="projectId" baseTableName="request" constraintName="FKmymo2km7tumjmjp76fywhc946" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="project"/>
+    </changeSet>
+</databaseChangeLog>

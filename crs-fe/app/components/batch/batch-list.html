@@ -1,0 +1,61 @@
+<!-- My Batchs -->
+<div ng-controller="BatchListCtrl as vm">
+    <section class="tables-data">
+        <div class="card">
+            <div class="row">
+                <div class="col-md-4 no-padding">
+                    <h3 class="table-title p-20">My Batches</h3>
+                </div>
+                <div class="col-md-6">
+                    <div class="table-search">
+                        <input type="text" ng-model="vm.tableParams.filter()['search']" class="form-control"
+                               placeholder="{{'crs.batch.list.searchPlaceHolder' | translate}}" autofocus/>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="pull-right p-t-20">
+                        <button type="button" class="btn btn-round btn-info ng-scope " title="{{'crs.batch.list.tip.count' | translate}}" title="Total Batch Count">
+                            {{vm.batches.length}} <div class="ripple-wrapper"></div>
+                        </button>
+                        <button type="button" class="btn btn-round btn-default " title="{{'crs.batch.list.tip.create' | translate}}" ng-click="dashboard.openCreateBatchModal()">
+                            <span class="md md-add"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive white">
+                <table ng-table="vm.tableParams" template-pagination="layout/template/data-table-pager.html"
+                       class="table table-full table-full-small">
+                    {{$data}}
+                    <tr ng-repeat="batch in $data">
+
+                        <td data-title="'crs.batch.list.tableHeader.batchId' | translate" sortable="'id'" >
+                            <a class="tooltips-right" ng-href="#/batches/{{batch.batchId}}/view">{{batch.id}} <span translate="crs.batch.list.tip.batchId"></span></a>
+                        </td>
+                        <td data-title="'crs.batch.list.tableHeader.uploaded' | translate" sortable="'uploadedDate'" >
+                            {{batch.uploadedDate}}
+                        </td>
+                        <td data-title="'crs.batch.list.tableHeader.submitted' | translate" sortable="'submittedDate'" >
+                            {{batch.submittedDate}}
+                        </td>
+                        <td data-title="'crs.batch.list.tableHeader.lastModified' | translate" sortable="'modifiedDate'" >
+                            {{batch.modifiedDate}}
+                        </td>
+                        <td data-title="'crs.batch.list.tableHeader.status' | translate" sortable="'status'">
+                                <span ng-if="batch.status === 'IN_REVIEW' && !batch.reviewer"
+                                      class="badge {{batch.status}}"> Ready for Review </span>
+                                <span ng-if="batch.status === 'IN_REVIEW' && batch.reviewer"
+                                      class="badge {{batch.status}}"> {{batch.status}} </span>
+                                <span ng-if="batch.status !== 'IN_REVIEW'"
+                                      class="badge {{batch.status}}"> {{batch.status}} </span>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+        </div>
+    </section>
+</div>

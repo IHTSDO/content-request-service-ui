@@ -1,0 +1,44 @@
+<div id="userPreferencesModal">
+
+
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="modal.closeModal()">&times;</button>
+        <h4 class="modal-title">{{'crs.request.createModal.title' | translate}}</h4>
+    </div>
+
+    <div class="modal-body">
+        <div class="col-md-12">
+            <form class="form-floating">
+                <div class="form-group">
+                    <label for="requestTypeSelect" translate="crs.request.createModal.requestType.label"></label>
+                    <select id="requestTypeSelect" name="select-request-type" class="form-control"
+                            ng-model="modal.requestType"
+                            ng-options="requestType.value as requestType.langKey | translate for requestType in modal.requestTypes">
+                    </select>
+
+                    <br>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-12 alert alert-success" ng-show="modal.msgSuccess" >{{modal.msgSuccess | translate}}</div>
+        <div class="col-md-12 alert alert-danger" ng-show="modal.msgError" >{{modal.msgError | translate}}</div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="col-md-6">
+            <button type="button" ng-disabled="disabled" class="col-md-12 btn btn-info no-margin "
+                    ng-click="modal.createNewRequest()">{{'crs.request.createModal.button.createRequest' | translate}}
+            </button>
+        </div>
+        <div class="col-md-6">
+            <button type="button" ng-disabled="disabled" class=" col-md-12 btn btn-danger no-margin "
+                    ng-click="modal.closeModal()">{{'crs.request.createModal.button.cancel' | translate}}
+            </button>
+        </div>
+    </div>
+
+</div>
+
+
+</div>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<entity-mappings version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence/orm" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm orm_2_0.xsd">
+	<persistence-unit-metadata>
+		<xml-mapping-metadata-complete />
+		<persistence-unit-defaults>
+			<access>PROPERTY</access>
+		</persistence-unit-defaults>
+	</persistence-unit-metadata>
+	<entity class="org.ihtsdotools.crs.dto.Status">
+		<table name="Status" />
+		<attributes>
+			<id name="id">
+				<generated-value strategy="IDENTITY" />
+			</id>
+			<many-to-one fetch="LAZY" name="request">
+				<join-column name="requestId" />
+			</many-to-one>
+			<many-to-one fetch="LAZY" name="requestItem">
+				<join-column name="requestItemId" />
+			</many-to-one>
+		</attributes>
+	</entity>
+	<entity class="org.ihtsdotools.crs.dto.RequestItem">
+		<table name="RequestItem" />
+		<attributes>
+			<id name="id">
+				<generated-value strategy="IDENTITY" />
+			</id>
+			<many-to-one fetch="LAZY" name="request">
+				<join-column name="requestId" />
+			</many-to-one>
+			<one-to-many mapped-by="requestItem" name="statusLog" />
+		</attributes> 
+	</entity>
+	<entity class="org.ihtsdotools.crs.dto.Request">
+		<table name="Request" />
+		<attributes>
+			<id name="rfcNumber">
+			</id>
+			<many-to-one fetch="LAZY" name="project">
+				<join-column name="projectId" />
+			</many-to-one>
+			<one-to-many mapped-by="request" name="workItems">
+				<cascade>
+					<cascade-all/>
+				</cascade>
+			</one-to-many>
+			<one-to-many mapped-by="request" name="statusLog" />
+		</attributes>
+	</entity>
+	<entity class="org.ihtsdotools.crs.dto.Project">
+		<table name="Project" />
+		<attributes>
+			<id name="id">
+				<generated-value strategy="IDENTITY" />
+			</id>
+			<one-to-many mapped-by="project" name="requests" />
+		</attributes>
+	</entity>
+</entity-mappings>
