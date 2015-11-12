@@ -24,7 +24,7 @@ public interface RequestDao extends CrudRepository<Request, String> {
    public Request findRequestWithRequestItems(@Param("requestId") String requestId);
 
    @Query("select distinct r from Request as r left join fetch r.workItems where r.requestorId = :requestorId or r.ogirinatorId = :requestorId")
-   public List<Request> findBySubmiter(@Param("requestorId") String requestorId);
+   public List<Request> findRequestByRequestorId(@Param("requestorId") String requestorId);
 
    @Query("select  distinct r from Request as r left join fetch r.workItems where r.status <> 'DRAFT' order by r.statusDate desc")
    public List<Request> findAllRequests();

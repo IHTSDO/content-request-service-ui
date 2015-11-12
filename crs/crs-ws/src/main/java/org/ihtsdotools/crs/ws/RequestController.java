@@ -53,9 +53,9 @@ public class RequestController {
       return requestDto;
    }
 
-   @RequestMapping(value = "/list/submitted", method = RequestMethod.GET)
-   public List<RequestListItemDto> getSubmittedRequests() {
-      Collection<Request> requests = requestAPI.getSubmitedRequests();
+   @RequestMapping(value = "/list", method = RequestMethod.GET)
+   public List<RequestListItemDto> getRequestsByCurrentUser() {
+      Collection<Request> requests = requestAPI.getRequestByCurrentUser();
       List<RequestListItemDto> requestListItemDtos = new ArrayList<>();
       for (Request request : requests) {
          requestListItemDtos.add(dozerBeanMapper.map(request, RequestListItemDto.class));
@@ -63,7 +63,7 @@ public class RequestController {
       return requestListItemDtos;
    }
 
-   @RequestMapping(value = "/list", method = RequestMethod.GET)
+   @RequestMapping(value = "/list/submitted", method = RequestMethod.GET)
    public List<RequestListItemDto> getAllRequests() {
       Collection<Request> requests = requestAPI.getAllRequests();
       List<RequestListItemDto> requestListItemDtos = new ArrayList<>();

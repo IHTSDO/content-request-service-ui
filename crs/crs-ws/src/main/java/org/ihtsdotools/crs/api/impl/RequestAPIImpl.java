@@ -3,7 +3,6 @@
  */
 package org.ihtsdotools.crs.api.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.dozer.DozerBeanMapper;
 import org.ihtsdotools.crs.api.RequestAPI;
@@ -141,9 +140,9 @@ public class RequestAPIImpl implements RequestAPI {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Collection<Request> getSubmitedRequests() {
+	public Collection<Request> getRequestByCurrentUser() {
 		String currentUser = AuthenticationUtils.getCurrentUserName();
-		return requestDao.findBySubmiter(currentUser);
+		return requestDao.findRequestByRequestorId(currentUser);
 	}
 
 	@Override

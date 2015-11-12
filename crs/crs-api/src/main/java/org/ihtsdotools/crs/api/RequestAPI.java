@@ -28,6 +28,6 @@ public interface RequestAPI {
 	public Collection<Request> getAllRequests();
 	public Collection<Request> getRequestByProject(Long projectId);
 	//TODO in Sprint 2: public Collection<Request> getRequestByCriteria(List<Criteria> criterium); 
-	public Collection<Request> getSubmitedRequests();
+	public Collection<Request> getRequestByCurrentUser();
 	public Collection<Request> getAssignedRequest(String userId);
 }
