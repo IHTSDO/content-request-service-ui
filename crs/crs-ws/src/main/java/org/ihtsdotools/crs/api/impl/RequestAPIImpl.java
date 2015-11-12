@@ -95,11 +95,12 @@ public class RequestAPIImpl implements RequestAPI {
 		RequestItem requestItem = request.getWorkItems().get(0);
 		issue.setSummary(new StringBuilder().append(requestItem.getRequestType()).toString());
 		RequestDto requestDto = dozerBeanMapper.map(request, RequestDto.class);
-		try {
-			issue.setDescription(objectMapper.writer().withDefaultPrettyPrinter().writeValueAsString(requestDto));
+		issue.setDescription("This request is submitted by " + request.getRequestorId() + " from CRS");
+		/*try {
+			//issue.setDescription(objectMapper.writer().withDefaultPrettyPrinter().writeValueAsString(requestDto));
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
-		}
+		}*/
 		JiraClient jiraClient = jiraClientFactory.getClient();
 		jiraClient.createIssue(issue);
 		jiraClient.close();
