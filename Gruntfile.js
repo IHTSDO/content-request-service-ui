@@ -531,8 +531,8 @@ module.exports = function (grunt) {
         'clean:server',
         'wiredep',
         'concurrent:test',
-        'postcss',
-        'connect:test'
+        'postcss'
+        //'connect:test',
         //'karma'
     ]);
 
