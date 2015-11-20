@@ -1,0 +1,405 @@
+<div class="edits editing-form">
+<style>
+
+    .yellowhl {
+        border-style: solid;
+        border-width: 5px;
+        border-color: yellow;
+    }
+
+    .redhl {
+        border-style: solid;
+        border-width: 5px;
+        border-color: red;
+    }
+
+    .orangehl {
+        border-style: solid;
+        border-width: 5px;
+        border-color: orange;
+    }
+
+    .greenhl {
+        border-style: solid;
+        border-width: 5px;
+        border-color: green;
+    }
+
+</style>
+
+<!-- begin validation error -->
+<div class="alert alert-dismissible alert-danger validation" ng-show="error">
+    <button type="button" class="close" ng-click="error = null">×</button>
+    <h4>Validation Error!</h4>
+    {{error}}
+</div>
+<div class="alert alert-dismissible alert-warning validation" ng-show="warning">
+    <button type="button" class="close" ng-click="warning = null">×</button>
+    <h4>Warning</h4>
+    {{warning}}
+</div>
+<!-- end validation error -->
+<div class="row p-t-5 grey darken-4 concept-headers " id="testId" name="testId" style=" margin-right:0px;">
+    <div class="pull-left col-md-1 no-padding">
+
+
+        <div ng-if="conceptChangeType === 'NEW_CONCEPT'" class="more-button-width">
+        </div>
+        <button ng-if="conceptChangeType !== 'NEW_CONCEPT'" ng-click="setConceptProperties(concept)" type="button"
+                    class="btn btn-default morebuttons grey darken-4 md more-button-width fa fa-pencil tooltips-right tooltips-light normal-case"
+                    uib-popover-template="'shared/concept-edit/concept-more.html'" popover-placement="{{popoverDirection}}"
+                    popover-trigger="click: click" popover-append-to-body="true"><span>More details</span></button>
+
+        <button
+                class="btn btn-default morebuttons grey darken-4 md md-open-with normal-case drag-button-width "
+                ui-draggable="true" drag="getConceptIdNamePair(concept)" drag-channel="conceptPropertiesObj"
+                drop-channel="NA" drag-image="getDragImageForConcept(concept.fsn)"></button>
+
+
+    </div>
+
+
+    <!-- concept name -->
+    <div class="pull-left col-md-6 no-padding title-text"
+            >
+        <button type="button" class="btn-default grey darken-4 title-text fsn-title-button">
+            <span class="fsn p-t-5">{{concept.fsn}}</span>
+
+          <span
+                  ng-show="!concept.fsn && !concept.effectiveTime" style="color:grey">Unsaved Concept</span></button>
+    </div>
+
+    <div class="pull-right m-l-4 m-r-5 col-md-1 no-padding ">
+        <select name="select-primitive-choice" id="select-primitive-choice"
+                ng-disabled="isStatic"
+                ng-model="concept.definitionStatus"
+                ng-change="toggleConceptDefinitionStatus()"
+                class="form-control grey darken-4 primitive pull-left"
+                style="width:30px;"
+                ng-options="definitionStatus.id as definitionStatus.name for definitionStatus in definitionStatuses">
+        </select>
+
+        <div class="pull-right">
+            <button ng-init="isCollapsed = false" ng-click="collapse(concept)" type="button"
+                    ng-class="[btn, btn-default, darkbuttons, grey, 'darken-4', 'toggle-buttons', md, {'fa fa-caret-down' : isCollapsed, ' fa fa-caret-up' : !isCollapsed}]"></button>
+        </div>
+    </div>
+    <div class="pull-right no-margin edits concept-title col-md-4 no-padding">
+        <button ng-click="saveConcept()" type="button"
+                class="btn-default save-button small-buttons deep-purple lighten-2 md md-save tooltips-left tooltips-light normal-case "
+                ng-click="saveConcept()"
+                ng-if="isModified && !isStatic"><span> Save Concept </span></button>
+        <!-- Revert button only appears if parent is specified -->
+        <button ng-if="parentBranch" type="button" class="btn btn-default revert-button" ng-click="revertConcept()">
+            Revert
+        </button>
+
+        <!-- control buttons -->
+        <button ng-disabled="conceptChangeType === 'NEW_CONCEPT'" type="button"
+                style="vertical-align: bottom"
+                ng-class="['btn-default', 'editbuttons', ' fa fa-power-off', {green : concept.active}, {red: !concept.active}]"
+                ng-click="toggleConceptActive(concept)" class="small-buttons tooltips-left tooltips-light normal-case">
+            <span ng-if="!isStatic"> Activate/ inactivate concept </span>
+            <span ng-if="isStatic"> {{concept.active ? 'Active Concept' : 'InactiveConcept'}} </span></button>
+        <button ng-disabled="conceptChangeType === 'NEW_CONCEPT'" type="button"
+                style="vertical-align: bottom"
+                class="btn-default editbuttons small-buttons color_{{relationship.groupId}} tooltips-left tooltips-light normal-case"
+                ng-class="[{'red fa fa-level-down' : !hideInactive}, {'fa fa-level-up green' : hideInactive}]"
+                ng-click="toggleHideInactive()"><span> Show/hide inactive components </span></button>
+
+
+        <button type="button" class="btn-default editbuttons small-buttons amber md md-undo "
+                title="Undo Changes"
+                ng-click="undo()"
+                ng-disabled="conceptHistoryPtr < 1"
+                ng-if="!isStatic"></button>
+        <button type="button" class="btn-default editbuttons small-buttons amber md md-redo "
+                title="Redo Changes"
+                ng-click="redo()"
+                ng-if="!isStatic"
+                ng-disabled="conceptHistoryPtr === conceptHistory.length - 1"></button>
+        <button type="button" class="btn-default editbuttons small-buttons deep-purple lighten-2 md md-history"
+                title="Revert to Saved"
+                ng-click="undoAll()"
+                ng-if="!isStatic"
+                ng-disabled="!isModified"></button>
+        <!--<button type="button"
+                class="btn-default editbuttons small-buttons blue tooltips-left tooltips-light normal-case md fa fa-sitemap"
+                title="Show/Hide Model"
+                ng-if="!isStatic"
+                ng-click="showModel(concept)"><span ng-if="modelVisible"> Hide Model </span><span
+          ng-if="!modelVisible"> Show Model </span></button>-->
+        <button ng-disabled="conceptChangeType === 'NEW_CONCEPT'" type="button"
+                class="btn-default editbuttons small-buttons orange darken-3 md fa fa-close tooltips-left tooltips-light normal-case"
+                ng-click="removeConcept(concept)"><span>Remove concept from edit panel</span></button>
+        <div ng-repeat="field in concept.additionalFields">
+            <textarea class="msd-elastic resizable-text form-control"
+                      ng-model-options="{updateOn: 'blur'}"
+                      ng-model="field.value" type="text"
+                      placeholder="{{field}}">
+            </textarea>
+        </div>
+    </div>
+</div>
+
+<!-- Toggle-able collapsed concept elements -->
+<div ng-show="!isCollapsed" class="editHeightSelector">
+
+<!-- rows: Concept Descriptions -->
+<div ng-repeat="description in getDescriptions(true)"
+     ng-class="getComponentStyle(description.descriptionId, null, '')">
+    <div class="row darken-3 p-t-5 grey">
+        <div class="col-md-12 no-padding color_{{relationship.groupId}}"
+             drop-channel="descriptionObj"
+             ui-on-drop="dropDescription(description, $data)"
+             drag-enter-class="sca-drag-target"
+             drag-hover-class="sca-drag-hover">
+
+            <div ng-if="conceptChangeType === 'NEW_CONCEPT'" class="more-button-width">
+            </div>
+            <button ng-if="conceptChangeType !== 'NEW_CONCEPT'" ng-click="setDescriptionProperties(description)"
+                    class="btn-default grey darken-3 md morebuttons fa fa-pencil more-button-width tooltips-right tooltips-light normal-case"
+                    uib-popover-template="'shared/concept-edit/description-more.html'"
+                    popover-placement="{{popoverDirection}}"
+                    ng-click="populateDescriptionMore(description)" popover-append-to-body="true"><span>More details</span></button>
+
+            <button
+                    class="btn-default grey darken-3 md morebuttons md-open-with drag-button-width"
+                    ui-draggable="true" drag="description" drag-channel="descriptionObj"
+                    drag-image="getDragImageForDescription(description)"></button>
+
+
+            <!-- Active/Inactive -->
+            <button type="button"
+                    style="vertical-align: bottom"
+                    ng-disabled="isStatic"
+                    ng-click="toggleDescriptionActive(description)"
+                    ng-class="[btn-default, md, 'fa fa-power-off button-width', {green : description.active}, {red: !description.active}]"
+                    title="Active/Inactive"></button>
+
+            <!-- Case Significance -->
+            <button type="button" class=" blue accent-2 button-width custom-button text-center" ng-disabled="isStatic"
+                    title="Case Significance " ng-click="toggleCaseSignificance(description)">
+
+                <span class="md col-md-12 no-padding text-center">{{getCaseSignificanceDisplayText(description)}}</span>
+
+
+            </button>
+
+            <!-- Term -->
+            <div class="pull-left description no-padding"
+                 ng-class="getComponentStyle(description.descriptionId, 'term', null)">
+
+
+                <textarea ng-change="updateDescription(description)"
+                          class=" msd-elastic resizable-text form-control color_{{relationship.groupId}}"
+                          ng-model-options="{updateOn: 'blur'}"
+                          ng-disabled="description.effectiveTime || isStatic"
+                          maxlength="{{(description.type !== 'TEXT_DEFINITION')?'255':'4096'}}"
+                          ng-model="description.term" type="text"
+                          placeholder="Description">
+                </textarea>
+
+                <!--<textarea ng-if="description.type === 'TEXT_DEFINITION'" ng-change="updateDescription(description)"
+                          class="msd-elastic resizable-text form-control color_{{relationship.groupId}}"
+                          ng-model-options="{updateOn: 'blur'}"
+                          ng-disabled="description.effectiveTime || isStatic"
+                          maxlength="4096"
+                          ng-model="description.term" type="text"
+                          placeholder="Description">
+                </textarea>-->
+            </div>
+
+            <!-- TypeId -->
+            <div class="pull-left typeid">
+                <select ng-disabled="description.effectiveTime || isStatic"
+                        ng-options="descTypeId.name as descTypeId.abbr for descTypeId in descTypeIds"
+                        ng-model="description.type" ng-change="updateDescription(description)"
+                        name="select-type" id="select-type-choice" class="form-control color_{{relationship.groupId}}"
+                        ui-on-drop="">
+                </select>
+            </div>
+
+            <!-- Dialect / Acceptability: Never displayed for FSN -->
+            <div>
+                <!-- en-us acceptability -->
+                <button type="button"
+                        class=" blue accent-2 button-width-acceptability custom-button"
+                        ng-disabled="isStatic || description.effectiveTime || description.type === 'FSN'"
+                        title="Acceptability (en-us) " ng-click="toggleAcceptability(description, 'en-us')"> <span
+                        class="md col-md-12 no-padding text-center">us:
+                                                                                                    {{getAcceptabilityDisplayText(description,
+                                                                                                    'en-us')}}</span>
+                </button>
+
+                <!-- en-gb acceptability -->
+                <button type="button" class=" blue accent-2 button-width-acceptability custom-button"
+                        ng-disabled="isStatic || description.effectiveTime  || description.type === 'FSN'"
+                        title="Acceptability (en-gb)" ng-click="toggleAcceptability(description, 'en-gb')"> <span
+                        class="md col-md-12 no-padding text-center">gb:
+                                                                                                    {{getAcceptabilityDisplayText(description,
+                                                                                                    'en-gb')}}</span>
+                </button>
+            </div>
+
+            <div ng-show="!isStatic">
+
+                <button ng-if="!isStatic" type="button" ng-click="addDescription($index)"
+                        class="btn-default add-buttons md fa fa-plus plus-button-width  pull-right tooltips-left tooltips-light normal-case">
+                    <span>Add New Description</span></button>
+
+                <button type="button" ng-click="removeDescription(description)"
+                        ng-if="!description.effectiveTime && !description.released"
+                        class="btn-default add-buttons md fa fa-minus plus-button-width  pull-right tooltips-left tooltips-light normal-case">
+                    <span>Remove Description</span></button>
+
+            </div>
+            <div ng-if="description.additionalFields" ng-repeat="field in description.additionalFields">
+                <textarea class="msd-elastic resizable-text form-control"
+                          ng-model-options="{updateOn: 'blur'}"
+                          ng-model="field.value" type="text"
+                          placeholder="{{field}}">
+                </textarea>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- rows: Relationships -->
+<div ng-repeat="relationship in getRelationships(true)"
+     ng-class="getComponentStyle(relationship.relationshipId, null, '')">
+
+    <div class="row darken-3 grey" ng-class="getComponentStyle(relationship.relationshipId, null, '')">
+
+        <div class="col-md-12 no-padding p-t-5  color_{{relationship.groupId}}"
+             ng-if="relationship.characteristicType === 'STATED_RELATIONSHIP'"
+             drop-channel="relationshipObj"
+             ui-on-drop="dropRelationship(relationship, $data)"
+             drag-enter-class="sca-drag-target"
+             drag-hover-class="sca-drag-hover">
+
+            <div class="p-t-5 ">
+                <div ng-if="conceptChangeType === 'NEW_CONCEPT'" class="more-button-width">
+                </div>
+                <button ng-if="conceptChangeType !== 'NEW_CONCEPT'" class="btn-default grey darken-3 md morebuttons more-button-width fa fa-pencil button-width tooltips-right tooltips-light normal-case"
+                        ng-click="setRelationshipProperties(relationship)"
+                        uib-popover-template="'shared/concept-edit/relationship-more.html'"
+                        popover-placement="{{popoverDirection}}"
+                        title="Some title here" popover-append-to-body="true"
+                  ><span>More details</span></button>
+
+                <button
+                        class="btn-default grey darken-3 md morebuttons pull-left md-open-with drag-button-width "
+                        ui-draggable="true" drag="relationship" drag-channel="relationshipObj"
+                        drag-image="getDragImageForRelationship(relationship)"></button>
+
+                <!-- TODO Fix this   Note: due to weird behavior with ng-class, need to manually add bottom alignment -->
+                <button type="button"
+                        style="vertical-align: bottom"
+                        ng-disabled="isStatic"
+                        ng-click="toggleRelationshipActive(relationship)"
+                        ng-class="[btn, btn-default, editbuttons, md, 'fa fa-power-off button-width', {green : relationship.active}, {red: !relationship.active}]"
+                        title="Active/Inactive"></button>
+
+                <!-- relationship group -->
+                <div class="pull-left rolegroup">
+                    <textarea style="" class="msd-elastic"
+                              ng-disabled="isStatic"
+                              ng-model="relationship.groupId"
+                              ng-model-options="{updateOn: 'blur'}"
+                              ng-change="updateRelationship(relationship)"
+                              class="form-control color_{{relationship.groupId}}" type="text" placeholder="#"
+                              ui-on-drop="dropNullOp()">
+                    </textarea>
+                </div>
+
+                <!-- attribute type' -->
+                <div class="pull-left is_a"
+                     drag-enter-class="sca-drag-target"
+                     drag-hover-class="sca-drag-hover"
+                     drop-channel="conceptPropertiesObj"
+                     ui-on-drop="dropRelationshipType(relationship, $data)"
+                     drop-validate="!relationship.effectiveTime && !isStatic">
+
+                    <textarea type="text"
+                              ng-model="relationship.type.fsn"
+                              ng-disabled="relationship.effectiveTime || isStatic"
+                              typeahead-focus
+                              class="sca-top"
+                              uib-typeahead="suggestion as suggestion.fsn for suggestion in allowedAttributes | filter:$viewValue:emptyOrMatch"
+                              uib-typeahead-focus-first="false"
+                              uib-typeahead-loading="typeTypeaheadLoading"
+                              uib-typeahead-wait-ms="700"
+                              uib-typeahead-on-select="setRelationshipTypeConceptFromMrcm(relationship, $item)"
+                              uib-typeahead-editable="false" uib-typeahead-min-length="0">
+
+                    </textarea>
+            <span class="pull-left md drag-button-width "
+                  ng-class="[{'md-open-with' : !typeTypeaheadLoading}, {'md-cached' : typeTypeaheadLoading}]"
+                  ui-draggable="true"
+                  drag="getConceptIdNamePairFromAttributeType(relationship)"
+                  drag-channel="conceptPropertiesObj"
+                  drag-image="getDragImageForConcept(relationship.type.fsn)"></span>
+
+                </div>
+
+                <!-- linked concept -->
+                <div class="pull-left sourcename"
+                     drag-enter-class="sca-drag-target"
+                     drag-hover-class="sca-drag-hover"
+                     drop-channel="conceptPropertiesObj"
+                     ui-on-drop="dropRelationshipTarget(relationship, $data)"
+                     drop-validate="!relationship.effectiveTime && !isStatic">
+
+                    <textarea type="text"
+                              ng-model="relationship.target.fsn"
+                              ng-disabled="relationship.effectiveTime || isStatic"
+                              class="sca-top"
+                              uib-typeahead="suggestion as suggestion.fsn for suggestion in getConceptsForValueTypeahead(relationship.type.conceptId, $viewValue)"
+                              uib-typeahead-loading="targetTypeaheadLoading"
+                              uib-typeahead-focus-first="false"
+                              uib-typeahead-wait-ms="700"
+                              uib-typeahead-on-select="setRelationshipTargetConceptFromMrcm(relationship, $item)"
+                              uib-typeahead-editable="false" uib-typeahead-min-length="3"></textarea>
+
+                        <span class="pull-left drag-button-width "
+                              ng-class="[{'md-open-with' : !targetTypeaheadLoading}, {'md-cached' : targetTypeaheadLoading}]"
+                              ui-draggable="true"
+                              drag="getConceptIdNamePairFromRelationshipTarget(relationship)"
+                              drag-channel="conceptPropertiesObj"
+                              drag-image="getDragImageForConcept(relationship.target.fsn)"></span>
+                </div>
+
+                <div ng-if="!isStatic">
+                    <button type="button" ng-click="addRelationship($index)"
+                            class="btn-default add-buttons md fa fa-plus button-width-plus pull-right tooltips-left tooltips-light normal-case"
+                            title="Add New Relationship"></button>
+
+                    <button type="button" ng-click="removeRelationship(relationship)"
+                            ng-if="!relationship.effectiveTime"
+                            class="btn-default add-buttons md fa fa-minus button-width-minus pull-right tooltips-left tooltips-light normal-case">
+                        <span>Remove Relationship</span></button>
+
+                </div>
+            </div>
+            <div ng-if="relationship.additionalFields" ng-repeat="field in relationship.additionalFields">
+                <textarea class="msd-elastic resizable-text form-control"
+                          ng-model-options="{updateOn: 'blur'}"
+                          ng-model="field.value" type="text"
+                          placeholder="{{field}}">
+                </textarea>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+<div class="clearfix"></div>
+
+
+</div>
+</div>
+
