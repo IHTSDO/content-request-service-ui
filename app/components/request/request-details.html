@@ -1,36 +1,159 @@
+<style>
+    .no-gutter {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    .loader {
+        font-size: 10px;
+        margin: 50px auto;
+        text-indent: -9999em;
+        width: 11em;
+        height: 11em;
+        border-radius: 50%;
+        background: #ffffff;
+        background: -moz-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+        background: -webkit-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+        background: -o-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+        background: -ms-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+        background: linear-gradient(to right, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+        position: relative;
+        -webkit-animation: load3 1.4s infinite linear;
+        animation: load3 1.4s infinite linear;
+        -webkit-transform: translateZ(0);
+        -ms-transform: translateZ(0);
+        transform: translateZ(0);
+    }
+
+    .loader:before {
+        width: 50%;
+        height: 50%;
+        background: #ffffff;
+        border-radius: 100% 0 0 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        content: '';
+    }
+
+    .loader:after {
+        background: #0dc5c1;
+        width: 75%;
+        height: 75%;
+        border-radius: 50%;
+        content: '';
+        margin: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+    }
+
+    @-webkit-keyframes load3 {
+        0% {
+            -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+        100% {
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes load3 {
+        0% {
+            -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+        100% {
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+        }
+    }
+
+    .last {
+        /*    padding-bottom:40px;*/
+        height: auto;
+    }
+
+    .sca-resizable {
+        margin-right: 10px;
+        display: inline-block;
+    }
+
+    .sca-resize {
+        position: relative;
+        left: -50px;
+        height: 100vh;
+        width: 5px;
+        background-color: red;
+    }
+
+    .sca-drag-target, .sca-drag-hover {
+        background-color: transparent !important;
+        border: none !important;
+    }
+
+    .sca-drag-hover textarea {
+
+        border: 1px dashed #fff !important;
+        background: #00a6e5 !important;
+        color: #fff !important;
+    }
+
+    .sca-drag-target textarea {
+
+        border: 1px dashed #9f9f9f !important;
+        background: #dedede !important;
+    }
+
+    .sca-drag-handle {
+        background-color: red;
+    }
+
+    .transparent {
+        background-color: transparent;
+    }
+
+    .wordbreak {
+        word-wrap: break-word
+    }
+
+
+</style>
 <div style="height: 100%">
     <div class="row no-gutter" style="height: 100%">
         <!-- sidebar -->
-        <div class="col-sm-4 editpanel no-padding"
-             ng-include="'components/request/request-details-sidebar.html'"
-             style="height: 100%;background-color:#eee"></div>
+        <div class="col-sm-3 editpanel no-padding" style="position: relative;height: 100%;background-color:#eee;">
+            <div ng-include="'components/request/request-details-sidebar.html'"
+                 style="height: 100%;overflow-y:auto;overflow-x:hidden"></div>
+        </div>
 
         <!-- edit form -->
-        <div class="col-sm-8 editpanel no-padding" style="height: 100%;overflow:auto">
-            <div class="row" style="padding:5px 25px 30px 10px">
-                <div class="col-sm-12">
+        <div class="col-sm-9 editpanel no-padding" style="height: 100%">
+            <div class="row" style="height: 100%;">
+                <div class="col-sm-6" style="height: 100%;overflow-y:auto;overflow-x:hidden;padding:5px 35px 10px 20px">
 
                     <div id="messagePaneLocation" ></div>
                     <div class="alert alert-success" ng-show="requestVM.msgSuccess">{{requestVM.msgSuccess | translate}}</div>
                     <div class="alert alert-danger" ng-show="requestVM.msgError">{{requestVM.msgError | translate}}</div>
 
+                    <div ng-include="'components/request/request-general-details-form.html'"></div><br/>
                     <div ng-include="requestVM.requestType.form.template"></div>
 
-                    <div ng-show="requestVM.isValidViewParams">
-                        <div class="col-sm-4">
-                            <button type="button" class="col-md-12 btn btn-info no-margin " ng-click="requestVM.saveRequest()">
-                                {{'crs.request.details.button.save' | translate}}
-                            </button>
-                        </div>
-                        <div class="col-sm-4">
-                            <button type="button" class="col-md-12 btn btn-info no-margin " ng-click="requestVM.submitRequest()">{{'crs.request.details.button.submit' | translate}}
-                            </button>
-                        </div>
-                        <div class="col-sm-4">
-                            <button type="button" class=" col-md-12 btn btn-danger no-margin" ng-click="requestVM.cancelEditing()">
-                                {{'crs.request.details.button.cancel' | translate}}
-                            </button>
-                        </div>
+                </div>
+                <div class="col-sm-6 editpanel no-padding grey darken-3" style="height: 100%;overflow-y:auto;overflow-x:hidden">
+                    <div ng-if="requestVM.concept" concept-edit concept="requestVM.concept" id="height-{{concept.conceptId}}" autosave="false"
+                         static="false" save-function="conceptUpdateFunction(project, task, concept)">
+                    </div>
+                    <div ng-if="!requestVM.concept" class="edit-dropzone-wrapper" >
+                        <div class="edit-dropzone"
+                             drag-enter-class="request-drag-target"
+                             drag-hover-class="request-drag-hover"
+                             drop-channel="conceptPropertiesObj"
+                             ui-on-drop="requestVM.startEditingConcept($data)"
+                             translate="crs.request.details.tip.editConceptHint"></div>
                     </div>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 <nav class="navbar navbar-default navbar-fixed-top" ng-class="{scroll: (scroll>10)}" ng-controller="HeaderCtrl as header">
     <div class="container-fluid">
-        <ul class="nav navbar-nav navbar-left navbar-left-no-collapse col-md-6 no-padding pull-left">
+        <ul class="nav navbar-nav navbar-left navbar-left-no-collapse col-md-8 no-padding pull-left">
             <li>
                 <div class="brand-logo pull-left">
                     <div id="logo">
@@ -31,7 +31,7 @@
         </ul>
 
 
-        <div ng-show="header.notification" class="pull-left header-alerts col-md-4 pull-left">
+        <div ng-show="header.notification" class="header-alerts">
 
             <div class="bs-component pull-left col-md-12 no-padding" style="margin-left:0px; margin-right:0px">
 
@@ -52,12 +52,12 @@
         </div>
 
 
-        <ul class="nav navbar-nav navbar-right navbar-right-no-collapse identity-services col-md-2" ng-if="!header.isUserLoggedIn">
+        <ul class="nav navbar-nav navbar-right navbar-right-no-collapse identity-services col-md-4" ng-if="!header.isUserLoggedIn">
             <li class="pull-right">
                 <a ng-href="#/login" translate="crs.link.login"></a>
             </li>
         </ul>
-        <ul class="nav navbar-nav navbar-right navbar-right-no-collapse  identity-services col-md-2 pull-right" ng-if="header.isUserLoggedIn">
+        <ul class="nav navbar-nav navbar-right navbar-right-no-collapse  identity-services col-md-4 pull-right" ng-if="header.isUserLoggedIn">
 
             <li class="pull-right"><button class="dropdown-toggle pointer btn btn-round-sm btn-link withoutripple" ng-click="header.openSettingsModal()">  <i class="md md-settings f20"></i> </button>
 

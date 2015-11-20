@@ -1125,6 +1125,7 @@ textarea.form-control {
   position: absolute;
   margin-left: -20px;
   margin-top: 4px \9;
+  vertical-align: bottom;
 }
 .checkbox + .checkbox,
 .radio + .radio {
@@ -5943,6 +5944,7 @@ input[type=checkbox] {
   -webkit-appearance: none;
   appearance: none;
   cursor: pointer;
+  vertical-align: bottom;
 }
 .checkbox input[type=checkbox]:focus,
 .checkbox-inline input[type=checkbox]:focus,

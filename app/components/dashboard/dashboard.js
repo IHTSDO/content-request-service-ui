@@ -34,11 +34,10 @@ angular
                         break;
                     case 'requests':
                     default:
-                        $rootScope.pageTitles = ['crs.request.list.title'];
+                        $rootScope.pageTitles = ['crs.request.list.title.requests'];
                         vm.listView = 'components/request/request-list.html';
                         break;
                 }
-
             };
 
             var createRequest = function (requestType) {

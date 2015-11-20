@@ -11,12 +11,10 @@
       <button class="btn btn-default md md-close" ng-click="clearSearch()" style="background: transparent"></button>
     </div>
     <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 col-xl-1 no-padding">
-      <button class="btn btn-default md md-check-box tooltips-right tooltips-light normal-case"
-              ng-click="toggleGroupByConcept()" ng-if="userOptions.groupByConcept" style="background: transparent">
-        <span>View Matching Terms</span></button>
-      <button class="btn btn-default md md-check-box-outline-blank tooltips-right tooltips-light normal-case"
-              ng-click="toggleGroupByConcept()"
-              ng-if="!userOptions.groupByConcept" style="background: transparent"><span>Group by Concept</span></button>
+
+      <button class="btn btn-default md md-check-box tooltips-left tooltips-light normal-case" ng-class="{'md-check-box-outline-blank': !userOptions.groupByConcept}"
+              ng-click="toggleGroupByConcept()" style="background: transparent;padding: 6px 8px">
+        <span>{{(userOptions.groupByConcept)?'View Matching Terms':'Group by Concept'}}</span></button>
     </div>
 
   </div>
@@ -59,10 +57,10 @@
         </div>
         <div class="col-md-1 no-padding">
            <span class="badge alert-warning" ng-show="result.concept.definitionStatus === 'PRIMITIVE'" title="Primitive"
-                 ng-click="openConceptInformationModal(result)">&nbsp;</span>
+                 role="button" ng-click="openConceptInformationModal(result)">&nbsp;</span>
           <span class="badge alert-warning" ng-show="result.concept.definitionStatus !== 'PRIMITIVE'"
                 title="Fully Defined"
-                ng-click="openConceptInformationModal(result)">&equiv;</span>
+                role="button" ng-click="openConceptInformationModal(result)">&equiv;</span>
         </div>
         <div class="no-padding"
              ng-class="[{'col-md-5' : !userOptions.groupByConcept}, {'col-md-9' : userOptions.groupByConcept}]">
@@ -74,16 +72,16 @@
           </div>
         </div>
         <div class="col-md-1 no-padding">
-          <button ng-if="!result.concept.active"
+          <!--<button ng-if="!result.concept.active"
                   type="button"
                   class="p-5 transparent md md-dnd-forwardslash tooltips-right tooltips-light normal-case"><span>Inactive Concept</span>
-          </button>
+          </button>-->
         </div>
         <div class="col-md-1 no-padding">
           <button type="button"
                   ng-click="addItemToSavedList(result)"
                   ng-disabled="findItemInSavedList(result.concept.conceptId)"
-                  class="addButton btn btn-round btn-default widget-button grey lighten-5 md md-playlist-add  tooltips-right tooltips-light normal-case">
+                  class="addButton btn btn-round btn-default widget-button grey lighten-5 md md-playlist-add  tooltips-left tooltips-light normal-case">
             <span>Add to Saved List</span></button>
         </div>
       </div>

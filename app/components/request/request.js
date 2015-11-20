@@ -3,6 +3,16 @@
 angular
     .module('conceptRequestServiceApp.request', [
     ])
+    .value('GENERAL_REQUEST_TYPE', {
+        NEW_CONCEPT: {
+            value: 'NEW_CONCEPT',
+            langKey: 'crs.request.requestType.newConcept'
+        },
+        EDIT_CONCEPT: {
+            value: 'EDIT_CONCEPT',
+            langKey: 'crs.request.requestType.changeRetireConcept'
+        }
+    })
     .value('REQUEST_TYPE', {
         NEW_CONCEPT: {
             value: 'NEW_CONCEPT',
@@ -131,13 +141,17 @@ angular
         }
     })
     .value('REQUEST_METADATA_KEY', {
-        CASE_SIGNIFICANCE: 'CASE_SIGNIFICANCE',
         SOURCE_TERMINOLOGY: 'SOURCE_TERMINOLOGY',
+        CASE_SIGNIFICANCE: 'CASE_SIGNIFICANCE',
         RELATIONSHIP_TYPE: 'RELATIONSHIP_TYPE',
+        DESTINATION_TERMINOLOGY: 'DESTINATION_TERMINOLOGY',
         CHARACTERISTIC_TYPE: 'CHARACTERISTIC_TYPE',
         REFINABILITY: 'REFINABILITY',
-        CHANGE_CONCEPT_STATUS_TO: 'CHANGE_CONCEPT_STATUS_TO',
-        SEMANTIC_TAG: 'SEMANTIC_TAG'
+        NEW_CONCEPT_STATUS: 'NEW_CONCEPT_STATUS',
+        SEMANTIC_TAG: 'SEMANTIC_TAG',
+        CONCEPT_HISTORY_ATTRIBUTE: 'CONCEPT_HISTORY_ATTRIBUTE',
+        NEW_DESCRIPTION_STATUS: 'NEW_DESCRIPTION_STATUS',
+        NEW_RELATIONSHIP_STATUS: 'NEW_RELATIONSHIP_STATUS'
     })
     .config(function ($routeProvider) {
         $routeProvider

@@ -7,8 +7,59 @@ angular
         'ngTableParams',
         'requestService',
         'notificationService',
-        function ($filter, ngTableParams, requestService, notificationService) {
+        'accountService',
+        'CRS_ROLE',
+        function ($filter, ngTableParams, requestService, notificationService, accountService, CRS_ROLE) {
             var vm = this;
+
+            var initView = function () {
+                loadRequests();
+
+                // check admin role
+                accountService.checkRole(CRS_ROLE.ADMINISTRATOR).then(function (rs) {
+                    vm.isAdmin = rs;
+
+                    if (rs === true) {
+                        vm.submittedTableParams = new ngTableParams({
+                                page: 1,
+                                count: 10,
+                                sorting: {requestDate: 'desc', batchId: 'asc', requestorInternalId: 'asc'}
+                            },
+                            {
+                                filterDelay: 50,
+                                total: vm.submittedRequests ? vm.submittedRequests.length : 0, // length of data
+                                getData: function (params) {
+
+                                    if (!vm.submittedRequests || vm.submittedRequests.length == 0) {
+                                        return [];
+                                    } else {
+
+                                        var searchStr = params.filter().search;
+                                        var mydata = [];
+
+                                        if (searchStr) {
+                                            mydata = vm.submittedRequests.filter(function (item) {
+                                                return (item.requestorInternalId + '').indexOf(searchStr.toLowerCase()) > -1 ||
+                                                    (item.ticketId || '').toLowerCase().indexOf(searchStr.toLowerCase()) > -1;
+                                            });
+                                        } else {
+                                            mydata = vm.submittedRequests;
+                                        }
+
+                                        params.total(mydata.length);
+                                        mydata = params.sorting() ? $filter('orderBy')(mydata, params.orderBy()) : mydata;
+
+                                        return mydata.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                                    }
+
+                                }
+                            }
+                        );
+
+                        loadSubmittedRequests();
+                    }
+                });
+            };
 
             var loadRequests = function () {
                 notificationService.sendMessage('crs.request.message.listLoading', 0);
@@ -19,6 +70,19 @@ angular
                     notificationService.sendMessage('crs.request.message.listLoaded', 5000);
                     if (vm.tableParams) {
                         vm.tableParams.reload();
+                    }
+                });
+            };
+
+            var loadSubmittedRequests = function () {
+                notificationService.sendMessage('crs.request.message.listLoading', 0);
+
+                vm.requests = null;
+                requestService.getSubmittedRequests().then(function (requests) {
+                    vm.submittedRequests = requests;
+                    notificationService.sendMessage('crs.request.message.listLoaded', 5000);
+                    if (vm.submittedTableParams) {
+                        vm.submittedTableParams.reload();
                     }
                 });
             };
@@ -61,7 +125,9 @@ angular
 
             vm.tableParams = requestTableParams;
             vm.requests = null;
+            vm.submittedRequests = null;
+            vm.isAdmin = false;
 
-            loadRequests();
+            initView();
         }
     ]);

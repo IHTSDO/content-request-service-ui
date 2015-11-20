@@ -63,6 +63,14 @@ angular
                     });
             };
 
+            var checkRole = function (role) {
+                return getAccountInfo().then(function () {
+                    var roles = accountDetails.roles;
+
+                    return (angular.isArray(roles) && roles.indexOf(role) !== -1);
+                });
+            };
+
             var getUserPreferences = function () {
                 var deferred = $q.defer();
                 var mockedUserPref = {};
@@ -88,7 +96,8 @@ angular
                 getLoginStatus: getLoginStatus,
                 getAccountInfo: getAccountInfo,
                 getUserPreferences: getUserPreferences,
-                applyUserPreferences: applyUserPreferences
+                applyUserPreferences: applyUserPreferences,
+                checkRole: checkRole
             };
         }
     ]);

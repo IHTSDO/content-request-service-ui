@@ -10,6 +10,7 @@
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/ng-table/dist/ng-table.min.css" />
     <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
+    <link rel="stylesheet" href="bower_components/angular-ui-tree/dist/angular-ui-tree.min.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -73,6 +74,8 @@
 <script src="bower_components/angular-translate/angular-translate.js"></script>
 <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
 <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
+<script src="bower_components/angular-native-dragdrop/draganddrop.js"></script>
+<script src="bower_components/angular-ui-tree/dist/angular-ui-tree.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
@@ -102,6 +105,21 @@
 <script src="shared/ims/ims.js"></script>
 <script src="shared/ims/account-service.js"></script>
 <script src="shared/form-control/form-control.js"></script>
+<script src="shared/search/search.js"></script>
+<script src="shared/search/search-panel.js"></script>
+<script src="shared/concept-information/concept-info-modal.js"></script>
+<script src="shared/taxonomy/taxonomy.js"></script>
+<script src="shared/taxonomy/taxonomy-tree-directive.js"></script>
+<script src="shared/saved-list/saved-list.js"></script>
+<script src="shared/saved-list/saved-list-service.js"></script>
+<script src="shared/saved-list/saved-list-panel.js"></script>
+<script src="shared/snowowl/snowowl.js"></script>
+<script src="shared/snowowl/snowowl-service.js"></script>
+<script src="shared/snowowl/snowowl-metadata-service.js"></script>
+<script src="shared/concept-edit/concept-edit.js"></script>
+<script src="shared/concept-edit/typeahead-focus-directive.js"></script>
+<script src="shared/concept-edit/concept-edit-directive.js"></script>
+<script src="shared/object-service/object-service.js"></script>
 
 <script src="layout/header/header.js"></script>
 <!-- endbuild -->
@@ -112,9 +130,14 @@
             $.get('config.json', function (data) {
 
                 angular.module('conceptRequestServiceApp')
-                        .config(['configServiceProvider', function (configServiceProvider) {
-                            configServiceProvider.config(data);
-                }]);
+                        .config([
+                            'configServiceProvider',
+                            'snowowlServiceProvider',
+                            function (configServiceProvider, snowowlServiceProvider) {
+                                configServiceProvider.config(data);
+                                snowowlServiceProvider.config(data['snomed-ct']);
+                                snowowlServiceProvider.setSnowowlEndpoint(data.endpoint.snowowl)
+                            }]);
 
                 angular.bootstrap(document, ['conceptRequestServiceApp']);
             });

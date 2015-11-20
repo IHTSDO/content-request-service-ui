@@ -124,6 +124,10 @@ button,
   color: #dcdcdc !important;
 }
 
+.add-buttons.pull-right {
+  margin-left: 0;
+}
+
 .add-buttons:hover {
   color: #00a6e5 !important;
 }
@@ -652,7 +656,7 @@ select.primitive {
 }
 
 .sidebar-tabs.nav > li {
-  width: 33.3%;
+  width: 25%;
 
 }
 

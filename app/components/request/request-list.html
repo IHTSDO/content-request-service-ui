@@ -1,15 +1,15 @@
-<!-- My Requests -->
 <div ng-controller="RequestListCtrl as vm">
+    <!-- My Requests -->
     <section class="tables-data">
         <div class="card">
             <div class="row">
                 <div class="col-md-4 no-padding">
-                    <h3 class="table-title p-20" translate="crs.request.list.title"></h3>
+                    <h3 class="table-title p-20" translate="crs.request.list.title.myRequests"></h3>
                 </div>
                 <div class="col-md-6">
                     <div class="table-search">
                         <input type="text" ng-model="vm.tableParams.filter()['search']" class="form-control"
-                               placeholder="{{'crs.request.list.searchPlaceHolder' | translate}}" autofocus/>
+                               placeholder="{{'crs.request.list.searchPlaceHolder.myRequests' | translate}}" autofocus/>
                     </div>
                 </div>
                 <div class="col-md-2">
@@ -34,7 +34,64 @@
                             <a class="tooltips-right" ng-href="#/batches/view/{{request.batchId}}">{{request.batchId}} <span translate="crs.request.list.tip.batchId"></span></a>
                         </td>
                         <td data-title="'crs.request.list.tableHeader.requestorInternalId' | translate" sortable="'requestorInternalId'" >
-                            <a class="tooltips-right" ng-href="#/requests/edit/{{request.rfcNumber}}">{{request.requestorInternalId}} <span translate="crs.request.list.tip.requestorInternalId"></span></a>
+                            <a class="tooltips-right" ng-href="#/requests/edit/{{request.id}}">{{request.requestorInternalId}} <span translate="crs.request.list.tip.requestorInternalId"></span></a>
+                        </td>
+                        <td data-title="'crs.request.list.tableHeader.ticketId' | translate" sortable="'ticketId'" >
+                            {{request.ticketId}}
+                        </td>
+                        <td data-title="'crs.request.list.tableHeader.lastModified' | translate" sortable="'modifiedDate'" >
+                            {{request.requestDate | date:'MM-dd-yyyy'}}
+                        </td>
+                        <td data-title="'crs.request.list.tableHeader.requestType' | translate" sortable="'requestType'" >
+                            {{request.requestType | requestType | translate}}
+                        </td>
+                        <td data-title="'crs.request.list.tableHeader.status' | translate" sortable="'status'">
+                            <span class="badge requestStatus {{request.status}}">{{request.status | requestStatus | translate}}</span>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Submitted Requests -->
+    <section ng-if="vm.isAdmin" class="tables-data">
+        <div class="card">
+            <div class="row">
+                <div class="col-md-4 no-padding">
+                    <h3 class="table-title p-20" translate="crs.request.list.title.submittedRequests"></h3>
+                </div>
+                <div class="col-md-6">
+                    <div class="table-search">
+                        <input type="text" ng-model="vm.submittedTableParams.filter()['search']" class="form-control"
+                               placeholder="{{'crs.request.list.searchPlaceHolder.submittedRequests' | translate}}" autofocus/>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="pull-right p-t-20">
+                        <button type="button" class="btn btn-round btn-info ng-scope " title="{{'crs.request.list.tip.count' | translate}}" >
+                            {{vm.submittedRequests.length}} <div class="ripple-wrapper"></div>
+                        </button>
+                        <button type="button" class="btn btn-round btn-default " title="{{'crs.request.list.tip.create' | translate}}" ng-click="dashboard.openCreateRequestModal()">
+                            <span class="md md-add"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive white">
+                <table ng-table="vm.submittedTableParams" template-pagination="layout/template/data-table-pager.html"
+                       class="table table-full table-full-small">
+                    {{$data}}
+                    <tr ng-repeat="request in $data">
+
+                        <td data-title="'crs.request.list.tableHeader.batchId' | translate" sortable="'batchId'" >
+                            <a class="tooltips-right" ng-href="#/batches/view/{{request.batchId}}">{{request.batchId}} <span translate="crs.request.list.tip.batchId"></span></a>
+                        </td>
+                        <td data-title="'crs.request.list.tableHeader.requestorInternalId' | translate" sortable="'requestorInternalId'" >
+                            <a class="tooltips-right" ng-href="#/requests/edit/{{request.id}}">{{request.requestorInternalId}} <span translate="crs.request.list.tip.requestorInternalId"></span></a>
                         </td>
                         <td data-title="'crs.request.list.tableHeader.ticketId' | translate" sortable="'ticketId'" >
                             {{request.ticketId}}

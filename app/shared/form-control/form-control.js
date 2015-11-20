@@ -10,7 +10,7 @@ angular
                     '<label translate="' + label + '" ></label>';
 
                 elementHtml += '<input type="text" class="form-control" name="' + name +
-                    '" ng-model="' + model + '"></input>';
+                    '" ng-model="' + model + '" maxlength="255"></input>';
 
                 elementHtml += '</div>';
 
@@ -22,7 +22,7 @@ angular
                     '<label translate="' + label + '" ></label>';
 
                 elementHtml += '<textarea  class="form-control" name="' + name +
-                    '" ng-model="' + model + '"></textarea>';
+                    '" ng-model="' + model + '" maxlength="4000"></textarea>';
 
                 elementHtml += '</div>';
 
