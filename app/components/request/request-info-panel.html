@@ -13,7 +13,7 @@
                     <div class="timeline-panel">
                         <div class="timeline-heading">
                             <label class="control-label" translate="crs.request.details.info.label.batchId"></label>
-                            <h4 class="timeline-title">{{(requestVM.request.batchId)?requestVM.request.batchId:'N/A'}}</h4>
+                            <h4 class="timeline-title">{{(requestVM.request.batchRequest)?requestVM.request.batchRequest:'N/A'}}</h4>
                         </div>
                     </div>
                 </li>
@@ -25,7 +25,7 @@
                     <div class="timeline-panel">
                         <div class="timeline-heading">
                             <label class="control-label" translate="crs.request.details.info.label.ticketId"></label>
-                            <h4 class="timeline-title">{{(requestVM.request.ticketId)?requestVM.request.ticketId:'N/A'}}</h4>
+                            <h4 class="timeline-title">{{(requestVM.request.jiraTicketId)?requestVM.request.jiraTicketId:'N/A'}}</h4>
                         </div>
                     </div>
                 </li>
@@ -96,16 +96,16 @@
                 <span class="button-link">Validate</span>
             </button>-->
 
-            <button ng-disabled="requestVM.request.requestHeader.status === 'DRAFT'"
+            <button ng-disabled="requestVM.request.requestHeader.status !== 'DRAFT'"
                     class="btn btn-default blue darken-1 promote" style="text-transform: none"
                     ng-click="requestVM.saveRequest()">
                 <span class="md md-save blue darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.save"></span>
             </button>
 
-            <button ng-disabled="requestVM.request.requestHeader.status === 'DRAFT'"
+            <button ng-disabled="requestVM.request.requestHeader.status !== 'DRAFT'"
                     class="btn btn-default pink1 review" style="text-transform: none"
-                    ng-click="requestVM.submitRequest()">
+                    ng-click="requestVM.saveAndSubmitRequest()">
                 <span class="md md-forum pink darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.submit"></span>
             </button>

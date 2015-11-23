@@ -30,23 +30,26 @@
                     {{$data}}
                     <tr ng-repeat="request in $data">
 
-                        <td data-title="'crs.request.list.tableHeader.batchId' | translate" sortable="'batchId'" >
-                            <a class="tooltips-right" ng-href="#/batches/view/{{request.batchId}}">{{request.batchId}} <span translate="crs.request.list.tip.batchId"></span></a>
+                        <td data-title="'crs.request.list.tableHeader.batchId' | translate" sortable="'batchRequest'" >
+                            <a class="tooltips-right" ng-href="#/batches/view/{{request.batchRequest}}">{{request.batchRequest}} <span translate="crs.request.list.tip.batchId"></span></a>
                         </td>
-                        <td data-title="'crs.request.list.tableHeader.requestorInternalId' | translate" sortable="'requestorInternalId'" >
-                            <a class="tooltips-right" ng-href="#/requests/edit/{{request.id}}">{{request.requestorInternalId}} <span translate="crs.request.list.tip.requestorInternalId"></span></a>
+                        <td data-title="'crs.request.list.tableHeader.conceptFSN' | translate" sortable="'fsn'" >
+                            <a class="tooltips-right" ng-href="#/requests/edit/{{request.id}}">{{request.fsn}} <span translate="crs.request.list.tip.conceptFSN"></span></a>
                         </td>
-                        <td data-title="'crs.request.list.tableHeader.ticketId' | translate" sortable="'ticketId'" >
-                            {{request.ticketId}}
+                        <td data-title="'crs.request.list.tableHeader.ticketId' | translate" sortable="'jiraTicketId'" >
+                            {{request.jiraTicketId}}
                         </td>
-                        <td data-title="'crs.request.list.tableHeader.lastModified' | translate" sortable="'modifiedDate'" >
-                            {{request.requestDate | date:'MM-dd-yyyy'}}
+                        <td data-title="'crs.request.list.tableHeader.lastModified' | translate" sortable="'requestHeader.requestDate'" >
+                            {{request.requestHeader.requestDate | date:'MM-dd-yyyy'}}
                         </td>
-                        <td data-title="'crs.request.list.tableHeader.requestType' | translate" sortable="'requestType'" >
-                            {{request.requestType | requestType | translate}}
+                        <!--<td data-title="'crs.request.list.tableHeader.requestType' | translate" sortable="'requestType'" >
+                            {{request.requestHeader.requestType | requestType | translate}}
+                        </td>-->
+                        <td data-title="'crs.request.list.tableHeader.reasonForChange' | translate" sortable="'reasonForChange'" >
+                            {{request.reasonForChange}}
                         </td>
                         <td data-title="'crs.request.list.tableHeader.status' | translate" sortable="'status'">
-                            <span class="badge requestStatus {{request.status}}">{{request.status | requestStatus | translate}}</span>
+                            <span class="badge requestStatus {{request.requestHeader.status}}">{{request.requestHeader.status | requestStatus | translate}}</span>
                         </td>
                     </tr>
                 </table>
@@ -87,20 +90,23 @@
                     {{$data}}
                     <tr ng-repeat="request in $data">
 
-                        <td data-title="'crs.request.list.tableHeader.batchId' | translate" sortable="'batchId'" >
-                            <a class="tooltips-right" ng-href="#/batches/view/{{request.batchId}}">{{request.batchId}} <span translate="crs.request.list.tip.batchId"></span></a>
+                        <td data-title="'crs.request.list.tableHeader.batchId' | translate" sortable="'batchRequest'" >
+                            <a class="tooltips-right" ng-href="#/batches/view/{{request.batchRequest}}">{{request.batchRequest}} <span translate="crs.request.list.tip.batchId"></span></a>
                         </td>
-                        <td data-title="'crs.request.list.tableHeader.requestorInternalId' | translate" sortable="'requestorInternalId'" >
-                            <a class="tooltips-right" ng-href="#/requests/edit/{{request.id}}">{{request.requestorInternalId}} <span translate="crs.request.list.tip.requestorInternalId"></span></a>
+                        <td data-title="'crs.request.list.tableHeader.conceptFSN' | translate" sortable="'fsn'" >
+                            <a class="tooltips-right" ng-href="#/requests/edit/{{request.id}}">{{request.fsn}} <span translate="crs.request.list.tip.conceptFSN"></span></a>
                         </td>
-                        <td data-title="'crs.request.list.tableHeader.ticketId' | translate" sortable="'ticketId'" >
-                            {{request.ticketId}}
+                        <td data-title="'crs.request.list.tableHeader.ticketId' | translate" sortable="'jiraTicketId'" >
+                            {{request.jiraTicketId}}
                         </td>
-                        <td data-title="'crs.request.list.tableHeader.lastModified' | translate" sortable="'modifiedDate'" >
-                            {{request.requestDate | date:'MM-dd-yyyy'}}
+                        <td data-title="'crs.request.list.tableHeader.lastModified' | translate" sortable="'requestHeader.requestDate'" >
+                            {{request.requestHeader.requestDate | date:'MM-dd-yyyy'}}
                         </td>
-                        <td data-title="'crs.request.list.tableHeader.requestType' | translate" sortable="'requestType'" >
-                            {{request.requestType | requestType | translate}}
+                        <!--<td data-title="'crs.request.list.tableHeader.requestType' | translate" sortable="'requestType'" >
+                            {{request.requestHeader.requestType | requestType | translate}}
+                        </td>-->
+                        <td data-title="'crs.request.list.tableHeader.reasonForChange' | translate" sortable="'reasonForChange'" >
+                            {{request.reasonForChange}}
                         </td>
                         <td data-title="'crs.request.list.tableHeader.status' | translate" sortable="'status'">
                             <span class="badge requestStatus {{request.status}}">{{request.status | requestStatus | translate}}</span>

@@ -12,11 +12,14 @@ angular
         'notificationService',
         'requestMetadataService',
         'objectService',
+        'snowowlService',
         'snowowlMetadataService',
         'REQUEST_METADATA_KEY',
         'GENERAL_REQUEST_TYPE',
         'REQUEST_TYPE',
-        function ($scope, $rootScope, $routeParams, $location, $anchorScroll, requestService, notificationService, requestMetadataService, objectService, snowowlMetadataService, REQUEST_METADATA_KEY, GENERAL_REQUEST_TYPE, REQUEST_TYPE) {
+        'CONCEPT_EDIT_EVENT',
+        'REQUEST_STATUS',
+        function ($scope, $rootScope, $routeParams, $location, $anchorScroll, requestService, notificationService, requestMetadataService, objectService, snowowlService, snowowlMetadataService, REQUEST_METADATA_KEY, GENERAL_REQUEST_TYPE, REQUEST_TYPE, CONCEPT_EDIT_EVENT, REQUEST_STATUS) {
             var vm = this;
             var REQUEST_MODE = {
                 NEW: {value: 'new', langKey: 'crs.request.requestMode.newRequest'},
@@ -81,7 +84,6 @@ angular
 
             var showErrorMessage = function (msg) {
                 hideSuccessMessage();
-                console.log(msg);
                 vm.msgError = msg;
 
                 $anchorScroll('messagePaneLocation');
@@ -93,10 +95,19 @@ angular
                 $window.scrollTop = 0;
             };
 
-            var buildNewConceptDefinitionOfChanges = function () {
+            var buildNewConceptDefinitionOfChanges = function (changeId) {
+                return {
+                    changeId: (changeId)?changeId:null,
+                    changeType: REQUEST_TYPE.NEW_CONCEPT.value,
+                    changed: false
+                }
+            };
+
+            var buildChangeConceptDefinitionOfChanges = function () {
                 return {
                     changeId: null,
-                    changeType: REQUEST_TYPE.NEW_CONCEPT.value
+                    changeType: REQUEST_TYPE.CHANGE_RETIRE_CONCEPT.value,
+                    changed: false
                 }
             };
 
@@ -112,7 +123,10 @@ angular
                         $rootScope.pageTitles = ['crs.request.details.title.new', generalRequestType.langKey];
 
                         vm.request = {
-                            id: requestId
+                            id: requestId,
+                            requestHeader: {
+                                status: REQUEST_STATUS.DRAFT.value
+                            }
                         };
 
                         if (generalRequestType === GENERAL_REQUEST_TYPE.NEW_CONCEPT) {
@@ -128,11 +142,18 @@ angular
 
                         $rootScope.showLoading = true;
                         loadRequest().then(function () {
+                            var conceptId = vm.request.concept.id;
+
                             $rootScope.showLoading = false;
-                            generalRequestType = requestService.identifyGeneralRequestType(vm.request.generalRequestType);
+
+                            if (conceptId !== undefined && conceptId !== null) {
+                                generalRequestType = GENERAL_REQUEST_TYPE.EDIT_CONCEPT;
+                            } else {
+                                generalRequestType = GENERAL_REQUEST_TYPE.NEW_CONCEPT;
+                            }
 
                             if (generalRequestType) {
-                                $rootScope.pageTitles.push(vm.request.requestorInternalId);
+                                $rootScope.pageTitles.push(vm.request.id);
                                 vm.generalRequestType = generalRequestType;
                                 vm.isValidViewParams = isValid;
                             } else {
@@ -153,6 +174,8 @@ angular
 
                 return requestService.getRequest(requestId).then(function (response) {
                     vm.request = response;
+                    vm.concept = response.concept;
+
                     /*vm.request.rfcNumber = response.rfcNumber;
                      vm.request.status = response.status;*/
                     notificationService.sendMessage('crs.request.message.requestLoaded', 5000);
@@ -284,9 +307,9 @@ angular
 
                 item.requestType = concept.definitionOfChanges.changeType;
                 item.id = concept.definitionOfChanges.changeId;
-                item.reasonForChange = request.reasonForChange;
-                item.notes = request.notes;
-                item.reference = request.reference;
+                item.reasonForChange = concept.definitionOfChanges.reasonForChange;
+                item.notes = concept.definitionOfChanges.notes;
+                item.reference = concept.definitionOfChanges.reference;
 
                 switch (item.requestType) {
                     case REQUEST_TYPE.NEW_CONCEPT.value:
@@ -321,19 +344,20 @@ angular
             var saveRequest = function () {
 
                 var requestDetails = buildRequestDetails(vm.request, vm.concept, vm.pageMode);
-                console.log(requestDetails);
 
                 requestService.saveRequest(requestDetails)
                     .then(function (response) {
                         notificationService.sendMessage('crs.request.message.requestSaved', 5000);
-                        //$location.path('/dashboard');
+                        $location.path('/dashboard');
                     }, function (e) {
                         showErrorMessage(e.message)
                     });
             };
 
-            var submitRequest = function () {
-                requestService.saveRequest(vm.request)
+            var saveAndSubmitRequest = function () {
+                var requestDetails = buildRequestDetails(vm.request, vm.concept, vm.pageMode);
+
+                requestService.saveRequest(requestDetails)
                     .then(function (response) {
                         var requestId = response.id;
 
@@ -348,13 +372,28 @@ angular
             };
 
             var startEditingConcept = function (conceptObj) {
-                console.log(conceptObj);
-                vm.concept = conceptObj;
+                notificationService.sendMessage('Loading concept ' + (conceptObj.name ? conceptObj.name : conceptObj.id) + ' to edit panel', 10000, null);
+                snowowlService.getFullConcept(null, null, conceptObj.id).then(function (response) {
+                    notificationService.sendMessage('Concept ' + response.fsn + ' successfully added to edit list', 5000, null);
+                    response.definitionOfChanges = buildChangeConceptDefinitionOfChanges();
+                    vm.concept = response;
+                });
             };
+
+            $scope.$on(CONCEPT_EDIT_EVENT.STOP_EDIT_CONCEPT, function (event, data) {
+                if (!data || !data.concept) {
+                    console.error('Cannot remove concept: concept must be supplied');
+                    return;
+                }
+
+                if (data && data.concept.id === vm.concept.id) {
+                    vm.concept = null;
+                }
+            });
 
             vm.cancelEditing = cancelEditing;
             vm.saveRequest = saveRequest;
-            vm.submitRequest = submitRequest;
+            vm.saveAndSubmitRequest = saveAndSubmitRequest;
             vm.startEditingConcept = startEditingConcept;
 
             $scope.panelId = 'REQUEST_DETAILS';

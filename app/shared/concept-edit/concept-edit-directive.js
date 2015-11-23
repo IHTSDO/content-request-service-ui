@@ -13,7 +13,8 @@ angular
         'notificationService',
         '$routeParams',
         'snowowlMetadataService',
-        function ($rootScope, $timeout, $uibModal, $q, snowowlService, objectService, notificationService, $routeParams, snowowlMetadataService) {
+        'CONCEPT_EDIT_EVENT',
+        function ($rootScope, $timeout, $uibModal, $q, snowowlService, objectService, notificationService, $routeParams, snowowlMetadataService, CONCEPT_EDIT_EVENT) {
             return {
                 restrict: 'A',
                 transclude: false,
@@ -208,7 +209,7 @@ angular
                     scope.allowedAttributes = [];
 
                     // flag for viewing active components only. Defaults to true.
-                    scope.hideInactive = true;
+                    scope.hideInactive = false;
 
                     scope.toggleHideInactive = function () {
                         scope.hideInactive = !scope.hideInactive;
@@ -231,7 +232,7 @@ angular
                     // console.debug('conceptEdit inactivateComponentReasons', inactivateComponentReasons, inactivateAssociationReasons);
 
                     scope.removeConcept = function (concept) {
-                        $rootScope.$broadcast('stopEditing', {concept: concept});
+                        $rootScope.$broadcast(CONCEPT_EDIT_EVENT.STOP_EDIT_CONCEPT, {concept: concept});
                     };
 
                     scope.saveConcept = function () {
@@ -1838,15 +1839,18 @@ angular
                     scope.getConceptsForValueTypeahead = function (attributeId, searchStr) {
                         return snowowlService.getDomainAttributeValues(null, null, attributeId, searchStr).then(function (response) {
                             // remove duplicates
-                            for (var i = 0; i < response.length; i++) {
-                                // console.debug('checking for duplicates', i, response[i]);
-                                for (var j = response.length - 1; j > i; j--) {
-                                    if (response[j].id === response[i].id) {
-                                        response.splice(j, 1);
-                                        j--;
+                            if (response && response.length > 0) {
+                                for (var i = 0; i < response.length; i++) {
+                                    // console.debug('checking for duplicates', i, response[i]);
+                                    for (var j = response.length - 1; j > i; j--) {
+                                        if (response[j].id === response[i].id) {
+                                            response.splice(j, 1);
+                                            j--;
+                                        }
                                     }
                                 }
                             }
+
                             return response;
                         });
                     };

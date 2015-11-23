@@ -37,7 +37,8 @@
                     "count": "Number of requests",
                     "create": "Create New Request",
                     "requestorInternalId": "Click to open request editing view",
-                    "batchId": "Click to open batch details view"
+                    "batchId": "Click to open batch details view",
+                    "conceptFSN": "Click to open request editing view"
                 },
                 "searchPlaceHolder": {
                     "myRequests": "Search My Requests",
@@ -46,11 +47,13 @@
                 "tableHeader": {
                     "batchId": "Batch Id",
                     "requestorInternalId": "Requestor Interal Id",
-                    "ticketId": "Ticket Id",
+                    "ticketId": "Request Id",
                     "description": "Description",
                     "lastModified": "Last Modified",
                     "requestType": "Request Type",
-                    "status": "Status"
+                    "status": "Status",
+                    "conceptFSN": "Concept",
+                    "reasonForChange": "Reason for Change"
                 }
             },
             "details": {

@@ -101,11 +101,12 @@
                 ng-click="toggleConceptActive(concept)" class="small-buttons tooltips-left tooltips-light normal-case">
             <span ng-if="!isStatic"> Activate/ inactivate concept </span>
             <span ng-if="isStatic"> {{concept.active ? 'Active Concept' : 'InactiveConcept'}} </span></button>
-        <button ng-disabled="conceptChangeType === 'NEW_CONCEPT'" type="button"
+
+        <!--<button ng-disabled="conceptChangeType === 'NEW_CONCEPT'" type="button"
                 style="vertical-align: bottom"
                 class="btn-default editbuttons small-buttons color_{{relationship.groupId}} tooltips-left tooltips-light normal-case"
                 ng-class="[{'red fa fa-level-down' : !hideInactive}, {'fa fa-level-up green' : hideInactive}]"
-                ng-click="toggleHideInactive()"><span> Show/hide inactive components </span></button>
+                ng-click="toggleHideInactive()"><span> Show/hide inactive components </span></button>-->
 
 
         <button type="button" class="btn-default editbuttons small-buttons amber md md-undo "
