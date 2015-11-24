@@ -44,6 +44,10 @@ angular
                 $location.path('requests/new/' + requestType);
             };
 
+            var editRequest = function (requestId) {
+                $location.path('requests/edit/' + requestId);
+            };
+
             var openCreateRequestModal = function () {
                 var modalInstance = $uibModal.open({
                     templateUrl: 'components/request/modal-create-request.html',
@@ -58,6 +62,7 @@ angular
             };
 
             vm.openCreateRequestModal = openCreateRequestModal;
+            vm.editRequest = editRequest;
             initView();
         }
     ]);

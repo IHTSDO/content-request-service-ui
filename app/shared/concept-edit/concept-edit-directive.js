@@ -10,11 +10,13 @@ angular
         '$q',
         'snowowlService',
         'objectService',
+        'requestService',
         'notificationService',
         '$routeParams',
         'snowowlMetadataService',
         'CONCEPT_EDIT_EVENT',
-        function ($rootScope, $timeout, $uibModal, $q, snowowlService, objectService, notificationService, $routeParams, snowowlMetadataService, CONCEPT_EDIT_EVENT) {
+        'REQUEST_TYPE',
+        function ($rootScope, $timeout, $uibModal, $q, snowowlService, objectService, requestService, notificationService, $routeParams, snowowlMetadataService, CONCEPT_EDIT_EVENT, REQUEST_TYPE) {
             return {
                 restrict: 'A',
                 transclude: false,
@@ -136,6 +138,7 @@ angular
                     // initialize the last saved version of this concept
                     scope.unmodifiedConcept = JSON.parse(JSON.stringify(scope.concept));
                     scope.unmodifiedConcept = scope.addAdditionalFields(scope.unmodifiedConcept);
+
                     if (scope.autosave === false) {
                         scope.concept = scope.unmodifiedConcept;
                     }
@@ -399,12 +402,19 @@ angular
                         // if inactive, simply set active and autoSave
                         if (!scope.concept.active) {
                             scope.concept.active = true;
-                            scope.saveConcept();
+                            scope.concept.definitionOfChanges.changed = false;
+                            //scope.saveConcept();
                         }
 
                         // otherwise, open a select reason modal
                         else {
-                            selectInactivationReason('Concept', inactivateComponentReasons, inactivateAssociationReasons, scope.concept.conceptId, scope.branch).then(function (results) {
+                            showDefinitionOfChange(scope.concept.definitionOfChanges.changeType, scope.concept).then(function (defOfChange) {
+                                scope.concept.active = false;
+                                scope.concept.definitionOfChanges = defOfChange;
+                                scope.concept.definitionOfChanges.changed = true;
+                            });
+
+                            /*selectInactivationReason('Concept', inactivateComponentReasons, inactivateAssociationReasons, scope.concept.conceptId, scope.branch).then(function (results) {
 
                                 notificationService.sendMessage('Inactivating concept (' + results.reason.text + ')');
                                 // console.debug(scope.branch, scope.concept.conceptId, reason,
@@ -432,7 +442,7 @@ angular
                                     notificationService.sendError('Could not save inactivation reason for concept, concept will remain active');
                                 });
 
-                            });
+                            });*/
                         }
                     };
 
@@ -725,6 +735,13 @@ angular
                     scope.addDescription = function (afterIndex) {
 
                         var description = objectService.getNewDescription(null);
+                        if (scope.conceptChangeType !== 'NEW_CONCEPT') {
+                            description.definitionOfChanges = {
+                                changeId: null,
+                                changeType: REQUEST_TYPE.NEW_DESCRIPTION.value,
+                                changed: true
+                            };
+                        }
 
                         // if not specified, simply push the new description
                         if (afterIndex === null || afterIndex === undefined) {
@@ -736,7 +753,6 @@ angular
                             scope.concept.descriptions.splice(afterIndex + 1, 0, description);
                             autoSave();
                         }
-
                     };
 
                     /**
@@ -764,10 +780,16 @@ angular
                      */
                     scope.toggleDescriptionActive = function (description) {
                         // console.debug('toggling description active', description);
+                        if (description.definitionOfChanges &&
+                            description.definitionOfChanges.changeType === REQUEST_TYPE.NEW_DESCRIPTION.value) {
+                            window.alert('Can not inactive newly created description, remove it instead.');
+                            return;
+                        }
 
                         // if inactive, simply set active
                         if (!description.active) {
                             description.active = true;
+                            description.definitionOfChanges.changed = false;
                             autoSave();
                         }
 
@@ -776,7 +798,7 @@ angular
                             description.active = false;
 
                             // ensure all minimum fields are present
-                            objectService.applyMinimumFields(scope.concept);
+                            //objectService.applyMinimumFields(scope.concept);
 
                             autoSave();
                         }
@@ -784,7 +806,7 @@ angular
                         // otherwise, open a select reason modal
                         else {
                             // TODO Decide what the heck to do with result
-                            selectInactivationReason('Description', inactivateDescriptionReasons, null, null, null).then(function (results) {
+                            /*selectInactivationReason('Description', inactivateDescriptionReasons, null, null, null).then(function (results) {
 
                                 notificationService.sendMessage('Inactivating description (' + results.reason.text + ')');
 
@@ -796,6 +818,20 @@ angular
                                     notificationService.sendError('Error inactivating description');
                                 });
 
+                            });*/
+
+                            if (!description.definitionOfChanges) {
+                                description.definitionOfChanges = {
+                                    changeId: null,
+                                    changeType: REQUEST_TYPE.CHANGE_RETIRE_DESCRIPTION.value,
+                                    changed: false
+                                }
+                            }
+
+                            showDefinitionOfChange(description.definitionOfChanges.changeType, description).then(function (defOfChange) {
+                                description.active = false;
+                                description.definitionOfChanges = defOfChange;
+                                description.definitionOfChanges.changed = true;
                             });
 
                         }
@@ -1004,30 +1040,48 @@ angular
 
                         var relationship = objectService.getNewAttributeRelationship(null);
 
-                        // set role group if specified
-                        if (relGroup) {
-                            relationship.groupId = relGroup;
-                        }
+                        var addRel = function () {
+                            // set role group if specified
+                            if (relGroup) {
+                                relationship.groupId = relGroup;
+                            }
 
-                        // if afterIndex not supplied or invalid, simply add
-                        if (afterIndex === null || afterIndex === undefined) {
-                            scope.concept.relationships.push(relationship);
+                            // if afterIndex not supplied or invalid, simply add
+                            if (afterIndex === null || afterIndex === undefined) {
+                                scope.concept.relationships.push(relationship);
 
-                            autoSave();
-                        }
+                                autoSave();
+                            }
 
-                        // otherwise, add at the index specified
-                        else {
-                            // find the index of the requested insertion point
-                            var rels = scope.getAttributeRelationships();
-                            var relIndex = scope.concept.relationships.indexOf(rels[afterIndex]);
+                            // otherwise, add at the index specified
+                            else {
+                                // find the index of the requested insertion point
+                                var rels = scope.getAttributeRelationships();
+                                var relIndex = scope.concept.relationships.indexOf(rels[afterIndex]);
 
-                            //   // console.debug('found relationship index', relIndex);
+                                //   // console.debug('found relationship index', relIndex);
 
-                            // add the relationship
-                            scope.concept.relationships.splice(relIndex + 1, 0, relationship);
+                                // add the relationship
+                                scope.concept.relationships.splice(relIndex + 1, 0, relationship);
 
-                            autoSave();
+                                autoSave();
+                            }
+                        };
+
+                        if (scope.conceptChangeType !== 'NEW_CONCEPT') {
+                            relationship.definitionOfChanges = {
+                                changeId: null,
+                                changeType: REQUEST_TYPE.NEW_RELATIONSHIP.value,
+                                changed: true
+                            };
+
+                            showDefinitionOfChange(REQUEST_TYPE.NEW_RELATIONSHIP.value, relationship).then(function (defOfChange) {
+                                relationship.definitionOfChanges = defOfChange;
+                                addRel();
+
+                            });
+                        } else {
+                            addRel();
                         }
                     };
 
@@ -1047,8 +1101,34 @@ angular
 
                     scope.toggleRelationshipActive = function (relationship) {
                         // no special handling required, simply toggle
-                        relationship.active = !relationship.active;
-                        objectService.applyMinimumFields(scope.concept);
+                        //relationship.active = !relationship.active;
+
+                        if (relationship.definitionOfChanges &&
+                            relationship.definitionOfChanges.changeType === REQUEST_TYPE.NEW_RELATIONSHIP.value) {
+                            window.alert('Can not inactive newly created relationship, remove it instead.');
+                            return;
+                        }
+
+                        if (!relationship.active) {
+                            relationship.active = true;
+                            relationship.definitionOfChanges.changed = false;
+                        } else {
+                            if (!relationship.definitionOfChanges) {
+                                relationship.definitionOfChanges = {
+                                    changeId: null,
+                                    changeType: REQUEST_TYPE.CHANGE_RETIRE_RELATIONSHIP.value,
+                                    changed: false
+                                }
+                            }
+
+                            showDefinitionOfChange(relationship.definitionOfChanges.changeType, relationship).then(function (defOfChange) {
+                                relationship.active = false;
+                                relationship.definitionOfChanges = defOfChange;
+                                relationship.definitionOfChanges.changed = true;
+                            });
+                        }
+
+                        //objectService.applyMinimumFields(scope.concept);
                         scope.getDomainAttributes();
                         autoSave();
                     };
@@ -1123,7 +1203,7 @@ angular
                         var deferred = $q.defer();
 
                         var modalInstance = $uibModal.open({
-                            templateUrl: 'shared/inactivate-component-modal/inactivateComponentModal.html',
+                            templateUrl: 'shared/concept-edit/inactivate-component-modal.html',
                             controller: 'inactivateComponentModalCtrl',
                             resolve: {
                                 componentType: function () {
@@ -1146,13 +1226,59 @@ angular
                         });
 
                         modalInstance.result.then(function (results) {
-                            console.log(results);
                             deferred.resolve(results);
                         }, function () {
                             deferred.reject();
                         });
 
                         return deferred.promise;
+                    };
+
+                    var showDefinitionOfChange = function (changeType, changeTarget) {
+                        var deferred = $q.defer();
+
+                        var modalInstance = $uibModal.open({
+                            templateUrl: 'shared/concept-edit/definition-of-change-modal.html',
+                            controller: 'definitionOfChangeModalCtrl as defOfChangeModalCtrl',
+                            resolve: {
+                                changeType: function () {
+                                    return requestService.identifyRequestType(changeType);
+                                },
+                                changeTarget: function () {
+                                    return changeTarget;
+                                }
+                            }
+                        });
+
+                        modalInstance.result.then(function (results) {
+                            deferred.resolve(results);
+                        }, function () {
+                            deferred.reject();
+                        });
+
+                        return deferred.promise;
+                    };
+
+                    scope.showConceptDefinitionOfChange = function (concept) {
+                        showDefinitionOfChange(concept.definitionOfChanges.changeType, concept).then(function (defOfChange) {
+                            concept.definitionOfChanges = defOfChange;
+                        });
+                    };
+
+                    scope.showDescriptionDefinitionOfChange = function (description) {
+                        if (description.definitionOfChanges.changeType === REQUEST_TYPE.NEW_DESCRIPTION.value) {
+                            return;
+                        }
+
+                        showDefinitionOfChange(description.definitionOfChanges.changeType, description).then(function (defOfChange) {
+                            description.definitionOfChanges = defOfChange;
+                        });
+                    };
+
+                    scope.showRelationshipDefinitionOfChange = function (relationship) {
+                        showDefinitionOfChange(relationship.definitionOfChanges.changeType, relationship).then(function (defOfChange) {
+                            relationship.definitionOfChanges = defOfChange;
+                        });
                     };
 
                     ////////////////////////////////////
@@ -1218,7 +1344,6 @@ angular
 
                         // check if allowable relationship target using concept id
                         scope.getConceptsForValueTypeahead(relationship.type.conceptId, data.id).then(function (response) {
-                            console.log(response);
                             if (response && response.length > 0) {
                                 relationship.target.conceptId = data.id;
                                 relationship.target.fsn = data.name;
@@ -1262,6 +1387,7 @@ angular
 
                         // check that attribute is acceptable for MRCM rules
                         var attributes = scope.getConceptsForAttributeTypeahead(data.name);
+
                         if (attributes && attributes.length > 0) {
                             relationship.type.conceptId = data.id;
                             relationship.type.fsn = data.name;
@@ -1406,7 +1532,7 @@ angular
                             return conceptFsns[conceptId];
                         } else {
                             conceptFsns[conceptId] = 'Retrieving FSN...';
-                            snowowlService.getFullConcept(conceptId, scope.branch).then(function (response) {
+                            snowowlService.getFullConcept(null, null, conceptId).then(function (response) {
                                 conceptFsns[conceptId] = response.fsn;
                             });
 
@@ -1649,14 +1775,14 @@ angular
 
                     };
 
-                    scope.revertConcept = function () {
+                    /*scope.revertConcept = function () {
                         if (!scope.parentBranch) {
                             return;
                         }
 
                         notificationService.sendMessage('Reverting concept ' + scope.concept.fsn + ' to parent branch ' + scope.parentBranch, 0);
 
-                        snowowlService.getFullConcept(scope.concept.conceptId, scope.parentBranch).then(function (response) {
+                        snowowlService.getFullConcept(null, null, scope.concept.conceptId).then(function (response) {
                             scope.concept = response;
                             sortDescriptions();
                             sortRelationships();
@@ -1667,6 +1793,15 @@ angular
                             notificationService.sendError('Error reverting: Could not retrieve concept ' + scope.concept.conceptId + ' from parent branch ' + scope.parentBranch);
                         });
 
+                    };*/
+
+                    scope.revertConcept = function () {
+                        scope.conceptHistoryPtr = 0;
+                        scope.concept = scope.conceptHistory[0];
+
+                        scope.conceptHistory = [JSON.parse(JSON.stringify(scope.concept))];
+
+                        saveModifiedConcept();
                     };
 
                     /////////////////////////////
@@ -1683,7 +1818,7 @@ angular
                      * Saves the current concept state for later retrieval
                      * Called by autoSave(), undo(), redo()
                      */
-                    /****TON: function saveModifiedConcept() {
+                    function saveModifiedConcept() {
 
                         // console.debug('saveModifiedConcept', scope.concept,
                         // scope.unmodifiedConcept);
@@ -1700,20 +1835,21 @@ angular
                             scope.isModified = true;
 
                             // store the modified concept in ui-state
-                            scaService.saveModifiedConceptForTask($routeParams.projectKey, $routeParams.taskKey, scope.concept.conceptId, scope.concept).then(function () {
+                            /*** TON scaService.saveModifiedConceptForTask($routeParams.projectKey, $routeParams.taskKey, scope.concept.conceptId, scope.concept).then(function () {
                                 // do nothing
-                            });
+                            });*/
                         } else {
                             scope.isModified = false;
                         }
-                    }*/
+                    }
 
                     /**
                      * Autosaves the concept modifications and updates history
                      * NOTE: outside $watch to prevent spurious updates
                      */
                     function autoSave() {
-                        if (scope.autosave === true) {
+
+                        if (scope.autosave === true || scope.autosave === 'true') {
                             // console.debug('conceptEdit: autosave called', scope.concept ===
                             // scope.lastModifiedConcept, scope.concept);
 
@@ -1775,7 +1911,7 @@ angular
                             // objectService.getNewConcept(scope.branch));
                         } else {
                             notificationService.sendMessage('Reverting concept...');
-                            snowowlService.getFullConcept(scope.concept.conceptId, scope.branch).then(function (response) {
+                            snowowlService.getFullConcept(null, null, scope.concept.conceptId).then(function (response) {
                                 notificationService.sendMessage('Concept successfully reverted to saved version', 5000);
                                 scope.concept = response;
                                 scope.unmodifiedConcept = JSON.parse(JSON.stringify(response));

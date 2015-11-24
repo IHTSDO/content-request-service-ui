@@ -1,8 +1,8 @@
-<h4 translate="crs.request.requestType.newRelationship"></h4>
+<!--<h4 translate="crs.request.requestType.newRelationship"></h4>-->
 <form class="form-floating">
 
     <div class="form-group">
-        <form-control type="text"
+        <!--<form-control type="text"
                       model="requestVM.request.requestorInternalId"
                       label="crs.request.details.label.requestorInternalId"
                       name="txtRequestorInternalId"></form-control>
@@ -24,24 +24,24 @@
             <label for="">Destination Concept Id</label>
             <input class="form-control" type="text" ng-model="requestVM.request.destConceptId"/>
         </div>
-        <br/>
+        <br/>-->
 
         <form-control type="select"
-                      model="requestVM.request.characteristicType"
-                      options="characteristicType for characteristicType in requestVM.characteristicTypes"
+                      model="definitionOfChanges.characteristicType"
+                      options="characteristicType for characteristicType in requestMetadata.characteristicTypes"
                       label="crs.request.details.label.characteristicType"
                       name="slCharacteristicType"></form-control>
 
         <form-control type="select"
-                      model="requestVM.request.refinability"
-                      options="refinability for refinability in requestVM.refinabilities"
+                      model="definitionOfChanges.refinability"
+                      options="refinability for refinability in requestMetadata.refinabilities"
                       label="crs.request.details.label.refinability"
                       name="slRefinability"></form-control>
 
-        <form-control type="text"
+        <!--<form-control type="text"
                       model="requestVM.request.relationshipGroup"
                       label="crs.request.details.label.relationshipGroup"
-                      name="txtRelationshipGroup"></form-control>
+                      name="txtRelationshipGroup"></form-control>-->
 
         <!--<form-control type="text"
                       model="requestVM.request.reasonForChange"

@@ -1,8 +1,8 @@
-<h4 translate="crs.request.requestType.changeRetireDescription"></h4>
+<!--<h4 translate="crs.request.requestType.changeRetireDescription"></h4>-->
 <form class="form-floating">
 
     <div class="form-group">
-        <form-control type="text"
+        <!--<form-control type="text"
                       model="requestVM.request.requestorInternalId"
                       label="crs.request.details.label.requestorInternalId"
                       name="txtRequestorInternalId"></form-control>
@@ -16,9 +16,9 @@
                 <input class="form-control" type="text" ng-model="requestVM.request.conceptFSN"/>
             </div>
         </div>
-        <br/>
+        <br/>-->
 
-        <form-control type="text"
+        <!--<form-control type="text"
                       model="requestVM.request.descriptionId"
                       label="crs.request.details.label.descriptionId"
                       name="txtDescriptionId"
@@ -40,10 +40,10 @@
                       options="caseSignificance for caseSignificance in requestVM.caseSignificances"
                       label="crs.request.details.label.proposedCaseSignificance"
                       name="slCaseSignificance"></form-control>
-
+-->
         <form-control type="select"
-                      model="requestVM.request.descriptionStatus"
-                      options="descriptionStatus for descriptionStatus in requestVM.descriptionStatuses"
+                      model="definitionOfChanges.descriptionStatus"
+                      options="descriptionStatus for descriptionStatus in requestMetadata.descriptionStatuses"
                       label="crs.request.details.label.descriptionStatus"
                       name="slDescriptionStatus"></form-control>
 

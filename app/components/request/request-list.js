@@ -124,10 +124,15 @@ angular
                 }
             );
 
+            var editRequest = function (requestId) {
+
+            };
+
             vm.tableParams = requestTableParams;
             vm.requests = null;
             vm.submittedRequests = null;
             vm.isAdmin = false;
+            vm.editRequest = editRequest;
 
             initView();
         }

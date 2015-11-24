@@ -232,6 +232,72 @@ angular.module('conceptRequestServiceApp.snowowl')
                         });
                 };
 
+                var getConceptDescendants = function (projectKey, taskKey, conceptId, offset, limit) {
+                    var params;
+
+                    // default values
+                    if (!offset) {
+                        offset = 0;
+                    }
+                    if (!limit) {
+                        limit = 50;
+                    }
+                    if (limit > 200) {
+                        limit = 200;
+                    }
+
+                    params = {
+                        expand: 'fsn',
+                        limit: (limit !== -1 )?limit:null,
+                        offset: (offset !== -1 )?offset:null,
+                        direct: false
+                    };
+
+                    return sendSnowowlRequest('GET', SNOWOWL_API.BROWSER, projectKey, taskKey, SNOWOWL_TARGET.CONCEPT.path, conceptId + '/descendants', params, null)
+                        .then(function (response) {
+                            return response.data;
+                        });
+                };
+
+                var getConceptRelationshipsInbound = function (projectKey, taskKey, conceptId, offset, limit) {
+                    var params;
+
+                    if (!offset) {
+                        offset = 0;
+                    }
+
+                    if (!limit) {
+                        limit = 50;
+                    }
+
+                    params = {
+                        expand: 'source.fsn,type.fsn',
+                        limit: (limit !== -1 )?limit:null,
+                        offset: (offset !== -1 )?offset:null
+                    };
+
+                    return sendSnowowlRequest('GET', SNOWOWL_API.BROWSER, projectKey, taskKey, SNOWOWL_TARGET.CONCEPT.path, conceptId + '/inbound-relationships', params, null)
+                        .then(function (response) {
+                            if (response.data.total === 0) {
+                                return {total: 0, inboundRelationships: []};
+                            } else {
+                                return response.data;
+                            }
+                        });
+                };
+
+                var getConceptRelationshipsOutbound = function (projectKey, taskKey, conceptId) {
+
+                    return sendSnowowlRequest('GET', SNOWOWL_API.BROWSER, projectKey, taskKey, SNOWOWL_TARGET.CONCEPT.path, conceptId + '/outbound-relationships', null, null)
+                        .then(function (response) {
+                            if (response.data.total === 0) {
+                                return [];
+                            } else {
+                                return response.data.outboundRelationships;
+                            }
+                        });
+                };
+
                 return {
                     getSnowowlConfig: getSnowowlConfig,
                     getDomainAttributes: getDomainAttributes,
@@ -239,7 +305,10 @@ angular.module('conceptRequestServiceApp.snowowl')
                     findConcepts: findConcepts,
                     getFullConcept: getFullConcept,
                     getConceptChildren: getConceptChildren,
-                    getConceptParents: getConceptParents
+                    getConceptParents: getConceptParents,
+                    getConceptDescendants: getConceptDescendants,
+                    getConceptRelationshipsInbound: getConceptRelationshipsInbound,
+                    getConceptRelationshipsOutbound: getConceptRelationshipsOutbound
                 };
             }
         ];

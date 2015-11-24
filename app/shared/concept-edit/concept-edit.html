@@ -43,12 +43,11 @@
     <div class="pull-left col-md-1 no-padding">
 
 
-        <div ng-if="conceptChangeType === 'NEW_CONCEPT'" class="more-button-width">
+        <div ng-if="conceptChangeType === 'NEW_CONCEPT' || !concept.definitionOfChanges.changed" class="more-button-width">
         </div>
-        <button ng-if="conceptChangeType !== 'NEW_CONCEPT'" ng-click="setConceptProperties(concept)" type="button"
+        <button ng-if="conceptChangeType !== 'NEW_CONCEPT' && concept.definitionOfChanges.changed" ng-click="showConceptDefinitionOfChange(concept)" type="button"
                     class="btn btn-default morebuttons grey darken-4 md more-button-width fa fa-pencil tooltips-right tooltips-light normal-case"
-                    uib-popover-template="'shared/concept-edit/concept-more.html'" popover-placement="{{popoverDirection}}"
-                    popover-trigger="click: click" popover-append-to-body="true"><span>More details</span></button>
+                    ><span>Change details</span></button>
 
         <button
                 class="btn btn-default morebuttons grey darken-4 md md-open-with normal-case drag-button-width "
@@ -85,10 +84,10 @@
         </div>
     </div>
     <div class="pull-right no-margin edits concept-title col-md-4 no-padding">
-        <button ng-click="saveConcept()" type="button"
+        <!--<button ng-click="saveConcept()" type="button"
                 class="btn-default save-button small-buttons deep-purple lighten-2 md md-save tooltips-left tooltips-light normal-case "
                 ng-click="saveConcept()"
-                ng-if="isModified && !isStatic"><span> Save Concept </span></button>
+                ng-if="isModified && !isStatic"><span> Save Concept </span></button>-->
         <!-- Revert button only appears if parent is specified -->
         <button ng-if="parentBranch" type="button" class="btn btn-default revert-button" ng-click="revertConcept()">
             Revert
@@ -121,7 +120,7 @@
                 ng-disabled="conceptHistoryPtr === conceptHistory.length - 1"></button>
         <button type="button" class="btn-default editbuttons small-buttons deep-purple lighten-2 md md-history"
                 title="Revert to Saved"
-                ng-click="undoAll()"
+                ng-click="revertConcept()"
                 ng-if="!isStatic"
                 ng-disabled="!isModified"></button>
         <!--<button type="button"
@@ -156,13 +155,11 @@
              drag-enter-class="sca-drag-target"
              drag-hover-class="sca-drag-hover">
 
-            <div ng-if="conceptChangeType === 'NEW_CONCEPT'" class="more-button-width">
+            <div ng-if="conceptChangeType === 'NEW_CONCEPT' || !description.definitionOfChanges.changed" class="more-button-width">
             </div>
-            <button ng-if="conceptChangeType !== 'NEW_CONCEPT'" ng-click="setDescriptionProperties(description)"
+            <button ng-if="conceptChangeType !== 'NEW_CONCEPT' && description.definitionOfChanges.changed"
                     class="btn-default grey darken-3 md morebuttons fa fa-pencil more-button-width tooltips-right tooltips-light normal-case"
-                    uib-popover-template="'shared/concept-edit/description-more.html'"
-                    popover-placement="{{popoverDirection}}"
-                    ng-click="populateDescriptionMore(description)" popover-append-to-body="true"><span>More details</span></button>
+                    ng-click="showDescriptionDefinitionOfChange(description)"><span>Change details</span></button>
 
             <button
                     class="btn-default grey darken-3 md morebuttons md-open-with drag-button-width"
@@ -173,13 +170,13 @@
             <!-- Active/Inactive -->
             <button type="button"
                     style="vertical-align: bottom"
-                    ng-disabled="isStatic"
+                    ng-disabled="isStatic || conceptChangeType === 'NEW_CONCEPT'"
                     ng-click="toggleDescriptionActive(description)"
                     ng-class="[btn-default, md, 'fa fa-power-off button-width', {green : description.active}, {red: !description.active}]"
                     title="Active/Inactive"></button>
 
             <!-- Case Significance -->
-            <button type="button" class=" blue accent-2 button-width custom-button text-center" ng-disabled="isStatic"
+            <button type="button" class=" blue accent-2 button-width custom-button text-center" ng-disabled="description.effectiveTime || isStatic"
                     title="Case Significance " ng-click="toggleCaseSignificance(description)">
 
                 <span class="md col-md-12 no-padding text-center">{{getCaseSignificanceDisplayText(description)}}</span>
@@ -281,14 +278,11 @@
              drag-hover-class="sca-drag-hover">
 
             <div class="p-t-5 ">
-                <div ng-if="conceptChangeType === 'NEW_CONCEPT'" class="more-button-width">
+                <div ng-if="conceptChangeType === 'NEW_CONCEPT' || !relationship.definitionOfChanges.changed" class="more-button-width">
                 </div>
-                <button ng-if="conceptChangeType !== 'NEW_CONCEPT'" class="btn-default grey darken-3 md morebuttons more-button-width fa fa-pencil button-width tooltips-right tooltips-light normal-case"
-                        ng-click="setRelationshipProperties(relationship)"
-                        uib-popover-template="'shared/concept-edit/relationship-more.html'"
-                        popover-placement="{{popoverDirection}}"
-                        title="Some title here" popover-append-to-body="true"
-                  ><span>More details</span></button>
+                <button ng-if="conceptChangeType !== 'NEW_CONCEPT' && relationship.definitionOfChanges.changed" class="btn-default grey darken-3 md morebuttons more-button-width fa fa-pencil button-width tooltips-right tooltips-light normal-case"
+                        ng-click="showRelationshipDefinitionOfChange(relationship)"
+                  ><span>Change details</span></button>
 
                 <button
                         class="btn-default grey darken-3 md morebuttons pull-left md-open-with drag-button-width "
@@ -298,7 +292,7 @@
                 <!-- TODO Fix this   Note: due to weird behavior with ng-class, need to manually add bottom alignment -->
                 <button type="button"
                         style="vertical-align: bottom"
-                        ng-disabled="isStatic"
+                        ng-disabled="isStatic || conceptChangeType === 'NEW_CONCEPT'"
                         ng-click="toggleRelationshipActive(relationship)"
                         ng-class="[btn, btn-default, editbuttons, md, 'fa fa-power-off button-width', {green : relationship.active}, {red: !relationship.active}]"
                         title="Active/Inactive"></button>
@@ -306,7 +300,7 @@
                 <!-- relationship group -->
                 <div class="pull-left rolegroup">
                     <textarea style="" class="msd-elastic"
-                              ng-disabled="isStatic"
+                              ng-disabled="relationship.effectiveTime || isStatic"
                               ng-model="relationship.groupId"
                               ng-model-options="{updateOn: 'blur'}"
                               ng-change="updateRelationship(relationship)"

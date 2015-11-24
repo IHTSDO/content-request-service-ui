@@ -1,8 +1,8 @@
-<h4 translate="crs.request.requestType.changeRetireRelationship"></h4>
+<!--<h4 translate="crs.request.requestType.changeRetireRelationship"></h4>-->
 <form class="form-floating">
 
     <div class="form-group">
-        <form-control type="text"
+        <!--<form-control type="text"
                       model="requestVM.request.requestorInternalId"
                       label="crs.request.details.label.requestorInternalId"
                       name="txtRequestorInternalId"></form-control>
@@ -17,24 +17,24 @@
                 <input class="form-control" type="text" ng-model="requestVM.request.conceptFSN"/>
             </div>
         </div>
-        <br/>
+        <br/>-->
 
-        <form-control type="text"
+        <!--<form-control type="text"
                       model="requestVM.request.relationshipId"
                       label="crs.request.details.label.relationshipId"
                       name="txtRelationshipId"
-                      required></form-control>
+                      required></form-control>-->
 
         <form-control type="select"
-                      model="requestVM.request.refinability"
-                      options="refinability for refinability in requestVM.refinabilities"
+                      model="definitionOfChanges.refinability"
+                      options="refinability for refinability in requestMetadata.refinabilities"
                       label="crs.request.details.label.newRefinability"
                       name="slRefinability"></form-control>
 
 
         <form-control type="select"
-                      model="requestVM.request.relationshipStatus"
-                      options="relationshipStatus for relationshipStatus in requestVM.relationshipStatuses"
+                      model="definitionOfChanges.relationshipStatus"
+                      options="relationshipStatus for relationshipStatus in requestMetadata.relationshipStatuses"
                       label="crs.request.details.label.relationshipStatus"
                       name="slRelationshipStatus"></form-control>
 

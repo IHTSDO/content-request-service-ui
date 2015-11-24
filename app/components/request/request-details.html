@@ -140,11 +140,11 @@
                     <div class="alert alert-danger" ng-show="requestVM.msgError">{{requestVM.msgError | translate}}</div>
 
                     <div ng-include="'components/request/request-general-details-form.html'"></div><br/>
-                    <div ng-include="requestVM.requestType.form.template"></div>
+                    <!--<div ng-include="requestVM.requestType.form.template"></div>-->
 
                 </div>
                 <div class="col-sm-6 editpanel no-padding grey darken-3" style="height: 100%;overflow-y:auto;overflow-x:hidden">
-                    <div ng-if="requestVM.concept" concept-edit concept="requestVM.concept" id="height-{{concept.conceptId}}" autosave="false"
+                    <div ng-if="requestVM.concept" concept-edit concept="requestVM.concept" id="height-{{concept.conceptId}}" autosave="true"
                          static="false" save-function="conceptUpdateFunction(project, task, concept)">
                     </div>
                     <div ng-if="!requestVM.concept" class="edit-dropzone-wrapper" >

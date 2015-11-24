@@ -99,7 +99,7 @@ angular
                 return {
                     changeId: (changeId)?changeId:null,
                     changeType: REQUEST_TYPE.NEW_CONCEPT.value,
-                    changed: false
+                    changed: true
                 }
             };
 
@@ -142,7 +142,7 @@ angular
 
                         $rootScope.showLoading = true;
                         loadRequest().then(function () {
-                            var conceptId = vm.request.concept.id;
+                            var conceptId = vm.request.concept.conceptId;
 
                             $rootScope.showLoading = false;
 
@@ -163,7 +163,7 @@ angular
                     }
 
                     vm.pageMode = identifyPageMode(mode);
-                    loadRequestMetadata();
+                    //loadRequestMetadata();
                 }
             };
 
@@ -182,7 +182,7 @@ angular
                 });
             };
 
-            var loadRequestMetadata = function () {
+            /*var loadRequestMetadata = function () {
                 requestMetadataService.getMetadata([
                     REQUEST_METADATA_KEY.RELATIONSHIP_TYPE,
                     REQUEST_METADATA_KEY.CHARACTERISTIC_TYPE,
@@ -203,7 +203,7 @@ angular
                         vm.descriptionStatuses = metadata[REQUEST_METADATA_KEY.NEW_DESCRIPTION_STATUS];
                         vm.relationshipStatuses = metadata[REQUEST_METADATA_KEY.NEW_RELATIONSHIP_STATUS];
                     });
-            };
+            };*/
 
             var cancelEditing = function () {
                 $location.path('/dashboard');
@@ -301,12 +301,13 @@ angular
             };
 
 
-            var buildRequestWorkItem = function (request, concept) {
+            var buildRequestWorkItem = function (concept, definitionOfChanges, changedTarget) {
                 var item = {};
-                var parentConcept;
+                var parentConcept, isDescriptionPT = false;
 
-                item.requestType = concept.definitionOfChanges.changeType;
-                item.id = concept.definitionOfChanges.changeId;
+                item.requestType = definitionOfChanges.changeType;
+                item.id = definitionOfChanges.changeId;
+
                 item.reasonForChange = concept.definitionOfChanges.reasonForChange;
                 item.notes = concept.definitionOfChanges.notes;
                 item.reference = concept.definitionOfChanges.reference;
@@ -316,10 +317,59 @@ angular
                         parentConcept = identifyParentConcept(concept);
                         item.parentId = (parentConcept) ? parentConcept.id : null;
                         item.parentFSN = (parentConcept) ? parentConcept.fsn : null;
-                        item.proposedFSN = extractConceptFSN(concept);
+                        item.proposedFSN = concept.fsn;
                         item.conceptPT = extractConceptPT(concept);
                         item.proposedSynonyms = extractConceptSynonyms(concept, true);
                         item.proposedDefinitions = extractConceptDefinitions(concept, true);
+                        break;
+
+                    case REQUEST_TYPE.CHANGE_RETIRE_CONCEPT.value:
+                        item.conceptId = concept.conceptId;
+                        item.conceptFSN = concept.fsn;
+                        item.proposedFSN = concept.fsn;
+                        item.proposedStatus = definitionOfChanges.proposedStatus;
+                        item.historyAttribute = definitionOfChanges.historyAttribute;
+                        item.historyAttributeValue = definitionOfChanges.historyAttributeValue;
+                        break;
+
+                    case REQUEST_TYPE.NEW_DESCRIPTION.value:
+                        if (changedTarget.type === DESCRIPTION_TYPE.SYN &&
+                            changedTarget.acceptabilityMap &&
+                            changedTarget.acceptabilityMap[ACCEPTABILITY_DIALECT.EN_GB] === ACCEPTABILITY_VALUE.PREFERRED &&
+                            changedTarget.acceptabilityMap[ACCEPTABILITY_DIALECT.EN_US] === ACCEPTABILITY_VALUE.PREFERRED) {
+                            isDescriptionPT = true;
+                        }
+
+                        item.conceptId = concept.conceptId;
+                        item.conceptFSN = concept.fsn;
+                        item.proposedDescription = changedTarget.term;
+                        item.descriptionIsPT = isDescriptionPT;
+                        break;
+
+                    case REQUEST_TYPE.CHANGE_RETIRE_DESCRIPTION.value:
+                        item.conceptId = concept.conceptId;
+                        item.conceptFSN = concept.fsn;
+                        item.descriptionId = changedTarget.id;
+                        item.currentDescription = changedTarget.term;
+                        item.proposedDescription = changedTarget.term;
+                        item.caseSignificances = changedTarget.caseSignificance;
+                        item.descriptionStatus = definitionOfChanges.descriptionStatus;
+                        break;
+
+                    case REQUEST_TYPE.NEW_RELATIONSHIP.value:
+                        item.conceptId = concept.conceptId;
+                        item.relationshipType = changedTarget.type.conceptId;
+                        item.destConceptId = changedTarget.target.conceptId;
+                        item.characteristicType = definitionOfChanges.characteristicType;
+                        item.refinability = definitionOfChanges.refinability;
+                        break;
+
+                    case REQUEST_TYPE.CHANGE_RETIRE_RELATIONSHIP.value:
+                        item.conceptId = concept.conceptId;
+                        item.conceptFSN = concept.fsn;
+                        item.relationshipId = changedTarget.id;
+                        item.refinability = definitionOfChanges.refinability;
+                        item.relationshipStatus = definitionOfChanges.relationshipStatus;
                         break;
                 }
 
@@ -327,15 +377,45 @@ angular
 
             };
 
+            var buildRequestAdditionalFields = function (requestDetails, concept) {
+                requestDetails.fsn = concept.fsn;
+                requestDetails.additionalFields = {
+                    notes: concept.definitionOfChanges.notes,
+                    reference: concept.definitionOfChanges.reference,
+                    reasonForChange: concept.definitionOfChanges.reasonForChange
+                };
+            };
+
             var buildRequestDetails = function (request, concept, pageMode) {
                 var requestDetails = {};
+
+                if (!concept.conceptId) {
+                    concept.fsn = extractConceptFSN(concept);
+                }
+
                 requestDetails.id = request.id;
                 requestDetails.requestItems = [];
                 requestDetails.concept = concept;
 
+                buildRequestAdditionalFields(requestDetails, concept);
+
                 // check concept changes
-                if (concept.definitionOfChanges) {
-                    requestDetails.requestItems.push(buildRequestWorkItem(request, concept));
+                if (concept.definitionOfChanges && concept.definitionOfChanges.changed === true) {
+                    requestDetails.requestItems.push(buildRequestWorkItem(concept, concept.definitionOfChanges));
+                }
+
+                if (concept.definitionOfChanges.changeType === REQUEST_TYPE.CHANGE_RETIRE_CONCEPT.value) {
+                    angular.forEach(concept.descriptions, function (description) {
+                        if (description.definitionOfChanges && description.definitionOfChanges.changed) {
+                            requestDetails.requestItems.push(buildRequestWorkItem(concept, description.definitionOfChanges, description));
+                        }
+                    });
+
+                    angular.forEach(concept.relationships, function (relationship) {
+                        if (relationship.definitionOfChanges && relationship.definitionOfChanges.changed) {
+                            requestDetails.requestItems.push(buildRequestWorkItem(concept, relationship.definitionOfChanges, relationship));
+                        }
+                    });
                 }
 
                 return requestDetails;
@@ -386,7 +466,7 @@ angular
                     return;
                 }
 
-                if (data && data.concept.id === vm.concept.id) {
+                if (data && data.concept.conceptId === vm.concept.conceptId) {
                     vm.concept = null;
                 }
             });
