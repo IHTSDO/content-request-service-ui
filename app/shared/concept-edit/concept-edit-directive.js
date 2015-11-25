@@ -2011,7 +2011,6 @@ angular
                     };
 
                     scope.setRelationshipTypeConceptFromMrcm = function (relationship, item) {
-                        debugger;
                         if (!relationship || !item) {
                             console.error('Cannot set relationship concept field, either field or item not specified');
                         }
