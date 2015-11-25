@@ -7,11 +7,10 @@ angular
         $routeProvider
             .when('/batches/:batchId/:mode', {
                 templateUrl: 'components/batch/batch-details.html',
-                controller: 'BatchCtrl',
-                controllerAs: 'batch'
+                controller: 'BatchDetailsCtrl',
+                controllerAs: 'batchVM'
             });
-    })
-    .controller('BatchCtrl', [
+    }).controller('BatchCtrl', [
         '$rootScope',
         '$routeParams',
         'batchService',

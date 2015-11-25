@@ -24,6 +24,7 @@ angular
         'angular-loading-bar',
         'ang-drag-drop',
         'ui.tree',
+        'ngFileUpload',
 
         // layouts
 

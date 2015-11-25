@@ -178,7 +178,17 @@
             },
             "message": {
                 "listLoading": "Loading batches...",
-                "listLoaded": "All batches loaded"
+                "listLoaded": "All batches loaded",
+                "error": {
+                    "fileRequired": "Please select a file to upload."
+                }
+            },
+            "importModal": {
+                "title": "Import Batch File",
+                "button": {
+                    "cancel": "Cancel",
+                    "upload": "Upload"
+                }
             }
         }
     }
