@@ -16,14 +16,14 @@ angular
                 loadRequests();
 
                 // check admin role
-                accountService.checkRole(CRS_ROLE.ADMINISTRATOR).then(function (rs) {
+                accountService.checkRoles([CRS_ROLE.ADMINISTRATOR, CRS_ROLE.MANAGER]).then(function (rs) {
                     vm.isAdmin = rs;
 
                     if (rs === true) {
                         vm.submittedTableParams = new ngTableParams({
                                 page: 1,
                                 count: 10,
-                                sorting: {requestDate: 'desc', batchId: 'asc', requestorInternalId: 'asc'}
+                                sorting: {'requestHeader.requestDate': 'desc', batchId: 'asc', id: 'asc'}
                             },
                             {
                                 filterDelay: 50,
@@ -39,8 +39,9 @@ angular
 
                                         if (searchStr) {
                                             mydata = vm.submittedRequests.filter(function (item) {
-                                                return (item.requestorInternalId + '').indexOf(searchStr.toLowerCase()) > -1 ||
-                                                    (item.ticketId || '').toLowerCase().indexOf(searchStr.toLowerCase()) > -1;
+                                                return (item.batchRequest + '').indexOf(searchStr.toLowerCase()) > -1 ||
+                                                    (item.jiraTicketId || '').toLowerCase().indexOf(searchStr.toLowerCase()) > -1 ||
+                                                    (item.reasonForChange || '').toLowerCase().indexOf(searchStr.toLowerCase()) > -1;
                                             });
                                         } else {
                                             mydata = vm.submittedRequests;

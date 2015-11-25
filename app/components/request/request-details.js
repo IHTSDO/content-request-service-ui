@@ -349,8 +349,9 @@ angular
                     case REQUEST_TYPE.CHANGE_RETIRE_DESCRIPTION.value:
                         item.conceptId = concept.conceptId;
                         item.conceptFSN = concept.fsn;
-                        item.descriptionId = changedTarget.id;
+                        item.descriptionId = changedTarget.descriptionId;
                         item.currentDescription = changedTarget.term;
+                        item.conceptDescription = changedTarget.term;
                         item.proposedDescription = changedTarget.term;
                         item.caseSignificances = changedTarget.caseSignificance;
                         item.descriptionStatus = definitionOfChanges.descriptionStatus;
@@ -367,7 +368,7 @@ angular
                     case REQUEST_TYPE.CHANGE_RETIRE_RELATIONSHIP.value:
                         item.conceptId = concept.conceptId;
                         item.conceptFSN = concept.fsn;
-                        item.relationshipId = changedTarget.id;
+                        item.relationshipId = changedTarget.relationshipId;
                         item.refinability = definitionOfChanges.refinability;
                         item.relationshipStatus = definitionOfChanges.relationshipStatus;
                         break;

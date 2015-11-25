@@ -27,8 +27,7 @@
             <div class="table-responsive white">
                 <table ng-table="vm.tableParams" template-pagination="layout/template/data-table-pager.html"
                        class="table table-full table-full-small">
-                    {{$data}}
-                    <tr ng-repeat="request in $data" ng-click="dashboard.editRequest(request.id)">
+                    <tr ng-repeat="request in $data" ng-click="dashboard.editRequest(request.id)" class="clickable-row">
 
                         <td data-title="'crs.request.list.tableHeader.batchId' | translate" sortable="'batchRequest'" >
                             <!--<a class="tooltips-right" ng-href="#/batches/view/{{request.batchRequest}}">{{request.batchRequest}} <span translate="crs.request.list.tip.batchId"></span></a>-->
@@ -89,14 +88,15 @@
             <div class="table-responsive white">
                 <table ng-table="vm.submittedTableParams" template-pagination="layout/template/data-table-pager.html"
                        class="table table-full table-full-small">
-                    {{$data}}
-                    <tr ng-repeat="request in $data" >
+                    <tr ng-repeat="request in $data" ng-click="dashboard.editRequest(request.id)" class="clickable-row">
 
                         <td data-title="'crs.request.list.tableHeader.batchId' | translate" sortable="'batchRequest'" >
-                            <a class="tooltips-right" ng-href="#/batches/view/{{request.batchRequest}}">{{request.batchRequest}} <span translate="crs.request.list.tip.batchId"></span></a>
+                            <!--<a class="tooltips-right" ng-href="#/batches/view/{{request.batchRequest}}">{{request.batchRequest}} <span translate="crs.request.list.tip.batchId"></span></a>-->
+                            {{request.batchRequest}}
                         </td>
                         <td data-title="'crs.request.list.tableHeader.conceptFSN' | translate" sortable="'fsn'" >
-                            <a class="tooltips-right" ng-href="#/requests/edit/{{request.id}}">{{request.fsn}} <span translate="crs.request.list.tip.conceptFSN"></span></a>
+                            <!--<a class="tooltips-right" ng-href="#/requests/edit/{{request.id}}">{{request.fsn}} <span translate="crs.request.list.tip.conceptFSN"></span></a>-->
+                            {{request.fsn}}
                         </td>
                         <td data-title="'crs.request.list.tableHeader.ticketId' | translate" sortable="'jiraTicketId'" >
                             {{request.jiraTicketId}}
@@ -108,10 +108,10 @@
                             {{request.requestHeader.requestType | requestType | translate}}
                         </td>-->
                         <td data-title="'crs.request.list.tableHeader.reasonForChange' | translate" sortable="'reasonForChange'" >
-                            {{request.reasonForChange}}
+                            {{(request.additionalFields)?request.additionalFields.reasonForChange:''}}
                         </td>
                         <td data-title="'crs.request.list.tableHeader.status' | translate" sortable="'status'">
-                            <span class="badge requestStatus {{request.status}}">{{request.status | requestStatus | translate}}</span>
+                            <span class="badge requestStatus {{request.requestHeader.status}}">{{request.requestHeader.status | requestStatus | translate}}</span>
                         </td>
                     </tr>
                 </table>

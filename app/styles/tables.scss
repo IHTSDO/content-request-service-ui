@@ -277,3 +277,7 @@ table th[class*=col-] {
     border-bottom: 0;
   }
 }
+
+.table tr.clickable-row:hover {
+  background-color: #F0FCFF;
+}

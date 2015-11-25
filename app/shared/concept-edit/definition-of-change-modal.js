@@ -7,8 +7,9 @@ angular.module('conceptRequestServiceApp.conceptEdit')
         'requestMetadataService',
         'changeType',
         'changeTarget',
+        'isStatic',
         'REQUEST_METADATA_KEY',
-        function ($scope, $uibModalInstance, requestMetadataService, changeType, changeTarget, REQUEST_METADATA_KEY) {
+        function ($scope, $uibModalInstance, requestMetadataService, changeType, changeTarget, isStatic, REQUEST_METADATA_KEY) {
             var vm = this;
 
             if (changeTarget && changeTarget.definitionOfChanges) {
@@ -57,6 +58,7 @@ angular.module('conceptRequestServiceApp.conceptEdit')
             vm.changeTarget = changeTarget;
             vm.selectDefinitionOfChanges = selectDefinitionOfChanges;
             vm.cancel = cancel;
+            vm.isStatic = isStatic;
 
             loadRequestMetadata();
         }]

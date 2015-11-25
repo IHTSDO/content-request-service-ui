@@ -1246,6 +1246,9 @@ angular
                                 },
                                 changeTarget: function () {
                                     return changeTarget;
+                                },
+                                isStatic: function () {
+                                    return scope.isStatic;
                                 }
                             }
                         });
@@ -1260,12 +1263,24 @@ angular
                     };
 
                     scope.showConceptDefinitionOfChange = function (concept) {
+                        /*if (scope.isStatic) {
+                            return;
+                        }*/
+
+                        if (concept.definitionOfChanges.changeType === REQUEST_TYPE.NEW_CONCEPT.value) {
+                            return;
+                        }
+
                         showDefinitionOfChange(concept.definitionOfChanges.changeType, concept).then(function (defOfChange) {
                             concept.definitionOfChanges = defOfChange;
                         });
                     };
 
                     scope.showDescriptionDefinitionOfChange = function (description) {
+                        /*if (scope.isStatic) {
+                            return;
+                        }*/
+
                         if (description.definitionOfChanges.changeType === REQUEST_TYPE.NEW_DESCRIPTION.value) {
                             return;
                         }
@@ -1276,6 +1291,10 @@ angular
                     };
 
                     scope.showRelationshipDefinitionOfChange = function (relationship) {
+                        /*if (scope.isStatic) {
+                            return;
+                        }*/
+
                         showDefinitionOfChange(relationship.definitionOfChanges.changeType, relationship).then(function (defOfChange) {
                             relationship.definitionOfChanges = defOfChange;
                         });
@@ -1992,6 +2011,7 @@ angular
                     };
 
                     scope.setRelationshipTypeConceptFromMrcm = function (relationship, item) {
+                        debugger;
                         if (!relationship || !item) {
                             console.error('Cannot set relationship concept field, either field or item not specified');
                         }
@@ -2005,6 +2025,7 @@ angular
                     };
 
                     scope.setRelationshipTargetConceptFromMrcm = function (relationship, item) {
+
                         if (!relationship || !item) {
                             console.error('Cannot set relationship concept field, either field or item not specified');
                         }

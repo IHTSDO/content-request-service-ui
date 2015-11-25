@@ -1002,18 +1002,19 @@ button.fsn-title-button {
     .edit-dropzone {
       width: 100%;
       height: 100%;
-      border: dashed 2px #737373;
       border-radius: 4px;
       padding-top: 50%;
       text-align: center;
+      border: dashed 2px #424242;
 
       &.request-drag-target {
-        border-color: white;
+        border-color: #737373;
       }
 
       &.request-drag-hover {
+        border-color: #fff;
         background-color: #00a6e5;
-        color: white;
+        color: #fff;
       }
     }
   }
