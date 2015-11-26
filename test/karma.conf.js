@@ -44,6 +44,7 @@ module.exports = function(config) {
       // endbower
       "app/*.js",
       "app/components/{,*/}*.js",
+      "app/components/**/*.js",
       "app/shared/{,*/}*.js"
     ],
 
