@@ -43,12 +43,8 @@ module.exports = function(config) {
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       "app/*.js",
-      "app/components/*.js",
-      "app/components/**/*.js",
-      "app/components/*.spec.js",
-      "app/components/**/*.spec.js",
-      "app/shared/*.js",
-      "app/shared/*.spec.js"
+      "app/components/{,*/}*.js",
+      "app/shared/{,*/}*.js"
     ],
 
     // list of files / patterns to exclude
