@@ -4,10 +4,12 @@ angular.module('conceptRequestServiceApp.batch')
     .service('batchService', [
         '$rootScope',
         '$q',
-        function ($rootScope, $q) {
+        'crsService',
+        'CRS_API_ENDPOINT',
+        function ($rootScope, $q, crsService, CRS_API_ENDPOINT) {
 
             // mock batches
-            var batches = [
+            /*var batches = [
                 {
                     id: 367877,
                     status: 'Draft',
@@ -29,9 +31,9 @@ angular.module('conceptRequestServiceApp.batch')
                     modifiedDate: '02-11-2015',
                     submittedDate: '03-11-2015'
                 }
-            ];
+            ];*/
 
-            var getBatches = function () {
+            /*var getBatches = function () {
                 var deferred = $q.defer();
 
 
@@ -53,11 +55,30 @@ angular.module('conceptRequestServiceApp.batch')
                 deferred.resolve(batch);
 
                 return deferred.promise;
+            };*/
+
+            var getBatches = function () {
+                var listEndpoint = CRS_API_ENDPOINT.BATCH_LIST;
+
+                return crsService.sendGet(listEndpoint, null, null);
+            };
+
+            var getBatch = function (batchId) {
+
+                var requestEndpoint = CRS_API_ENDPOINT.BATCH;
+                return crsService.sendGet(requestEndpoint + '/' + batchId, null);
+            };
+
+            var uploadBatchFile = function (batchFile) {
+                var batchImportEndpoint = CRS_API_ENDPOINT.BATCH_IMPORT;
+
+                return crsService.sendUpload(batchImportEndpoint, batchFile);
             };
 
             return {
                 getBatch: getBatch,
-                getBatches: getBatches
+                getBatches: getBatches,
+                uploadBatchFile: uploadBatchFile
             };
 
         }]);

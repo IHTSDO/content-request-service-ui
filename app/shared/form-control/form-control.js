@@ -5,37 +5,37 @@ angular
     ])
     .directive('formControl', [
         function () {
-            var buildTextControl = function (label, name, model, required) {
+            var buildTextControl = function (label, name, model, required, disabled) {
                 var elementHtml = '<div class="form-control-element" ng-class="{required:' + required +'}">' +
                     '<label translate="' + label + '" ></label>';
 
                 elementHtml += '<input type="text" class="form-control" name="' + name +
-                    '" ng-model="' + model + '"></input>';
+                    '" ng-model="' + model + '" maxlength="255" ng-disabled="' + disabled + '"></input>';
 
                 elementHtml += '</div>';
 
                 return elementHtml;
             };
 
-            var buildTextAreaControl = function (label, name, model, required) {
+            var buildTextAreaControl = function (label, name, model, required, disabled) {
                 var elementHtml = '<div class="form-control-element" ng-class="{required:' + required +'}">' +
                     '<label translate="' + label + '" ></label>';
 
                 elementHtml += '<textarea  class="form-control" name="' + name +
-                    '" ng-model="' + model + '"></textarea>';
+                    '" ng-model="' + model + '" maxlength="4000" ng-disabled="' + disabled + '"></textarea>';
 
                 elementHtml += '</div>';
 
                 return elementHtml;
             };
 
-            var buildDropdownControl = function (label, name, model, options, required) {
+            var buildDropdownControl = function (label, name, model, options, required, disabled) {
                 var elementHtml = '<div class="form-control-element" ng-class="{required:' + required +'}">' +
                     '<label translate="' + label + '" ></label>';
 
                 elementHtml += '<select class="form-control" name="' + name +
                     '" ng-model="' + model +
-                    '" ng-options="' + options+ '"></select>';
+                    '" ng-options="' + options+ '" ng-disabled="' + disabled + '"></select>';
 
                 elementHtml += '</div>';
 

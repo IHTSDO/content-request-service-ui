@@ -1,0 +1,49 @@
+<div id="request-info-panel">
+    <!-- Timeline formatter and concept ids.extension input -->
+    <div class="row">
+
+        <div class="col col-md-12">
+
+            <ul class="timeline">
+                <li>
+                    <div class="timeline-badge">
+                        <i class="icon-circle theme-border"></i>
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.request.details.info.label.batchId"></label>
+                            <h4 class="timeline-title">{{(batchVM.batchHeader.batchRequest)?batchVM.batchHeader.batchRequest:'N/A'}}</h4>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="timeline-badge">
+                        <i class="icon-circle theme-border"></i>
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.request.details.info.label.status"></label>
+                            <h4 class="timeline-title">{{batchVM.batchHeader.status | requestStatus | translate}}</h4>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="timeline-badge">
+                        <i class="icon-circle theme-border"></i>
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label">Uploaded On</label>
+                            <h4 class="timeline-title">{{batchVM.batchHeader.requestDate | date:'MM-dd-yyyy'}}</h4>
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,21 @@
+<h4 >{{requestVM.pageMode.langKey | translate}}</h4>
+<form class="form-floating">
+
+    <div class="form-group" >
+
+        <form-control type="text"
+                      model="requestVM.concept.definitionOfChanges.reasonForChange"
+                      label="crs.request.details.label.reasonForChange"
+                      name="txtReasonForChange"></form-control>
+
+        <form-control type="textarea"
+                      model="requestVM.concept.definitionOfChanges.notes"
+                      label="crs.request.details.label.notes"
+                      name="txtNotes"></form-control>
+
+        <form-control type="text"
+                      model="requestVM.concept.definitionOfChanges.reference"
+                      label="crs.request.details.label.reference"
+                      name="txtReference"></form-control>
+    </div>
+</form>

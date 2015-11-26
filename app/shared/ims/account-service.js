@@ -63,6 +63,28 @@ angular
                     });
             };
 
+            var checkRoles = function (roles) {
+                return getAccountInfo().then(function () {
+                    var userRoles = accountDetails.roles;
+                    var rs = false;
+
+                    if (angular.isArray(userRoles) && userRoles.length > 0) {
+                        if (angular.isString(roles)) {
+                            rs = (userRoles.indexOf(roles) !== -1);
+                        } else if (angular.isArray(roles) && roles.length > 0) {
+                            for (var i = 0; i < userRoles.length; i++) {
+                                if (userRoles.indexOf(roles[i]) !== -1) {
+                                    rs = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    return rs;
+                });
+            };
+
             var getUserPreferences = function () {
                 var deferred = $q.defer();
                 var mockedUserPref = {};
@@ -88,7 +110,8 @@ angular
                 getLoginStatus: getLoginStatus,
                 getAccountInfo: getAccountInfo,
                 getUserPreferences: getUserPreferences,
-                applyUserPreferences: applyUserPreferences
+                applyUserPreferences: applyUserPreferences,
+                checkRoles: checkRoles
             };
         }
     ]);

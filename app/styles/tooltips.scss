@@ -70,7 +70,8 @@ a.tooltips-right span, button.tooltips-right span {
   font-size:12px;
   line-height: 12px;
   text-align: center;
-  visibility: hidden;
+  /*visibility: hidden;*/
+  display: none;
   border-radius: 6px;
 }
 a.tooltips-right span:after, button.tooltips-right span:after {
@@ -86,7 +87,8 @@ a.tooltips-right span:after, button.tooltips-right span:after {
 }
 
 a:hover.tooltips-right span, button:hover.tooltips-right span  {
-  visibility: visible;
+  /*visibility: visible;*/
+  display: block;
   opacity: 1;
   left: 100%;
   top: 50%;
@@ -106,8 +108,9 @@ a.tooltips-btm span {
   background: #000000;
  
   text-align: center;
-  visibility: hidden;
+  /*visibility: hidden;*/
   border-radius: 6px;
+  display: none;
 }
 a.tooltips-btm span:after {
   content: '';
@@ -121,7 +124,8 @@ a.tooltips-btm span:after {
   border-left: 8px solid transparent;
 }
 a:hover.tooltips-btm span {
-  visibility: visible;
+  /*visibility: visible;*/
+  display: block;
   opacity: 0.8;
   top: 30px;
   left: 70%;

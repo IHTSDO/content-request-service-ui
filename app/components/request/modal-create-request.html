@@ -1,4 +1,4 @@
-<div id="userPreferencesModal">
+<div id="createRequestMModal">
 
 
     <div class="modal-header">
@@ -13,7 +13,7 @@
                     <label for="requestTypeSelect" translate="crs.request.createModal.requestType.label"></label>
                     <select id="requestTypeSelect" name="select-request-type" class="form-control"
                             ng-model="modal.requestType"
-                            ng-options="requestType.value as requestType.langKey | translate for requestType in modal.requestTypes">
+                            ng-options="requestType.value as requestType.langKey | translate for requestType in modal.generalRequestTypes">
                     </select>
 
                     <br>

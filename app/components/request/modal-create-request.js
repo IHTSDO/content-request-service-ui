@@ -4,8 +4,8 @@ angular.module('conceptRequestServiceApp.request')
         '$rootScope',
         '$scope',
         '$uibModalInstance',
-        'REQUEST_TYPE',
-        function ($rootScope, $scope, $uibModalInstance, REQUEST_TYPE) {
+        'GENERAL_REQUEST_TYPE',
+        function ($rootScope, $scope, $uibModalInstance, GENERAL_REQUEST_TYPE) {
             var vm = this;
 
             var initView = function () {
@@ -47,7 +47,7 @@ angular.module('conceptRequestServiceApp.request')
 
             vm.createNewRequest = createNewRequest;
             vm.closeModal = closeModal;
-            vm.requestTypes = REQUEST_TYPE;
+            vm.generalRequestTypes = GENERAL_REQUEST_TYPE;
 
             initView();
         }]

@@ -1125,6 +1125,7 @@ textarea.form-control {
   position: absolute;
   margin-left: -20px;
   margin-top: 4px \9;
+  vertical-align: bottom;
 }
 .checkbox + .checkbox,
 .radio + .radio {
@@ -1612,9 +1613,9 @@ fieldset[disabled] .btn {
   border-color: #eee;
 }
 .btn-default.active,
-.btn-default.focus,
+/*.btn-default.focus,*/
 .btn-default:active,
-.btn-default:focus,
+/*.btn-default:focus,*/
 .btn-default:hover {
   color: #666;
   background-color: #e6e6e6;
@@ -5943,6 +5944,7 @@ input[type=checkbox] {
   -webkit-appearance: none;
   appearance: none;
   cursor: pointer;
+  vertical-align: bottom;
 }
 .checkbox input[type=checkbox]:focus,
 .checkbox-inline input[type=checkbox]:focus,

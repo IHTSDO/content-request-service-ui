@@ -22,6 +22,9 @@ angular
         'ngTable',
         'pascalprecht.translate',
         'angular-loading-bar',
+        'ang-drag-drop',
+        'ui.tree',
+        'ngFileUpload',
 
         // layouts
 
@@ -37,8 +40,14 @@ angular
         // shared
         'conceptRequestServiceApp.imsAuthentication',
         'conceptRequestServiceApp.configuration',
-        'conceptRequestServiceApp.formControl'
-
+        'conceptRequestServiceApp.formControl',
+        'conceptRequestServiceApp.search',
+        'conceptRequestServiceApp.conceptInfo',
+        'conceptRequestServiceApp.taxonomy',
+        'conceptRequestServiceApp.savedList',
+        'conceptRequestServiceApp.snowowl',
+        'conceptRequestServiceApp.conceptEdit',
+        'conceptRequestServiceApp.objectService'
     ])
     .config(function ($routeProvider, $modalProvider, $translateProvider, cfpLoadingBarProvider) {
         // set the default redirect/route
@@ -52,7 +61,7 @@ angular
         // animation prevents removal of grey backdrop on close
         $modalProvider.options.animation = false;
 
-        //
+        // translate provider
         $translateProvider
             .registerAvailableLanguageKeys(['en'], {
                 'en-*': 'en',

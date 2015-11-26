@@ -5,9 +5,10 @@ angular
     .factory('crsService', [
         '$http',
         '$q',
+        'Upload',
         'configService',
         'errorHandlerService',
-        function ($http, $q, configService, errorHandlerService) {
+        function ($http, $q, Upload, configService, errorHandlerService) {
             var HTTP_METHOD = {
                 GET: 'GET',
                 POST: 'POST',
@@ -65,12 +66,36 @@ angular
                 return sendCrsRequest(HTTP_METHOD.DELETE, resource, params, data);
             };
 
+            var sendUpload = function (resource, file) {
+                var params = {},
+                    data = {
+                        'batchFile': file
+                    };
+
+                return Upload.upload({
+                    url: getCrsEndpointUrl(resource),
+                    data: data,
+                    params: params,
+                    method: HTTP_METHOD.POST,
+                    withCredentials: true
+                });
+
+                /*.progress(function(evt) {
+                    progress(Math.min(100, parseInt(100.0 * evt.loaded / evt.total)), evt);
+                }).success(function(data, status, headers, config) {
+                    success(data, status, headers, config);
+                }).error(function (e) {
+                    error(e);
+                });*/
+            };
+
             return {
                 sendRequest: sendRequest,
                 sendGet: sendGet,
                 sendPut: sendPut,
                 sendPost: sendPost,
-                sendDelete: sendDelete
+                sendDelete: sendDelete,
+                sendUpload: sendUpload
             };
         }
     ]);

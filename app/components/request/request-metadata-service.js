@@ -7,6 +7,55 @@ angular.module('conceptRequestServiceApp.request')
         function ($q, REQUEST_METADATA_KEY) {
             var metadata = {};
 
+            // Source Terminology
+            metadata[REQUEST_METADATA_KEY.SOURCE_TERMINOLOGY] = [
+                'SNOMED CT International',
+                'SNOMED CT Canadian English Extension',
+                'SNOMED CT Canadian French Extension'
+            ];
+
+            // Semantic Tag
+            metadata[REQUEST_METADATA_KEY.SEMANTIC_TAG] = [
+                'administrative concept',
+                'assessment scale',
+                'attribute',
+                'body structure',
+                'cell',
+                'cell structure',
+                'disorder',
+                'environment',
+                'environment location',
+                'ethnic group',
+                'event',
+                'finding',
+                'geographic location',
+                'inactive concept',
+                'life style',
+                'link assertion',
+                'linkage concept',
+                'morphologic abnormality',
+                'namespace concept',
+                'observable entity',
+                'occupation',
+                'organism',
+                'person',
+                'physical force',
+                'physical object',
+                'procedure',
+                'product',
+                'qualifier value',
+                'racial group',
+                'record artifact',
+                'regime/therapy',
+                'religion/philosophy',
+                'situation',
+                'social concept',
+                'specimen',
+                'staging scale',
+                'substance',
+                'tumor staging'
+            ];
+
             // Case Significance
             metadata[REQUEST_METADATA_KEY.CASE_SIGNIFICANCE] = [
                 'Entire term case sensitive',
@@ -27,6 +76,8 @@ angular.module('conceptRequestServiceApp.request')
                 'Due to',
                 'Clinical course',
                 'Component',
+                'Direct device',
+                'Direct morphology',
                 'Direct substance',
                 'Episodicity',
                 'Finding context',
@@ -40,23 +91,18 @@ angular.module('conceptRequestServiceApp.request')
                 'Has intent',
                 'Has interpretation',
                 'Has specimen',
+                'Indirect device',
+                'Indirect morphology',
                 'Interprets',
                 'Laterality',
                 'Measurement method',
                 'Method',
                 'Occurrence',
-                'Part of',
                 'Pathological process',
                 'Priority',
                 'Procedure context',
                 'Procedure device',
-                'Direct device',
-                'Indirect device',
-                'Using device',
-                'Using access device',
                 'Procedure morphology',
-                'Direct morphology',
-                'Indirect morphology',
                 'Procedure site',
                 'Procedure site - Direct',
                 'Procedure site - Indirect',
@@ -76,8 +122,17 @@ angular.module('conceptRequestServiceApp.request')
                 'Surgical approach',
                 'Temporal context',
                 'Time aspect',
+                'Type of',
+                'Using device',
+                'Using access device',
                 'Using energy',
                 'Using substance'
+            ];
+
+            // Destination Terminology
+            metadata[REQUEST_METADATA_KEY.DESTINATION_TERMINOLOGY] = [
+                'SNOMED CT International',
+                'SNOMED CT Canadian Extension'
             ];
 
             // Characteristic Types
@@ -94,8 +149,43 @@ angular.module('conceptRequestServiceApp.request')
                 'Mandatory'
             ];
 
-            // Change Concept Status to
-            metadata[REQUEST_METADATA_KEY.CHANGE_CONCEPT_STATUS_TO] = [
+            // New Concept Statuses
+            metadata[REQUEST_METADATA_KEY.NEW_CONCEPT_STATUS] = [
+                'Current',
+                'Retired without a stated reason',
+                'Duplicate',
+                'Outdated',
+                'Erroneous',
+                'Limited',
+                'Inappropriate',
+                'Concept inactive',
+                'Moved elsewhere'
+            ];
+
+            // Concept History Attributes
+            metadata[REQUEST_METADATA_KEY.CONCEPT_HISTORY_ATTRIBUTE] = [
+                'Maybe a',
+                'Moved From',
+                'Moved To',
+                'Replaced By',
+                'Same As',
+                'Was a'
+            ];
+
+            // New Description Statuses
+            metadata[REQUEST_METADATA_KEY.NEW_DESCRIPTION_STATUS] = [
+                'Retired',
+                'Duplicate',
+                'Outdated',
+                'Ambiguous',
+                'Erroneous',
+                'Limited',
+                'Moved elsewhere',
+                'Pending move'
+            ];
+
+            // New Relationship Statuses
+            metadata[REQUEST_METADATA_KEY.NEW_RELATIONSHIP_STATUS] = [
                 'Retired',
                 'Duplicate',
                 'Outdated',

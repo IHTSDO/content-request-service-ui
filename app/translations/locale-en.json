@@ -28,22 +28,32 @@
         },
         "request": {
             "list": {
-                "title": "My Requests",
+                "title": {
+                    "requests": "Requests",
+                    "myRequests": "My Requests",
+                    "submittedRequests": "Submitted Requests"
+                },
                 "tip": {
                     "count": "Number of requests",
                     "create": "Create New Request",
                     "requestorInternalId": "Click to open request editing view",
-                    "batchId": "Click to open batch details view"
+                    "batchId": "Click to open batch details view",
+                    "conceptFSN": "Click to open request editing view"
                 },
-                "searchPlaceHolder": "Search My Requests",
+                "searchPlaceHolder": {
+                    "myRequests": "Search My Requests",
+                    "submittedRequests": "Search Submitted Requests"
+                },
                 "tableHeader": {
                     "batchId": "Batch Id",
                     "requestorInternalId": "Requestor Interal Id",
-                    "ticketId": "Ticket Id",
+                    "ticketId": "Request Id",
                     "description": "Description",
                     "lastModified": "Last Modified",
                     "requestType": "Request Type",
-                    "status": "Status"
+                    "status": "Status",
+                    "conceptFSN": "Concept",
+                    "reasonForChange": "Reason for Change"
                 }
             },
             "details": {
@@ -81,6 +91,30 @@
                     "descriptionStatus": "New Description Status",
                     "relationshipStatus": "Relationship Status"
 
+                },
+                "tip": {
+                    "editConceptHint": "Edit a concept from Saved List or drag and drop concept here"
+                },
+                "sidebar":{
+                    "tip": {
+                        "taxonomy": "Taxonomy",
+                        "search": "Search",
+                        "savedList": "Saved List",
+                        "requestInfo": "Request Info"
+                    }
+                },
+                "info": {
+                    "button": {
+                        "submit": "Submit Request",
+                        "save": "Save Request",
+                        "edit": "Edit Request"
+                    },
+                    "label": {
+                        "batchId": "Batch Id",
+                        "ticketId": "Jira Ticket Id",
+                        "status": "Status",
+                        "lastModified": "Last Modified Date"
+                    }
                 }
             },
             "createModal": {
@@ -115,6 +149,10 @@
                 "changeRetireDescription": "Change or Retire Description",
                 "changeRetireRelationship": "Change or Retire Relationship"
             },
+            "requestMode": {
+                "newRequest": "New Request",
+                "editRequest": "Edit Request"
+            },
             "requestStatus": {
                 "draft": "Draft",
                 "new": "New"
@@ -140,7 +178,17 @@
             },
             "message": {
                 "listLoading": "Loading batches...",
-                "listLoaded": "All batches loaded"
+                "listLoaded": "All batches loaded",
+                "error": {
+                    "fileRequired": "Please select a file to upload."
+                }
+            },
+            "importModal": {
+                "title": "Import Batch File",
+                "button": {
+                    "cancel": "Cancel",
+                    "upload": "Upload"
+                }
             }
         }
     }
