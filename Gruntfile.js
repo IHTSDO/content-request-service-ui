@@ -551,14 +551,14 @@ module.exports = function (grunt) {
         'cdnify',
         'cssmin',
         'uglify',
-        //'filerev',
+        'filerev',
         'usemin',
         'htmlmin'
     ]);
 
     grunt.registerTask('default', [
-        'newer:jshint',
-        'newer:jscs',
+        //'newer:jshint',
+        //'newer:jscs',
         'test',
         'build'
     ]);
