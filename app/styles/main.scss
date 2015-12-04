@@ -61,6 +61,7 @@ footer {
   clear:both;
   bottom: 0;
   width: 100%;
+  z-index: 98;
 
   .navbar {
     min-height: 40px;
@@ -159,4 +160,36 @@ footer {
   width: 35%;
   margin-left: -7%;
   z-index: 1;
+}
+
+.fileStatus {
+  &.PROCESSING_UPLOAD {
+    background-color: white;
+    color: black;
+  }
+
+  &.COMPLETED_UPLOAD {
+    background-color: #01A2E1;
+  }
+}
+
+.file-selected {
+  background-color: #0dc5c1 !important;
+}
+
+.batch-preview-tabs {
+  li {
+    width: 16.66666667% !important;
+
+    a {
+      border-radius: 0;
+      font-size: 11px !important;
+      padding: 7px 0 !important;
+      cursor: pointer;
+    }
+  }
+}
+
+.importing-request-error {
+  background-color: #F3CB67;
 }

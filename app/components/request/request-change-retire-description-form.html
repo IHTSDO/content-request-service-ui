@@ -1,12 +1,13 @@
-<!--<h4 translate="crs.request.requestType.changeRetireDescription"></h4>-->
+<h4 translate="crs.request.requestType.changeRetireDescription"></h4>
 <form class="form-floating">
 
     <div class="form-group">
         <!--<form-control type="text"
                       model="requestVM.request.requestorInternalId"
                       label="crs.request.details.label.requestorInternalId"
-                      name="txtRequestorInternalId"></form-control>
-        <div>
+                      name="txtRequestorInternalId"></form-control>-->
+
+        <!--<div>
             <div class="form-control-element required">
                 <label for="">Concept Id</label>
                 <input class="form-control" type="text" ng-model="requestVM.request.conceptId"/>
@@ -18,17 +19,31 @@
         </div>
         <br/>-->
 
-        <!--<form-control type="text"
+        <form-control type="concept"
+                      model="requestVM.originalConcept"
+                      label="crs.request.details.label.concept"
+                      required></form-control>
+
+<!--        <form-control type="text"
                       model="requestVM.request.descriptionId"
                       label="crs.request.details.label.descriptionId"
                       name="txtDescriptionId"
-                      required></form-control>
+                      required></form-control>-->
 
-        <form-control type="text"
+        <!--<form-control type="typeahead"
                       model="requestVM.request.description"
                       label="crs.request.details.label.currentDescription"
                       name="txtDescription"
-                      required></form-control>
+                      crs-typeahead="suggestion as suggestion.term for suggestion in requestVM.originalConcept.descriptions"
+                      typeahead-focus-first="false"
+                      typeahead-wait-ms="700"
+                      typeahead-editable="false" typeahead-min-length="0"
+                      required></form-control>-->
+        <form-control type="select"
+                      model="requestVM.request.description"
+                      options="suggestion as suggestion.term for suggestion in requestVM.originalConcept.descriptions"
+                      label="crs.request.details.label.currentDescription"
+                      name="slCurrentDescription" required></form-control>
 
         <form-control type="text"
                       model="requestVM.request.proposedDescription"
@@ -37,29 +52,14 @@
 
         <form-control type="select"
                       model="requestVM.request.proposedCaseSignificance"
-                      options="caseSignificance for caseSignificance in requestVM.caseSignificances"
+                      options="caseSignificance.value as caseSignificance.text for caseSignificance in requestVM.caseSignificances"
                       label="crs.request.details.label.proposedCaseSignificance"
                       name="slCaseSignificance"></form-control>
--->
         <form-control type="select"
-                      model="definitionOfChanges.descriptionStatus"
-                      options="descriptionStatus for descriptionStatus in requestMetadata.descriptionStatuses"
+                      model="requestVM.request.descriptionStatus"
+                      options="descriptionStatus for descriptionStatus in requestVM.descriptionStatuses"
                       label="crs.request.details.label.descriptionStatus"
                       name="slDescriptionStatus"></form-control>
 
-        <!--<form-control type="text"
-                      model="requestVM.request.reasonForChange"
-                      label="crs.request.details.label.reasonForChange"
-                      name="txtReasonForChange"></form-control>
-
-        <form-control type="textarea"
-                      model="requestVM.request.notes"
-                      label="crs.request.details.label.notes"
-                      name="txtNotes"></form-control>
-
-        <form-control type="text"
-                      model="requestVM.request.reference"
-                      label="crs.request.details.label.reference"
-                      name="txtReference"></form-control>-->
     </div>
 </form>

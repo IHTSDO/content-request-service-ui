@@ -1,23 +1,28 @@
-<!--<h4 translate="crs.request.requestType.changeRetireRelationship"></h4>-->
+<h4 translate="crs.request.requestType.changeRetireRelationship"></h4>
 <form class="form-floating">
 
     <div class="form-group">
         <!--<form-control type="text"
                       model="requestVM.request.requestorInternalId"
                       label="crs.request.details.label.requestorInternalId"
-                      name="txtRequestorInternalId"></form-control>
+                      name="txtRequestorInternalId"></form-control>-->
 
-        <div>
+        <!--<div>
             <div class="form-control-element required">
-                <label for="">Concept Id</label>
+                <label >Concept Id</label>
                 <input class="form-control" type="text" ng-model="requestVM.request.conceptId"/>
             </div>
             <div class="form-control-element required">
-                <label for="">Concept FSN</label>
+                <label >Concept FSN</label>
                 <input class="form-control" type="text" ng-model="requestVM.request.conceptFSN"/>
             </div>
         </div>
         <br/>-->
+
+        <form-control type="concept"
+                      model="requestVM.originalConcept"
+                      label="crs.request.details.label.concept"
+                      required></form-control>
 
         <!--<form-control type="text"
                       model="requestVM.request.relationshipId"
@@ -26,31 +31,22 @@
                       required></form-control>-->
 
         <form-control type="select"
-                      model="definitionOfChanges.refinability"
-                      options="refinability for refinability in requestMetadata.refinabilities"
+                      model="requestVM.request.relationship"
+                      options="suggestion as (suggestion.type.fsn + ' - ' + suggestion.target.fsn) for suggestion in requestVM.originalConcept.relationships |filter:{active:true}"
+                      label="crs.request.details.label.relationship"
+                      name="slRelationship" required></form-control>
+
+        <form-control type="select"
+                      model="requestVM.request.refinability"
+                      options="refinability for refinability in requestVM.refinabilities"
                       label="crs.request.details.label.newRefinability"
                       name="slRefinability"></form-control>
 
 
         <form-control type="select"
-                      model="definitionOfChanges.relationshipStatus"
-                      options="relationshipStatus for relationshipStatus in requestMetadata.relationshipStatuses"
+                      model="requestVM.request.relationshipStatus"
+                      options="relationshipStatus for relationshipStatus in requestVM.relationshipStatuses"
                       label="crs.request.details.label.relationshipStatus"
                       name="slRelationshipStatus"></form-control>
-
-        <!--<form-control type="text"
-                      model="requestVM.request.reasonForChange"
-                      label="crs.request.details.label.reasonForChange"
-                      name="txtReasonForChange"></form-control>
-
-        <form-control type="textarea"
-                      model="requestVM.request.notes"
-                      label="crs.request.details.label.notes"
-                      name="txtNotes"></form-control>
-
-        <form-control type="text"
-                      model="requestVM.request.reference"
-                      label="crs.request.details.label.reference"
-                      name="txtReference"></form-control>-->
     </div>
 </form>

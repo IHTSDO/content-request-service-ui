@@ -478,7 +478,7 @@ input {
 .button-width-plus {
   width: 21px;
 
-  padding: 5px 5px !important;
+  /*padding: 5px 5px !important;*/
   float: left;
   height: 100%;
   min-height: 30px;
@@ -764,7 +764,7 @@ button.fsn-title-button {
   bottom: 0px;
   background-color: grey;
   width: 50px;
-  z-index:101;
+  z-index:98;
 }
 .button-nav .md {
   font-size: 22px;
@@ -1018,4 +1018,17 @@ button.fsn-title-button {
       }
     }
   }
+}
+
+.button-nav .btn-default[disabled],
+.button-nav .review.btn-default[disabled] {
+  background-color: #494949!important;
+  color: #7c7c7c;
+  border-bottom: 1px #7c7c7c solid;
+}
+
+.simple-form {
+  padding: 5px 35px 10px 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }

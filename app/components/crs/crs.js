@@ -9,5 +9,8 @@ angular
         SUBMITTED_REQUEST_LIST: 'api/request/list/submitted',
         BATCH: 'api/batch',
         BATCH_IMPORT: 'api/batch/import',
+        BATCH_UPLOAD: 'api/batch/upload',
+        BATCH_UPLOADED_LIST: 'api/batch/upload/preview/list',
+        BATCH_UPLOADED_PREVIEW: 'api/batch/upload/preview',
         BATCH_LIST: 'api/batch/list'
     });

@@ -6,10 +6,9 @@ angular.module('conceptRequestServiceApp.request')
         '$q',
         'crsService',
         'REQUEST_TYPE',
-        'GENERAL_REQUEST_TYPE',
         'REQUEST_STATUS',
         'CRS_API_ENDPOINT',
-        function ($rootScope, $q, crsService, REQUEST_TYPE, GENERAL_REQUEST_TYPE, REQUEST_STATUS, CRS_API_ENDPOINT) {
+        function ($rootScope, $q, crsService, REQUEST_TYPE, REQUEST_STATUS, CRS_API_ENDPOINT) {
 
             var identifyRequestType = function (value) {
                 for (var requestTypeKey in REQUEST_TYPE) {
@@ -21,18 +20,6 @@ angular.module('conceptRequestServiceApp.request')
 
                 return null;
             };
-
-            var identifyGeneralRequestType = function (value) {
-                for (var generalRequestTypeKey in GENERAL_REQUEST_TYPE) {
-                    if (GENERAL_REQUEST_TYPE.hasOwnProperty(generalRequestTypeKey) &&
-                        GENERAL_REQUEST_TYPE[generalRequestTypeKey].value === value) {
-                        return GENERAL_REQUEST_TYPE[generalRequestTypeKey];
-                    }
-                }
-
-                return null;
-            };
-
 
             var identifyRequestStatus = function (value) {
                 for (var requestStatusKey in REQUEST_STATUS) {
@@ -85,7 +72,6 @@ angular.module('conceptRequestServiceApp.request')
 
             return {
                 identifyRequestType: identifyRequestType,
-                identifyGeneralRequestType: identifyGeneralRequestType,
                 identifyRequestStatus: identifyRequestStatus,
                 getRequest: getRequest,
                 getRequests: getRequests,

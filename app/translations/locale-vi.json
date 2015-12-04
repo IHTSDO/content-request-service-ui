@@ -1,0 +1,195 @@
+{
+	"crs": {
+		"message": {
+			"unknownUser": "Người dùng đăng nhập như chưa biết",
+			"profileTip": "Tên hiển thị sẽ liên kết đến hồ sơ dịch vụ trong bản cập nhật sau"
+		},
+		"link": {
+			"logout": "Đăng xuất",
+			"login": "Đăng nhập",
+			"help": "Cứu giúp",
+			"tos": "Điều khoản dịch vụ",
+			"policy": "Chính sách riêng tư",
+			"contact": "Liên hệ chúng tôi",
+			"feedback": "Phản hồi"
+		},
+		"app": {
+			"name": "Khái niệm Yêu cầu Dịch vụ",
+			"copyright": "Copyright IHTSDO 2015"
+		},
+		"dashboard": {
+			"title": "Bảng điều khiển",
+			"sidebar": {
+				"myRequest": "Các yêu cầu của tôi Đăng",
+				"myBatch": "Các yêu cầu hàng loạt của tôi",
+				"createRequest": "Tạo yêu cầu mới",
+				"importBatch": "Nhập khẩu hàng loạt mới"
+			}
+		},
+		"request": {
+			"list": {
+				"title": {
+					"requests": "Các yêu cầu",
+					"myRequests": "Các yêu cầu của tôi",
+					"submittedRequests": "Các yêu cầu nộp"
+				},
+				"tip": {
+					"count": "Số lượng yêu cầu",
+					"create": "Tạo yêu cầu mới",
+					"requestorInternalId": "Nhấn vào đây để mở xem chỉnh sửa theo yêu cầu",
+					"batchId": "Nhấn vào đây để mở chi tiết lô xem",
+					"conceptFSN": "Nhấn vào đây để mở xem chỉnh sửa theo yêu cầu"
+				},
+				"searchPlaceHolder": {
+					"myRequests": "Tìm kiếm Các yêu cầu của tôi",
+					"submittedRequests": "Tìm kiếm Đăng yêu cầu"
+				},
+				"tableHeader": {
+					"batchId": "Id lô",
+					"requestorInternalId": "Id hình Trong Yêu Cầu",
+					"ticketId": "Yêu cầu Id",
+					"description": "Miêu tả",
+					"lastModified": "Sửa đổi lần cuối",
+					"requestType": "Loại Yêu Cầu",
+					"status": "Tình trạng",
+					"conceptFSN": "Khái niệm",
+					"reasonForChange": "Lý do cho sự thay đổi"
+				}
+			},
+			"details": {
+				"title": {
+					"new": "Yêu cầu mới",
+					"edit": "Sửa yêu cầu"
+				},
+				"button": {
+					"save": "Lưu Yêu cầu",
+					"submit": "Lưu và Gửi Yêu Cầu",
+					"cancel": "Hủy bỏ"
+				},
+				"label": {
+					"requestorInternalId": "Id Nội Yêu Cầu",
+					"proposedFSN": "New Concept FSN",
+					"conceptPT": "Preferred hạn",
+					"proposedDefinition": "Định nghĩa",
+					"reasonForChange": "Lý do của việc thay đổi",
+					"reference": "Tham chiếu",
+					"description": "Miêu tả",
+					"descriptionId": "Mô tả Id",
+					"currentDescription": "Mô tả hiện tại",
+					"proposedDescription": "Đề nghị New Mô tả",
+					"relationshipGroup": "Nhóm quan hệ",
+					"relationshipId": "Id mối quan hệ",
+					"historyAttributeValue": "Lịch sử Attribute Value",
+					"notes": "Ghi chú",
+					"relationshipType": "Quan hệ",
+					"characteristicType": "Đặc điểm Loại",
+					"refinability": "Refinability",
+					"newRefinability": "New Refinability",
+					"proposedStatus": "New Concept Status",
+					"historyAttribute": "Lịch sử Attribute",
+					"proposedCaseSignificance": "New huống Ý nghĩa",
+					"descriptionStatus": "New Mô tả Status",
+					"relationshipStatus": "Tình trạng mối quan hệ"
+				},
+				"tip": {
+					"editConceptHint": "Chỉnh sửa một khái niệm từ lưu Danh sách hoặc kéo và thả các khái niệm ở đây"
+				},
+				"sidebar": {
+					"tip": {
+						"taxonomy": "Phân loại",
+						"search": "Tìm kiếm",
+						"savedList": "Danh sách đã lưu",
+						"requestInfo": "Yêu cầu thông tin"
+					}
+				},
+				"info": {
+					"button": {
+						"submit": "Gửi Yêu cầu",
+						"save": "Lưu Yêu cầu",
+						"edit": "Sửa yêu cầu"
+					},
+					"label": {
+						"batchId": "Id lô",
+						"ticketId": "Id Ticket Jira",
+						"status": "Tình trạng",
+						"lastModified": "Bài Date Modified"
+					}
+				}
+			},
+			"createModal": {
+				"title": "Tạo yêu cầu mới",
+				"requestType": {
+					"label": "Loại Yêu Cầu"
+				},
+				"button": {
+					"createRequest": "Tạo yêu cầu",
+					"cancel": "Hủy bỏ"
+				}
+			},
+			"message": {
+				"listLoading": "Đang tải yêu cầu ...",
+				"listLoaded": "Tất cả các yêu cầu nạp",
+				"requestLoading": "Đang tải yêu cầu {{}} requestId ...",
+				"requestLoaded": "Yêu cầu {{}} requestId nạp",
+				"requestSaved": "Yêu cầu đã được lưu thành công",
+				"requestSubmitted": "Yêu cầu đã gửi thành công",
+				"error": {
+					"requestTypeRequired": "Vui lòng chọn loại yêu cầu",
+					"invalidPage": "Trang bạn yêu cầu không có sẵn"
+				}
+			},
+			"requestType": {
+				"newConcept": "Concept mới",
+				"newDescription": "New Mô tả",
+				"newRelationship": "Mối quan hệ mới",
+				"changeRetireConcept": "Thay đổi hoặc nghỉ hưu Concept",
+				"changeRetireDescription": "Thay đổi hoặc nghỉ hưu Mô tả",
+				"changeRetireRelationship": "Thay đổi hoặc lui về Mối quan hệ"
+			},
+			"inputMode": {
+				"simple": "Đơn giản",
+				"direct": "Chỉ đường"
+			},
+			"requestMode": {
+				"newRequest": "Yêu cầu mới",
+				"editRequest": "Sửa yêu cầu"
+			},
+			"requestStatus": {
+				"draft": "Bản nháp",
+				"new": "Mới"
+			}
+		},
+		"batch": {
+			"list": {
+				"title": "Lô của tôi",
+				"tip": {
+					"count": "Số lô",
+					"create": "Lô nhập khẩu",
+					"batchId": "Nhấn vào đây để mở chi tiết lô xem"
+				},
+				"searchPlaceHolder": "Tìm kiếm lô",
+				"tableHeader": {
+					"batchId": "Id lô",
+					"uploaded": "Uploaded On",
+					"submitted": "Trình On",
+					"lastModified": "Sửa đổi lần cuối",
+					"status": "Tình trạng"
+				}
+			},
+			"message": {
+				"listLoading": "Đang tải lô ...",
+				"listLoaded": "Tất cả các lô nạp",
+				"error": {
+					"fileRequired": "Vui lòng chọn một tập tin để tải lên."
+				}
+			},
+			"importModal": {
+				"title": "Import Batch File",
+				"button": {
+					"cancel": "Hủy bỏ",
+					"upload": "Tải lên"
+				}
+			}
+		}
+	}
+}

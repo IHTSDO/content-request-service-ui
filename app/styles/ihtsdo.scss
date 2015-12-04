@@ -7110,16 +7110,23 @@ legend {
   box-shadow: none;
 }
 .drop-box {
-  background-color: #F1F1F1;
+  background-color: #FAFAFA;
   text-align: center;
-  height: 100px;
-  line-height: 100px;
+  height: 60px;
+  line-height: 60px;
   display: block;
   border: 1px dashed #DDD;
+  margin-top: 2px;
+  cursor: pointer;
 }
 .drop-box:hover {
-  background-color: #F9F9F9;
+  background-color: #FFF;
 }
+
+.drop-box.dragover {
+  background-color: #009cd7;
+}
+
 .navbar .btn-link:hover {
   background-color: #535353;
 }
@@ -13605,4 +13612,16 @@ textarea.noresize {
 .ripple.ripple-out {
   transition: opacity 0.1s linear 0s !important;
   opacity: 0;
+}
+
+form {
+  .required {
+    label {
+      color: red;
+    }
+  }
+
+  label {
+    font-weight: 500;
+  }
 }

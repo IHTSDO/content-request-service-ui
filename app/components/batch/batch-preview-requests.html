@@ -1,0 +1,74 @@
+<div>
+    <!-- My Batche Requests -->
+    <section class="tables-data">
+        <div class="card">
+            <div class="row">
+                <div class="col-md-6 no-padding">
+                    <div class="p-20">
+                        <h4 ng-bind="batchPreviewVM.selectedFile.fileName"></h4>
+
+                        <div style="margin-top: -8px">Uploaded: {{batchPreviewVM.selectedFile.uploadedTime |
+                            date:'MM-dd-yyyy hh:mm:ss'}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="table-search p-20">
+                        <input type="text" ng-model="batchVM.tableParams.filter()['search']" class="form-control"
+                               placeholder="Search Batch Requests" autofocus/>
+                    </div>
+                </div>
+            </div>
+
+            <div role="tabpanel">
+
+                <!-- Nav tabs -->
+                <ul style="background-color: #d1d1d1;display: inline; border-bottom: 0px;"
+                    class="nav nav-tabs sidebar-tabs batch-preview-tabs col-md-12 no-padding"
+                    role="tablist" >
+                    <li role="presentation" class="active">
+                        <a ng-click="batchPreviewVM.loadPreviewData('NEW_CONCEPT')" aria-controls="home" role="tab" data-toggle="tab">
+                            NEW CONCEPT (0)
+                        </a>
+                    </li>
+                    <li role="presentation" class="">
+                        <a ng-click="batchPreviewVM.loadPreviewData('NEW_DESCRIPTION')" aria-controls="home" role="tab" data-toggle="tab">
+                            NEW DESCRIPTION (0)
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a ng-click="batchPreviewVM.loadPreviewData('NEW_RELATIONSHIP')" aria-controls="home" role="tab" data-toggle="tab">
+                            NEW RELATIONSHIP (0)
+                        </a>
+                    </li>
+                    <li role="presentation" class="">
+                        <a ng-click="batchPreviewVM.loadPreviewData('CHANGE_RETIRE_CONCEPT')" aria-controls="home" role="tab" data-toggle="tab">
+                            CHANGE/RETIRE CONCEPT (0)
+                        </a>
+                    </li>
+                    <li role="presentation" class="">
+                        <a ng-click="batchPreviewVM.loadPreviewData('CHANGE_RETIRE_DESCRIPTION')" aria-controls="home" role="tab" data-toggle="tab">
+                            CHANGE/RETIRE DESCRIPTION (0)
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a ng-click="batchPreviewVM.loadPreviewData('CHANGE_RETIRE_RELATIONSHIP')" aria-controls="home" role="tab" data-toggle="tab">
+                            CHANGE/RETIRE RELATIONSHIP (0)
+                        </a>
+                    </li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content col-md-12 no-padding ">
+
+                    <div role="tabpanel" class="tab-pane active" >
+                        <div ng-include="batchPreviewVM.previewTab.previewTable"></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+</div>

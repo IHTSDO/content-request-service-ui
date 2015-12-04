@@ -1,0 +1,58 @@
+<div id="request-info-panel" style="padding-top:15px">
+    <!-- Timeline formatter and concept ids.extension input -->
+    <div class="row">
+        <div class="col col-md-12">
+            <div style="border-radius: 4px; border: solid 1px #ddd">
+                <div style="border-radius: 4px;background-color: #009cd7;color:white;padding: 10px;margin: -1px;font-weight: 500;cursor: pointer"
+                        ng-click="fileListCollapsed = !fileListCollapsed">
+                    {{'crs.batch.preview.title.uploadedFiles' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': !fileListCollapsed, 'glyphicon-chevron-up': fileListCollapsed}"></i>
+                </div>
+                <div style="padding:10px 5px;background-color:white"
+                     uib-collapse="fileListCollapsed">
+                    <div class="table-responsive white">
+                        <table ng-table="batchPreviewVM.filesTableParams" template-pagination="layout/template/small-data-table-pager.html"
+                               class="table table-full table-full-small">
+                            <tr ng-repeat="file in $data" class="clickable-row" ng-click="batchPreviewVM.selectFile(file)" ng-class="{'file-selected':batchPreviewVM.selectedFile.id === file.id}">
+
+                                <td data-title="'crs.batch.preview.fileList.tableHeader.name' | translate" sortable="'fileName'" >
+                                    <!--<a class="tooltips-right" ng-href="#/batches/view/{{request.batchRequest}}">{{request.batchRequest}} <span translate="crs.request.list.tip.batchId"></span></a>-->
+                                    {{file.fileName}}
+                                </td>
+                                <td data-title="'crs.batch.preview.fileList.tableHeader.uploaded' | translate" sortable="'uploadedTime'" >
+                                    {{file.uploadedTime | date:'MM-dd-yyyy hh:mm:ss'}}
+                                </td>
+                                <td data-title="'crs.batch.preview.fileList.tableHeader.status' | translate" sortable="'status'">
+                                    <span class="badge fileStatus {{file.status}}">{{file.status | batchImportStatus | translate}}</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                 </div>
+            </div>
+            <div>
+                <div ngf-select ngf-drag-over-class="'dragover'" ngf-drop="batchPreviewVM.uploadFile($file)" class="drop-box">
+                    <span class="md md-file-upload"></span> {{'crs.batch.preview.upload.hint' | translate}}
+                    <div ng-if="batchPreviewVM.uploading"  style="line-height: initial">
+                        <label>{{'crs.batch.preview.upload.uploading' | translate}}... <span>{{batchPreviewVM.uploadingProgress}} %</span></label>
+                        <uib-progressbar animate="true" value="batchPreviewVM.uploadingProgress" ></uib-progressbar>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr style="width:93%; border-color:#ddd">
+
+    <div class="request-info">
+
+        <div style="padding: 15px; width: 100%" class="classification-btn">
+            <button ng-disabled="requestVM.request.requestHeader.status !== 'DRAFT'"
+                    class="btn btn-default blue darken-1 promote" style="text-transform: none"
+                    ng-click="requestVM.saveRequest()">
+                <span class="md md-save blue darken-2 iconbase"></span>
+                <span class="button-link" translate="crs.request.details.info.button.save"></span>
+            </button>
+        </div>
+    </div>
+</div>

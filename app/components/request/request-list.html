@@ -27,7 +27,7 @@
             <div class="table-responsive white">
                 <table ng-table="vm.tableParams" template-pagination="layout/template/data-table-pager.html"
                        class="table table-full table-full-small">
-                    <tr ng-repeat="request in $data" ng-click="dashboard.editRequest(request.id)" class="clickable-row">
+                    <tr ng-repeat="request in $data" ng-click="dashboard.editRequest(request.id, request.batchRequest)" class="clickable-row">
 
                         <td data-title="'crs.request.list.tableHeader.batchId' | translate" sortable="'batchRequest'" >
                             <!--<a class="tooltips-right" ng-href="#/batches/view/{{request.batchRequest}}">{{request.batchRequest}} <span translate="crs.request.list.tip.batchId"></span></a>-->
@@ -88,7 +88,7 @@
             <div class="table-responsive white">
                 <table ng-table="vm.submittedTableParams" template-pagination="layout/template/data-table-pager.html"
                        class="table table-full table-full-small">
-                    <tr ng-repeat="request in $data" ng-click="dashboard.editRequest(request.id)" class="clickable-row">
+                    <tr ng-repeat="request in $data" ng-click="dashboard.editRequest(request.id, request.batchRequest)" class="clickable-row">
 
                         <td data-title="'crs.request.list.tableHeader.batchId' | translate" sortable="'batchRequest'" >
                             <!--<a class="tooltips-right" ng-href="#/batches/view/{{request.batchRequest}}">{{request.batchRequest}} <span translate="crs.request.list.tip.batchId"></span></a>-->

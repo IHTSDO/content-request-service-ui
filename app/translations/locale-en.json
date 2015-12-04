@@ -67,9 +67,15 @@
                     "cancel": "Cancel"
                 },
                 "label": {
+                    "topic": "Topic",
                     "requestorInternalId": "Requestor Internal Id",
                     "proposedFSN": "New Concept FSN",
+                    "parentConcept": "Parent Concept",
+                    "concept": "Concept",
+                    "sourceConcept": "Source Concept",
+                    "destinationConcept": "Destination Concept",
                     "conceptPT": "Preferred Term",
+                    "proposedSynonym": "Synonym(s)",
                     "proposedDefinition": "Definition",
                     "reasonForChange": "Reason of Changes",
                     "reference": "Reference",
@@ -79,6 +85,7 @@
                     "proposedDescription": "Proposed New Description",
                     "relationshipGroup": "Relationship Group",
                     "relationshipId": "Relationship Id",
+                    "relationship": "Relationship",
                     "historyAttributeValue": "History Attribute Value",
                     "notes": "Notes",
                     "relationshipType": "Relationship Type",
@@ -122,6 +129,9 @@
                 "requestType": {
                     "label": "Request Type"
                 },
+                "inputMode": {
+                    "label": "Input Mode"
+                },
                 "button": {
                     "createRequest": "Create Request",
                     "cancel": "Cancel"
@@ -137,7 +147,8 @@
 
                 "error": {
                     "requestTypeRequired": "Please select request type",
-                    "invalidPage": "The page you request is not available"
+                    "invalidPage": "The page you request is not available",
+                    "requiredConcept": "Please select a concept"
                 }
 
             },
@@ -148,6 +159,10 @@
                 "changeRetireConcept": "Change or Retire Concept",
                 "changeRetireDescription": "Change or Retire Description",
                 "changeRetireRelationship": "Change or Retire Relationship"
+            },
+            "inputMode": {
+                "simple": "Simple",
+                "direct": "Direct"
             },
             "requestMode": {
                 "newRequest": "New Request",
@@ -188,6 +203,30 @@
                 "button": {
                     "cancel": "Cancel",
                     "upload": "Upload"
+                }
+            },
+            "batchImportStatus": {
+                "processingUpload": "Uploading",
+                "completedUpload": "Uploaded",
+                "processingImport": "Importing",
+                "completedImport": "Imported",
+                "error": "error",
+                "aborted": "aborted"
+            },
+            "preview": {
+                "title": {
+                    "uploadedFiles": "Uploaded Files"
+                },
+                "fileList": {
+                    "tableHeader": {
+                        "name": "Name",
+                        "uploaded": "Uploaded",
+                        "status": "Status"
+                    }
+                },
+                "upload": {
+                    "hint": "Select or Drop Batch File Here",
+                    "uploading": "Uploading"
                 }
             }
         }

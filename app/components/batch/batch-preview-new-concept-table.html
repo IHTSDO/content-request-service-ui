@@ -1,0 +1,47 @@
+<div class="table-responsive white">
+    <table ng-table="batchPreviewVM.previewTableParams" template-pagination="layout/template/data-table-pager.html"
+           class="table table-full table-full-small">
+        <tr ng-repeat="request in $data" ng-class="{'importing-request-error': request.currentValidationStatus !== null}">
+            <td data-title="'Source Terminology Version'" >
+                {{request.sourceTerminologyVersion}}
+            </td>
+            <td data-title="'Requestor Internal ID'" >
+                {{request.requestorInternalId}}
+            </td>
+            <td data-title="'Parent ID'" >
+                {{request.parentId}}
+            </td>
+            <td data-title="'Parent FSN'" >
+                {{request.parentFSN}}
+            </td>
+            <td data-title="'fsn'" >
+                {{request.proposedFSN}}
+            </td>
+            <td data-title="'Semantic Tag'" >
+                {{request.semanticTag}}
+            </td>
+            <td data-title="'PT'" >
+                {{request.conceptPT}}
+            </td>
+            <td data-title="'Synonym (1)'" >
+                {{request.proposedSynonym1}}
+            </td>
+            <td data-title="'Synonym (2)'" >
+                {{request.proposedSynonym2}}
+            </td>
+            <td data-title="'Definition'" >
+                {{request.proposedDefinition}}
+            </td>
+            <td data-title="'Reason for Change'" >
+                {{request.reasonForChange}}
+            </td>
+            <td data-title="'Notes'" >
+                {{request.notes}}
+            </td>
+            <td data-title="'References'" >
+                {{request.reference}}
+            </td>
+        </tr>
+    </table>
+
+</div>

@@ -10,12 +10,18 @@
         <div class="col-md-12">
             <form class="form-floating">
                 <div class="form-group">
+                    <label for="requestTypeSelect" translate="crs.request.createModal.inputMode.label"></label>
+                    <select id="inputModeSelect" name="select-input-mode" class="form-control"
+                            ng-model="modal.inputMode"
+                            ng-options="inputMode.value as inputMode.langKey | translate for inputMode in modal.inputModes">
+                    </select>
+                    <br>
+
                     <label for="requestTypeSelect" translate="crs.request.createModal.requestType.label"></label>
                     <select id="requestTypeSelect" name="select-request-type" class="form-control"
                             ng-model="modal.requestType"
-                            ng-options="requestType.value as requestType.langKey | translate for requestType in modal.generalRequestTypes">
+                            ng-options="requestType.value as requestType.langKey | translate for requestType in modal.requestTypes">
                     </select>
-
                     <br>
                 </div>
             </form>

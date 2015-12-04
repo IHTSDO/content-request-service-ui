@@ -3,14 +3,16 @@
 angular
     .module('conceptRequestServiceApp.request', [
     ])
-    .value('GENERAL_REQUEST_TYPE', {
-        NEW_CONCEPT: {
-            value: 'NEW_CONCEPT',
-            langKey: 'crs.request.requestType.newConcept'
+    .value('REQUEST_INPUT_MODE', {
+        SIMPLE: {
+            value: 'SIMPLE',
+            langKey: 'crs.request.inputMode.simple',
+            requestTypes: ['NEW_CONCEPT', 'NEW_DESCRIPTION', 'NEW_RELATIONSHIP', 'CHANGE_RETIRE_CONCEPT', 'CHANGE_RETIRE_DESCRIPTION', 'CHANGE_RETIRE_RELATIONSHIP']
         },
-        EDIT_CONCEPT: {
-            value: 'EDIT_CONCEPT',
-            langKey: 'crs.request.requestType.changeRetireConcept'
+        DIRECT: {
+            value: 'DIRECT',
+            langKey: 'crs.request.inputMode.direct',
+            requestTypes: ['NEW_CONCEPT', 'CHANGE_RETIRE_CONCEPT']
         }
     })
     .value('REQUEST_TYPE', {
@@ -31,7 +33,6 @@ angular
                     { name: 'reference'}
                 ]
             }
-
         },
         NEW_DESCRIPTION: {
             value: 'NEW_DESCRIPTION',
@@ -56,6 +57,7 @@ angular
             langKey: 'crs.request.requestType.newRelationship',
             form: {
                 template: 'components/request/request-new-relationship-form.html',
+                modal: 'components/request/request-new-relationship-modal.html',
                 "fields": [
                     {"name": "requestorInternalId"},
                     {"name": "conceptId", "required": true},
@@ -75,6 +77,7 @@ angular
             langKey: 'crs.request.requestType.changeRetireConcept',
             form: {
                 template: 'components/request/request-change-retire-concept-form.html',
+                modal: 'components/request/request-change-retire-concept-modal.html',
                 "fields": [
                     {"name": "requestorInternalId"},
                     {"name": "conceptId", "required": true},
@@ -95,6 +98,7 @@ angular
             langKey: 'crs.request.requestType.changeRetireDescription',
             form: {
                 template: 'components/request/request-change-retire-description-form.html',
+                modal: 'components/request/request-change-retire-description-modal.html',
                 "fields": [
                     {"name": "requestorInternalId"},
                     {"name": "conceptId", "required": true},
@@ -115,6 +119,7 @@ angular
             langKey: 'crs.request.requestType.changeRetireRelationship',
             form: {
                 template: 'components/request/request-change-retire-relationship-form.html',
+                modal: 'components/request/request-change-retire-relationship-modal.html',
                 "fields": [
                     {"name": "requestorInternalId"},
                     {"name": "conceptId", "required": true},

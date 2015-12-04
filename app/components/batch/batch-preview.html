@@ -123,34 +123,19 @@
 
 </style>
 <div style="height: 100%">
-    <div class="button-nav">
-        <div ng-include="'components/request/request-details-button-nav.html'" ></div>
-    </div>
-
-    <div class="row no-gutter" style="height: 100%;padding-left: 50px">
+    <div class="row no-gutter" style="height: 100%">
         <!-- sidebar -->
         <div class="col-sm-3 editpanel no-padding" style="position: relative;height: 100%;background-color:#eee;">
-            <div ng-include="'components/request/request-details-sidebar.html'"
+            <div ng-include="'components/batch/batch-preview-sidebar.html'"
                  style="height: 100%;overflow-y:auto;overflow-x:hidden"></div>
         </div>
 
         <!-- edit form -->
         <div class="col-sm-9 editpanel no-padding" style="height: 100%">
             <div class="row" style="height: 100%;">
-                <div class="col-sm-6" style="height: 100%;overflow-y:auto;overflow-x:hidden;padding:5px 35px 10px 20px">
-
-                    <div id="messagePaneLocation" ></div>
-                    <div class="alert alert-success" ng-show="requestVM.msgSuccess">{{requestVM.msgSuccess | translate}}</div>
-                    <div class="alert alert-danger" ng-show="requestVM.msgError">{{requestVM.msgError | translate}}</div>
-
-                    <div ng-include="'components/request/request-general-details-form.html'"></div><br/>
-                </div>
-
-                <div class="col-sm-6" style="height: 100%;"
-                     ng-include="requestVM.inputModePage"
-                     ng-class="{'simple-form':requestVM.inputMode.value === 'SIMPLE', 'no-padding': requestVM.inputMode.value === 'DIRECT'}" >
-                </div>
+                <div ng-if="batchPreviewVM.selectedFile" ng-include="'components/batch/batch-preview-requests.html'"
+                     style="height: 100%;overflow-y:auto;overflow-x:hidden"></div>
             </div>
-         </div>
+        </div>
     </div>
 </div>
