@@ -8,7 +8,7 @@
                         <h4 ng-bind="batchPreviewVM.selectedFile.fileName"></h4>
 
                         <div style="margin-top: -8px">Uploaded: {{batchPreviewVM.selectedFile.uploadedTime |
-                            date:'MM-dd-yyyy hh:mm:ss'}}
+                            date:'MMMM dd, yyyy h:mm:ss a'}}
                         </div>
                     </div>
                 </div>
@@ -29,32 +29,32 @@
                     role="tablist" >
                     <li role="presentation" class="active">
                         <a ng-click="batchPreviewVM.loadPreviewData('NEW_CONCEPT')" aria-controls="home" role="tab" data-toggle="tab">
-                            NEW CONCEPT (0)
+                            NEW CONCEPT ({{batchPreviewVM.selectedFile.requestTypeNumber.NEW_CONCEPT || 0}})
                         </a>
                     </li>
                     <li role="presentation" class="">
                         <a ng-click="batchPreviewVM.loadPreviewData('NEW_DESCRIPTION')" aria-controls="home" role="tab" data-toggle="tab">
-                            NEW DESCRIPTION (0)
+                            NEW DESCRIPTION ({{batchPreviewVM.selectedFile.requestTypeNumber.NEW_DESCRIPTION || 0}})
                         </a>
                     </li>
                     <li role="presentation">
                         <a ng-click="batchPreviewVM.loadPreviewData('NEW_RELATIONSHIP')" aria-controls="home" role="tab" data-toggle="tab">
-                            NEW RELATIONSHIP (0)
+                            NEW RELATIONSHIP ({{batchPreviewVM.selectedFile.requestTypeNumber.NEW_RELATIONSHIP || 0}})
                         </a>
                     </li>
                     <li role="presentation" class="">
                         <a ng-click="batchPreviewVM.loadPreviewData('CHANGE_RETIRE_CONCEPT')" aria-controls="home" role="tab" data-toggle="tab">
-                            CHANGE/RETIRE CONCEPT (0)
+                            CHANGE/RETIRE CONCEPT ({{batchPreviewVM.selectedFile.requestTypeNumber.CHANGE_RETIRE_CONCEPT || 0}})
                         </a>
                     </li>
                     <li role="presentation" class="">
                         <a ng-click="batchPreviewVM.loadPreviewData('CHANGE_RETIRE_DESCRIPTION')" aria-controls="home" role="tab" data-toggle="tab">
-                            CHANGE/RETIRE DESCRIPTION (0)
+                            CHANGE/RETIRE DESCRIPTION ({{batchPreviewVM.selectedFile.requestTypeNumber.CHANGE_RETIRE_DESCRIPTION || 0}})
                         </a>
                     </li>
                     <li role="presentation">
                         <a ng-click="batchPreviewVM.loadPreviewData('CHANGE_RETIRE_RELATIONSHIP')" aria-controls="home" role="tab" data-toggle="tab">
-                            CHANGE/RETIRE RELATIONSHIP (0)
+                            CHANGE/RETIRE RELATIONSHIP ({{batchPreviewVM.selectedFile.requestTypeNumber.CHANGE_RETIRE_RELATIONSHIP || 0}})
                         </a>
                     </li>
                 </ul>

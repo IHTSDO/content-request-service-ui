@@ -210,11 +210,12 @@
                 "completedUpload": "Uploaded",
                 "processingImport": "Importing",
                 "completedImport": "Imported",
-                "error": "error",
-                "aborted": "aborted"
+                "error": "Error",
+                "aborted": "Aborted"
             },
             "preview": {
                 "title": {
+                    "pageTitle": "Batch Import",
                     "uploadedFiles": "Uploaded Files"
                 },
                 "fileList": {
@@ -227,6 +228,48 @@
                 "upload": {
                     "hint": "Select or Drop Batch File Here",
                     "uploading": "Uploading"
+                },
+                "button": {
+                    "import": "Complete Importing Requests"
+                },
+                "requestList": {
+                    "tableHeader": {
+                        "sourceTerminology": "Source Terminology",
+                        "sourceTerminologyVersion": "Source Terminology Version",
+                        "requestorInternalId": "Requestor Internal ID",
+                        "reasonForChange": "Reason for Change",
+                        "notes": "Notes",
+                        "references": "References",
+                        "parentId": "Parent ID",
+                        "parentFSN": "Parent FSN",
+                        "FSN": "FSN",
+                        "semanticTag": "Semantic Tag",
+                        "synonym": "Synonym",
+                        "definition": "Definition",
+                        "conceptId": "Concept ID",
+                        "sourceConceptId": "Source Concept ID",
+                        "conceptFSN": "Concept FSN",
+                        "description": "Description",
+                        "descriptionIsPT": "Description is PT",
+                        "relationshipType": "Relationship Type",
+                        "destinationTerminology": "Destination Terminology",
+                        "destinationConceptId": "Destination Concept ID",
+                        "characteristicType": "Characteristic Type",
+                        "refinability": "Refinability",
+                        "relationshipGroup": "Relationship Group",
+                        "newFSN": "New FSN",
+                        "newConceptStatus": "New Concept Status",
+                        "historyAttribute": "Concept History Attribute",
+                        "historyAttributeValue": "Concept History Attribute Value",
+                        "descriptionId": "Description ID",
+                        "currentDescription": "Current Description",
+                        "newDescription": "Proposed New Description",
+                        "newCaseSignature": "Proposed New Case Signature",
+                        "newDescriptionStatus": "Proposed New Description Status",
+                        "relationshipId": "Relationship ID",
+                        "newRefinability": "Proposed New Refinability",
+                        "newRelationshipStatus": "Proposed New Relationship Status"
+                    }
                 }
             }
         }

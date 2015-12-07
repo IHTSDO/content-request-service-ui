@@ -47,11 +47,11 @@
     <div class="request-info">
 
         <div style="padding: 15px; width: 100%" class="classification-btn">
-            <button ng-disabled="requestVM.request.requestHeader.status !== 'DRAFT'"
-                    class="btn btn-default blue darken-1 promote" style="text-transform: none"
-                    ng-click="requestVM.saveRequest()">
-                <span class="md md-save blue darken-2 iconbase"></span>
-                <span class="button-link" translate="crs.request.details.info.button.save"></span>
+            <button ng-disabled="batchPreviewVM.selectedFile.status !== 'COMPLETED_UPLOAD'"
+                    class="btn btn-default green darken-1 import" style="text-transform: none"
+                    ng-click="batchPreviewVM.importRequests()">
+                <span class="md md-import-export green darken-2 iconbase"></span>
+                <span class="button-link" translate="crs.batch.preview.button.import"></span>
             </button>
         </div>
     </div>

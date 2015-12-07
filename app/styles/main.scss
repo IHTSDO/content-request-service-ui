@@ -171,6 +171,11 @@ footer {
   &.COMPLETED_UPLOAD {
     background-color: #01A2E1;
   }
+
+  &.ERROR {
+    background-color: #F3CB67;
+    color: red;
+  }
 }
 
 .file-selected {

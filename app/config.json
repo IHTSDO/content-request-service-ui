@@ -7,6 +7,7 @@
         "ims-api": "https://dev-term.ihtsdotools.org/ims-api/"
     },
     "xhrTimeout": 50000,
+    "fileStatusPollingInterval": 10000,
     "snomed-ct": {
         "path": "snomed-ct/v2/",
         "edition": "MAIN",

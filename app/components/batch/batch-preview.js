@@ -4,16 +4,23 @@ angular
     .module('conceptRequestServiceApp.batch')
     .controller('BatchPreviewCtrl', [
         '$rootScope',
+        '$scope',
         '$filter',
         '$routeParams',
+        '$interval',
         'ngTableParams',
         'batchService',
+        'configService',
         'BATCH_IMPORT_STATUS',
         'BATCH_PREVIEW_TAB',
-        function ($rootScope, $filter, $routeParams, ngTableParams, batchService, BATCH_IMPORT_STATUS, BATCH_PREVIEW_TAB) {
+        function ($rootScope, $scope, $filter, $routeParams, $interval, ngTableParams, batchService, configService, BATCH_IMPORT_STATUS, BATCH_PREVIEW_TAB) {
+            var fileStatusPoller;
             var vm = this;
+            var fileStatusPollingInterval = configService.getFileStatusPollingInterval();
 
             var initView = function () {
+                $rootScope.pageTitles = ['crs.batch.preview.title.pageTitle'];
+
                 vm.uploading = false;
                 vm.uploadingProgress = 0;
                 vm.uploadingFile = null;
@@ -29,6 +36,10 @@ angular
 
                     if (vm.filesTableParams) {
                         vm.filesTableParams.reload();
+                    }
+
+                    if (!fileStatusPoller) {
+                        fileStatusPoller = $interval(loadUploadedFiles, fileStatusPollingInterval);
                     }
                 });
             };
@@ -126,12 +137,28 @@ angular
                 }
             );
 
+            var importRequests = function () {
+                if (vm.selectedFile &&
+                    vm.selectedFile.status === BATCH_IMPORT_STATUS.COMPLETED_UPLOAD.value) {
+                    // get all preview work items
+                    // run though to build concepts
+                    // submit import with the concepts
+                }
+            };
+
+            $scope.$on('$destroy', function () {
+                if (fileStatusPoller) {
+                    $interval.cancel(fileStatusPoller);
+                }
+            });
+
 
             vm.filesTableParams = filesTableParams;
             vm.previewTableParams = previewTableParams;
             vm.uploadFile = uploadFile;
             vm.selectFile = selectFile;
             vm.loadPreviewData = loadPreviewData;
+            vm.importRequests = importRequests;
 
             initView();
         }
