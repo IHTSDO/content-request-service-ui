@@ -109,7 +109,7 @@ angular.module('conceptRequestServiceApp.snowowl')
                 var getDomainAttributes = function (projectKey, taskKey, parentIds) {
                     var params = {
                         parentIds: parentIds,
-                        //expand: 'fsn',
+                        expand: 'fsn()',
                         offset: 0,
                         limit: 50
                     };
@@ -124,7 +124,7 @@ angular.module('conceptRequestServiceApp.snowowl')
 
                 var getDomainAttributeValues = function (projectKey, taskKey, attributeId, searchStr) {
                     var params = {
-                        expand: 'fsn',
+                        expand: 'fsn()',
                         offset: 0,
                         limit: 50
                     };

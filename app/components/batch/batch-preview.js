@@ -30,7 +30,8 @@ angular
             };
 
             var loadUploadedFiles = function () {
-                vm.uploadedFiles = null;
+                //vm.uploadedFiles = null;
+
                 batchService.getUploadedFiles().then(function (files) {
                     vm.uploadedFiles = files;
 
@@ -39,14 +40,21 @@ angular
                     }
 
                     if (!fileStatusPoller) {
-                        fileStatusPoller = $interval(loadUploadedFiles, fileStatusPollingInterval);
+                        //fileStatusPoller = $interval(loadUploadedFiles, fileStatusPollingInterval);
                     }
                 });
             };
 
-            var loadPreviewData = function (requestType) {
-                vm.importingRequests = null;
+            var loadPreviewData = function (requestType, clearOnReloading) {
                 vm.previewTab = BATCH_PREVIEW_TAB[requestType];
+
+                if (clearOnReloading) {
+                    vm.importingRequests = null;
+                    if (vm.previewTableParams) {
+                        vm.previewTableParams.reload();
+                    }
+                }
+
                 batchService.getImportingRequests(vm.selectedFile.id, requestType).then(function (requests) {
                     vm.importingRequests = requests;
 
@@ -83,12 +91,13 @@ angular
 
             var selectFile = function (file) {
                 vm.selectedFile = file;
-                loadPreviewData(BATCH_PREVIEW_TAB.NEW_CONCEPT.value);
+                vm.importingRequests = null;
+                loadPreviewData(BATCH_PREVIEW_TAB.NEW_CONCEPT.value, true);
             };
 
             var filesTableParams = new ngTableParams({
                     page: 1,
-                    count: 20,
+                    count: 5,
                     sorting: {'uploaded': 'desc', name: 'asc'}
                 },
                 {
@@ -143,6 +152,11 @@ angular
                     // get all preview work items
                     // run though to build concepts
                     // submit import with the concepts
+
+                    vm.selectedFile.status = BATCH_IMPORT_STATUS.PROCESSING_IMPORT.value;
+                    batchService.importBatch(vm.selectedFile.id).then(function () {
+                        loadUploadedFiles();
+                    });
                 }
             };
 
@@ -151,7 +165,6 @@ angular
                     $interval.cancel(fileStatusPoller);
                 }
             });
-
 
             vm.filesTableParams = filesTableParams;
             vm.previewTableParams = previewTableParams;

@@ -71,7 +71,7 @@ angular
                                     } else {
                                         allowedConcepts.push({
                                             conceptId: item.id,
-                                            fsn: item.id
+                                            fsn: item.fsn.term
                                         });
                                     }
                                 });
@@ -93,7 +93,7 @@ angular
                             $scope.showLoading = false;
                         });*/
 
-                        console.log(conceptItem);
+                        //console.log(conceptItem);
                         $scope.typeConcept = conceptItem;
                     };
 

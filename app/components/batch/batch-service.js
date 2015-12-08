@@ -22,9 +22,15 @@ angular.module('conceptRequestServiceApp.batch')
             };
 
             var uploadBatchFile = function (batchFile) {
-                var batchImportEndpoint = CRS_API_ENDPOINT.BATCH_UPLOAD;
+                var batchUploadEndpoint = CRS_API_ENDPOINT.BATCH_UPLOAD;
 
-                return crsService.sendUpload(batchImportEndpoint, batchFile);
+                return crsService.sendUpload(batchUploadEndpoint, batchFile);
+            };
+
+            var importBatch = function (previewBatchId) {
+                var batchImportEndpoint = CRS_API_ENDPOINT.BATCH_UPLOADED_PREVIEW + '/' + previewBatchId + '/import';
+
+                return crsService.sendPut(batchImportEndpoint);
             };
 
             var getUploadedFiles = function () {
@@ -52,6 +58,7 @@ angular.module('conceptRequestServiceApp.batch')
                 getBatch: getBatch,
                 getBatches: getBatches,
                 uploadBatchFile: uploadBatchFile,
+                importBatch: importBatch,
                 getUploadedFiles: getUploadedFiles,
                 identifyBatchImportStatus: identifyBatchImportStatus,
                 getImportingRequests: getImportingRequests

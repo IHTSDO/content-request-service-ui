@@ -17,7 +17,7 @@ angular
             langKey: 'crs.batch.batchImportStatus.processingImport'
         },
         COMPLETED_IMPORT: {
-            value: 'PROCESSING_IMPORT',
+            value: 'COMPLETED_IMPORT',
             langKey: 'crs.batch.batchImportStatus.completedImport'
         },
         ERROR: {

@@ -40,8 +40,8 @@
                       typeahead-editable="false" typeahead-min-length="0"
                       required></form-control>-->
         <form-control type="select"
-                      model="requestVM.request.description"
-                      options="suggestion as suggestion.term for suggestion in requestVM.originalConcept.descriptions"
+                      model="requestVM.request.descriptionId"
+                      options="suggestion.descriptionId as suggestion.term for suggestion in requestVM.originalConcept.descriptions"
                       label="crs.request.details.label.currentDescription"
                       name="slCurrentDescription" required></form-control>
 

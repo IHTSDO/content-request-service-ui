@@ -45,8 +45,6 @@ angular
             var requestId,
                 requestType;
 
-            var originalConcept;
-
             var identifyPageMode = function (pm) {
                 for (var requestModeKey in REQUEST_MODE) {
                     if (REQUEST_MODE.hasOwnProperty(requestModeKey) &&
@@ -158,9 +156,7 @@ angular
                             originConcept = objectService.getNewConcept();
                             originConcept.definitionOfChanges = buildNewConceptDefinitionOfChanges();
                             vm.originalConcept = originConcept;
-
-                            /*vm.concept = angular.copy(originalConcept);
-                            vm.concept.definitionOfChanges = buildNewConceptDefinitionOfChanges();*/
+                            vm.concept = angular.copy(vm.originalConcept);
                         }
 
                         vm.requestType = requestType;
@@ -171,7 +167,7 @@ angular
                         $rootScope.pageTitles = ['crs.request.details.title.edit'];
 
                         $rootScope.showLoading = true;
-                        loadRequest().then(function () {
+                        loadRequest().then(function (requestData) {
                             var requestType = requestService.identifyRequestType(vm.request.requestType);
                             var inputMode = identifyInputMode(vm.request.inputMode);
 
@@ -201,9 +197,7 @@ angular
                 vm.request = null;
 
                 return requestService.getRequest(requestId).then(function (requestData) {
-
-
-                    vm.concept = requestData.concept;
+                    // build request
                     vm.request = buildRequestFromRequestData(requestData);
 
                     // get original concept
@@ -211,7 +205,8 @@ angular
                         originConcept = objectService.getNewConcept();
                         originConcept.definitionOfChanges = buildNewConceptDefinitionOfChanges();
                         vm.originalConcept = originConcept;
-                        return null;
+
+                        //return null;
                     } else {
                         vm.originalConcept = {
                             conceptId: requestData.concept.conceptId
@@ -221,6 +216,11 @@ angular
                             vm.originalConcept = response;
                         });*/
                     }
+
+                    // rebuild concept from request data
+                    vm.concept = requestData.concept;
+
+                    return requestData
                 });
             };
 
@@ -356,51 +356,56 @@ angular
                 concept.descriptions.push(desc);
             };
 
-            var cloneConceptDescription = function (concept, sourceDescription, proposedTerm, proposedCaseSignificance, applyChanges, descriptionStatus) {
-                var newDesc = angular.copy(sourceDescription), sourceDesc;
+            var cloneConceptDescription = function (concept, sourceDescriptionId, proposedTerm, proposedCaseSignificance, applyChanges, descriptionStatus) {
+                var sourceDescription, newDesc, sourceDesc;
 
-                newDesc.descriptionId = null;
-                newDesc.effectiveTime = null;
+                for (var i = 0; i < concept.descriptions.length; i++) {
+                    sourceDesc = concept.descriptions[i];
 
-                if (proposedTerm !== undefined &&
-                    proposedTerm !== null &&
-                    proposedTerm.trim() !== '' ) {
-                    newDesc.term = proposedTerm;
-                }
-
-                if (proposedCaseSignificance) {
-                    newDesc.caseSignificance = proposedCaseSignificance;
-                }
-
-                if (applyChanges) {
-                    newDesc.definitionOfChanges = {
-                        changeId: null,
-                        changeType: REQUEST_TYPE.NEW_DESCRIPTION.value,
-                        changed: true
-                    };
-                }
-
-                if (!angular.isArray(concept.descriptions)) {
-                    concept.descriptions = [];
-                } else if (applyChanges) {
-                    for (var i = 0; i < concept.descriptions.length; i++) {
-                        sourceDesc = concept.descriptions[i];
-
-                        if (sourceDesc.descriptionId === sourceDescription.descriptionId) {
-                            sourceDesc.active = false;
-                            sourceDesc.definitionOfChanges = {
-                                changeId: null,
-                                changeType: REQUEST_TYPE.CHANGE_RETIRE_DESCRIPTION.value,
-                                changed: true,
-                                descriptionStatus: descriptionStatus
-                            };
-
-                            break;
-                        }
+                    if (sourceDesc.descriptionId === sourceDescriptionId) {
+                        sourceDescription = sourceDesc;
+                        break;
                     }
                 }
 
-                concept.descriptions.push(newDesc);
+                if (sourceDescription) {
+                    newDesc = angular.copy(sourceDescription);
+
+                    newDesc.descriptionId = null;
+                    newDesc.effectiveTime = null;
+
+                    if (proposedTerm !== undefined &&
+                        proposedTerm !== null &&
+                        proposedTerm.trim() !== '' ) {
+                        newDesc.term = proposedTerm;
+                    }
+
+                    if (proposedCaseSignificance) {
+                        newDesc.caseSignificance = proposedCaseSignificance;
+                    }
+
+                    if (applyChanges) {
+                        newDesc.definitionOfChanges = {
+                            changeId: null,
+                            changeType: REQUEST_TYPE.NEW_DESCRIPTION.value,
+                            changed: true
+                        };
+                    }
+
+                    if (!angular.isArray(concept.descriptions)) {
+                        concept.descriptions = [];
+                    } else if (applyChanges) {
+                        sourceDescription.active = false;
+                        sourceDescription.definitionOfChanges = {
+                            changeId: null,
+                            changeType: REQUEST_TYPE.CHANGE_RETIRE_DESCRIPTION.value,
+                            changed: true,
+                            descriptionStatus: descriptionStatus
+                        };
+                    }
+
+                    concept.descriptions.push(newDesc);
+                }
             };
 
             var extractConceptFSN = function (concept) {
@@ -516,18 +521,31 @@ angular
                 if (angular.isArray(synonyms) && synonyms.length > 0) {
                     for (var i = 0; i < synonyms.length; i++) {
                         synTerm = synonyms[i];
-                        synDesc = objectService.getNewDescription(concept.conceptId);
-                        synDesc.term = synTerm;
-                        if (applyChanges) {
-                            synDesc.definitionOfChanges = {
-                                changeId: null,
-                                changeType: REQUEST_TYPE.NEW_DESCRIPTION.value,
-                                changed: true
-                            };
+
+                        if (synTerm && synTerm.trim()) {
+                            synDesc = objectService.getNewDescription(concept.conceptId);
+                            synDesc.term = synTerm;
+                            if (applyChanges) {
+                                synDesc.definitionOfChanges = {
+                                    changeId: null,
+                                    changeType: REQUEST_TYPE.NEW_DESCRIPTION.value,
+                                    changed: true
+                                };
+                            }
+                            concept.descriptions.push(synDesc);
                         }
-                        concept.descriptions.push(synDesc);
                     }
                 }
+            };
+
+            var extractItemByRequestType = function (requestItems, type) {
+                for (var i = 0 ; i < requestItems.length; i++){
+                    if (requestItems[i].requestType = type.value) {
+                        return requestItems[i];
+                    }
+                }
+
+                return null;
             };
 
             var extractConceptDefinitions = function (concept, extractAll) {
@@ -551,16 +569,19 @@ angular
                 if (angular.isArray(definitions) && definitions.length > 0) {
                     for (var i = 0; i < definitions.length; i++) {
                         defTerm = definitions[i];
-                        defDesc = objectService.getNewTextDefinition(concept.conceptId);
-                        defDesc.term = defTerm;
-                        if (applyChanges) {
-                            defDesc.definitionOfChanges = {
-                                changeId: null,
-                                changeType: REQUEST_TYPE.NEW_DESCRIPTION.value,
-                                changed: true
-                            };
+
+                        if (defTerm && defTerm.trim()) {
+                            defDesc = objectService.getNewTextDefinition(concept.conceptId);
+                            defDesc.term = defTerm;
+                            if (applyChanges) {
+                                defDesc.definitionOfChanges = {
+                                    changeId: null,
+                                    changeType: REQUEST_TYPE.NEW_DESCRIPTION.value,
+                                    changed: true
+                                };
+                            }
+                            concept.descriptions.push(defDesc);
                         }
-                        concept.descriptions.push(defDesc);
                     }
                 }
             };
@@ -618,8 +639,8 @@ angular
                         item.currentDescription = changedTarget.term;
                         item.conceptDescription = changedTarget.term;
                         item.proposedDescription = changedTarget.term;
-                        item.caseSignificances = changedTarget.caseSignificance;
-                        item.descriptionStatus = definitionOfChanges.descriptionStatus;
+                        item.proposedCaseSignificance = changedTarget.caseSignificance;
+                        item.proposedDescriptionStatus = definitionOfChanges.descriptionStatus;
                         break;
 
                     case REQUEST_TYPE.NEW_RELATIONSHIP.value:
@@ -649,18 +670,18 @@ angular
                     fsn:                requestData.fsn,
                     batchRequest:       requestData.batchRequest,
                     rfcNumber:          requestData.rfcNumber,
-                    additionalFields:   requestData.additionalFields,
+                    additionalFields:   requestData.additionalFields || {},
                     jiraTicketId:       requestData.jiraTicketId,
                     requestType:        requestData.requestType,
                     inputMode:          requestData.inputMode,
                     requestHeader:      requestData.requestHeader
                 };
-                var requestItems = requestData.requestItems,
-                    mainItem, secondaryItem;
+                var requestItems = requestData.requestItems;
+                var mainItem = extractItemByRequestType(requestItems, requestService.identifyRequestType(request.requestType));
 
                 switch (request.requestType) {
                     case REQUEST_TYPE.NEW_CONCEPT.value:
-                        mainItem = requestItems[0];
+                        //mainItem = requestItems[0];
 
                         //parentConcept = identifyParentConcept(concept);
                         request.parentConcept = {
@@ -674,132 +695,62 @@ angular
                         request.proposedDefinitions = mainItem.proposedDefinitions;
                         break;
 
-                    /*case REQUEST_TYPE.CHANGE_RETIRE_CONCEPT.value:
-                        item.conceptId = concept.conceptId;
-                        item.conceptFSN = concept.fsn;
-                        item.proposedFSN = concept.fsn;
-                        item.proposedStatus = definitionOfChanges.proposedStatus;
-                        item.historyAttribute = definitionOfChanges.historyAttribute;
-                        item.historyAttributeValue = definitionOfChanges.historyAttributeValue;
-                        break;
-
-                    case REQUEST_TYPE.NEW_DESCRIPTION.value:
-                        if (changedTarget.type === DESCRIPTION_TYPE.SYN &&
-                            changedTarget.acceptabilityMap &&
-                            changedTarget.acceptabilityMap[ACCEPTABILITY_DIALECT.EN_GB] === ACCEPTABILITY_VALUE.PREFERRED &&
-                            changedTarget.acceptabilityMap[ACCEPTABILITY_DIALECT.EN_US] === ACCEPTABILITY_VALUE.PREFERRED) {
-                            isDescriptionPT = true;
-                        }
-
-                        item.conceptId = concept.conceptId;
-                        item.conceptFSN = concept.fsn;
-                        item.proposedDescription = changedTarget.term;
-                        item.descriptionIsPT = isDescriptionPT;
-                        break;
-
-                    case REQUEST_TYPE.CHANGE_RETIRE_DESCRIPTION.value:
-                        item.conceptId = concept.conceptId;
-                        item.conceptFSN = concept.fsn;
-                        item.descriptionId = changedTarget.descriptionId;
-                        item.currentDescription = changedTarget.term;
-                        item.conceptDescription = changedTarget.term;
-                        item.proposedDescription = changedTarget.term;
-                        item.caseSignificances = changedTarget.caseSignificance;
-                        item.descriptionStatus = definitionOfChanges.descriptionStatus;
-                        break;
-
-                    case REQUEST_TYPE.NEW_RELATIONSHIP.value:
-                        item.conceptId = concept.conceptId;
-                        item.relationshipType = changedTarget.type.conceptId;
-                        item.destConceptId = changedTarget.target.conceptId;
-                        item.characteristicType = definitionOfChanges.characteristicType;
-                        item.refinability = definitionOfChanges.refinability;
-                        break;
-
-                    case REQUEST_TYPE.CHANGE_RETIRE_RELATIONSHIP.value:
-                        item.conceptId = concept.conceptId;
-                        item.conceptFSN = concept.fsn;
-                        item.relationshipId = changedTarget.relationshipId;
-                        item.refinability = definitionOfChanges.refinability;
-                        item.relationshipStatus = definitionOfChanges.relationshipStatus;
-                        break;*/
-                }
-
-
-                /*var item = {};
-                var parentConcept, isDescriptionPT = false;
-
-                item.requestType = definitionOfChanges.changeType;
-                item.id = definitionOfChanges.changeId;
-
-                item.topic = concept.definitionOfChanges.topic;
-                item.reasonForChange = concept.definitionOfChanges.reasonForChange;
-                item.notes = concept.definitionOfChanges.notes;
-                item.reference = concept.definitionOfChanges.reference;
-
-                switch (item.requestType) {
-                    case REQUEST_TYPE.NEW_CONCEPT.value:
-                        parentConcept = identifyParentConcept(concept);
-                        item.parentId = (parentConcept) ? parentConcept.id : null;
-                        item.parentFSN = (parentConcept) ? parentConcept.fsn : null;
-                        item.proposedFSN = concept.fsn;
-                        item.conceptPT = extractConceptPT(concept);
-                        item.proposedSynonyms = extractConceptSynonyms(concept, true);
-                        item.proposedDefinitions = extractConceptDefinitions(concept, true);
-                        break;
-
                     case REQUEST_TYPE.CHANGE_RETIRE_CONCEPT.value:
-                        item.conceptId = concept.conceptId;
-                        item.conceptFSN = concept.fsn;
-                        item.proposedFSN = concept.fsn;
-                        item.proposedStatus = definitionOfChanges.proposedStatus;
-                        item.historyAttribute = definitionOfChanges.historyAttribute;
-                        item.historyAttributeValue = definitionOfChanges.historyAttributeValue;
+                        //mainItem = extractItemByRequestType(requestItems, REQUEST_TYPE.CHANGE_RETIRE_CONCEPT);
+
+                        request.proposedFSN = mainItem.proposedFSN;
+                        request.proposedStatus = mainItem.proposedStatus;
+                        request.historyAttribute = mainItem.historyAttribute;
+                        request.historyAttributeValue = mainItem.historyAttributeValue;
                         break;
 
                     case REQUEST_TYPE.NEW_DESCRIPTION.value:
-                        if (changedTarget.type === DESCRIPTION_TYPE.SYN &&
-                            changedTarget.acceptabilityMap &&
-                            changedTarget.acceptabilityMap[ACCEPTABILITY_DIALECT.EN_GB] === ACCEPTABILITY_VALUE.PREFERRED &&
-                            changedTarget.acceptabilityMap[ACCEPTABILITY_DIALECT.EN_US] === ACCEPTABILITY_VALUE.PREFERRED) {
-                            isDescriptionPT = true;
-                        }
+                        //mainItem = extractItemByRequestType(requestItems, REQUEST_TYPE.NEW_DESCRIPTION);
 
-                        item.conceptId = concept.conceptId;
-                        item.conceptFSN = concept.fsn;
-                        item.proposedDescription = changedTarget.term;
-                        item.descriptionIsPT = isDescriptionPT;
+                        request.proposedDescription = mainItem.proposedDescription;
+                        request.descriptionIsPT = mainItem.descriptionIsPT;
                         break;
 
                     case REQUEST_TYPE.CHANGE_RETIRE_DESCRIPTION.value:
-                        item.conceptId = concept.conceptId;
-                        item.conceptFSN = concept.fsn;
-                        item.descriptionId = changedTarget.descriptionId;
-                        item.currentDescription = changedTarget.term;
-                        item.conceptDescription = changedTarget.term;
-                        item.proposedDescription = changedTarget.term;
-                        item.caseSignificances = changedTarget.caseSignificance;
-                        item.descriptionStatus = definitionOfChanges.descriptionStatus;
+                        //mainItem = extractItemByRequestType(requestItems, REQUEST_TYPE.CHANGE_RETIRE_DESCRIPTION);
+
+                        request.descriptionId = mainItem.descriptionId;
+                        request.proposedDescription = mainItem.proposedDescription;
+                        request.proposedCaseSignificance = mainItem.proposedCaseSignificance;
+                        request.descriptionStatus = mainItem.proposedDescriptionStatus;
                         break;
 
                     case REQUEST_TYPE.NEW_RELATIONSHIP.value:
-                        item.conceptId = concept.conceptId;
-                        item.relationshipType = changedTarget.type.conceptId;
-                        item.destConceptId = changedTarget.target.conceptId;
-                        item.characteristicType = definitionOfChanges.characteristicType;
-                        item.refinability = definitionOfChanges.refinability;
+                        //mainItem = extractItemByRequestType(requestItems, REQUEST_TYPE.NEW_RELATIONSHIP);
+
+                        request.characteristicType = mainItem.characteristicType;
+                        request.refinability = mainItem.refinability;
+
+                        // load destination concept
+                        request.destinationConcept = {
+                            conceptId: mainItem.destConceptId
+                        };
+
+                        // load relationship type
+                        snowowlService.getFullConcept(null, null, mainItem.relationshipType).then(function (response) {
+                            request.relationshipType = {
+                                conceptId: mainItem.relationshipType,
+                                fsn: response.fsn
+                            };
+                        });
+
                         break;
 
                     case REQUEST_TYPE.CHANGE_RETIRE_RELATIONSHIP.value:
-                        item.conceptId = concept.conceptId;
-                        item.conceptFSN = concept.fsn;
-                        item.relationshipId = changedTarget.relationshipId;
-                        item.refinability = definitionOfChanges.refinability;
-                        item.relationshipStatus = definitionOfChanges.relationshipStatus;
+                        //mainItem = extractItemByRequestType(requestItems, REQUEST_TYPE.CHANGE_RETIRE_RELATIONSHIP);
+
+                        request.relationshipId = mainItem.relationshipId;
+                        request.relationshipStatus = mainItem.relationshipStatus;
+                        request.refinability = mainItem.refinability;
+
                         break;
                 }
 
-                return item;*/
                 return request;
 
             };
@@ -841,87 +792,89 @@ angular
                 return requestDetails;
             };
 
-            var buildConceptFromRequest = function (request, applyChanges) {
+            var buildConceptDefinitionOfChange = function (concept, request) {
+                if (!concept.definitionOfChanges) {
+                    concept.definitionOfChanges = buildChangeConceptDefinitionOfChanges();
+                }
+
+                if (!concept.conceptId) {
+                    concept.fsn = extractConceptFSN(concept);
+                }
+
+                // build concept additional fields
+                concept.definitionOfChanges.topic = request.additionalFields.topic;
+                concept.definitionOfChanges.notes = request.additionalFields.notes;
+                concept.definitionOfChanges.reference = request.additionalFields.reference;
+                concept.definitionOfChanges.reasonForChange = request.additionalFields.reasonForChange;
+            };
+
+            var buildConceptFromRequest = function (request) {
                 var concept = null;
-                if (originalConcept) {
-                    concept = angular.copy(originalConcept);
+                if (vm.originalConcept) {
+                    concept = angular.copy(vm.originalConcept);
 
-                    if (!concept.definitionOfChanges) {
-                        concept.definitionOfChanges = buildChangeConceptDefinitionOfChanges();
-                    }
-
-                    if (!concept.conceptId) {
-                        concept.fsn = extractConceptFSN(concept);
-                    }
-
-                    // build concept additional fields
-                    concept.definitionOfChanges.topic = request.additionalFields.topic;
-                    concept.definitionOfChanges.notes = request.additionalFields.notes;
-                    concept.definitionOfChanges.reference = request.additionalFields.reference;
-                    concept.definitionOfChanges.reasonForChange = request.additionalFields.reasonForChange;
+                    // build definition of changes
+                    buildConceptDefinitionOfChange(concept, request);
 
                     // apply changes from request to concept
-                    if (applyChanges === true) {
-                        switch (vm.requestType) {
-                            case REQUEST_TYPE.NEW_CONCEPT:
-                                concept.descriptions = [];
-                                concept.relationships = [];
+                    switch (vm.requestType) {
+                        case REQUEST_TYPE.NEW_CONCEPT:
+                            concept.descriptions = [];
+                            concept.relationships = [];
+                            concept.fsn = request.proposedFSN;
+                            if (request.parentConcept) {
+                                injectParentConcept(concept, request.parentConcept);
+                            }
+                            injectConceptFSN(concept, request.proposedFSN, false);
+                            injectConceptPT(concept, request.conceptPT, false);
+
+                            injectConceptSynonyms(concept, request.proposedSynonyms, false);
+                            injectConceptDefinitions(concept, request.proposedDefinitions, false);
+                            break;
+
+                        case REQUEST_TYPE.CHANGE_RETIRE_CONCEPT:
+                            concept.definitionOfChanges.changed = true;
+                            concept.definitionOfChanges.proposedStatus = request.proposedStatus;
+                            concept.definitionOfChanges.historyAttribute = request.historyAttribute;
+                            concept.definitionOfChanges.historyAttributeValue = request.historyAttributeValue;
+
+                            if (request.proposedFSN && request.proposedFSN !== concept.fsn) {
                                 concept.fsn = request.proposedFSN;
-                                if (request.parentConcept) {
-                                    injectParentConcept(concept, request.parentConcept);
+                                injectConceptFSN(concept, request.proposedFSN, true);
+                            }
+                            break;
+
+                        case REQUEST_TYPE.NEW_DESCRIPTION:
+                            if (request.descriptionIsPT === true) {
+                                injectConceptPT(concept, request.proposedDescription, true);
+                            } else {
+                                injectConceptDescription(concept, request.proposedDescription, true);
+                            }
+                            break;
+
+                        case REQUEST_TYPE.CHANGE_RETIRE_DESCRIPTION:
+                            cloneConceptDescription(concept, request.descriptionId, request.proposedDescription, request.proposedCaseSignificance, true, request.descriptionStatus);
+                            break;
+
+                        case REQUEST_TYPE.NEW_RELATIONSHIP:
+                            injectRelationship(concept, request.relationshipType, request.destinationConcept, request.characteristicType, request.refinability, true);
+                            break;
+
+                        case REQUEST_TYPE.CHANGE_RETIRE_RELATIONSHIP:
+                            for (var i = 0; i < concept.relationships.length; i++) {
+                                if (concept.relationships[i].relationshipId === request.relationshipId) {
+                                    concept.relationships[i].active = false;
+                                    concept.relationships[i].definitionOfChanges = {
+                                        changeId: null,
+                                        changeType: REQUEST_TYPE.CHANGE_RETIRE_RELATIONSHIP.value,
+                                        changed: true,
+                                        relationshipStatus: request.relationshipStatus,
+                                        refinability: request.refinability
+                                    };
+                                    break;
                                 }
-
-                                injectConceptFSN(concept, request.proposedFSN, false);
-                                injectConceptPT(concept, request.conceptPT, false);
-                                injectConceptSynonyms(concept, request.proposedSynonyms, false);
-                                injectConceptDefinitions(concept, request.proposedDefinitions, false);
-                                break;
-
-                            case REQUEST_TYPE.CHANGE_RETIRE_CONCEPT:
-                                concept.definitionOfChanges.changed = true;
-                                concept.definitionOfChanges.proposedStatus = request.proposedStatus;
-                                concept.definitionOfChanges.historyAttribute = request.historyAttribute;
-                                concept.definitionOfChanges.historyAttributeValue = request.historyAttributeValue;
-
-                                if (request.proposedFSN && request.proposedFSN !== concept.fsn) {
-                                    concept.fsn = request.proposedFSN;
-                                    injectConceptFSN(concept, request.proposedFSN, true);
-                                }
-                                break;
-
-                            case REQUEST_TYPE.NEW_DESCRIPTION:
-                                if (request.descriptionIsPT === true) {
-                                    injectConceptPT(concept, request.proposedDescription, true);
-                                } else {
-                                    injectConceptDescription(concept, request.proposedDescription, true);
-                                }
-                                break;
-
-                            case REQUEST_TYPE.CHANGE_RETIRE_DESCRIPTION:
-                                cloneConceptDescription(concept, request.description, request.proposedDescription, request.proposedCaseSignificance, true, request.descriptionStatus);
-                                break;
-
-                            case REQUEST_TYPE.NEW_RELATIONSHIP:
-                                injectRelationship(concept, request.relationshipType, request.destinationConcept, request.characteristicType, request.refinability, true);
-                                break;
-
-                            case REQUEST_TYPE.CHANGE_RETIRE_RELATIONSHIP:
-                                for (var i = 0; i < concept.relationships.length; i++) {
-                                    if (concept.relationships[i].id === request.relationship.id) {
-                                        concept.relationships[i].active = false;
-                                        concept.relationships[i].definitionOfChanges = {
-                                            changeId: null,
-                                            changeType: REQUEST_TYPE.CHANGE_RETIRE_RELATIONSHIP.value,
-                                            changed: true,
-                                            relationshipStatus: request.relationshipStatus,
-                                            refinability: request.refinability
-                                        };
-                                        break;
-                                    }
-                                }
-                                break;
-                        }
-
+                            }
+                            break;
                     }
                 }
 
@@ -933,16 +886,20 @@ angular
                 var requestData;
 
                 // request must have concept
-                if (vm.concept === undefined || vm.concept === null) {
+                if (vm.originalConcept === undefined || vm.originalConcept === null) {
                     showErrorMessage('crs.request.message.error.requiredConcept');
                     return;
                 }
 
                 //console.log(vm.request);
-                vm.concept = buildConceptFromRequest(vm.request, (vm.inputMode === REQUEST_INPUT_MODE.SIMPLE));
-                requestData = buildRequestData(vm.request, vm.concept);
+                if (vm.inputMode === REQUEST_INPUT_MODE.SIMPLE) {
+                    vm.concept = buildConceptFromRequest(vm.request);
+                } else if (vm.inputMode === REQUEST_INPUT_MODE.DIRECT) {
+                    buildConceptDefinitionOfChange(vm.concept, vm.request);
+                }
 
-                console.log(requestData);
+                requestData = buildRequestData(vm.request, vm.concept);
+                //console.log(requestData);
 
                 requestService.saveRequest(requestData)
                     .then(function (response) {
@@ -975,8 +932,8 @@ angular
                 snowowlService.getFullConcept(null, null, conceptObj.id).then(function (response) {
                     notificationService.sendMessage('Concept ' + response.fsn + ' successfully added to edit list', 5000, null);
                     response.definitionOfChanges = buildChangeConceptDefinitionOfChanges();
-                    originalConcept = response;
-                    vm.concept = angular.copy(originalConcept);
+                    vm.originalConcept = response;
+                    vm.concept = angular.copy(vm.originalConcept);
                 });
             };
 
@@ -984,6 +941,11 @@ angular
                 var imObj = identifyInputMode(im);
 
                 if (imObj !== null && imObj !== vm.inputMode) {
+                    if (vm.inputMode === REQUEST_INPUT_MODE.SIMPLE &&
+                        imObj === REQUEST_INPUT_MODE.DIRECT) {
+                        vm.concept = buildConceptFromRequest(vm.request);
+                    }
+
                     vm.inputMode = imObj;
                 }
             };
@@ -995,7 +957,7 @@ angular
                 }
 
                 if (data && data.concept.conceptId === vm.concept.conceptId) {
-                    originalConcept = null;
+                    vm.originalConcept = null;
                     vm.concept = null;
                 }
             });
@@ -1005,7 +967,6 @@ angular
                 return vm.inputMode;
             }, function (newVal) {
                 if (newVal === REQUEST_INPUT_MODE.DIRECT) {
-                    vm.concept = buildConceptFromRequest(vm.request, true);
                     vm.inputModePage = 'components/request/request-details-edit-panel.html';
                 } else if (newVal === REQUEST_INPUT_MODE.SIMPLE) {
                     vm.inputModePage = vm.requestType.form.template;
@@ -1014,12 +975,12 @@ angular
                 }
             });
 
-            $scope.$watch(function () {
+            /*$scope.$watch(function () {
                 return vm.originalConcept;
             }, function (newVal) {
                 originalConcept = newVal;
-                vm.concept = angular.copy(originalConcept);
-            });
+                //vm.concept = angular.copy(originalConcept);
+            });*/
 
             vm.cancelEditing = cancelEditing;
             vm.saveRequest = saveRequest;

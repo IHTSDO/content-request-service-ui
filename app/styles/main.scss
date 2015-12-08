@@ -163,18 +163,34 @@ footer {
 }
 
 .fileStatus {
+  font-size: 16px;
+  font-weight: 500;
+  /*border-radius: 10px;
+  background: #fff;
+  width: 20px;
+  height: 20px;*/
+  vertical-align: middle;
+  text-align: center;
+  padding: 0;
+  /*line-height: 20px;*/
+
   &.PROCESSING_UPLOAD {
-    background-color: white;
-    color: black;
+    color: #01A2E1;
+  }
+
+  &.PROCESSING_IMPORT {
+    color: #8bc34a;
   }
 
   &.COMPLETED_UPLOAD {
-    background-color: #01A2E1;
+    color: #01A2E1;
   }
 
   &.ERROR {
-    background-color: #F3CB67;
     color: red;
+  }
+  &.COMPLETED_IMPORT {
+    color: #8bc34a;
   }
 }
 

@@ -48,10 +48,10 @@ angular
             };
 
             var editRequest = function (requestId, batchRequest) {
-                if (batchRequest !== undefined && batchRequest !== null) {
+                /*if (batchRequest !== undefined && batchRequest !== null) {
                     return;
                 }
-
+*/
                 $location.path('requests/edit/' + requestId);
             };
 

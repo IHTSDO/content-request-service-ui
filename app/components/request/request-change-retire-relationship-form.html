@@ -31,8 +31,8 @@
                       required></form-control>-->
 
         <form-control type="select"
-                      model="requestVM.request.relationship"
-                      options="suggestion as (suggestion.type.fsn + ' - ' + suggestion.target.fsn) for suggestion in requestVM.originalConcept.relationships |filter:{active:true}"
+                      model="requestVM.request.relationshipId"
+                      options="suggestion.relationshipId as (suggestion.type.fsn + ' - ' + suggestion.target.fsn) for suggestion in requestVM.originalConcept.relationships |filter:{active:true}"
                       label="crs.request.details.label.relationship"
                       name="slRelationship" required></form-control>
 
