@@ -40,7 +40,7 @@ angular
                     }
 
                     if (!fileStatusPoller) {
-                        //fileStatusPoller = $interval(loadUploadedFiles, fileStatusPollingInterval);
+                        fileStatusPoller = $interval(loadUploadedFiles, fileStatusPollingInterval);
                     }
                 });
             };

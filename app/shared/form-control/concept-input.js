@@ -26,15 +26,22 @@ angular
                     'typeahead-wait-ms="700"',
                     'typeahead-on-select="selectConcept($item)"',
                     'typeahead-editable="false" typeahead-min-length="3"/>',
-                    '<span style="top:0;position: absolute;padding-top:3px;right:10px" ng-show="showLoading">Loading...</span>',
+                    '<span style="top:0;position: absolute;padding-top:3px;right:10px;font-size:16px;{{(showError)?\'color:red\':\'\'}}" ' +
+                        'ng-show="showLoading || showError" ' +
+                        'class="md" ' +
+                        'ng-class="{\'md-spin md-autorenew\':showLoading, \'md-error\':showError}"></span>',
                     '</div>'
                 ].join(''),
                 link: function ($scope) {
                     var initControl = function () {
+                        $scope.showLoading = false;
+                        $scope.showError = false;
+
                         if ($scope.concept !== undefined &&
                             $scope.concept !== null &&
                             $scope.concept.conceptId !== undefined &&
-                            $scope.concept.conceptId !== null) {
+                            $scope.concept.conceptId !== null &&
+                            $scope.concept.conceptId.trim() !== '') {
                             dropConcept({id:$scope.concept.conceptId});
                         }
                     };
@@ -42,14 +49,22 @@ angular
                     var dropConcept = function (conceptData) {
                         // enable loading
                         $scope.showLoading = true;
+                        $scope.showError = false;
                         // load concept details
                         snowowlService.getFullConcept(null, null, conceptData.id).then(function (response) {
                             $scope.concept = response;
+                            $scope.showLoading = false;
+                            $scope.showError = false;
+                        }, function (error) {
+                            $scope.errorMsg = error.msg;
+                            $scope.showError = true;
                             $scope.showLoading = false;
                         });
                     };
 
                     var getConceptsForValueTypeahead = function (viewValue) {
+                        $scope.showError = false;
+
                         if ($scope.concept) {
                             $scope.concept.conceptId = null;
                         }
@@ -74,9 +89,15 @@ angular
                     var selectConcept = function (conceptItem) {
                         // enable loading
                         $scope.showLoading = true;
+                        $scope.showError = false;
                         // load concept details
                         snowowlService.getFullConcept(null, null, conceptItem.concept.conceptId).then(function (response) {
                             $scope.concept = response;
+                            $scope.showLoading = false;
+                            $scope.showError = false;
+                        }, function (error) {
+                            $scope.errorMsg = error.msg;
+                            $scope.showError = true;
                             $scope.showLoading = false;
                         });
                     };

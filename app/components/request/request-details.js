@@ -45,6 +45,8 @@ angular
             var requestId,
                 requestType;
 
+            var permanentlyDisableSimpleMode = false;
+
             var identifyPageMode = function (pm) {
                 for (var requestModeKey in REQUEST_MODE) {
                     if (REQUEST_MODE.hasOwnProperty(requestModeKey) &&
@@ -167,6 +169,7 @@ angular
                         $rootScope.pageTitles = ['crs.request.details.title.edit'];
 
                         $rootScope.showLoading = true;
+                        vm.disableSimpleMode = true;
                         loadRequest().then(function (requestData) {
                             var requestType = requestService.identifyRequestType(vm.request.requestType);
                             var inputMode = identifyInputMode(vm.request.inputMode);
@@ -177,6 +180,7 @@ angular
                                 vm.inputMode = inputMode;
                                 vm.isValidViewParams = isValid;
 
+                                permanentlyDisableSimpleMode = (vm.inputMode === REQUEST_INPUT_MODE.DIRECT);
                                 vm.disableSimpleMode = (vm.inputMode === REQUEST_INPUT_MODE.DIRECT);
 
                                 notificationService.sendMessage('crs.request.message.requestLoaded', 5000);
@@ -211,7 +215,8 @@ angular
                         //return null;
                     } else {
                         vm.originalConcept = {
-                            conceptId: requestData.concept.conceptId
+                            conceptId: requestData.concept.conceptId,
+                            fsn: requestData.concept.fsn
                         };
                         /*return snowowlService.getFullConcept(null, null, requestData.concept.conceptId).then(function (response) {
                             originalConcept = response;
@@ -613,7 +618,7 @@ angular
 
                     case REQUEST_TYPE.CHANGE_RETIRE_CONCEPT.value:
                         item.conceptId = concept.conceptId;
-                        item.conceptFSN = concept.fsn;
+                        item.conceptFSN = concept.definitionOfChanges.currentFsn;
                         item.proposedFSN = concept.fsn;
                         item.proposedStatus = definitionOfChanges.proposedStatus;
                         item.historyAttribute = definitionOfChanges.historyAttribute;
@@ -848,6 +853,7 @@ angular
                             concept.definitionOfChanges.proposedStatus = request.proposedStatus;
                             concept.definitionOfChanges.historyAttribute = request.historyAttribute;
                             concept.definitionOfChanges.historyAttributeValue = request.historyAttributeValue;
+                            concept.definitionOfChanges.currentFsn = concept.fsn;
 
                             if (request.proposedFSN && request.proposedFSN !== concept.fsn) {
                                 concept.fsn = request.proposedFSN;
@@ -892,16 +898,41 @@ angular
                 return concept;
             };
 
-            var validateRequest = function () {
+            var validateRequest = function (ignoreGeneralFields) {
+                var field, fieldValue;
+
+                hideErrorMessage();
+
                 // validate concept
                 if (vm.originalConcept === undefined || vm.originalConcept === null) {
                     showErrorMessage('crs.request.message.error.requiredConcept');
                     return false;
                 }
 
+                // test general fields
+                if (!ignoreGeneralFields) {
+                    if (!vm.request.additionalFields.topic ||
+                        !vm.request.additionalFields.topic.trim()) {
+                        showErrorMessage('crs.request.message.error.requiredTopic');
+                        return false;
+                    }
+                }
+
                 // validate require fields
                 if (vm.inputMode === REQUEST_INPUT_MODE.SIMPLE) {
+                    for (var i = 0; i < vm.requestType.form.fields.length; i++) {
+                        field = vm.requestType.form.fields[i];
+                        fieldValue = vm.request[field.name];
 
+                        if (field.required === true &&
+                            (fieldValue === undefined ||
+                            fieldValue === null ||
+                            (angular.isFunction(fieldValue.trim) && fieldValue.trim() === '' ) ||
+                            (angular.isObject(fieldValue) && !fieldValue.conceptId ))) {
+                            showErrorMessage('crs.request.message.error.requiredFields');
+                            return false;
+                        }
+                    }
                 }
 
                 return true;
@@ -935,9 +966,24 @@ angular
             };
 
             var saveAndSubmitRequest = function () {
-                var requestDetails = buildRequestData(vm.request, vm.concept);
+                // requestData
+                var requestData;
 
-                requestService.saveRequest(requestDetails)
+                if (!validateRequest()) {
+                    return;
+                }
+
+                //console.log(vm.request);
+                if (vm.inputMode === REQUEST_INPUT_MODE.SIMPLE) {
+                    vm.concept = buildConceptFromRequest(vm.request);
+                } else if (vm.inputMode === REQUEST_INPUT_MODE.DIRECT) {
+                    buildConceptDefinitionOfChange(vm.concept, vm.request);
+                }
+
+                requestData = buildRequestData(vm.request, vm.concept);
+                //console.log(requestData);
+
+                requestService.saveRequest(requestData)
                     .then(function (response) {
                         var requestId = response.id;
 
@@ -956,6 +1002,7 @@ angular
                 snowowlService.getFullConcept(null, null, conceptObj.id).then(function (response) {
                     notificationService.sendMessage('Concept ' + response.fsn + ' successfully added to edit list', 5000, null);
                     response.definitionOfChanges = buildChangeConceptDefinitionOfChanges();
+                    response.definitionOfChanges.currentFsn = response.fsn;
                     vm.originalConcept = response;
                     vm.concept = angular.copy(vm.originalConcept);
                 });
@@ -967,6 +1014,11 @@ angular
                 if (imObj !== null && imObj !== vm.inputMode) {
                     if (vm.inputMode === REQUEST_INPUT_MODE.SIMPLE &&
                         imObj === REQUEST_INPUT_MODE.DIRECT) {
+
+                        if (!validateRequest(true)) {
+                            return;
+                        }
+
                         vm.concept = buildConceptFromRequest(vm.request);
                     }
 
@@ -975,10 +1027,12 @@ angular
             };
 
             var onConceptChangedDirectly = function (historyCount) {
-                if (historyCount === 0) {
-                    vm.disableSimpleMode = false;
-                } else if (historyCount > 0) {
-                    vm.disableSimpleMode = true;
+                if (!permanentlyDisableSimpleMode) {
+                    if (historyCount === 0) {
+                        vm.disableSimpleMode = false;
+                    } else if (historyCount > 0) {
+                        vm.disableSimpleMode = true;
+                    }
                 }
             };
 

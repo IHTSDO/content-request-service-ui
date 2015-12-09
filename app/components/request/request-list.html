@@ -46,9 +46,21 @@
                         <!--<td data-title="'crs.request.list.tableHeader.requestType' | translate" sortable="'requestType'" >
                             {{request.requestHeader.requestType | requestType | translate}}
                         </td>-->
-                        <td data-title="'crs.request.list.tableHeader.reasonForChange' | translate" sortable="'reasonForChange'" >
-                            {{(request.additionalFields)?request.additionalFields.reasonForChange:''}}
+                        <td data-title="'crs.request.list.tableHeader.topic' | translate" sortable="'reasonForChange'" >
+                            {{(request.additionalFields)?request.additionalFields.topic:''}}
                         </td>
+
+                        <td data-title="'crs.request.list.tableHeader.validationResult' | translate" sortable="'currentValidationStatus'">
+                            <a class="tooltips-left" >
+                                <button ng-show="request.currentValidationStatus"
+                                        type="button"
+                                        class="btn btn-round btn-default lighten-2 red" >
+                                    <div class="md md-school "></div>  <span class="red">{{request.currentValidationStatus}}</span>
+                                </button>
+
+                            </a>
+                        </td>
+
                         <td data-title="'crs.request.list.tableHeader.status' | translate" sortable="'status'">
                             <span class="badge requestStatus {{request.requestHeader.status}}">{{request.requestHeader.status | requestStatus | translate}}</span>
                         </td>
@@ -107,8 +119,8 @@
                         <!--<td data-title="'crs.request.list.tableHeader.requestType' | translate" sortable="'requestType'" >
                             {{request.requestHeader.requestType | requestType | translate}}
                         </td>-->
-                        <td data-title="'crs.request.list.tableHeader.reasonForChange' | translate" sortable="'reasonForChange'" >
-                            {{(request.additionalFields)?request.additionalFields.reasonForChange:''}}
+                        <td data-title="'crs.request.list.tableHeader.topic' | translate" sortable="'reasonForChange'" >
+                            {{(request.additionalFields)?request.additionalFields.topic:''}}
                         </td>
                         <td data-title="'crs.request.list.tableHeader.status' | translate" sortable="'status'">
                             <span class="badge requestStatus {{request.requestHeader.status}}">{{request.requestHeader.status | requestStatus | translate}}</span>

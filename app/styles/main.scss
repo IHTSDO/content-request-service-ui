@@ -165,14 +165,14 @@ footer {
 .fileStatus {
   font-size: 16px;
   font-weight: 500;
-  /*border-radius: 10px;
+  border-radius: 10px;
   background: #fff;
   width: 20px;
-  height: 20px;*/
+  height: 20px;
   vertical-align: middle;
   text-align: center;
   padding: 0;
-  /*line-height: 20px;*/
+  line-height: 20px;
 
   &.PROCESSING_UPLOAD {
     color: #01A2E1;

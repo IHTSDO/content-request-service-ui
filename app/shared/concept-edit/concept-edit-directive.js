@@ -1038,10 +1038,7 @@ angular
 
                     scope.addRelationship = function (afterIndex, relGroup, baseRel) {
 
-                        //  // console.debug('adding attribute relationship', afterIndex);
-
                         var relationship;
-                        console.log(afterIndex);
 
                         if (baseRel) {
                             relationship = baseRel;
@@ -2006,7 +2003,6 @@ angular
                     };
 
                     scope.$watch(scope.concept.relationships, function (newValue, oldValue) {
-                        console.log('watcher');
                         var changed = false;
                         angular.forEach(scope.concept.relationships, function (relationship) {
                             if (relationship.type.conceptId === '116680003' && relationship.active === true) {
@@ -2019,11 +2015,6 @@ angular
                     }, true);
 
                     scope.$watch('conceptHistoryPtr', function (newVal) {
-                        /*if (newVal === 0) {
-                            console.log('concept restored');
-                        } else if (newVal > 0) {
-                            console.log('concept changed');
-                        }*/
                         if (scope.onConceptChanged) {
                             scope.onConceptChanged({historyCount: newVal});
                         }

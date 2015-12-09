@@ -53,7 +53,9 @@
                     "requestType": "Request Type",
                     "status": "Status",
                     "conceptFSN": "Concept",
-                    "reasonForChange": "Reason for Change"
+                    "reasonForChange": "Reason for Change",
+                    "topic": "Topic",
+                    "validationResult": "Validation Result"
                 }
             },
             "details": {
@@ -148,7 +150,9 @@
                 "error": {
                     "requestTypeRequired": "Please select request type",
                     "invalidPage": "The page you request is not available",
-                    "requiredConcept": "Please select a concept"
+                    "requiredConcept": "Please select a concept",
+                    "requiredTopic": "Some fields are required to generate change requests. Please enter all fields that are being marked red before saving or switching input mode.",
+                    "requiredFields": "Some fields are required to generate change requests. Please enter all fields that are being marked red before saving or switching input mode."
                 }
 
             },
@@ -230,7 +234,7 @@
                     "uploading": "Uploading"
                 },
                 "button": {
-                    "import": "Complete Importing Requests"
+                    "import": "Import Requests"
                 },
                 "requestList": {
                     "tableHeader": {
@@ -238,6 +242,7 @@
                         "sourceTerminologyVersion": "Source Terminology Version",
                         "requestorInternalId": "Requestor Internal ID",
                         "reasonForChange": "Reason for Change",
+                        "topic": "Topic",
                         "notes": "Notes",
                         "references": "References",
                         "parentId": "Parent ID",
