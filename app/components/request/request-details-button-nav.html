@@ -1,13 +1,14 @@
 <!-- Edit View: Default -- Task View Only -->
-<button type="button" ng-class="{'lighten-2' : thisView === 'edit-default'}"
-        class="btn btn-default widget-toolbar blue darken-4 tooltips-right tooltips-light normal-case"
-        ng-click="requestVM.setInputMode('SIMPLE')">
+<button type="button" ng-class="{'lighten-2' : requestVM.inputMode.value === 'SIMPLE', 'darken-3': requestVM.inputMode.value !== 'SIMPLE'}"
+        class="btn btn-default widget-toolbar blue tooltips-right tooltips-light normal-case"
+        ng-click="requestVM.setInputMode('SIMPLE')"
+        ng-disabled="requestVM.disableSimpleMode">
     <div class="md md-dvr"></div>
     <span translate="crs.request.inputMode.simple"></span></button>
 
 <!-- Edit View:  No sidebar -- Task View Only -->
-<button type="button" ng-class="{'lighten-2' : thisView === 'edit-no-sidebar'}"
-        class="btn btn-default widget-toolbar blue darken-3 tooltips-right tooltips-light normal-case"
+<button type="button" ng-class="{'lighten-2' : requestVM.inputMode.value === 'DIRECT', 'darken-3': requestVM.inputMode.value !== 'DIRECT'}"
+        class="btn btn-default widget-toolbar blue tooltips-right tooltips-light normal-case"
         ng-click="requestVM.setInputMode('DIRECT')">
     <div class="md md-web "></div>
     <span translate="crs.request.inputMode.direct"></span></button>

@@ -177,6 +177,8 @@ angular
                                 vm.inputMode = inputMode;
                                 vm.isValidViewParams = isValid;
 
+                                vm.disableSimpleMode = (vm.inputMode === REQUEST_INPUT_MODE.DIRECT);
+
                                 notificationService.sendMessage('crs.request.message.requestLoaded', 5000);
                             } else {
                                 showErrorMessage('crs.request.message.error.invalidPage');
@@ -809,7 +811,7 @@ angular
             };
 
             var buildConceptFromRequest = function (request) {
-                var concept = null;
+                var concept = null, parentConcept;
                 if (vm.originalConcept) {
                     concept = angular.copy(vm.originalConcept);
 
@@ -822,9 +824,18 @@ angular
                             concept.descriptions = [];
                             concept.relationships = [];
                             concept.fsn = request.proposedFSN;
-                            if (request.parentConcept) {
-                                injectParentConcept(concept, request.parentConcept);
+
+                            if (!request.parentConcept) {
+                                parentConcept = {
+                                    conceptId: null,
+                                    fsn: null
+                                };
+                            } else {
+                                parentConcept = request.parentConcept;
                             }
+
+                            injectParentConcept(concept, parentConcept);
+
                             injectConceptFSN(concept, request.proposedFSN, false);
                             injectConceptPT(concept, request.conceptPT, false);
 
@@ -881,13 +892,26 @@ angular
                 return concept;
             };
 
+            var validateRequest = function () {
+                // validate concept
+                if (vm.originalConcept === undefined || vm.originalConcept === null) {
+                    showErrorMessage('crs.request.message.error.requiredConcept');
+                    return false;
+                }
+
+                // validate require fields
+                if (vm.inputMode === REQUEST_INPUT_MODE.SIMPLE) {
+
+                }
+
+                return true;
+            };
+
             var saveRequest = function () {
                 // requestData
                 var requestData;
 
-                // request must have concept
-                if (vm.originalConcept === undefined || vm.originalConcept === null) {
-                    showErrorMessage('crs.request.message.error.requiredConcept');
+                if (!validateRequest()) {
                     return;
                 }
 
@@ -950,6 +974,14 @@ angular
                 }
             };
 
+            var onConceptChangedDirectly = function (historyCount) {
+                if (historyCount === 0) {
+                    vm.disableSimpleMode = false;
+                } else if (historyCount > 0) {
+                    vm.disableSimpleMode = true;
+                }
+            };
+
             $scope.$on(CONCEPT_EDIT_EVENT.STOP_EDIT_CONCEPT, function (event, data) {
                 if (!data || !data.concept) {
                     console.error('Cannot remove concept: concept must be supplied');
@@ -988,6 +1020,7 @@ angular
             vm.startEditingConcept = startEditingConcept;
             vm.setInputMode = setInputMode;
             vm.originalConcept = null;
+            vm.onConceptChangedDirectly = onConceptChangedDirectly;
             //vm.getDescriptionsForValueTypeahead = getDescriptionsForValueTypeahead;
             //vm.onSelectConcept = onSelectConcept;
 

@@ -23,14 +23,10 @@ angular
                 template: 'components/request/request-new-concept-form.html',
                 fields: [
                     { name: 'requestorInternalId'},
-                    { name: 'parentId'},
                     { name: 'proposedFSN', required: true},
                     { name: 'conceptPT', required: true},
-                    { name: 'proposedSynonym'},
-                    { name: 'proposedDefinition'},
-                    { name: 'reasonForChange'},
-                    { name: 'notes'},
-                    { name: 'reference'}
+                    { name: 'proposedSynonyms'},
+                    { name: 'proposedDefinitions'}
                 ]
             }
         },
@@ -41,13 +37,8 @@ angular
                 template: 'components/request/request-new-description-form.html',
                 "fields": [
                     {"name": "requestorInternalId"},
-                    {"name": "conceptId", "required": true},
-                    {"name": "proposedFSN", "required": true},
                     {"name": "proposedDescription", "required": true},
-                    {"name": "descriptionIsPT"},
-                    {"name": "reasonForChange"},
-                    {"name": "notes"},
-                    {"name": "reference"}
+                    {"name": "descriptionIsPT"}
                 ]
 
             }
@@ -60,15 +51,10 @@ angular
                 modal: 'components/request/request-new-relationship-modal.html',
                 "fields": [
                     {"name": "requestorInternalId"},
-                    {"name": "conceptId", "required": true},
                     {"name": "relationshipType", "required": true},
-                    {"name": "destConceptId", "required": true},
+                    {"name": "destinationConcept", "required": true},
                     {"name": "characteristicType"},
-                    {"name": "refinability"},
-                    {"name": "relationshipGroup"},
-                    {"name": "reasonForChange"},
-                    {"name": "notes"},
-                    {"name": "reference"}
+                    {"name": "refinability"}
                 ]
             }
         },
@@ -80,15 +66,10 @@ angular
                 modal: 'components/request/request-change-retire-concept-modal.html',
                 "fields": [
                     {"name": "requestorInternalId"},
-                    {"name": "conceptId", "required": true},
-                    {"name": "conceptFSN", "required": true},
                     {"name": "proposedFSN"},
                     {"name": "proposedStatus"},
                     {"name": "historyAttribute"},
-                    {"name": "historyAttributeValue"},
-                    {"name": "reasonForChange"},
-                    {"name": "notes"},
-                    {"name": "reference"}
+                    {"name": "historyAttributeValue"}
                 ]
 
             }
@@ -101,16 +82,10 @@ angular
                 modal: 'components/request/request-change-retire-description-modal.html',
                 "fields": [
                     {"name": "requestorInternalId"},
-                    {"name": "conceptId", "required": true},
-                    {"name": "conceptFSN", "required": true},
                     {"name": "descriptionId", "required": true},
-                    {"name": "description", "required": true},
                     {"name": "proposedDescription"},
                     {"name": "proposedCaseSignificance"},
-                    {"name": "proposedDescriptionStatus"},
-                    {"name": "reasonForChange"},
-                    {"name": "notes"},
-                    {"name": "reference"}
+                    {"name": "proposedDescriptionStatus"}
                 ]
             }
         },
@@ -122,14 +97,9 @@ angular
                 modal: 'components/request/request-change-retire-relationship-modal.html',
                 "fields": [
                     {"name": "requestorInternalId"},
-                    {"name": "conceptId", "required": true},
-                    {"name": "conceptFSN", "required": true},
                     {"name": "relationshipId", "required": true},
                     {"name": "refinability"},
-                    {"name": "relationshipStatus"},
-                    {"name": "reasonForChange"},
-                    {"name": "notes"},
-                    {"name": "reference"}
+                    {"name": "relationshipStatus"}
                 ]
             }
         }

@@ -316,7 +316,7 @@
                 <!-- attribute type' -->
                 <div class="pull-left is_a"
                      drag-enter-class="sca-drag-target"
-                     drag-hover-class="sca-drag-hover"
+                     drag-hover-class="sca-drag-hover"historyCount
                      drop-channel="conceptPropertiesObj"
                      ui-on-drop="dropRelationshipType(relationship, $data)"
                      drop-validate="!relationship.effectiveTime && !isStatic">
@@ -326,7 +326,7 @@
                               ng-disabled="relationship.effectiveTime || isStatic"
                               typeahead-focus
                               class="sca-top"
-                              uib-typeahead="suggestion as suggestion.fsn for suggestion in allowedAttributes | filter:$viewValue:emptyOrMatch"
+                              uib-typeahead="suggestion as suggestion.fsn.term for suggestion in allowedAttributes | filter:$viewValue:emptyOrMatch"
                               typeahead-focus-first="false"
                               typeahead-loading="typeTypeaheadLoading"
                               typeahead-wait-ms="700"
@@ -355,7 +355,7 @@
                               ng-model="relationship.target.fsn"
                               ng-disabled="relationship.effectiveTime || isStatic"
                               class="sca-top"
-                              uib-typeahead="suggestion as suggestion.fsn for suggestion in getConceptsForValueTypeahead(relationship.type.conceptId, $viewValue)"
+                              uib-typeahead="suggestion as suggestion.fsn.term for suggestion in getConceptsForValueTypeahead(relationship.type.conceptId, $viewValue)"
                               typeahead-loading="targetTypeaheadLoading"
                               typeahead-focus-first="false"
                               typeahead-wait-ms="700"

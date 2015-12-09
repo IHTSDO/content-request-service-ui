@@ -54,7 +54,9 @@ angular
                     //        }
                     additionalFields: '=?',
 
-                    saveFunction: '&?'
+                    saveFunction: '&?',
+
+                    onConceptChanged: '&?'
                 },
                 templateUrl: 'shared/concept-edit/concept-edit.html',
 
@@ -2016,6 +2018,17 @@ angular
                         }
                     }, true);
 
+                    scope.$watch('conceptHistoryPtr', function (newVal) {
+                        /*if (newVal === 0) {
+                            console.log('concept restored');
+                        } else if (newVal > 0) {
+                            console.log('concept changed');
+                        }*/
+                        if (scope.onConceptChanged) {
+                            scope.onConceptChanged({historyCount: newVal});
+                        }
+                    });
+
                     scope.getConceptsForAttributeTypeahead = function (searchStr) {
                         console.debug('getConceptsForAttributeTypeahead', searchStr, scope.allowedAttributes);
                         var response = scope.allowedAttributes;
@@ -2059,7 +2072,7 @@ angular
                         // console.debug('setting relationship type concept', relationship, item);
 
                         relationship.type.conceptId = item.id;
-                        relationship.type.fsn = item.fsn;
+                        relationship.type.fsn = item.fsn.term;
 
                         scope.updateRelationship(relationship);
                     };
@@ -2073,7 +2086,7 @@ angular
                         // console.debug('setting relationship type concept', relationship, item);
 
                         relationship.target.conceptId = item.id;
-                        relationship.target.fsn = item.fsn;
+                        relationship.target.fsn = item.fsn.term;
 
                         scope.updateRelationship(relationship);
                     };

@@ -18,13 +18,14 @@ angular
                     //'drag-hover-class="concept-drag-hover"',
                     //'drop-channel="conceptPropertiesObj"',
                     //'ui-on-drop="dropConcept($data)">',
-                    '<input class="form-control" type="text"',
-                    'ng-model="typeConcept.fsn"',
-                    'uib-typeahead="suggestion as suggestion.fsn for suggestion in getTypeConceptsForValueTypeahead($viewValue)"',
-                    'typeahead-loading="showLoading"',
-                    'typeahead-focus-first="false"',
-                    'typeahead-wait-ms="700"',
-                    'typeahead-on-select="selectTypeConcept($item)"',
+                    '<input class="form-control" type="text" ',
+                    'ng-model="typeConcept.fsn" ',
+                    'uib-typeahead="suggestion as suggestion.fsn for suggestion in getTypeConceptsForValueTypeahead($viewValue)" ',
+                    'typeahead-loading="showLoading" ',
+                    'typeahead-focus ',
+                    'typeahead-focus-first="false" ',
+                    'typeahead-wait-ms="700" ',
+                    'typeahead-on-select="selectTypeConcept($item)" ',
                     'typeahead-editable="false" typeahead-min-length="0"/>',
                     '<span style="top:0;position: absolute;padding-top:3px;right:10px" ng-show="showLoading">Loading...</span>',
                     '</div>'
@@ -47,7 +48,7 @@ angular
                         };
                         var idList = '';
 
-                        angular.forEach($scope.relationships, function (relationship) {
+                        angular.forEach($scope.parents, function (relationship) {
                             // add to id list if: active, Is A relationship, target specified,
                             // and not inferred
                             if (relationship.active === true &&
