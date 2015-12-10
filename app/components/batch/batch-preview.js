@@ -56,10 +56,9 @@ angular
 
                         if (vm.selectedFile.status === BATCH_IMPORT_STATUS.PROCESSING_UPLOAD.value &&
                             tmpSelectedFile.status === BATCH_IMPORT_STATUS.COMPLETED_UPLOAD.value) {
-                            selectFile(tmpSelectedFile, true);
-                        } else {
-                            vm.selectedFile = tmpSelectedFile;
+                            loadPreviewData(BATCH_PREVIEW_TAB.NEW_CONCEPT.value, false);
                         }
+                        vm.selectedFile = tmpSelectedFile;
                     }
                 });
             };
