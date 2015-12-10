@@ -61,6 +61,7 @@ footer {
   clear:both;
   bottom: 0;
   width: 100%;
+  z-index: 98;
 
   .navbar {
     min-height: 40px;
@@ -159,4 +160,90 @@ footer {
   width: 35%;
   margin-left: -7%;
   z-index: 1;
+}
+
+.fileStatus {
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 10px;
+  background: #fff;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  text-align: center;
+  padding: 0;
+  line-height: 20px;
+
+  &.PROCESSING_UPLOAD {
+    color: #01A2E1;
+  }
+
+  &.PROCESSING_IMPORT {
+    color: #8bc34a;
+  }
+
+  &.COMPLETED_UPLOAD {
+    color: #01A2E1;
+  }
+
+  &.ERROR {
+    color: red;
+  }
+  &.COMPLETED_IMPORT {
+    color: #8bc34a;
+  }
+}
+
+.row-selected, .file-selected {
+  background-color: rgb(199, 238, 253) !important;
+}
+
+.batch-preview-tabs {
+  li {
+    width: 16.66666667% !important;
+
+    a {
+      border-radius: 0;
+      font-size: 11px !important;
+      padding: 7px 0 !important;
+      cursor: pointer;
+    }
+  }
+}
+
+.importing-request-error {
+  background-color: #F3CB67;
+}
+
+.batch-preview-table table td {
+  min-width: 160px;
+}
+
+.table-requests .ng-table-header {
+  white-space: nowrap;
+}
+
+input[type=checkbox].small-checkbox {
+  margin-top: 4px;
+  position: relative;
+
+  &:after {
+    width: 18px;
+    height: 18px;
+  }
+
+  &:checked:before {
+    top: 0px;
+    left: 7px;
+    width: 5px;
+    height: 10px;
+  }
+}
+
+.batch-import-confirm-modal.modal-body {
+  span {
+    font-weight: bold;
+    font-size: 15px;
+    padding-left: 5px;
+  }
 }

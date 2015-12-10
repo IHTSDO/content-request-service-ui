@@ -1,11 +1,13 @@
 {
     "endpoint": {
         "crs": "http://huy.ihtsdotools.org/crs/",
+        "_crs": "https://dev-request.ihtsdotools.org/",
         "ims": "https://dev-ims.ihtsdotools.org/",
         "snowowl": "https://dev-term.ihtsdotools.org/snowowl/",
         "ims-api": "https://dev-term.ihtsdotools.org/ims-api/"
     },
     "xhrTimeout": 50000,
+    "fileStatusPollingInterval": 5000,
     "snomed-ct": {
         "path": "snomed-ct/v2/",
         "edition": "MAIN",

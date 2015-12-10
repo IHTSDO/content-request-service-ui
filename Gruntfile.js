@@ -31,6 +31,22 @@ module.exports = function (grunt) {
         // Project settings
         yeoman: appConfig,
 
+        google_translate: {
+            options: {
+                googleApiKey: 'AIzaSyDsAYTEC-doXYq7X5Q4381RHPeNQ3VKg6A'
+            },
+            toVi: {
+                files: [{
+                    src: '<%= yeoman.app %>/translations/locale-en.json',
+                    sourceLanguage: 'en',
+                    targetLanguages: ['vi', 'zh-CN'],
+                    dest: '<%= yeoman.app %>/translations/',
+                    prefix: 'locale-',
+                    suffix: '.json'
+                }]
+            }
+        },
+
         // Watches files for changes and runs tasks based on the changed files
         watch: {
             bower: {
@@ -508,6 +524,7 @@ module.exports = function (grunt) {
         }
     });
 
+    grunt.loadNpmTasks('grunt-google-translate');
 
     grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
         if (target === 'dist') {

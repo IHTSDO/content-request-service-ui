@@ -10,13 +10,6 @@
         <div class="col-md-12">
             <form class="form-floating" >
                 <div class="form-group" style="margin-bottom: 25px; margin-top: 5px">
-                    <!--<label for="requestTypeSelect" translate="crs.request.createModal.requestType.label"></label>
-                    <select id="requestTypeSelect" name="select-request-type" class="form-control"
-                            ng-model="modal.requestType"
-                            ng-options="requestType.value as requestType.langKey | translate for requestType in modal.generalRequestTypes">
-                    </select>
-
-                    <br>-->
                     <div ng-if="modal.selectedFile">
                         <label>Selected File</label>
                         <div>{{modal.selectedFile.name}}</div>
@@ -24,6 +17,7 @@
 
                     <div ng-if="modal.uploading">
                         <label>Uploading... <span>{{modal.progress}} %</span></label>
+                        <uib-progressbar animate="true" value="modal.progress" ></uib-progressbar>
                     </div>
 
                     <div ng-if="!modal.uploading" ngf-select ngf-drop ng-model="modal.selectedFile" class="drop-box">

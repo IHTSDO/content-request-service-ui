@@ -707,6 +707,12 @@ sca-column
   color: #fff;
 }
 
+.btn-default.red:hover,
+.btn-default.red:active {
+  background-color: #D32F2F;
+  color: #fff;
+}
+
 .search-snomed {
   width: 90%;
 }
@@ -873,4 +879,19 @@ sca-column
 .popover-content {
   padding: 3px 7px !important;
   max-height: 40px;
+}
+
+.concept-drag-target {
+  input {
+    border: 1px dashed #9f9f9f !important;
+    background: #dedede !important;
+  }
+}
+
+.concept-drag-hover {
+  input {
+    border: 1px dashed #fff !important;
+    background: #00a6e5 !important;
+    color: #fff !important;
+  }
 }

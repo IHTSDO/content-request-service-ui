@@ -6,56 +6,8 @@ angular.module('conceptRequestServiceApp.batch')
         '$q',
         'crsService',
         'CRS_API_ENDPOINT',
-        function ($rootScope, $q, crsService, CRS_API_ENDPOINT) {
-
-            // mock batches
-            /*var batches = [
-                {
-                    id: 367877,
-                    status: 'Draft',
-                    uploadedDate: '03-11-2015',
-                    modifiedDate: '03-11-2015',
-                    submittedDate: 'N/A'
-                },
-                {
-                    id: 315869,
-                    status: 'Submitted',
-                    uploadedDate: '01-11-2015',
-                    modifiedDate: '02-11-2015',
-                    submittedDate: '03-11-2015'
-                },
-                {
-                    id: 322014,
-                    status: 'Submitted',
-                    uploadedDate: '01-11-2015',
-                    modifiedDate: '02-11-2015',
-                    submittedDate: '03-11-2015'
-                }
-            ];*/
-
-            /*var getBatches = function () {
-                var deferred = $q.defer();
-
-
-                deferred.resolve(batches);
-
-                return deferred.promise;
-            };
-
-            var getBatch = function (batchId) {
-                var batch = null;
-                var deferred = $q.defer();
-
-                angular.forEach(batches, function (item) {
-                    if ((item.id + '') === batchId) {
-                        batch = item;
-                    }
-                });
-
-                deferred.resolve(batch);
-
-                return deferred.promise;
-            };*/
+        'BATCH_IMPORT_STATUS',
+        function ($rootScope, $q, crsService, CRS_API_ENDPOINT, BATCH_IMPORT_STATUS) {
 
             var getBatches = function () {
                 var listEndpoint = CRS_API_ENDPOINT.BATCH_LIST;
@@ -70,15 +22,53 @@ angular.module('conceptRequestServiceApp.batch')
             };
 
             var uploadBatchFile = function (batchFile) {
-                var batchImportEndpoint = CRS_API_ENDPOINT.BATCH_IMPORT;
+                var batchUploadEndpoint = CRS_API_ENDPOINT.BATCH_UPLOAD;
 
-                return crsService.sendUpload(batchImportEndpoint, batchFile);
+                return crsService.sendUpload(batchUploadEndpoint, batchFile);
+            };
+
+            var importBatch = function (previewBatchId) {
+                var batchImportEndpoint = CRS_API_ENDPOINT.BATCH_UPLOADED_PREVIEW + '/' + previewBatchId + '/import';
+
+                return crsService.sendPut(batchImportEndpoint);
+            };
+
+            var getUploadedFiles = function () {
+                var uploadedFilesEndpoint = CRS_API_ENDPOINT.BATCH_UPLOADED_LIST;
+
+                return crsService.sendGet(uploadedFilesEndpoint, null, null);
+            };
+
+            var identifyBatchImportStatus = function (value) {
+                for (var statusKey in BATCH_IMPORT_STATUS) {
+                    if (BATCH_IMPORT_STATUS.hasOwnProperty(statusKey) &&
+                        BATCH_IMPORT_STATUS[statusKey].value === value) {
+                        return BATCH_IMPORT_STATUS[statusKey];
+                    }
+                }
+            };
+
+            var getImportingRequests = function (batchFileId, requestType) {
+                var batchPreviewEndpoint = CRS_API_ENDPOINT.BATCH_UPLOADED_PREVIEW;
+
+                return crsService.sendGet(batchPreviewEndpoint + '/' + batchFileId + '/' + requestType, null, null);
+            };
+
+            var removeBatchPreview = function (batchFileId) {
+                var batchPreviewEndpoint = CRS_API_ENDPOINT.BATCH_UPLOADED_PREVIEW;
+
+                return crsService.sendDelete(batchPreviewEndpoint + '/' + batchFileId, null, null);
             };
 
             return {
                 getBatch: getBatch,
                 getBatches: getBatches,
-                uploadBatchFile: uploadBatchFile
+                uploadBatchFile: uploadBatchFile,
+                importBatch: importBatch,
+                getUploadedFiles: getUploadedFiles,
+                identifyBatchImportStatus: identifyBatchImportStatus,
+                getImportingRequests: getImportingRequests,
+                removeBatchPreview: removeBatchPreview
             };
 
         }]);

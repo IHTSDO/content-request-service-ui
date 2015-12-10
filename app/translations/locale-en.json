@@ -36,6 +36,7 @@
                 "tip": {
                     "count": "Number of requests",
                     "create": "Create New Request",
+                    "remove": "Remove Selected Requests",
                     "requestorInternalId": "Click to open request editing view",
                     "batchId": "Click to open batch details view",
                     "conceptFSN": "Click to open request editing view"
@@ -53,7 +54,9 @@
                     "requestType": "Request Type",
                     "status": "Status",
                     "conceptFSN": "Concept",
-                    "reasonForChange": "Reason for Change"
+                    "reasonForChange": "Reason for Change",
+                    "topic": "Topic",
+                    "validationResult": "Validation Result"
                 }
             },
             "details": {
@@ -67,9 +70,15 @@
                     "cancel": "Cancel"
                 },
                 "label": {
+                    "topic": "Topic",
                     "requestorInternalId": "Requestor Internal Id",
                     "proposedFSN": "New Concept FSN",
+                    "parentConcept": "Parent Concept",
+                    "concept": "Concept",
+                    "sourceConcept": "Source Concept",
+                    "destinationConcept": "Destination Concept",
                     "conceptPT": "Preferred Term",
+                    "proposedSynonym": "Synonym(s)",
                     "proposedDefinition": "Definition",
                     "reasonForChange": "Reason of Changes",
                     "reference": "Reference",
@@ -79,6 +88,7 @@
                     "proposedDescription": "Proposed New Description",
                     "relationshipGroup": "Relationship Group",
                     "relationshipId": "Relationship Id",
+                    "relationship": "Relationship",
                     "historyAttributeValue": "History Attribute Value",
                     "notes": "Notes",
                     "relationshipType": "Relationship Type",
@@ -122,6 +132,9 @@
                 "requestType": {
                     "label": "Request Type"
                 },
+                "inputMode": {
+                    "label": "Input Mode"
+                },
                 "button": {
                     "createRequest": "Create Request",
                     "cancel": "Cancel"
@@ -137,7 +150,10 @@
 
                 "error": {
                     "requestTypeRequired": "Please select request type",
-                    "invalidPage": "The page you request is not available"
+                    "invalidPage": "The page you request is not available",
+                    "requiredConcept": "Please select a concept",
+                    "requiredTopic": "Some fields are required to generate change requests. Please enter all fields that are being marked red before saving or switching input mode.",
+                    "requiredFields": "Some fields are required to generate change requests. Please enter all fields that are being marked red before saving or switching input mode."
                 }
 
             },
@@ -148,6 +164,10 @@
                 "changeRetireConcept": "Change or Retire Concept",
                 "changeRetireDescription": "Change or Retire Description",
                 "changeRetireRelationship": "Change or Retire Relationship"
+            },
+            "inputMode": {
+                "simple": "Simple",
+                "direct": "Direct"
             },
             "requestMode": {
                 "newRequest": "New Request",
@@ -179,6 +199,7 @@
             "message": {
                 "listLoading": "Loading batches...",
                 "listLoaded": "All batches loaded",
+                "requestRemoved": "Requests has been removed successfully",
                 "error": {
                     "fileRequired": "Please select a file to upload."
                 }
@@ -187,7 +208,78 @@
                 "title": "Import Batch File",
                 "button": {
                     "cancel": "Cancel",
-                    "upload": "Upload"
+                    "upload": "Upload",
+                    "import": "Import"
+                }
+            },
+            "batchImportStatus": {
+                "processingUpload": "Uploading",
+                "completedUpload": "Uploaded",
+                "processingImport": "Importing",
+                "completedImport": "Imported",
+                "error": "Error",
+                "aborted": "Aborted"
+            },
+            "preview": {
+                "title": {
+                    "pageTitle": "Batch Import",
+                    "uploadedFiles": "Uploaded Files"
+                },
+                "fileList": {
+                    "tableHeader": {
+                        "name": "Name",
+                        "uploaded": "Uploaded",
+                        "status": "Status"
+                    }
+                },
+                "upload": {
+                    "hint": "Select or Drop Batch File Here",
+                    "uploading": "Uploading"
+                },
+                "button": {
+                    "import": "Import Requests",
+                    "remove": "Remove Request"
+                },
+                "requestList": {
+                    "tableHeader": {
+                        "sourceTerminology": "Source Terminology",
+                        "sourceTerminologyVersion": "Source Terminology Version",
+                        "requestorInternalId": "Requestor Internal ID",
+                        "reasonForChange": "Reason for Change",
+                        "topic": "Topic",
+                        "notes": "Notes",
+                        "references": "References",
+                        "parentId": "Parent ID",
+                        "parentFSN": "Parent FSN",
+                        "FSN": "FSN",
+                        "semanticTag": "Semantic Tag",
+                        "synonym": "Synonym",
+                        "definition": "Definition",
+                        "conceptId": "Concept ID",
+                        "sourceConceptId": "Source Concept ID",
+                        "conceptFSN": "Concept FSN",
+                        "description": "Description",
+                        "descriptionIsPT": "Description is PT",
+                        "relationshipType": "Relationship Type",
+                        "destinationTerminology": "Destination Terminology",
+                        "destinationConceptId": "Destination Concept ID",
+                        "characteristicType": "Characteristic Type",
+                        "refinability": "Refinability",
+                        "relationshipGroup": "Relationship Group",
+                        "newFSN": "New FSN",
+                        "newConceptStatus": "New Concept Status",
+                        "historyAttribute": "Concept History Attribute",
+                        "historyAttributeValue": "Concept History Attribute Value",
+                        "descriptionId": "Description ID",
+                        "currentDescription": "Current Description",
+                        "newDescription": "Proposed New Description",
+                        "newCaseSignature": "Proposed New Case Signature",
+                        "newDescriptionStatus": "Proposed New Description Status",
+                        "relationshipId": "Relationship ID",
+                        "newRefinability": "Proposed New Refinability",
+                        "newRelationshipStatus": "Proposed New Relationship Status",
+                        "validationResult": "Validation Result"
+                    }
                 }
             }
         }

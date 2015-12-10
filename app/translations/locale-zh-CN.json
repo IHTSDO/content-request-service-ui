@@ -1,0 +1,195 @@
+{
+	"crs": {
+		"message": {
+			"unknownUser": "登录为未知用户",
+			"profileTip": "显示名称将链接到个人资料在以后的更新服务"
+		},
+		"link": {
+			"logout": "登出",
+			"login": "登录",
+			"help": "帮帮我",
+			"tos": "服务条款",
+			"policy": "隐私政策",
+			"contact": "联系我们",
+			"feedback": "信息反馈"
+		},
+		"app": {
+			"name": "概念请求服务",
+			"copyright": "版权所有IHTSDO 2015年"
+		},
+		"dashboard": {
+			"title": "仪表板",
+			"sidebar": {
+				"myRequest": "我提交的申请",
+				"myBatch": "我批请求",
+				"createRequest": "创建新请求",
+				"importBatch": "新的批量导入"
+			}
+		},
+		"request": {
+			"list": {
+				"title": {
+					"requests": "要求",
+					"myRequests": "我的要求",
+					"submittedRequests": "提交的申请"
+				},
+				"tip": {
+					"count": "请求数",
+					"create": "创建新请求",
+					"requestorInternalId": "点击打开请求编辑视图",
+					"batchId": "点击打开批次详细信息视图",
+					"conceptFSN": "点击打开请求编辑视图"
+				},
+				"searchPlaceHolder": {
+					"myRequests": "搜索我的要求",
+					"submittedRequests": "搜索提交的申请"
+				},
+				"tableHeader": {
+					"batchId": "批次编号",
+					"requestorInternalId": "请求INTERAL标识",
+					"ticketId": "请求标识",
+					"description": "描述",
+					"lastModified": "上一次更改",
+					"requestType": "请求类型",
+					"status": "状态",
+					"conceptFSN": "概念",
+					"reasonForChange": "变化的原因"
+				}
+			},
+			"details": {
+				"title": {
+					"new": "新要求",
+					"edit": "编辑请求"
+				},
+				"button": {
+					"save": "保存请求",
+					"submit": "保存并提交申请",
+					"cancel": "取消"
+				},
+				"label": {
+					"requestorInternalId": "请求内部ID",
+					"proposedFSN": "新概念FSN",
+					"conceptPT": "首选术语",
+					"proposedDefinition": "定义",
+					"reasonForChange": "变化的原因",
+					"reference": "参考",
+					"description": "描述",
+					"descriptionId": "说明标识",
+					"currentDescription": "当前说明",
+					"proposedDescription": "建议新的说明",
+					"relationshipGroup": "关系组",
+					"relationshipId": "关系ID",
+					"historyAttributeValue": "历史属性值",
+					"notes": "笔记",
+					"relationshipType": "关系类型",
+					"characteristicType": "特色型",
+					"refinability": "Refinability",
+					"newRefinability": "新Refinability",
+					"proposedStatus": "新概念状态",
+					"historyAttribute": "历史属性",
+					"proposedCaseSignificance": "新案例的意义",
+					"descriptionStatus": "新的说明状态",
+					"relationshipStatus": "关系状态"
+				},
+				"tip": {
+					"editConceptHint": "编辑从保存的列表或拖动一个概念，这里掉落的概念"
+				},
+				"sidebar": {
+					"tip": {
+						"taxonomy": "分类",
+						"search": "搜索",
+						"savedList": "保存的列表",
+						"requestInfo": "索取信息"
+					}
+				},
+				"info": {
+					"button": {
+						"submit": "提交申请",
+						"save": "保存请求",
+						"edit": "编辑请求"
+					},
+					"label": {
+						"batchId": "批次编号",
+						"ticketId": "吉拉单ID",
+						"status": "状态",
+						"lastModified": "最后修改日期"
+					}
+				}
+			},
+			"createModal": {
+				"title": "创建新请求",
+				"requestType": {
+					"label": "请求类型"
+				},
+				"button": {
+					"createRequest": "创建请求",
+					"cancel": "取消"
+				}
+			},
+			"message": {
+				"listLoading": "数据加载中...请求",
+				"listLoaded": "所有请求装",
+				"requestLoading": "加载请求{{的requestId}} ...",
+				"requestLoaded": "请求{{的requestId}}装",
+				"requestSaved": "请求已成功保存",
+				"requestSubmitted": "请求已成功提交",
+				"error": {
+					"requestTypeRequired": "请选择请求类型",
+					"invalidPage": "您请求的页面无法访问"
+				}
+			},
+			"requestType": {
+				"newConcept": "新概念",
+				"newDescription": "新的说明",
+				"newRelationship": "新关系",
+				"changeRetireConcept": "更改或退休的概念",
+				"changeRetireDescription": "更改或退休描述",
+				"changeRetireRelationship": "更改或退休关系"
+			},
+			"inputMode": {
+				"simple": "简单",
+				"direct": "直接"
+			},
+			"requestMode": {
+				"newRequest": "新要求",
+				"editRequest": "编辑请求"
+			},
+			"requestStatus": {
+				"draft": "草案",
+				"new": "新"
+			}
+		},
+		"batch": {
+			"list": {
+				"title": "我批",
+				"tip": {
+					"count": "批数",
+					"create": "进口批",
+					"batchId": "点击打开批次详细信息视图"
+				},
+				"searchPlaceHolder": "搜索批",
+				"tableHeader": {
+					"batchId": "批次编号",
+					"uploaded": "上传于",
+					"submitted": "提交于",
+					"lastModified": "上一次更改",
+					"status": "状态"
+				}
+			},
+			"message": {
+				"listLoading": "数据加载中...批次",
+				"listLoaded": "所有批次装",
+				"error": {
+					"fileRequired": "请选择要上传的文件。"
+				}
+			},
+			"importModal": {
+				"title": "导入批处理文件",
+				"button": {
+					"cancel": "取消",
+					"upload": "上传"
+				}
+			}
+		}
+	}
+}

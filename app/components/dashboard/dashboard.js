@@ -42,16 +42,20 @@ angular
                 }
             };
 
-            var createRequest = function (requestType) {
-                $location.path('requests/new/' + requestType);
+            var createRequest = function (rs) {
+                //$location.url('requests/new/' + rs.requestType + ((rs.inputMode)?'?inputMode=' + rs.inputMode : ''));
+                $location.path('requests/new/' + rs.requestType).search({inputMode: rs.inputMode});
             };
 
-            var editRequest = function (requestId) {
+            var editRequest = function (requestId, batchRequest) {
+                /*if (batchRequest !== undefined && batchRequest !== null) {
+                    return;
+                }
+*/
                 $location.path('requests/edit/' + requestId);
             };
 
             var importBatchFile = function (response) {
-                console.log(response);
                 //$route.reload();
                 notificationService.sendMessage('Successfully import ' + response.success + ' requests from batch file' , 5000);
                 showBatchDetails(response.batchId);

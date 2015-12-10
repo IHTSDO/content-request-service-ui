@@ -32,8 +32,13 @@ angular
                     return config.xhrTimeout;
                 };
 
+                var getFileStatusPollingInterval = function () {
+                    return config.fileStatusPollingInterval;
+                };
+
                 return {
                     getConfig: getConfig,
+                    getFileStatusPollingInterval: getFileStatusPollingInterval,
                     getEndpointConfig: getEndpointConfig,
                     getRequestTimeout: getRequestTimeout
                 };

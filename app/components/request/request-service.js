@@ -6,10 +6,9 @@ angular.module('conceptRequestServiceApp.request')
         '$q',
         'crsService',
         'REQUEST_TYPE',
-        'GENERAL_REQUEST_TYPE',
         'REQUEST_STATUS',
         'CRS_API_ENDPOINT',
-        function ($rootScope, $q, crsService, REQUEST_TYPE, GENERAL_REQUEST_TYPE, REQUEST_STATUS, CRS_API_ENDPOINT) {
+        function ($rootScope, $q, crsService, REQUEST_TYPE, REQUEST_STATUS, CRS_API_ENDPOINT) {
 
             var identifyRequestType = function (value) {
                 for (var requestTypeKey in REQUEST_TYPE) {
@@ -21,18 +20,6 @@ angular.module('conceptRequestServiceApp.request')
 
                 return null;
             };
-
-            var identifyGeneralRequestType = function (value) {
-                for (var generalRequestTypeKey in GENERAL_REQUEST_TYPE) {
-                    if (GENERAL_REQUEST_TYPE.hasOwnProperty(generalRequestTypeKey) &&
-                        GENERAL_REQUEST_TYPE[generalRequestTypeKey].value === value) {
-                        return GENERAL_REQUEST_TYPE[generalRequestTypeKey];
-                    }
-                }
-
-                return null;
-            };
-
 
             var identifyRequestStatus = function (value) {
                 for (var requestStatusKey in REQUEST_STATUS) {
@@ -77,21 +64,35 @@ angular.module('conceptRequestServiceApp.request')
             var submitRequest = function (requestId) {
                 var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
 
-                if (requestId !== undefined || requestId !== null) {
+                if (requestId !== undefined && requestId !== null) {
                     return crsService.sendPost(requestEndpoint + '/' + requestId + '/submit', null, null);
+                }
+            };
+
+            var removeRequests = function (requestList) {
+                var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
+                var params;
+
+                if (requestList !== undefined &&
+                    requestList !== null) {
+                    params = {
+                        requests: requestList
+                    };
+
+                    return crsService.sendDelete(requestEndpoint, params, null);
                 }
             };
 
 
             return {
                 identifyRequestType: identifyRequestType,
-                identifyGeneralRequestType: identifyGeneralRequestType,
                 identifyRequestStatus: identifyRequestStatus,
                 getRequest: getRequest,
                 getRequests: getRequests,
                 getSubmittedRequests: getSubmittedRequests,
                 saveRequest: saveRequest,
-                submitRequest: submitRequest
+                submitRequest: submitRequest,
+                removeRequests: removeRequests
             };
 
         }]);

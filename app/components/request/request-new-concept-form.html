@@ -2,21 +2,41 @@
 <form class="form-floating">
 
     <div class="form-group">
-        <form-control type="text"
+        <!--<form-control type="text"
                       model="requestVM.request.requestorInternalId"
                       label="crs.request.details.label.requestorInternalId"
-                      name="txtRequestorInternalId"></form-control>
-        <div>
+                      name="txtRequestorInternalId"></form-control>-->
+
+        <!--<div>
             <div class="form-control-element">
-                <label for="">Parent Concept Id</label>
+                <label >Parent Concept Id</label>
                 <input class="form-control" type="text" ng-model="requestVM.request.parentId"/>
             </div>
             <div class="form-control-element">
-                <label for="">Parent Concept FSN</label>
+                <label >Parent Concept FSN</label>
                 <input class="form-control" type="text" ng-model="requestVM.request.parentFSN"/>
             </div>
-        </div>
-        <br/>
+        </div>-->
+        <!--<div class="form-control-element"
+             >
+            <label >Parent Concept </label>
+            <input class="form-control" type="text"
+                   ng-model="requestVM.request.parent.name"
+                   drag-enter-class="sca-drag-target"
+                   drag-hover-class="sca-drag-hover"
+                   drop-channel="conceptPropertiesObj"
+                   ui-on-drop="requestVM.dropConcept('parent', $data)"
+                   uib-typeahead="suggestion as suggestion.fsn for suggestion in requestVM.getConceptsForValueTypeahead($viewValue)"
+                   typeahead-loading="targetTypeaheadLoading"
+                   typeahead-focus-first="false"
+                   typeahead-wait-ms="700"
+                   typeahead-on-select="setRelationshipTargetConceptFromMrcm(relationship, $item)"
+                   typeahead-editable="false" typeahead-min-length="3"/>
+        </div>-->
+
+        <form-control type="concept"
+                      model="requestVM.request.parentConcept"
+                      label="crs.request.details.label.parentConcept"></form-control>
 
         <form-control type="text"
                       model="requestVM.request.proposedFSN"
@@ -29,29 +49,22 @@
                       name="txtPT"
                       required></form-control>
 
-        <div class="form-control-element">
-            <label for="">Synonym</label>
+        <!--<div class="form-control-element">
+            <label >Synonym</label>
             <input class="form-control" type="text" ng-model="requestVM.request.proposedSynonym"/>
-        </div>
-
+        </div>-->
         <form-control type="text"
-                      model="requestVM.request.proposedDefinition"
-                      label="crs.request.details.label.proposedDefinition"
-                      name="txtDefinition"></form-control>
+                      model="requestVM.request.proposedSynonyms"
+                      label="crs.request.details.label.proposedSynonym"
+                      multi="true"></form-control>
 
         <!--<form-control type="text"
-                      model="requestVM.request.reasonForChange"
-                      label="crs.request.details.label.reasonForChange"
-                      name="txtReasonForChange"></form-control>
-
-        <form-control type="textarea"
-                      model="requestVM.request.notes"
-                      label="crs.request.details.label.notes"
-                      name="txtNotes"></form-control>
-
+                      model="requestVM.request.proposedDefinition"
+                      label="crs.request.details.label.proposedDefinition"
+                      name="txtDefinition"></form-control>-->
         <form-control type="text"
-                      model="requestVM.request.reference"
-                      label="crs.request.details.label.reference"
-                      name="txtReference"></form-control>-->
+                      model="requestVM.request.proposedDefinitions"
+                      label="crs.request.details.label.proposedDefinition"
+                      multi="true"></form-control>
     </div>
 </form>

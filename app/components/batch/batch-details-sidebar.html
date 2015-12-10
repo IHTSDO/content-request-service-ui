@@ -4,9 +4,9 @@
     <div role="tabpanel sidebar-tabs ">
 
         <!-- Nav tabs -->
-        <ul style="display: inline; border-bottom: 0px;" class="nav nav-tabs sidebar-tabs col-md-12 no-padding"
+        <ul style="background-color: #d1d1d1;display: inline; border-bottom: 0px;" class="nav nav-tabs sidebar-tabs col-md-12 no-padding"
             role="tablist" ng-init="actionTab=4">
-            <li role="presentation" class=""><a style="margin: 0px" ng-click="actionTab=1" aria-controls="home"
+            <!--<li role="presentation" class=""><a style="margin: 0px" ng-click="actionTab=1" aria-controls="home"
                                                       role="tab"
                                                       data-toggle="tab" class="tooltips-btm tooltips-light normal-case">
                 <div class="fa fa-book"></div>
@@ -23,36 +23,16 @@
                                                       data-toggle="tab"
                                                       class="tooltips-btm tooltips-light normal-case">
                 <div class="fa fa-info-circle"></div>
-                <span translate="Batch Info"></span></a></li>
+                <span translate="Batch Info"></span></a></li>-->
         </ul>
         <!-- Tab panes -->
         <div class="tab-content col-md-12 no-padding ">
-            <div role="tabpanel" class="tab-pane" ng-class="{active: actionTab===1}">
-                <div class="col-md-12 no-padding">
-                    <div taxonomy-tree></div>
-                </div>
-            </div>
-            <div role="tabpanel" class="tab-pane" ng-class="{active: actionTab===2}">
-                <div ng-include="'shared/search/search.html'"></div>
-            </div>
-            <div role="tabpanel" class="tab-pane" ng-class="{active: actionTab===3}">
-                <div ng-include="'shared/saved-list/saved-list-panel.html'"></div>
-            </div>
+
             <div role="tabpanel" class="tab-pane" ng-class="{active: actionTab===4}">
                 <div ng-include="'components/batch/batch-info-panel.html'"></div>
             </div>
         </div>
-        <!--<div class="tab-content col-md-12 no-padding ">
-            <div role="tabpanel" class="tab-pane" ng-class="{active: actionTab===1}">
-                <div ng-include="'shared/taxonomy/taxonomy.html'"></div>
-            </div>
-            <div role="tabpanel" class="tab-pane" ng-class="{active: actionTab===2}">
-                <div ng-include="'shared/search/search.html'"></div>
-            </div>
-            <div role="tabpanel" class="tab-pane" ng-class="{active: actionTab===3}">
-                <div ng-include="'shared/savedList/savedList.html'"></div>
-            </div>
-        </div>-->
+
     </div>
 
     <div style="float: right; width: 10px; color: red"></div>

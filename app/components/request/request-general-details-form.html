@@ -4,17 +4,23 @@
     <div class="form-group" >
 
         <form-control type="text"
-                      model="requestVM.concept.definitionOfChanges.reasonForChange"
+                      model="requestVM.request.additionalFields.topic"
+                      label="crs.request.details.label.topic"
+                      name="txtTopic"
+                      required></form-control>
+
+        <form-control type="text"
+                      model="requestVM.request.additionalFields.reasonForChange"
                       label="crs.request.details.label.reasonForChange"
                       name="txtReasonForChange"></form-control>
 
         <form-control type="textarea"
-                      model="requestVM.concept.definitionOfChanges.notes"
+                      model="requestVM.request.additionalFields.notes"
                       label="crs.request.details.label.notes"
                       name="txtNotes"></form-control>
 
         <form-control type="text"
-                      model="requestVM.concept.definitionOfChanges.reference"
+                      model="requestVM.request.additionalFields.reference"
                       label="crs.request.details.label.reference"
                       name="txtReference"></form-control>
     </div>
