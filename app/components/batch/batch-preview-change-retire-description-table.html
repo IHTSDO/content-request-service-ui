@@ -2,6 +2,17 @@
     <table ng-table="batchPreviewVM.previewTableParams" template-pagination="layout/template/data-table-pager.html"
            class="table table-full table-full-small">
         <tr ng-repeat="request in $data" ng-class="{'importing-request-error': request.currentValidationStatus !== null}">
+
+            <td style="text-align: center;min-width: initial">
+                <a class="tooltips-right" >
+                    <button ng-show="request.currentValidationStatus"
+                            type="button"
+                            class="btn btn-round btn-default lighten-2 red" >
+                        <div class="md md-school"></div>  <span class="red" style="text-transform: initial">{{request.currentValidationStatus}}</span>
+                    </button>
+                </a>
+            </td>
+
             <td data-title="'crs.batch.preview.requestList.tableHeader.topic' | translate" >
                 {{request.topic}}
             </td>

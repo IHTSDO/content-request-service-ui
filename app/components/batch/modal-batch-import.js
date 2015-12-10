@@ -1,6 +1,6 @@
 'use strict';
 angular.module('conceptRequestServiceApp.batch')
-    .controller('ModalBatchImportCtrl', [
+    .controller('ModalBatchImportConfirmCtrl', [
         '$rootScope',
         '$scope',
         '$uibModalInstance',

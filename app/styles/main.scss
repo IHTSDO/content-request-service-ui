@@ -239,3 +239,11 @@ input[type=checkbox].small-checkbox {
     height: 10px;
   }
 }
+
+.batch-import-confirm-modal.modal-body {
+  span {
+    font-weight: bold;
+    font-size: 15px;
+    padding-left: 5px;
+  }
+}

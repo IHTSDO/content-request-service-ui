@@ -8,12 +8,14 @@ angular
         '$filter',
         '$routeParams',
         '$interval',
+        '$uibModal',
         'ngTableParams',
         'batchService',
         'configService',
+        'notificationService',
         'BATCH_IMPORT_STATUS',
         'BATCH_PREVIEW_TAB',
-        function ($rootScope, $scope, $filter, $routeParams, $interval, ngTableParams, batchService, configService, BATCH_IMPORT_STATUS, BATCH_PREVIEW_TAB) {
+        function ($rootScope, $scope, $filter, $routeParams, $interval, $uibModal, ngTableParams, batchService, configService, notificationService, BATCH_IMPORT_STATUS, BATCH_PREVIEW_TAB) {
             var fileStatusPoller;
             var vm = this;
             var fileStatusPollingInterval = configService.getFileStatusPollingInterval();
@@ -41,6 +43,18 @@ angular
 
                     if (!fileStatusPoller) {
                         fileStatusPoller = $interval(loadUploadedFiles, fileStatusPollingInterval);
+                    }
+
+                    if (vm.selectedFile &&
+                        vm.selectedFile.status === BATCH_IMPORT_STATUS.PROCESSING_UPLOAD.value &&
+                        vm.uploadedFiles.length > 0) {
+                        for (var i = 0; i < vm.uploadedFiles.length; i++) {
+                            if (vm.uploadedFiles[i].id === vm.selectedFile.id &&
+                                vm.uploadedFiles[i].status === BATCH_IMPORT_STATUS.COMPLETED_UPLOAD.value) {
+                                selectFile(vm.uploadedFiles[i]);
+                                break;
+                            }
+                        }
                     }
                 });
             };
@@ -150,6 +164,20 @@ angular
                 }
             );
 
+            var openBatchImportModal = function () {
+                var modalInstance = $uibModal.open({
+                    templateUrl: 'components/batch/modal-batch-import-confirm.html',
+                    controller: 'ModalBatchImportConfirmCtrl as modal',
+                    resolve: {
+                        batchFile: vm.selectedFile
+                    }
+                });
+
+                modalInstance.result.then(function () {
+                    importRequests();
+                });
+            };
+
             var importRequests = function () {
                 if (vm.selectedFile &&
                     vm.selectedFile.status === BATCH_IMPORT_STATUS.COMPLETED_UPLOAD.value) {
@@ -161,6 +189,20 @@ angular
                     batchService.importBatch(vm.selectedFile.id).then(function () {
                         loadUploadedFiles();
                     });
+                }
+            };
+
+            var removeSelectedRequest = function () {
+                if (vm.selectedFile &&
+                    vm.selectedFile.status === BATCH_IMPORT_STATUS.COMPLETED_UPLOAD.value) {
+                    if (window.confirm('Are you sure you want to remove selected file?')) {
+                        notificationService.sendMessage('Deleting batch file');
+                        batchService.removeBatchPreview(vm.selectedFile.id).then(function () {
+                            loadUploadedFiles();
+                            vm.selectedFile = null;
+                            notificationService.sendMessage('Batch file deleted', 5000);
+                        });
+                    }
                 }
             };
 
@@ -176,6 +218,8 @@ angular
             vm.selectFile = selectFile;
             vm.loadPreviewData = loadPreviewData;
             vm.importRequests = importRequests;
+            vm.removeSelectedRequest = removeSelectedRequest;
+            vm.openBatchImportModal = openBatchImportModal;
 
             initView();
         }

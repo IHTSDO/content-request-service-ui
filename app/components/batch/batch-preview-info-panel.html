@@ -55,9 +55,15 @@
         <div style="padding: 15px; width: 100%" class="classification-btn">
             <button ng-disabled="batchPreviewVM.selectedFile.status !== 'COMPLETED_UPLOAD'"
                     class="btn btn-default green darken-1 import" style="text-transform: none"
-                    ng-click="batchPreviewVM.importRequests()">
-                <span class="md md-system-update-tv green darken-2 iconbase"></span>
+                    ng-click="batchPreviewVM.openBatchImportModal()">
+                <span class="md md-system-update-tv green darken-2 iconbase" style="line-height: initial;padding-top:10px"></span>
                 <span class="button-link" translate="crs.batch.preview.button.import"></span>
+            </button>
+            <button ng-disabled="batchPreviewVM.selectedFile.status !== 'COMPLETED_UPLOAD' && batchPreviewVM.selectedFile.status !== 'ERROR'"
+                    class="btn btn-default red darken-1 import" style="text-transform: none"
+                    ng-click="batchPreviewVM.removeSelectedRequest()">
+                <span class="md md-highlight-remove red darken-2 iconbase" style="line-height: initial;padding-top:10px"></span>
+                <span class="button-link" translate="crs.batch.preview.button.remove"></span>
             </button>
         </div>
     </div>

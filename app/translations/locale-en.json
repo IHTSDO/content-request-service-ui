@@ -208,7 +208,8 @@
                 "title": "Import Batch File",
                 "button": {
                     "cancel": "Cancel",
-                    "upload": "Upload"
+                    "upload": "Upload",
+                    "import": "Import"
                 }
             },
             "batchImportStatus": {
@@ -236,7 +237,8 @@
                     "uploading": "Uploading"
                 },
                 "button": {
-                    "import": "Import Requests"
+                    "import": "Import Requests",
+                    "remove": "Remove Request"
                 },
                 "requestList": {
                     "tableHeader": {
@@ -275,7 +277,8 @@
                         "newDescriptionStatus": "Proposed New Description Status",
                         "relationshipId": "Relationship ID",
                         "newRefinability": "Proposed New Refinability",
-                        "newRelationshipStatus": "Proposed New Relationship Status"
+                        "newRelationshipStatus": "Proposed New Relationship Status",
+                        "validationResult": "Validation Result"
                     }
                 }
             }

@@ -707,6 +707,12 @@ sca-column
   color: #fff;
 }
 
+.btn-default.red:hover,
+.btn-default.red:active {
+  background-color: #D32F2F;
+  color: #fff;
+}
+
 .search-snomed {
   width: 90%;
 }
