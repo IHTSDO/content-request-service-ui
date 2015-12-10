@@ -404,7 +404,7 @@ angular
                         // if inactive, simply set active and autoSave
                         if (!scope.concept.active) {
                             scope.concept.active = true;
-                            scope.concept.definitionOfChanges.changed = false;
+                            //scope.concept.definitionOfChanges.changed = false;
                             //scope.saveConcept();
                         }
 

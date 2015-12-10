@@ -130,7 +130,7 @@ angular
                 return {
                     changeId: null,
                     changeType: REQUEST_TYPE.CHANGE_RETIRE_CONCEPT.value,
-                    changed: false
+                    changed: true
                 }
             };
 
