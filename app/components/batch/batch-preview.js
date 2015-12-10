@@ -35,6 +35,7 @@ angular
                 //vm.uploadedFiles = null;
 
                 batchService.getUploadedFiles().then(function (files) {
+                    var tmpSelectedFile;
                     vm.uploadedFiles = files;
 
                     if (vm.filesTableParams) {
@@ -45,15 +46,19 @@ angular
                         fileStatusPoller = $interval(loadUploadedFiles, fileStatusPollingInterval);
                     }
 
-                    if (vm.selectedFile &&
-                        vm.selectedFile.status === BATCH_IMPORT_STATUS.PROCESSING_UPLOAD.value &&
-                        vm.uploadedFiles.length > 0) {
+                    if (vm.selectedFile) {
                         for (var i = 0; i < vm.uploadedFiles.length; i++) {
-                            if (vm.uploadedFiles[i].id === vm.selectedFile.id &&
-                                vm.uploadedFiles[i].status === BATCH_IMPORT_STATUS.COMPLETED_UPLOAD.value) {
-                                selectFile(vm.uploadedFiles[i]);
+                            if (vm.uploadedFiles[i].id === vm.selectedFile.id) {
+                                tmpSelectedFile = vm.uploadedFiles[i];
                                 break;
                             }
+                        }
+
+                        if (vm.selectedFile.status === BATCH_IMPORT_STATUS.PROCESSING_UPLOAD.value &&
+                            tmpSelectedFile.status === BATCH_IMPORT_STATUS.COMPLETED_UPLOAD.value) {
+                            selectFile(tmpSelectedFile, true);
+                        } else {
+                            vm.selectedFile = tmpSelectedFile;
                         }
                     }
                 });
@@ -107,7 +112,13 @@ angular
                 }
             };
 
-            var selectFile = function (file) {
+            var selectFile = function (file, forceReload) {
+                if (!forceReload &&
+                    vm.selectedFile &&
+                    vm.selectedFile.id === file.id) {
+                    return;
+                }
+
                 vm.selectedFile = file;
                 vm.importingRequests = null;
                 loadPreviewData(BATCH_PREVIEW_TAB.NEW_CONCEPT.value, true);
