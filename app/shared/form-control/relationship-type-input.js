@@ -18,7 +18,7 @@ angular
                     //'drag-hover-class="concept-drag-hover"',
                     //'drop-channel="conceptPropertiesObj"',
                     //'ui-on-drop="dropConcept($data)">',
-                    '<input class="form-control" type="text" ',
+                    '<input class="form-control" type="text" style="padding-right:40px" ',
                     'ng-model="typeConcept.fsn" ',
                     'uib-typeahead="suggestion as suggestion.fsn for suggestion in getTypeConceptsForValueTypeahead($viewValue)" ',
                     'typeahead-loading="showLoading" ',
@@ -27,7 +27,10 @@ angular
                     'typeahead-wait-ms="700" ',
                     'typeahead-on-select="selectTypeConcept($item)" ',
                     'typeahead-editable="false" typeahead-min-length="0"/>',
-                    '<span style="top:0;position: absolute;padding-top:3px;right:10px" ng-show="showLoading">Loading...</span>',
+                        '<span style="top:0;position: absolute;padding-top:3px;right:10px;font-size:16px;{{(showError)?\'color:red\':\'\'}}" ' +
+                        'ng-show="showLoading || showError" ' +
+                        'class="md" ' +
+                        'ng-class="{\'md-spin md-autorenew\':showLoading, \'md-error\':showError}"></span>',
                     '</div>'
                 ].join(''),
                 link: function ($scope) {

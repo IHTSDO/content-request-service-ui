@@ -36,6 +36,7 @@
                 "tip": {
                     "count": "Number of requests",
                     "create": "Create New Request",
+                    "remove": "Remove Selected Requests",
                     "requestorInternalId": "Click to open request editing view",
                     "batchId": "Click to open batch details view",
                     "conceptFSN": "Click to open request editing view"
@@ -198,6 +199,7 @@
             "message": {
                 "listLoading": "Loading batches...",
                 "listLoaded": "All batches loaded",
+                "requestRemoved": "Requests has been removed successfully",
                 "error": {
                     "fileRequired": "Please select a file to upload."
                 }

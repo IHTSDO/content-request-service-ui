@@ -64,8 +64,22 @@ angular.module('conceptRequestServiceApp.request')
             var submitRequest = function (requestId) {
                 var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
 
-                if (requestId !== undefined || requestId !== null) {
+                if (requestId !== undefined && requestId !== null) {
                     return crsService.sendPost(requestEndpoint + '/' + requestId + '/submit', null, null);
+                }
+            };
+
+            var removeRequests = function (requestList) {
+                var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
+                var params;
+
+                if (requestList !== undefined &&
+                    requestList !== null) {
+                    params = {
+                        requests: requestList
+                    };
+
+                    return crsService.sendDelete(requestEndpoint, params, null);
                 }
             };
 
@@ -77,7 +91,8 @@ angular.module('conceptRequestServiceApp.request')
                 getRequests: getRequests,
                 getSubmittedRequests: getSubmittedRequests,
                 saveRequest: saveRequest,
-                submitRequest: submitRequest
+                submitRequest: submitRequest,
+                removeRequests: removeRequests
             };
 
         }]);

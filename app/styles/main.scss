@@ -194,8 +194,8 @@ footer {
   }
 }
 
-.file-selected {
-  background-color: #0dc5c1 !important;
+.row-selected, .file-selected {
+  background-color: rgb(199, 238, 253) !important;
 }
 
 .batch-preview-tabs {
@@ -213,4 +213,29 @@ footer {
 
 .importing-request-error {
   background-color: #F3CB67;
+}
+
+.batch-preview-table table td {
+  min-width: 160px;
+}
+
+.table-requests .ng-table-header {
+  white-space: nowrap;
+}
+
+input[type=checkbox].small-checkbox {
+  margin-top: 4px;
+  position: relative;
+
+  &:after {
+    width: 18px;
+    height: 18px;
+  }
+
+  &:checked:before {
+    top: 0px;
+    left: 7px;
+    width: 5px;
+    height: 10px;
+  }
 }

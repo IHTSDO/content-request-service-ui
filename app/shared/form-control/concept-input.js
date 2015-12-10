@@ -18,7 +18,7 @@ angular
                     'drag-hover-class="concept-drag-hover"',
                     'drop-channel="conceptPropertiesObj"',
                     'ui-on-drop="dropConcept($data)">',
-                    '<input class="form-control" type="text"',
+                    '<input class="form-control" type="text" style="padding-right:40px" ',
                     'ng-model="concept.fsn"',
                     'uib-typeahead="suggestion as suggestion.concept.fsn for suggestion in getConceptsForValueTypeahead($viewValue)"',
                     'typeahead-loading="showLoading"',

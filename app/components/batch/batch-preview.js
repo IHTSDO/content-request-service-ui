@@ -65,6 +65,10 @@ angular
             };
 
             var uploadFile = function (file) {
+                if (!file) {
+                    return;
+                }
+
                 vm.uploadingFile = file;
                 if (vm.uploadingFile !== undefined && vm.uploadingFile !== null) {
 

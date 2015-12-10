@@ -9,10 +9,12 @@ angular
         'notificationService',
         'accountService',
         'CRS_ROLE',
-        function ($filter, ngTableParams, requestService, notificationService, accountService, CRS_ROLE) {
+        'REQUEST_STATUS',
+        function ($filter, ngTableParams, requestService, notificationService, accountService, CRS_ROLE, REQUEST_STATUS) {
             var vm = this;
 
             var initView = function () {
+                vm.selectedRequests = {checked: false, items: {}};
                 loadRequests();
 
                 // check admin role
@@ -41,7 +43,8 @@ angular
                                             mydata = vm.submittedRequests.filter(function (item) {
                                                 return (item.batchRequest + '').indexOf(searchStr.toLowerCase()) > -1 ||
                                                     (item.jiraTicketId || '').toLowerCase().indexOf(searchStr.toLowerCase()) > -1 ||
-                                                    (item.reasonForChange || '').toLowerCase().indexOf(searchStr.toLowerCase()) > -1;
+                                                    (item.fsn || '').toLowerCase().indexOf(searchStr.toLowerCase()) > -1 ||
+                                                    (item.additionalFields.topic || '').toLowerCase().indexOf(searchStr.toLowerCase()) > -1;
                                             });
                                         } else {
                                             mydata = vm.submittedRequests;
@@ -88,10 +91,41 @@ angular
                 });
             };
 
+            var removeSelectedRequests = function () {
+                var selectedRequests = vm.selectedRequests,
+                    removingRequestIds = [];
+                if (selectedRequests &&
+                    selectedRequests.items) {
+                    angular.forEach(selectedRequests.items, function (isSelected, requestId) {
+                        if (isSelected) {
+                            for (var i = 0; i < vm.requests.length; i++) {
+                                if (vm.requests[i].id + '' === requestId &&
+                                    vm.requests[i].requestHeader.status === REQUEST_STATUS.DRAFT.value) {
+                                    removingRequestIds.push(requestId);
+                                    break;
+                                }
+                            }
+                        }
+                    });
+
+                    if (removingRequestIds.length > 0) {
+                        if (window.confirm('Are you sure you want to remove ' + removingRequestIds.length +' Draft requests?')) {
+                            requestService.removeRequests(removingRequestIds).then(function () {
+                                loadRequests();
+                            }, function (error) {
+                                notificationService.sendMessage('crs.request.message.requestRemoved', 5000);
+                            });
+                        }
+                    } else {
+                        window.alert('Please select at least a Draft request.');
+                    }
+                }
+            };
+
             var requestTableParams = new ngTableParams({
                     page: 1,
                     count: 10,
-                    sorting: {'requestHeader.requestDate': 'desc', batchId: 'asc', id: 'asc'}
+                    sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'asc', id: 'asc'}
                 },
                 {
                     filterDelay: 50,
@@ -109,7 +143,8 @@ angular
                                 mydata = vm.requests.filter(function (item) {
                                     return (item.batchRequest + '').indexOf(searchStr.toLowerCase()) > -1 ||
                                         (item.jiraTicketId || '').toLowerCase().indexOf(searchStr.toLowerCase()) > -1 ||
-                                        (item.reasonForChange || '').toLowerCase().indexOf(searchStr.toLowerCase()) > -1;
+                                        (item.fsn || '').toLowerCase().indexOf(searchStr.toLowerCase()) > -1 ||
+                                        (item.additionalFields.topic || '').toLowerCase().indexOf(searchStr.toLowerCase()) > -1;
                                 });
                             } else {
                                 mydata = vm.requests;
@@ -124,16 +159,17 @@ angular
                     }
                 }
             );
-
+/*
             var editRequest = function (requestId) {
 
-            };
+            };*/
 
             vm.tableParams = requestTableParams;
             vm.requests = null;
             vm.submittedRequests = null;
             vm.isAdmin = false;
-            vm.editRequest = editRequest;
+            //vm.editRequest = editRequest;
+            vm.removeSelectedRequests = removeSelectedRequests;
 
             initView();
         }

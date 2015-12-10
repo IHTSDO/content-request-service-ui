@@ -37,7 +37,7 @@
                  </div>
             </div>
             <div>
-                <div ngf-select ngf-drag-over-class="'dragover'" ngf-drop="batchPreviewVM.uploadFile($file)" class="drop-box">
+                <div ngf-select ngf-drag-over-class="'dragover'" ngf-drop ngf-change="batchPreviewVM.uploadFile($file)" class="drop-box">
                     <span class="md md-file-upload"></span> {{'crs.batch.preview.upload.hint' | translate}}
                     <div ng-if="batchPreviewVM.uploading"  style="line-height: initial">
                         <label>{{'crs.batch.preview.upload.uploading' | translate}}... <span>{{batchPreviewVM.uploadingProgress}} %</span></label>

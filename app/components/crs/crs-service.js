@@ -62,7 +62,7 @@ angular
                 return sendCrsRequest(HTTP_METHOD.POST, resource, params, data);
             };
 
-            var sendDelete = function (resource, params) {
+            var sendDelete = function (resource, params, data) {
                 return sendCrsRequest(HTTP_METHOD.DELETE, resource, params, data);
             };
 
