@@ -1,7 +1,7 @@
 {
     "endpoint": {
         "_crs": "http://huy.ihtsdotools.org/crs/",
-        "crs": "https://dev-request.ihtsdotools.org/",
+        "crs": "https://dev-request.ihtsdotools.org/ihtsdo-crs/",
         "ims": "https://dev-ims.ihtsdotools.org/",
         "snowowl": "https://dev-term.ihtsdotools.org/snowowl/",
         "ims-api": "https://dev-term.ihtsdotools.org/ims-api/"
