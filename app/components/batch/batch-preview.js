@@ -42,7 +42,7 @@ angular
                         vm.filesTableParams.reload();
                     }
 
-                    if (!fileStatusPoller) {
+                    if (!fileStatusPoller && !$scope.$$destroyed) {
                         fileStatusPoller = $interval(loadUploadedFiles, fileStatusPollingInterval);
                     }
 

@@ -32,16 +32,30 @@ angular.module('conceptRequestServiceApp.request')
                 return null;
             };
 
-            var getRequests = function () {
+            var getRequests = function (page, pageCount, searchStr, sortFields, sortDirections) {
                 var listEndpoint = CRS_API_ENDPOINT.REQUEST_LIST;
+                var params = {
+                    offset: page,
+                    limit: pageCount,
+                    search: searchStr,
+                    sortFields: sortFields,
+                    sortDirections: sortDirections
+                };
 
-                return crsService.sendGet(listEndpoint, null, null);
+                return crsService.sendGet(listEndpoint, params, null);
             };
 
-            var getSubmittedRequests = function () {
+            var getSubmittedRequests = function (page, pageCount, searchStr, sortFields, sortDirections) {
                 var listEndpoint = CRS_API_ENDPOINT.SUBMITTED_REQUEST_LIST;
+                var params = {
+                    offset: page,
+                    limit: pageCount,
+                    search: searchStr,
+                    sortFields: sortFields,
+                    sortDirections: sortDirections
+                };
 
-                return crsService.sendGet(listEndpoint, null, null);
+                return crsService.sendGet(listEndpoint, params, null);
             };
 
             var getRequest = function (requestId) {

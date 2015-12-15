@@ -31,12 +31,9 @@
     "grunt-wiredep": "^2.0.0",
     "jit-grunt": "^0.9.1",
     "jshint-stylish": "^1.0.0",
-    "karma": "0.13.0",
     "karma-jasmine": "*",
     "karma-phantomjs-launcher": "*",
-    "time-grunt": "^1.0.0",
-    "load-grunt-tasks": "^3.1.0",
-    "phantomjs": "1.9"
+    "time-grunt": "^1.0.0"
   },
   "engines": {
     "node": ">=0.10.0"

@@ -47,12 +47,8 @@ angular
                 $location.path('requests/new/' + rs.requestType).search({inputMode: rs.inputMode});
             };
 
-            var editRequest = function (requestId, batchRequest) {
-                /*if (batchRequest !== undefined && batchRequest !== null) {
-                    return;
-                }
-*/
-                $location.path('requests/edit/' + requestId);
+            var editRequest = function (requestId) {
+                  $location.path('requests/edit/' + requestId);
             };
 
             var importBatchFile = function (response) {

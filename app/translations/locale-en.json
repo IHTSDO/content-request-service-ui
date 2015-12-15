@@ -38,6 +38,7 @@
                     "create": "Create New Request",
                     "remove": "Remove Selected Requests",
                     "requestorInternalId": "Click to open request editing view",
+                    "assign": "Assign requests to author",
                     "batchId": "Click to open batch details view",
                     "conceptFSN": "Click to open request editing view"
                 },

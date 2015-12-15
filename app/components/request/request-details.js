@@ -407,7 +407,8 @@ angular
                             changeId: null,
                             changeType: REQUEST_TYPE.CHANGE_RETIRE_DESCRIPTION.value,
                             changed: true,
-                            descriptionStatus: descriptionStatus
+                            descriptionStatus: descriptionStatus,
+                            proposedDescription: proposedTerm
                         };
                     }
 
@@ -547,7 +548,7 @@ angular
 
             var extractItemByRequestType = function (requestItems, type) {
                 for (var i = 0 ; i < requestItems.length; i++){
-                    if (requestItems[i].requestType = type.value) {
+                    if (requestItems[i].requestType === type.value) {
                         return requestItems[i];
                     }
                 }
@@ -645,7 +646,7 @@ angular
                         item.descriptionId = changedTarget.descriptionId;
                         item.currentDescription = changedTarget.term;
                         item.conceptDescription = changedTarget.term;
-                        item.proposedDescription = changedTarget.term;
+                        item.proposedDescription = definitionOfChanges.proposedDescription || changedTarget.term;
                         item.proposedCaseSignificance = changedTarget.caseSignificance;
                         item.proposedDescriptionStatus = definitionOfChanges.descriptionStatus;
                         break;
@@ -813,6 +814,7 @@ angular
                 concept.definitionOfChanges.notes = request.additionalFields.notes;
                 concept.definitionOfChanges.reference = request.additionalFields.reference;
                 concept.definitionOfChanges.reasonForChange = request.additionalFields.reasonForChange;
+                concept.definitionOfChanges.currentFsn = concept.fsn;
             };
 
             var buildConceptFromRequest = function (request) {
@@ -853,7 +855,7 @@ angular
                             concept.definitionOfChanges.proposedStatus = request.proposedStatus;
                             concept.definitionOfChanges.historyAttribute = request.historyAttribute;
                             concept.definitionOfChanges.historyAttributeValue = request.historyAttributeValue;
-                            concept.definitionOfChanges.currentFsn = concept.fsn;
+                            //concept.definitionOfChanges.currentFsn = concept.fsn;
 
                             if (request.proposedFSN && request.proposedFSN !== concept.fsn) {
                                 concept.fsn = request.proposedFSN;
@@ -904,6 +906,7 @@ angular
                 hideErrorMessage();
 
                 // validate concept
+                console.log(vm.originalConcept);
                 if (vm.originalConcept === undefined || vm.originalConcept === null) {
                     showErrorMessage('crs.request.message.error.requiredConcept');
                     return false;

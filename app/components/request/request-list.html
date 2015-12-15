@@ -15,7 +15,7 @@
                 <div class="col-md-2">
                     <div class="pull-right p-t-20">
                         <button type="button" class="btn btn-round btn-info ng-scope " title="{{'crs.request.list.tip.count' | translate}}" >
-                            {{vm.requests.length}} <div class="ripple-wrapper"></div>
+                            {{vm.tableParams.total()}} <div class="ripple-wrapper"></div>
                         </button>
                         <button type="button" class="btn btn-round btn-default " title="{{'crs.request.list.tip.create' | translate}}" ng-click="dashboard.openCreateRequestModal()">
                             <span class="md md-add"></span>
@@ -31,10 +31,10 @@
             <div class="table-responsive white">
                 <table ng-table="vm.tableParams" template-pagination="layout/template/data-table-pager.html"
                        class="table table-full table-full-small table-requests">
-                    <tr ng-repeat="request in $data" ng-click="dashboard.editRequest(request.id, request.batchRequest)" class="clickable-row" ng-class="{'row-selected': vm.selectedRequests.items[request.id] === true}">
+                    <tr ng-repeat="request in $data" ng-click="dashboard.editRequest(request.id)" class="clickable-row" ng-class="{'row-selected': vm.selectedRequests.items[request.id] === true}">
 
                         <td class="col-checkbox" header="'ng-table/headers/checkbox.html'" ng-click="$event.stopPropagation()">
-                            <input type="checkbox" class="small-checkbox" ng-model="vm.selectedRequests.items[request.id]" ui-on-drop="">
+                            <input type="checkbox" class="small-checkbox" ng-model="vm.selectedRequests.items[request.id]">
                         </td>
 
                         <td data-title="'crs.request.list.tableHeader.batchId' | translate" sortable="'batchRequest'" >
@@ -54,7 +54,7 @@
                         <!--<td data-title="'crs.request.list.tableHeader.requestType' | translate" sortable="'requestType'" >
                             {{request.requestHeader.requestType | requestType | translate}}
                         </td>-->
-                        <td data-title="'crs.request.list.tableHeader.topic' | translate" sortable="'reasonForChange'" >
+                        <td data-title="'crs.request.list.tableHeader.topic' | translate" sortable="'additionalFields.topic'" >
                             {{(request.additionalFields)?request.additionalFields.topic:''}}
                         </td>
 
@@ -74,9 +74,6 @@
                         </td>
                     </tr>
                 </table>
-                <script type="text/ng-template" id="ng-table/headers/checkbox.html">
-
-                </script>
             </div>
 
         </div>
@@ -98,7 +95,11 @@
                 <div class="col-md-2">
                     <div class="pull-right p-t-20">
                         <button type="button" class="btn btn-round btn-info ng-scope " title="{{'crs.request.list.tip.count' | translate}}" >
-                            {{vm.submittedRequests.length}} <div class="ripple-wrapper"></div>
+                            {{vm.submittedTableParams.total()}} <div class="ripple-wrapper"></div>
+                        </button>
+                        <button type="button" class="btn btn-round btn-default " title="{{'crs.request.list.tip.assign' | translate}}" ng-click="vm.assignSubmittedRequests()">
+                            <span class="md md-content-paste"></span>
+                            <div class="ripple-wrapper"></div>
                         </button>
                     </div>
                 </div>
@@ -107,6 +108,10 @@
                 <table ng-table="vm.submittedTableParams" template-pagination="layout/template/data-table-pager.html"
                        class="table table-full table-full-small table-requests">
                     <tr ng-repeat="request in $data" ng-click="dashboard.editRequest(request.id, request.batchRequest)" class="clickable-row">
+
+                        <td class="col-checkbox" header="'ng-table/headers/checkbox.html'" ng-click="$event.stopPropagation()">
+                            <input type="checkbox" class="small-checkbox" ng-model="vm.selectedSubmittedRequests.items[request.id]" >
+                        </td>
 
                         <td data-title="'crs.request.list.tableHeader.batchId' | translate" sortable="'batchRequest'" >
                             <!--<a class="tooltips-right" ng-href="#/batches/view/{{request.batchRequest}}">{{request.batchRequest}} <span translate="crs.request.list.tip.batchId"></span></a>-->
@@ -125,7 +130,7 @@
                         <!--<td data-title="'crs.request.list.tableHeader.requestType' | translate" sortable="'requestType'" >
                             {{request.requestHeader.requestType | requestType | translate}}
                         </td>-->
-                        <td data-title="'crs.request.list.tableHeader.topic' | translate" sortable="'reasonForChange'" >
+                        <td data-title="'crs.request.list.tableHeader.topic' | translate" sortable="'additionalFields.topic'" >
                             {{(request.additionalFields)?request.additionalFields.topic:''}}
                         </td>
                         <td data-title="'crs.request.list.tableHeader.status' | translate" sortable="'status'">
@@ -139,3 +144,5 @@
         </div>
     </section>
 </div>
+<script type="text/ng-template" id="ng-table/headers/checkbox.html">
+</script>
