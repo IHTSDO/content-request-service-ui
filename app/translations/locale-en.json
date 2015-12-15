@@ -23,7 +23,8 @@
                 "myRequest": "My Submitted Requests",
                 "myBatch": "My Batch Requests",
                 "createRequest": "Create New Request",
-                "importBatch": "New Batch Import"
+                "importBatch": "New Batch Import",
+                "acceptedRequest": "Accepted Requests"
             }
         },
         "request": {
@@ -31,6 +32,7 @@
                 "title": {
                     "requests": "Requests",
                     "myRequests": "My Requests",
+                    "acceptedRequests": "Accepted Requests",
                     "submittedRequests": "Submitted Requests"
                 },
                 "tip": {
@@ -44,6 +46,7 @@
                 },
                 "searchPlaceHolder": {
                     "myRequests": "Search My Requests",
+                    "acceptedRequests": "Search Accepted Requests",
                     "submittedRequests": "Search Submitted Requests"
                 },
                 "tableHeader": {
@@ -118,7 +121,10 @@
                     "button": {
                         "submit": "Submit Request",
                         "save": "Save Request",
-                        "edit": "Edit Request"
+                        "edit": "Edit Request",
+                        "accept": "Accept Request",
+                        "reject": "Reject Request",
+                        "pendingForClarification": "Pending for Clarification"
                     },
                     "label": {
                         "batchId": "Batch Id",
@@ -141,6 +147,19 @@
                     "cancel": "Cancel"
                 }
             },
+            "assignModal": {
+                "title": "Assign Requests to Authoring Task",
+                "project": {
+                    "label": "Project"
+                },
+                "assignee": {
+                    "label": "Assignee"
+                },
+                "button": {
+                    "assignRequest": "Assign Requests",
+                    "cancel": "Cancel"
+                }
+            },
             "message": {
                 "listLoading": "Loading requests...",
                 "listLoaded": "All requests loaded",
@@ -148,6 +167,9 @@
                 "requestLoaded": "Request {{requestId}} loaded",
                 "requestSaved": "Request has successfully saved",
                 "requestSubmitted": "Request has successfully submitted",
+                "requestAccepted": "Request has successfully accepted",
+                "requestRejected": "Request has successfully rejected",
+                "requestClarification": "Request has successfully pended to clarification",
 
                 "error": {
                     "requestTypeRequired": "Please select request type",

@@ -119,10 +119,6 @@ angular
                 $window.scrollTop = 0;
             };
 
-            /*var getDescriptionsForValueTypeahead = function (viewVal) {
-                if (vm.orig)
-            };*/
-
             var buildNewConceptDefinitionOfChanges = function (changeId) {
                 return {
                     changeId: (changeId)?changeId:null,
@@ -1010,6 +1006,36 @@ angular
                     });
             };
 
+            var acceptRequest = function () {
+                requestService.acceptRequest(vm.request.id)
+                    .then(function (response) {
+                        notificationService.sendMessage('crs.request.message.requestAccepted', 5000);
+                        $location.path('/dashboard').search({});
+                    }, function (e) {
+                        showErrorMessage(e.message)
+                    });
+            };
+
+            var rejectRequest = function () {
+                requestService.rejectRequest(vm.request.id)
+                    .then(function (response) {
+                        notificationService.sendMessage('crs.request.message.requestRejected', 5000);
+                        $location.path('/dashboard').search({});
+                    }, function (e) {
+                        showErrorMessage(e.message)
+                    });
+            };
+
+            var requestClarification = function () {
+                requestService.pendToClarification(vm.request.id)
+                    .then(function (response) {
+                        notificationService.sendMessage('crs.request.message.requestClarification', 5000);
+                        $location.path('/dashboard').search({});
+                    }, function (e) {
+                        showErrorMessage(e.message)
+                    });
+            };
+
             var startEditingConcept = function (conceptObj) {
                 notificationService.sendMessage('Loading concept ' + (conceptObj.name ? conceptObj.name : conceptObj.id) + ' to edit panel', 10000, null);
                 snowowlService.getFullConcept(null, null, conceptObj.id).then(function (response) {
@@ -1074,22 +1100,17 @@ angular
                 }
             });
 
-            /*$scope.$watch(function () {
-                return vm.originalConcept;
-            }, function (newVal) {
-                originalConcept = newVal;
-                //vm.concept = angular.copy(originalConcept);
-            });*/
 
             vm.cancelEditing = cancelEditing;
             vm.saveRequest = saveRequest;
+            vm.acceptRequest = acceptRequest;
+            vm.rejectRequest = rejectRequest;
+            vm.requestClarification = requestClarification;
             vm.saveAndSubmitRequest = saveAndSubmitRequest;
             vm.startEditingConcept = startEditingConcept;
             vm.setInputMode = setInputMode;
             vm.originalConcept = null;
             vm.onConceptChangedDirectly = onConceptChangedDirectly;
-            //vm.getDescriptionsForValueTypeahead = getDescriptionsForValueTypeahead;
-            //vm.onSelectConcept = onSelectConcept;
 
             $scope.panelId = 'REQUEST_DETAILS';
 

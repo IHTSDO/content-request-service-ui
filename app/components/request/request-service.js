@@ -58,6 +58,20 @@ angular.module('conceptRequestServiceApp.request')
                 return crsService.sendGet(listEndpoint, params, null);
             };
 
+            var getAcceptedRequests = function (page, pageCount, searchStr, sortFields, sortDirections) {
+                //var listEndpoint = CRS_API_ENDPOINT.ACCEPTED_REQUEST_LIST;
+                var listEndpoint = CRS_API_ENDPOINT.SUBMITTED_REQUEST_LIST;
+                var params = {
+                    offset: page,
+                    limit: pageCount,
+                    search: searchStr,
+                    sortFields: sortFields,
+                    sortDirections: sortDirections
+                };
+
+                return crsService.sendGet(listEndpoint, params, null);
+            };
+
             var getRequest = function (requestId) {
 
                 var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
@@ -73,6 +87,24 @@ angular.module('conceptRequestServiceApp.request')
                 } else {
                     return crsService.sendPut(requestEndpoint + '/' + id, null, requestDetails);
                 }
+            };
+
+            var acceptRequest = function (requestId) {
+                var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
+
+                return crsService.sendPut(requestEndpoint + '/' + requestId + '/accept', null, null);
+            };
+
+            var rejectRequest = function (requestId) {
+                var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
+
+                return crsService.sendPut(requestEndpoint + '/' + requestId + '/reject', null, null);
+            };
+
+            var pendToClarification = function (requestId) {
+                var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
+
+                return crsService.sendPut(requestEndpoint + '/' + requestId + '/pending', null, null);
             };
 
             var submitRequest = function (requestId) {
@@ -104,9 +136,13 @@ angular.module('conceptRequestServiceApp.request')
                 getRequest: getRequest,
                 getRequests: getRequests,
                 getSubmittedRequests: getSubmittedRequests,
+                getAcceptedRequests: getAcceptedRequests,
                 saveRequest: saveRequest,
                 submitRequest: submitRequest,
-                removeRequests: removeRequests
+                removeRequests: removeRequests,
+                acceptRequest: acceptRequest,
+                rejectRequest: rejectRequest,
+                pendToClarification: pendToClarification
             };
 
         }]);

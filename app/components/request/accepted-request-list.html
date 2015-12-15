@@ -1,0 +1,79 @@
+<div ng-controller="AcceptedRequestListCtrl as vm">
+    <!-- My Requests -->
+    <section ng-if="vm.isAdmin" class="tables-data">
+        <div class="card">
+            <div class="row">
+                <div class="col-md-4 no-padding">
+                    <h3 class="table-title p-20" translate="crs.request.list.title.acceptedRequests"></h3>
+                </div>
+                <div class="col-md-6">
+                    <div class="table-search">
+                        <input type="text" ng-model="vm.tableParams.filter()['search']" class="form-control"
+                               placeholder="{{'crs.request.list.searchPlaceHolder.acceptedRequests' | translate}}" autofocus/>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="pull-right p-t-20">
+                        <button type="button" class="btn btn-round btn-info ng-scope " title="{{'crs.request.list.tip.count' | translate}}" >
+                            {{vm.tableParams.total()}} <div class="ripple-wrapper"></div>
+                        </button>
+                        <button type="button" class="btn btn-round btn-default " title="{{'crs.request.list.tip.assign' | translate}}" ng-click="vm.assignSelectedRequests()">
+                            <span class="md md-content-paste"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive white">
+                <table ng-table="vm.tableParams" template-pagination="layout/template/data-table-pager.html"
+                       class="table table-full table-full-small table-requests">
+                    <tr ng-repeat="request in $data" ng-click="dashboard.editRequest(request.id)" class="clickable-row" ng-class="{'row-selected': vm.selectedRequests.items[request.id] === true}">
+
+                        <td class="col-checkbox" header="'ng-table/headers/checkbox.html'" ng-click="$event.stopPropagation()">
+                            <input type="checkbox" class="small-checkbox" ng-model="vm.selectedRequests.items[request.id]">
+                        </td>
+
+                        <td data-title="'crs.request.list.tableHeader.batchId' | translate" sortable="'batchRequest'" >
+                            <!--<a class="tooltips-right" ng-href="#/batches/view/{{request.batchRequest}}">{{request.batchRequest}} <span translate="crs.request.list.tip.batchId"></span></a>-->
+                            {{request.batchRequest}}
+                        </td>
+                        <td data-title="'crs.request.list.tableHeader.conceptFSN' | translate" sortable="'fsn'" >
+                            <!--<a class="tooltips-right" ng-href="#/requests/edit/{{request.id}}">{{request.fsn}} <span translate="crs.request.list.tip.conceptFSN"></span></a>-->
+                            {{request.fsn}}
+                        </td>
+                        <td data-title="'crs.request.list.tableHeader.ticketId' | translate" sortable="'jiraTicketId'" >
+                            {{request.jiraTicketId}}
+                        </td>
+                        <td data-title="'crs.request.list.tableHeader.lastModified' | translate" sortable="'requestHeader.requestDate'" >
+                            {{request.requestHeader.requestDate | date:'MM-dd-yyyy'}}
+                        </td>
+                        <!--<td data-title="'crs.request.list.tableHeader.requestType' | translate" sortable="'requestType'" >
+                            {{request.requestHeader.requestType | requestType | translate}}
+                        </td>-->
+                        <td data-title="'crs.request.list.tableHeader.topic' | translate" sortable="'additionalFields.topic'" >
+                            {{(request.additionalFields)?request.additionalFields.topic:''}}
+                        </td>
+
+                        <td data-title="'crs.request.list.tableHeader.validationResult' | translate" sortable="'currentValidationStatus'" style="text-align: center">
+                            <a class="tooltips-left" >
+                                <button ng-show="request.currentValidationStatus"
+                                        type="button"
+                                        class="btn btn-round btn-default lighten-2 red" >
+                                    <div class="md md-school "></div>  <span class="red">{{request.currentValidationStatus}}</span>
+                                </button>
+
+                            </a>
+                        </td>
+
+                        <td data-title="'crs.request.list.tableHeader.status' | translate" sortable="'status'">
+                            <span class="badge requestStatus {{request.requestHeader.status}}">{{request.requestHeader.status | requestStatus | translate}}</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+    </section>
+</div>
+<script type="text/ng-template" id="ng-table/headers/checkbox.html">
+</script>

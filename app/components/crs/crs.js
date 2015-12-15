@@ -7,6 +7,7 @@ angular
         REQUEST: 'api/request',
         REQUEST_LIST: 'api/request/list',
         SUBMITTED_REQUEST_LIST: 'api/request/list/submitted',
+        ACCEPTED_REQUEST_LIST: 'api/request/list/accepted',
         BATCH: 'api/batch',
         BATCH_IMPORT: 'api/batch/import',
         BATCH_UPLOAD: 'api/batch/upload',
