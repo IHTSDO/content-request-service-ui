@@ -172,7 +172,8 @@
             },
             "requestMode": {
                 "newRequest": "New Request",
-                "editRequest": "Edit Request"
+                "editRequest": "Edit Request",
+                "previewRequest": "Preview Request"
             },
             "requestStatus": {
                 "draft": "Draft",

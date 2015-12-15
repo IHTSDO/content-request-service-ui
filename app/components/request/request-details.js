@@ -23,7 +23,8 @@ angular
             var vm = this;
             var REQUEST_MODE = {
                 NEW: {value: 'new', langKey: 'crs.request.requestMode.newRequest'},
-                EDIT: {value: 'edit', langKey: 'crs.request.requestMode.editRequest'}
+                EDIT: {value: 'edit', langKey: 'crs.request.requestMode.editRequest'},
+                PREVIEW: {value: 'preview', langKey: 'crs.request.requestMode.previewRequest'}
             };
             var DESCRIPTION_TYPE = {
                 FSN: 'FSN',
@@ -82,12 +83,16 @@ angular
                 isValidPageMode = (pageMode !== undefined && pageMode !== null);
 
                 // check valid param
-                if (pageMode === REQUEST_MODE.NEW) {
-                    isValidParam = (requestService.identifyRequestType(param) !== null);
-                    isValidInputMode = (identifyInputMode(inputMode) !== null);
-                } else if (pageMode === REQUEST_MODE.EDIT) {
-                    isValidParam = (param !== undefined && param !== null);
-                    isValidInputMode = true;
+                switch(pageMode) {
+                    case  REQUEST_MODE.NEW:
+                        isValidParam = (requestService.identifyRequestType(param) !== null);
+                        isValidInputMode = (identifyInputMode(inputMode) !== null);
+                        break;
+                    case REQUEST_MODE.EDIT:
+                    case REQUEST_MODE.PREVIEW:
+                        isValidParam = (param !== undefined && param !== null);
+                        isValidInputMode = true;
+                        break;
                 }
 
                 return isValidPageMode && isValidParam && isValidInputMode;
@@ -141,56 +146,61 @@ angular
                 if (!isValid) {
                     showErrorMessage('crs.request.message.error.invalidPage');
                 } else {
-                    if (mode === REQUEST_MODE.NEW.value) {
-                        requestId = null;
-                        requestType = requestService.identifyRequestType(param);
-                        $rootScope.pageTitles = ['crs.request.details.title.new', requestType.langKey];
+                    vm.pageMode = identifyPageMode(mode);
 
-                        vm.request = {
-                            id: requestId,
-                            additionalFields: {},
-                            requestHeader: {
-                                status: REQUEST_STATUS.DRAFT.value
+                    switch (vm.pageMode) {
+                        case REQUEST_MODE.NEW:
+                            requestId = null;
+                            requestType = requestService.identifyRequestType(param);
+                            $rootScope.pageTitles = ['crs.request.details.title.new', requestType.langKey];
+
+                            vm.request = {
+                                id: requestId,
+                                additionalFields: {},
+                                requestHeader: {
+                                    status: REQUEST_STATUS.DRAFT.value
+                                }
+                            };
+
+                            if (requestType === REQUEST_TYPE.NEW_CONCEPT) {
+                                originConcept = objectService.getNewConcept();
+                                originConcept.definitionOfChanges = buildNewConceptDefinitionOfChanges();
+                                vm.originalConcept = originConcept;
+                                vm.concept = angular.copy(vm.originalConcept);
                             }
-                        };
 
-                        if (requestType === REQUEST_TYPE.NEW_CONCEPT) {
-                            originConcept = objectService.getNewConcept();
-                            originConcept.definitionOfChanges = buildNewConceptDefinitionOfChanges();
-                            vm.originalConcept = originConcept;
-                            vm.concept = angular.copy(vm.originalConcept);
-                        }
+                            vm.requestType = requestType;
+                            vm.isValidViewParams = isValid;
+                            vm.inputMode = identifyInputMode(inputMode);
+                            break;
+                        case REQUEST_MODE.EDIT:
+                        case REQUEST_MODE.PREVIEW:
+                            requestId = param;
+                            $rootScope.pageTitles = ['crs.request.details.title.edit'];
 
-                        vm.requestType = requestType;
-                        vm.isValidViewParams = isValid;
-                        vm.inputMode = identifyInputMode(inputMode);
-                    } else if (mode === REQUEST_MODE.EDIT.value) {
-                        requestId = param;
-                        $rootScope.pageTitles = ['crs.request.details.title.edit'];
+                            $rootScope.showLoading = true;
+                            vm.disableSimpleMode = true;
+                            loadRequest().then(function (requestData) {
+                                var requestType = requestService.identifyRequestType(vm.request.requestType);
+                                var inputMode = identifyInputMode(vm.request.inputMode);
 
-                        $rootScope.showLoading = true;
-                        vm.disableSimpleMode = true;
-                        loadRequest().then(function (requestData) {
-                            var requestType = requestService.identifyRequestType(vm.request.requestType);
-                            var inputMode = identifyInputMode(vm.request.inputMode);
+                                if (requestType) {
+                                    $rootScope.pageTitles.push(vm.request.id);
+                                    vm.requestType = requestType;
+                                    vm.inputMode = inputMode;
+                                    vm.isValidViewParams = isValid;
 
-                            if (requestType) {
-                                $rootScope.pageTitles.push(vm.request.id);
-                                vm.requestType = requestType;
-                                vm.inputMode = inputMode;
-                                vm.isValidViewParams = isValid;
+                                    permanentlyDisableSimpleMode = (vm.inputMode === REQUEST_INPUT_MODE.DIRECT);
+                                    vm.disableSimpleMode = (vm.inputMode === REQUEST_INPUT_MODE.DIRECT);
 
-                                permanentlyDisableSimpleMode = (vm.inputMode === REQUEST_INPUT_MODE.DIRECT);
-                                vm.disableSimpleMode = (vm.inputMode === REQUEST_INPUT_MODE.DIRECT);
-
-                                notificationService.sendMessage('crs.request.message.requestLoaded', 5000);
-                            } else {
-                                showErrorMessage('crs.request.message.error.invalidPage');
-                            }
-                        });
+                                    notificationService.sendMessage('crs.request.message.requestLoaded', 5000);
+                                } else {
+                                    showErrorMessage('crs.request.message.error.invalidPage');
+                                }
+                            });
+                            break;
                     }
 
-                    vm.pageMode = identifyPageMode(mode);
                     loadRequestMetadata();
                 }
             };

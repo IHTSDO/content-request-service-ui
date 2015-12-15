@@ -51,6 +51,10 @@ angular
                   $location.path('requests/edit/' + requestId);
             };
 
+            var previewRequest = function (requestId) {
+                  $location.path('requests/preview/' + requestId);
+            };
+
             var importBatchFile = function (response) {
                 //$route.reload();
                 notificationService.sendMessage('Successfully import ' + response.success + ' requests from batch file' , 5000);
@@ -90,6 +94,7 @@ angular
             vm.openCreateRequestModal = openCreateRequestModal;
             vm.openBatchImportModal = openBatchImportModal;
             vm.editRequest = editRequest;
+            vm.previewRequest = previewRequest;
             vm.showBatchDetails = showBatchDetails;
             initView();
         }

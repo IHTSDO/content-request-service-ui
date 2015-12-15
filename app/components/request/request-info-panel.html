@@ -64,14 +64,16 @@
 
     <div class="request-info">
         <div style="padding: 15px; width: 100%" class="classification-btn">
-            <button ng-disabled="requestVM.request.requestHeader.status !== 'DRAFT'"
+            <button ng-if="requestVM.pageMode.value === 'new' || requestVM.pageMode.value === 'edit'"
+                    ng-disabled="requestVM.request.requestHeader.status !== 'DRAFT'"
                     class="btn btn-default blue darken-1 promote" style="text-transform: none"
                     ng-click="requestVM.saveRequest()">
                 <span class="md md-save blue darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.save"></span>
             </button>
 
-            <button ng-disabled="requestVM.request.requestHeader.status !== 'DRAFT'"
+            <button ng-if="requestVM.pageMode.value === 'new' || requestVM.pageMode.value === 'edit'"
+                    ng-disabled="requestVM.request.requestHeader.status !== 'DRAFT'"
                     class="btn btn-default pink1 review" style="text-transform: none"
                     ng-click="requestVM.saveAndSubmitRequest()">
                 <span class="md md-forum pink darken-2 iconbase"></span>

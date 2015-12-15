@@ -97,22 +97,20 @@
                         <button type="button" class="btn btn-round btn-info ng-scope " title="{{'crs.request.list.tip.count' | translate}}" >
                             {{vm.submittedTableParams.total()}} <div class="ripple-wrapper"></div>
                         </button>
-                        <button type="button" class="btn btn-round btn-default " title="{{'crs.request.list.tip.assign' | translate}}" ng-click="vm.assignSubmittedRequests()">
+                        <!--<button type="button" class="btn btn-round btn-default " title="{{'crs.request.list.tip.assign' | translate}}" ng-click="vm.assignSubmittedRequests()">
                             <span class="md md-content-paste"></span>
                             <div class="ripple-wrapper"></div>
-                        </button>
+                        </button>-->
                     </div>
                 </div>
             </div>
             <div class="table-responsive white">
                 <table ng-table="vm.submittedTableParams" template-pagination="layout/template/data-table-pager.html"
                        class="table table-full table-full-small table-requests">
-                    <tr ng-repeat="request in $data" ng-click="dashboard.editRequest(request.id, request.batchRequest)" class="clickable-row">
-
-                        <td class="col-checkbox" header="'ng-table/headers/checkbox.html'" ng-click="$event.stopPropagation()">
+                    <tr ng-repeat="request in $data" ng-click="dashboard.previewRequest(request.id)" class="clickable-row">
+                        <!--<td class="col-checkbox" header="'ng-table/headers/checkbox.html'" ng-click="$event.stopPropagation()">
                             <input type="checkbox" class="small-checkbox" ng-model="vm.selectedSubmittedRequests.items[request.id]" >
-                        </td>
-
+                        </td>-->
                         <td data-title="'crs.request.list.tableHeader.batchId' | translate" sortable="'batchRequest'" >
                             <!--<a class="tooltips-right" ng-href="#/batches/view/{{request.batchRequest}}">{{request.batchRequest}} <span translate="crs.request.list.tip.batchId"></span></a>-->
                             {{request.batchRequest}}

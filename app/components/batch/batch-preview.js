@@ -28,39 +28,7 @@ angular
                 vm.uploadingFile = null;
                 vm.selectedFile = null;
 
-                loadUploadedFiles();
-            };
-
-            var loadUploadedFiles = function () {
-                //vm.uploadedFiles = null;
-
-                batchService.getUploadedFiles().then(function (files) {
-                    var tmpSelectedFile;
-                    vm.uploadedFiles = files;
-
-                    if (vm.filesTableParams) {
-                        vm.filesTableParams.reload();
-                    }
-
-                    if (!fileStatusPoller && !$scope.$$destroyed) {
-                        fileStatusPoller = $interval(loadUploadedFiles, fileStatusPollingInterval);
-                    }
-
-                    if (vm.selectedFile) {
-                        for (var i = 0; i < vm.uploadedFiles.length; i++) {
-                            if (vm.uploadedFiles[i].id === vm.selectedFile.id) {
-                                tmpSelectedFile = vm.uploadedFiles[i];
-                                break;
-                            }
-                        }
-
-                        if (vm.selectedFile.status === BATCH_IMPORT_STATUS.PROCESSING_UPLOAD.value &&
-                            tmpSelectedFile.status === BATCH_IMPORT_STATUS.COMPLETED_UPLOAD.value) {
-                            loadPreviewData(BATCH_PREVIEW_TAB.NEW_CONCEPT.value, false);
-                        }
-                        vm.selectedFile = tmpSelectedFile;
-                    }
-                });
+                //loadUploadedFiles();
             };
 
             var loadPreviewData = function (requestType, clearOnReloading) {
@@ -95,9 +63,9 @@ angular
                         vm.uploadingProgress = 0;
 
                         // reload file list
-                        loadUploadedFiles();
+                        filesTableParams.data.splice(0, 0, response.data);
+                        filesTableParams.reload();
                     }, function (error) { // error
-                        console.log(error);
                         vm.uploading = false;
                         vm.uploadingProgress = 0;
                     }, function (evt) { // uploadingProgress
@@ -126,25 +94,64 @@ angular
             var filesTableParams = new ngTableParams({
                     page: 1,
                     count: 5,
-                    sorting: {'uploaded': 'desc', name: 'asc'}
+                    sorting: {'uploadedTime': 'desc', fileName: 'asc'}
                 },
                 {
-                    filterDelay: 50,
-                    total: vm.uploadedFiles ? vm.uploadedFiles.length : 0, // length of data
+                    filterDelay: 700,
                     getData: function (params) {
-                        if (!vm.uploadedFiles || vm.uploadedFiles.length == 0) {
-                            return [];
-                        } else {
+                        var sortingObj = params.sorting();
+                        var sortFields = [], sortDirs = [];
 
-                            var searchStr = params.filter().search;
-                            var mydata = vm.uploadedFiles;
-
-                            params.total(mydata.length);
-                            mydata = params.sorting() ? $filter('orderBy')(mydata, params.orderBy()) : mydata;
-
-                            return mydata.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                        if (sortingObj) {
+                            angular.forEach(sortingObj, function (dir, field) {
+                                sortFields.push(field);
+                                sortDirs.push(dir);
+                            });
                         }
 
+                        return batchService.getUploadedFiles(params.page() - 1, params.count(), params.filter().search, sortFields, sortDirs).then(function (response) {
+                            var tmpSelectedFile,
+                                items = response.items;
+
+                            params.total(response.total);
+
+                            if (!fileStatusPoller && !$scope.$$destroyed) {
+                                fileStatusPoller = $interval(function () {
+                                    filesTableParams.reload();
+                                }, fileStatusPollingInterval);
+                            }
+
+                            if (items && items.length > 0) {
+                                if (vm.selectedFile) {
+                                    if (vm.selectedFile.removed === true) {
+                                        vm.selectedFile = null;
+                                    } else {
+                                        for (var i = 0; i < items.length; i++) {
+                                            if (items[i].id === vm.selectedFile.id) {
+                                                tmpSelectedFile = items[i];
+                                                break;
+                                            }
+                                        }
+
+                                        if (tmpSelectedFile) {
+                                            if (vm.selectedFile.status === BATCH_IMPORT_STATUS.PROCESSING_UPLOAD.value &&
+                                                tmpSelectedFile.status === BATCH_IMPORT_STATUS.COMPLETED_UPLOAD.value) {
+                                                loadPreviewData(BATCH_PREVIEW_TAB.NEW_CONCEPT.value, false);
+                                            }
+
+                                            vm.selectedFile = tmpSelectedFile;
+                                        }
+                                    }
+                                }
+
+                                return items;
+                            } else {
+                                return [];
+                            }
+                        }, function () {
+                            vm.selectedFile = null;
+                            return [];
+                        });
                     }
                 }
             );
@@ -197,19 +204,22 @@ angular
 
                     vm.selectedFile.status = BATCH_IMPORT_STATUS.PROCESSING_IMPORT.value;
                     batchService.importBatch(vm.selectedFile.id).then(function () {
-                        loadUploadedFiles();
+                        //loadUploadedFiles();
+                        filesTableParams.reload();
                     });
                 }
             };
 
             var removeSelectedRequest = function () {
                 if (vm.selectedFile &&
-                    vm.selectedFile.status === BATCH_IMPORT_STATUS.COMPLETED_UPLOAD.value) {
+                    vm.selectedFile.status === BATCH_IMPORT_STATUS.COMPLETED_UPLOAD.value ||
+                    vm.selectedFile.status === BATCH_IMPORT_STATUS.ERROR.value) {
                     if (window.confirm('Are you sure you want to remove selected file?')) {
                         notificationService.sendMessage('Deleting batch file');
                         batchService.removeBatchPreview(vm.selectedFile.id).then(function () {
-                            loadUploadedFiles();
-                            vm.selectedFile = null;
+                            //loadUploadedFiles();
+                            vm.selectedFile.removed = true;
+                            filesTableParams.reload();
                             notificationService.sendMessage('Batch file deleted', 5000);
                         });
                     }
