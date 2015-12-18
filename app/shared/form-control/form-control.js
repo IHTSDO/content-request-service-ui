@@ -5,34 +5,28 @@ angular
     ])
     .directive('formControl', [
         function () {
-            var buildConceptInputControl = function (label, name, model, required, onConceptChanged) {
-                var elementHtml = '<div class="form-control-element" ng-class="{required:' + required +'}">' +
-                    '<label translate="' + label + '" ></label>';
-
-                elementHtml += '<concept-input concept="' + model + '" ' + (onConceptChanged?'on-concept-changed="'+ onConceptChanged + '"': '') + '></concept-input>';
-
-                elementHtml += '</div>';
-
-                return elementHtml;
+            var buildConceptInputControl = function (name, model, onConceptChanged, readonlyExp) {
+                return '<concept-input concept="' + model + '" ' +
+                    (onConceptChanged?'on-concept-changed="'+ onConceptChanged + '" ': '') +
+                    ((readonlyExp)?'readonly="' + readonlyExp +'" ':'') +
+                    '></concept-input>';
             };
 
-            var buildRelationshipTypeControl = function (label, name, model, required, parentRelationships) {
-                var elementHtml = '<div class="form-control-element" ng-class="{required:' + required +'}">' +
-                    '<label translate="' + label + '" ></label>';
-
-                elementHtml += '<relationship-type-input type-concept="' + model + '" parents="' + parentRelationships+ '"></relationship-type-input>';
-
-                elementHtml += '</div>';
-
-                return elementHtml;
+            var buildRelationshipTypeControl = function (name, model, parentRelationships, readonlyExp) {
+                return '<relationship-type-input type-concept="' + model +
+                    '" parents="' + parentRelationships +
+                    ((readonlyExp)?'readonly="' + readonlyExp +'" ':'') +
+                    '"></relationship-type-input>';
             };
 
             var buildTypeaheadControl = function (attrs) {
-                var elementHtml = '<div class="form-control-element" ng-class="{required:' + (attrs.required !== undefined && attrs.required !== null) +'}">' +
-                    '<label translate="' + attrs.label + '" ></label>';
+                var readonlyExp = attrs.readonly;
+                var elementHtml = '';
 
                 elementHtml += '<input type="text" class="form-control" name="' + name +
-                    '" ng-model="' + attrs.model + '" maxlength="255" ng-disabled="' + false + '" ';
+                    '" ng-model="' + attrs.model + '" maxlength="255" ';
+
+                elementHtml += ((readonlyExp)?'readonly="' + readonlyExp +'" ':'');
 
                 for (var attrKey in attrs) {
                     if (attrs.hasOwnProperty(attrKey)) {
@@ -45,52 +39,52 @@ angular
                 }
 
                 elementHtml += '></input>';
-                elementHtml += '</div>';
 
                 return elementHtml;
             };
 
 
-            var buildTextControl = function (label, name, model, required, disabled, isMulti) {
-
-                var elementHtml = '<div class="form-control-element" ng-class="{required:' + required +'}">' +
-                    '<label translate="' + label + '" ></label>';
+            var buildTextControl = function (name, model, isMulti, readonlyExp) {
+                var elementHtml = '';
 
                 if (isMulti) {
-                    elementHtml += '<multi-input models="' + model + '"></multi-input>';
+                    elementHtml += '<multi-input models="' + model + '" ' + ((readonlyExp)?'readonly="' + readonlyExp +'"':'') + ' readonly=""></multi-input>';
                 } else {
                     elementHtml += '<input type="text" class="form-control" name="' + name +
-                        '" ng-model="' + model + '" maxlength="255" ng-disabled="' + disabled + '"></input>';
+                        '" ng-model="' + model + '" maxlength="255" ' + ((readonlyExp)?'ng-readonly="' + readonlyExp +'"':'') + ' ></input>';
                 }
 
-                elementHtml += '</div>';
-
                 return elementHtml;
             };
 
-            var buildTextAreaControl = function (label, name, model, required, disabled) {
-                var elementHtml = '<div class="form-control-element" ng-class="{required:' + required +'}">' +
-                    '<label translate="' + label + '" ></label>';
-
-                elementHtml += '<textarea  class="form-control" name="' + name +
-                    '" ng-model="' + model + '" maxlength="4000" ng-disabled="' + disabled + '"></textarea>';
-
-                elementHtml += '</div>';
-
-                return elementHtml;
+            var buildTextAreaControl = function (name, model, readonlyExp) {
+                return '<textarea  class="form-control" name="' + name +
+                    '" ng-model="' + model + '" maxlength="4000" ' + ((readonlyExp)?'ng-readonly="' + readonlyExp +'"':'') + ' ></textarea>';
             };
 
-            var buildDropdownControl = function (label, name, model, options, required, disabled) {
-                var elementHtml = '<div class="form-control-element" ng-class="{required:' + required +'}">' +
-                    '<label translate="' + label + '" ></label>';
-
-                elementHtml += '<select class="form-control" name="' + name +
+            var buildDropdownControl = function (name, model, options, readonlyExp) {
+                return '<select class="form-control" name="' + name +
                     '" ng-model="' + model +
-                    '" ng-options="' + options+ '" ng-disabled="' + disabled + '"></select>';
+                    '" ng-options="' + options+ '" ' + ((readonlyExp)?'ng-disabled="' + readonlyExp +'"':'') + ' ></select>';
+            };
 
-                elementHtml += '</div>';
+            var buildControlLabel = function (controlElement, label, required, errorModel, loadingMsg) {
+                var elBuilder = [
+                        '<div class="form-control-element" ng-class="{required:' + required +', \'form-control-error\': ' + errorModel +'}">',
+                        '<label translate="' + label + '" ></label>',
+                        '<span ng-if="' + errorModel +'" translate="{{' + errorModel+ '}}" style="color:#a94442;padding-left:5px"></span>',
+                ];
 
-                return elementHtml;
+                elBuilder.push(controlElement);
+
+                if (loadingMsg) {
+                    elBuilder.push('<div ng-if="' + loadingMsg +
+                        '" style="position:absolute;top:0;right:0;bottom:0;left:0;font-size:14px;">' +
+                        '<span style="position:absolute;right:15px;bottom:3px" class="md md-spin md-autorenew"></span></div>');
+                }
+
+                elBuilder.push('</div>');
+                return elBuilder.join('');
             };
 
             return {
@@ -98,11 +92,11 @@ angular
                 replace: true,
                 require: '^form',
                 scope: {
-                    type: '@',
+                    /*type: '@',
                     require: '@',
                     multi: '@',
                     label: '@',
-                    infoText: '@'
+                    infoText: '@'*/
                 },
                 compile: function ($element, $attrs) {
                     var controlType = $attrs.type;
@@ -111,52 +105,56 @@ angular
 
                     switch (controlType) {
                         case 'concept':
-                            elementHtml = buildConceptInputControl($attrs.label,
+                            elementHtml = buildConceptInputControl(
                                 $attrs.name,
                                 $attrs.model,
-                                ($attrs.required !== undefined && $attrs.required !== null),
-                                $attrs.onConceptChanged);
+                                $attrs.onConceptChanged,
+                                $attrs.readonly);
                             break;
                         case 'relationshipType':
-                            elementHtml = buildRelationshipTypeControl($attrs.label,
+                            elementHtml = buildRelationshipTypeControl(
                                 $attrs.name,
                                 $attrs.model,
-                                ($attrs.required !== undefined && $attrs.required !== null),
-                                $attrs.parentRelationships);
+                                $attrs.parentRelationships,
+                                $attrs.readonly);
                             break;
                         case 'typeahead':
                             elementHtml = buildTypeaheadControl($attrs);
                             break;
                         case 'select':
                         case 'dropdown':
-                            elementHtml = buildDropdownControl($attrs.label,
+                            elementHtml = buildDropdownControl(
                                 $attrs.name,
                                 $attrs.model,
                                 $attrs.options,
-                                ($attrs.required !== undefined && $attrs.required !== null));
+                                $attrs.readonly);
                             break;
                         case 'area':
                         case 'textarea':
-                            elementHtml = buildTextAreaControl($attrs.label,
+                            elementHtml = buildTextAreaControl(
                                 $attrs.name,
                                 $attrs.model,
-                                ($attrs.required !== undefined && $attrs.required !== null));
+                                $attrs.readonly);
                             break;
                         case 'text':
                         default:
-                            elementHtml = buildTextControl($attrs.label,
+                            elementHtml = buildTextControl(
                                 $attrs.name,
                                 $attrs.model,
-                                ($attrs.required !== undefined && $attrs.required !== null),
-                                false, // disabled
-                                (multi === 'true'));
+                                (multi === 'true'),
+                                $attrs.readonly);
                             break;
                     }
+
+                    elementHtml = buildControlLabel(elementHtml,
+                        $attrs.label,
+                        ($attrs.required !== undefined && $attrs.required !== null),
+                        $attrs.errorModel,
+                        $attrs.loadingMask);
 
                     $element.html(elementHtml);
 
                     return function ($scope, $element, $attrs, formCtrl) {
-
                     };
                 }
             }

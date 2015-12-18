@@ -4,17 +4,20 @@ angular.module('conceptRequestServiceApp.request')
         '$rootScope',
         '$scope',
         '$uibModalInstance',
-        'REQUEST_INPUT_MODE',
-        'REQUEST_TYPE',
-        function ($rootScope, $scope, $uibModalInstance, REQUEST_INPUT_MODE, REQUEST_TYPE) {
+        'scaService',
+        function ($rootScope, $scope, $uibModalInstance, scaService) {
             var vm = this;
 
             var initView = function () {
-                vm.requestType = null;
                 vm.msgSuccess = null;
                 vm.msgError = null;
 
-                vm.inputMode = REQUEST_INPUT_MODE.SIMPLE.value;
+                vm.loadingProjectMsg = 'crs.message.loading';
+                scaService.getProjects().then(function (response) {
+                    vm.projects = response;
+                }).finally(function () {
+                    vm.loadingProjectMsg = null;
+                });
             };
 
             var hideErrorMessage = function () {
@@ -39,56 +42,25 @@ angular.module('conceptRequestServiceApp.request')
                 $uibModalInstance.dismiss('cancel');
             };
 
-            var createNewRequest = function () {
-                if (vm.requestType !== undefined && vm.requestType !== null) {
-                    $uibModalInstance.close({requestType: vm.requestType, inputMode: vm.inputMode});
+            var assignRequests = function () {
+                //console.log(vm.selectedProject);
+                if (vm.selectedProject &&
+                    vm.assignee) {
+                    $uibModalInstance.close({
+                        project: vm.selectedProject,
+                        assignee: vm.assignee
+                    });
                 } else {
-                    showErrorMessage('crs.request.message.error.requestTypeRequired');
+
                 }
             };
 
-            var identifyInputMode = function (im) {
-                if (im !== undefined && im !== null) {
-                    for (var inputModeKey in REQUEST_INPUT_MODE) {
-                        if (REQUEST_INPUT_MODE.hasOwnProperty(inputModeKey) &&
-                            REQUEST_INPUT_MODE[inputModeKey].value === im) {
-                            return REQUEST_INPUT_MODE[inputModeKey];
-                        }
-                    }
-                }
-
-                return null;
-            };
-
-            $scope.$watch(function () {
-                return vm.inputMode;
-            }, function (newVal) {
-                var inputMode = identifyInputMode(newVal),
-                    foundSelected = false;
-                if (inputMode) {
-                    vm.requestTypes = {};
-
-                    for (var i = 0; i < inputMode.requestTypes.length; i++) {
-                        vm.requestTypes[inputMode.requestTypes[i]] = REQUEST_TYPE[inputMode.requestTypes[i]];
-                        if (vm.requestType &&
-                            REQUEST_TYPE[inputMode.requestTypes[i]].value === vm.requestType) {
-                            foundSelected = true;
-                        }
-                    }
-
-                    if (vm.requestType && !foundSelected) {
-                        vm.requestType = REQUEST_TYPE.CHANGE_RETIRE_CONCEPT.value;
-                    }
-                } else {
-                    vm.requestTypes = null;
-                    vm.requestType = null;
-                }
-            });
-
-            vm.createNewRequest = createNewRequest;
+            vm.assignRequests = assignRequests;
             vm.closeModal = closeModal;
-            vm.inputModes = REQUEST_INPUT_MODE;
-            vm.requestTypes = null;
+            vm.projects = null;
+            vm.selectedProject = null;
+            vm.assignee = null;
+            vm.loadingProjectMsg = null;
 
             initView();
         }]

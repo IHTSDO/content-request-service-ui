@@ -111,7 +111,16 @@ angular
                 getAccountInfo: getAccountInfo,
                 getUserPreferences: getUserPreferences,
                 applyUserPreferences: applyUserPreferences,
-                checkRoles: checkRoles
+                checkRoles: checkRoles,
+                getTestUsers: function () {
+                    return $http.get('http://huy.ihtsdotools.org/crs/api/test/user', {withCredentials: true})
+                        .success(function (data) {
+                            accountDetails = data;
+                        })
+                        .error(function () {
+                            accountDetails = null;
+                        });
+                }
             };
         }
     ]);

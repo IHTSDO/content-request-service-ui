@@ -1,6 +1,6 @@
 {
     "endpoint": {
-        "crs": "http://huy.ihtsdotools.org/crs/",
+        "crs": "http://local.ihtsdotools.org/crs/",
         "_crs": "https://dev-request.ihtsdotools.org/",
         "ims": "https://dev-ims.ihtsdotools.org/",
         "snowowl": "https://dev-term.ihtsdotools.org/snowowl/",
@@ -12,5 +12,8 @@
         "path": "snomed-ct/v2/",
         "edition": "MAIN",
         "release": ""
+    },
+    "sca": {
+        "path": "ihtsdo-sca/"
     }
 }

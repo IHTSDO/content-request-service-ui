@@ -113,6 +113,18 @@ angular
         NEW: {
             value: 'NEW',
             langKey: 'crs.request.requestStatus.new'
+        },
+        ACCEPTED: {
+            value: 'ACCEPTED',
+            langKey: 'crs.request.requestStatus.accepted'
+        },
+        REJECTED: {
+            value: 'REJECTED',
+            langKey: 'crs.request.requestStatus.rejected'
+        },
+        CLARIFICATION_NEEDED: {
+            value: 'CLARIFICATION_NEEDED',
+            langKey: 'crs.request.requestStatus.clarificationNeeded'
         }
     })
     .value('REQUEST_METADATA_KEY', {

@@ -2,7 +2,8 @@
     "crs": {
         "message": {
             "unknownUser": "Logged in as unknown user",
-            "profileTip":"display name will link to profile services in later updates"
+            "profileTip":"display name will link to profile services in later updates",
+            "loading": "Loading..."
         },
         "link": {
             "logout": "Logout",
@@ -124,6 +125,7 @@
                         "edit": "Edit Request",
                         "accept": "Accept Request",
                         "reject": "Reject Request",
+                        "appeal": "Appeal",
                         "pendingForClarification": "Pending for Clarification"
                     },
                     "label": {
@@ -174,9 +176,9 @@
                 "error": {
                     "requestTypeRequired": "Please select request type",
                     "invalidPage": "The page you request is not available",
-                    "requiredConcept": "Please select a concept",
-                    "requiredTopic": "Some fields are required to generate change requests. Please enter all fields that are being marked red before saving or switching input mode.",
-                    "requiredFields": "Some fields are required to generate change requests. Please enter all fields that are being marked red before saving or switching input mode."
+                    "invalidInput": "Please correct request data before saving or generating concept",
+                    "fieldRequired": "required",
+                    "fieldInvalid": "invalid"
                 }
 
             },
@@ -199,7 +201,10 @@
             },
             "requestStatus": {
                 "draft": "Draft",
-                "new": "New"
+                "new": "New",
+                "accepted": "Accepted",
+                "rejected": "Rejected",
+                "clarificationNeeded": "Clarifying"
             }
         },
         "batch": {

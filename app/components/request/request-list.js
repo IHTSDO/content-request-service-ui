@@ -89,7 +89,7 @@ angular
             var submittedTableParams = new ngTableParams({
                     page: 1,
                     count: 10,
-                    sorting: {'requestHeader.requestDate': 'desc', batchId: 'asc', id: 'asc'}
+                    sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'asc', id: 'asc'}
                 },
                 {
                     filterDelay: 700,

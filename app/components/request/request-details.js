@@ -907,23 +907,25 @@ angular
             };
 
             var validateRequest = function (ignoreGeneralFields) {
-                var field, fieldValue;
+                var field, fieldValue, error = {};
+                var fieldRequiredLangKey = 'crs.request.message.error.fieldRequired',
+                    fieldInvalidLangKey = 'crs.request.message.error.fieldInvalid';
 
-                hideErrorMessage();
+                notificationService.clear();
 
                 // validate concept
-                console.log(vm.originalConcept);
-                if (vm.originalConcept === undefined || vm.originalConcept === null) {
-                    showErrorMessage('crs.request.message.error.requiredConcept');
-                    return false;
+                if (vm.originalConcept === undefined || vm.originalConcept === null ||
+                    (vm.originalConcept && !vm.originalConcept.moduleId && !vm.originalConcept.conceptId && !vm.originalConcept.fsn)) {
+                    error.concept = fieldRequiredLangKey;
+                } else if (vm.originalConcept && !vm.originalConcept.moduleId && !vm.originalConcept.conceptId && vm.originalConcept.fsn) {
+                    error.concept = fieldInvalidLangKey;
                 }
 
                 // test general fields
                 if (!ignoreGeneralFields) {
                     if (!vm.request.additionalFields.topic ||
                         !vm.request.additionalFields.topic.trim()) {
-                        showErrorMessage('crs.request.message.error.requiredTopic');
-                        return false;
+                        error.topic = fieldRequiredLangKey;
                     }
                 }
 
@@ -938,10 +940,15 @@ angular
                             fieldValue === null ||
                             (angular.isFunction(fieldValue.trim) && fieldValue.trim() === '' ) ||
                             (angular.isObject(fieldValue) && !fieldValue.conceptId ))) {
-                            showErrorMessage('crs.request.message.error.requiredFields');
-                            return false;
+                            error[field.name] = fieldRequiredLangKey;
                         }
                     }
+                }
+
+                vm.error = error;
+                if (Object.keys(error).length > 0) {
+                    notificationService.sendError('crs.request.message.error.invalidInput');
+                    return false;
                 }
 
                 return true;
@@ -1006,8 +1013,12 @@ angular
                     });
             };
 
+            var changeRequestStatus = function (requestId, requestStatus) {
+                return requestService.changeRequestStatus(requestId, requestStatus);
+            };
+
             var acceptRequest = function () {
-                requestService.acceptRequest(vm.request.id)
+                changeRequestStatus(vm.request.id, REQUEST_STATUS.ACCEPTED)
                     .then(function (response) {
                         notificationService.sendMessage('crs.request.message.requestAccepted', 5000);
                         $location.path('/dashboard').search({});
@@ -1017,7 +1028,7 @@ angular
             };
 
             var rejectRequest = function () {
-                requestService.rejectRequest(vm.request.id)
+                changeRequestStatus(vm.request.id, REQUEST_STATUS.REJECTED)
                     .then(function (response) {
                         notificationService.sendMessage('crs.request.message.requestRejected', 5000);
                         $location.path('/dashboard').search({});
@@ -1027,7 +1038,7 @@ angular
             };
 
             var requestClarification = function () {
-                requestService.pendToClarification(vm.request.id)
+                changeRequestStatus(vm.request.id, REQUEST_STATUS.CLARIFICATION_NEEDED)
                     .then(function (response) {
                         notificationService.sendMessage('crs.request.message.requestClarification', 5000);
                         $location.path('/dashboard').search({});
@@ -1111,6 +1122,7 @@ angular
             vm.setInputMode = setInputMode;
             vm.originalConcept = null;
             vm.onConceptChangedDirectly = onConceptChangedDirectly;
+            vm.error = {};
 
             $scope.panelId = 'REQUEST_DETAILS';
 

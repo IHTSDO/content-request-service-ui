@@ -59,8 +59,7 @@ angular.module('conceptRequestServiceApp.request')
             };
 
             var getAcceptedRequests = function (page, pageCount, searchStr, sortFields, sortDirections) {
-                //var listEndpoint = CRS_API_ENDPOINT.ACCEPTED_REQUEST_LIST;
-                var listEndpoint = CRS_API_ENDPOINT.SUBMITTED_REQUEST_LIST;
+                var listEndpoint = CRS_API_ENDPOINT.ACCEPTED_REQUEST_LIST;
                 var params = {
                     offset: page,
                     limit: pageCount,
@@ -89,22 +88,13 @@ angular.module('conceptRequestServiceApp.request')
                 }
             };
 
-            var acceptRequest = function (requestId) {
+            var changeRequestStatus = function (requestId, requestStatus) {
                 var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
+                var params = {
+                    status: requestStatus.value
+                };
 
-                return crsService.sendPut(requestEndpoint + '/' + requestId + '/accept', null, null);
-            };
-
-            var rejectRequest = function (requestId) {
-                var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
-
-                return crsService.sendPut(requestEndpoint + '/' + requestId + '/reject', null, null);
-            };
-
-            var pendToClarification = function (requestId) {
-                var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
-
-                return crsService.sendPut(requestEndpoint + '/' + requestId + '/pending', null, null);
+                return crsService.sendPut(requestEndpoint + '/' + requestId + '/status', params, null);
             };
 
             var submitRequest = function (requestId) {
@@ -140,9 +130,7 @@ angular.module('conceptRequestServiceApp.request')
                 saveRequest: saveRequest,
                 submitRequest: submitRequest,
                 removeRequests: removeRequests,
-                acceptRequest: acceptRequest,
-                rejectRequest: rejectRequest,
-                pendToClarification: pendToClarification
+                changeRequestStatus: changeRequestStatus
             };
 
         }]);

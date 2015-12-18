@@ -123,6 +123,10 @@ footer {
 
 .form-control-element {
   margin-bottom: 20px;
+
+  &.form-control-error {
+    background: #f2dede;
+  }
 }
 
 .requestStatus {
@@ -133,6 +137,21 @@ footer {
 
   &.NEW {
     background-color: black;
+    color: white;
+  }
+
+  &.ACCEPTED {
+    background-color: #009cd7;
+    color: white;
+  }
+
+  &.REJECTED {
+    background-color: #5e35b1;
+    color: white;
+  }
+
+  &.CLARIFICATION_NEEDED {
+    background-color: #e91e63;
     color: white;
   }
 }

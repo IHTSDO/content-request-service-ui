@@ -1,5 +1,5 @@
 <h4 >{{requestVM.pageMode.langKey | translate}}</h4>
-<form class="form-floating">
+<form class="form-floating" form-control-readonly="requestVM.request.requestHeader.status !== 'DRAFT'">
 
     <div class="form-group" >
 
@@ -7,7 +7,8 @@
                       model="requestVM.request.additionalFields.topic"
                       label="crs.request.details.label.topic"
                       name="txtTopic"
-                      required></form-control>
+                      required
+                      error-model="requestVM.error.topic"></form-control>
 
         <form-control type="text"
                       model="requestVM.request.additionalFields.reasonForChange"

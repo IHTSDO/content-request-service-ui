@@ -118,6 +118,7 @@
 <script src="shared/form-control/multi-input.js"></script>
 <script src="shared/form-control/concept-input.js"></script>
 <script src="shared/form-control/relationship-type-input.js"></script>
+<script src="shared/form-control/form-control-readonly.js"></script>
 <script src="shared/search/search.js"></script>
 <script src="shared/search/search-panel.js"></script>
 <script src="shared/concept-information/concept-info-modal.js"></script>
@@ -129,6 +130,7 @@
 <script src="shared/snowowl/snowowl.js"></script>
 <script src="shared/snowowl/snowowl-service.js"></script>
 <script src="shared/snowowl/snowowl-metadata-service.js"></script>
+<script src="shared/snowowl/sca-service.js"></script>
 <script src="shared/concept-edit/concept-edit.js"></script>
 <script src="shared/concept-edit/typeahead-focus-directive.js"></script>
 <script src="shared/concept-edit/concept-edit-directive.js"></script>
@@ -148,10 +150,13 @@
                         .config([
                             'configServiceProvider',
                             'snowowlServiceProvider',
-                            function (configServiceProvider, snowowlServiceProvider) {
+                            'scaServiceProvider',
+                            function (configServiceProvider, snowowlServiceProvider, scaServiceProvider) {
                                 configServiceProvider.config(data);
                                 snowowlServiceProvider.config(data['snomed-ct']);
-                                snowowlServiceProvider.setSnowowlEndpoint(data.endpoint.snowowl)
+                                snowowlServiceProvider.setSnowowlEndpoint(data.endpoint.snowowl);
+                                scaServiceProvider.config(data['sca']);
+                                scaServiceProvider.setSnowowlEndpoint(data.endpoint.snowowl);
                             }]);
 
                 angular.bootstrap(document, ['conceptRequestServiceApp']);

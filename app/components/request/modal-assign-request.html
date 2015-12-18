@@ -9,9 +9,12 @@
         <div class="col-md-12">
             <form class="form-floating">
                 <div class="form-group">
-                    <form-control type="text"
-                                  model="modal.project"
-                                  label="crs.request.assignModal.project.label"></form-control>
+                    <form-control type="select"
+                                  model="modal.selectedProject"
+                                  options="project as project.title for project in modal.projects"
+                                  label="crs.request.assignModal.project.label"
+                                  name="slProjects"
+                                  loading-mask="modal.loadingProjectMsg"></form-control>
                     <form-control type="text"
                                   model="modal.assignee"
                                   label="crs.request.assignModal.assignee.label"></form-control>

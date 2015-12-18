@@ -64,6 +64,7 @@
 
     <div class="request-info">
         <div style="padding: 15px; width: 100%" class="classification-btn">
+            <!-- Edit request -->
             <button ng-if="requestVM.pageMode.value === 'new' || requestVM.pageMode.value === 'edit'"
                     ng-disabled="requestVM.request.requestHeader.status !== 'DRAFT'"
                     class="btn btn-default blue darken-1 promote" style="text-transform: none"
@@ -74,12 +75,21 @@
 
             <button ng-if="requestVM.pageMode.value === 'new' || requestVM.pageMode.value === 'edit'"
                     ng-disabled="requestVM.request.requestHeader.status !== 'DRAFT'"
-                    class="btn btn-default pink1 review" style="text-transform: none"
+                    class="btn btn-default pink1 darken-1 review" style="text-transform: none"
                     ng-click="requestVM.saveAndSubmitRequest()">
                 <span class="md md-forum pink darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.submit"></span>
             </button>
 
+            <button ng-if="requestVM.pageMode.value === 'edit'"
+                    ng-disabled="requestVM.request.requestHeader.status !== 'REJECTED'"
+                    class="btn btn-default brown darken-1 appeal" style="text-transform: none"
+                    ng-click="requestVM.saveRequest()">
+                <span class="md md-save brown darken-2 iconbase"></span>
+                <span class="button-link" translate="crs.request.details.info.button.appeal"></span>
+            </button>
+
+            <!-- Preview request -->
             <button ng-if="requestVM.pageMode.value === 'preview'"
                     ng-disabled="requestVM.request.requestHeader.status !== 'NEW'"
                     class="btn btn-default blue darken-1 promote" style="text-transform: none"
@@ -90,7 +100,7 @@
 
             <button ng-if="requestVM.pageMode.value === 'preview'"
                     ng-disabled="requestVM.request.requestHeader.status !== 'NEW'"
-                    class="btn btn-default deep-purple validate"
+                    class="btn btn-default deep-purple darken-1 validate"
                     ng-click="requestVM.rejectRequest()" style="text-transform: none">
                 <span class="md md-school deep-purple darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.reject"></span>
@@ -98,7 +108,7 @@
 
             <button ng-if="requestVM.pageMode.value === 'preview'"
                     ng-disabled="requestVM.request.requestHeader.status !== 'NEW'"
-                    class="btn btn-default pink1 review" style="text-transform: none"
+                    class="btn btn-default pink1 darken-1 review" style="text-transform: none"
                     ng-click="requestVM.requestClarification()">
                 <span class="md md-forum pink darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.pendingForClarification"></span>

@@ -1,46 +1,26 @@
 <h4 translate="crs.request.requestType.newRelationship"></h4>
-<form class="form-floating">
+<form class="form-floating" form-control-readonly="requestVM.request.requestHeader.status !== 'DRAFT'">
 
     <div class="form-group">
-        <!--<form-control type="text"
-                      model="requestVM.request.requestorInternalId"
-                      label="crs.request.details.label.requestorInternalId"
-                      name="txtRequestorInternalId"></form-control>-->
-
-        <!--<div class="form-control-element required">
-            <label >Source Concept Id</label>
-            <input class="form-control" type="text" ng-model="requestVM.request.conceptId"/>
-        </div>
-        <br/>
-
-        <form-control type="select"
-                      model="requestVM.request.relationshipType"
-                      options="relationshipType for relationshipType in requestVM.relationshipTypes"
-                      label="crs.request.details.label.relationshipType"
-                      name="slRelationshipType"
-                      required></form-control>
-
-        <div class="form-control-element required">
-            <label >Destination Concept Id</label>
-            <input class="form-control" type="text" ng-model="requestVM.request.destConceptId"/>
-        </div>
-        <br/>-->
 
         <form-control type="concept"
                       model="requestVM.originalConcept"
                       label="crs.request.details.label.sourceConcept"
-                      required></form-control>
+                      required
+                      error-model="requestVM.error.concept"></form-control>
 
         <form-control type="relationshipType"
                       model="requestVM.request.relationshipType"
                       label="crs.request.details.label.relationshipType"
                       parent-relationships="requestVM.originalConcept.relationships"
-                      required></form-control>
+                      required
+                      error-model="requestVM.error.relationshipType"></form-control>
 
         <form-control type="concept"
                       model="requestVM.request.destinationConcept"
                       label="crs.request.details.label.destinationConcept"
-                      required></form-control>
+                      required
+                      error-model="requestVM.error.destinationConcept"></form-control>
 
         <form-control type="select"
                       model="requestVM.request.characteristicType"
