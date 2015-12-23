@@ -10,7 +10,7 @@ angular
                 require: ['?^formControlReadonly', '^form'],
                 scope: {
                     concept: '=',
-                    conceptStatus: '?=',
+                    conceptStatus: '=',
                     onConceptChanged: '&'
                 },
                 template: [
@@ -25,7 +25,7 @@ angular
                     'ng-model="concept.fsn" ',
                     'ng-blur="conceptInputOnBlur($event)" ng-focus="conceptInputOnFocus($event)"',
                     'uib-typeahead="suggestion as suggestion.concept.fsn for suggestion in getConceptsForValueTypeahead($viewValue)" ',
-                    'typeahead-loading="showLoading" ',
+                    //'typeahead-loading="showLoading" ',
                     'typeahead-focus-first="false" ',
                     'typeahead-wait-ms="700" ',
                     'typeahead-on-select="selectConcept($item)" ',
@@ -52,6 +52,14 @@ angular
                         $scope.showLoading = false;
                         $scope.showError = false;
 
+                        if (!$scope.conceptStatus) {
+                            $scope.conceptStatus = {
+                                loading: false,
+                                searching: false,
+                                valid: false
+                            };
+                        }
+
                         if ($scope.concept &&
                             ($scope.concept.conceptId || $scope.concept.fsn)) {
                             dropConcept({id:$scope.concept.conceptId, fsn:$scope.concept.fsn});
@@ -59,14 +67,6 @@ angular
 
                         if (formControlReadonlyCtrl) {
                             $scope.readonly = formControlReadonlyCtrl.getReadonlyStatus();
-                        }
-
-                        if (!$scope.conceptStatus) {
-                            $scope.conceptStatus = {
-                                loading: false,
-                                searching: false,
-                                valid: false
-                            };
                         }
                     };
 
@@ -95,6 +95,7 @@ angular
 
                     var getConceptsForValueTypeahead = function (viewValue) {
                         $scope.showError = false;
+                        $scope.showLoading = true;
                         $scope.conceptStatus.loading = false;
                         $scope.conceptStatus.searching = true;
 
@@ -122,6 +123,7 @@ angular
 
                             return response;
                         }).finally(function () {
+                            $scope.showLoading = false;
                             $scope.conceptStatus.loading = false;
                             $scope.conceptStatus.searching = false;
                         });

@@ -35,6 +35,12 @@ angular.module('conceptRequestServiceApp.batch')
                 return crsService.sendGet(requestEndpoint + '/' + batchId, params);
             };
 
+            var getBatchSummary = function (batchId) {
+                var requestEndpoint = CRS_API_ENDPOINT.BATCH;
+
+                return crsService.sendGet(requestEndpoint + '/' + batchId + '/summary', null);
+            };
+
             var uploadBatchFile = function (batchFile) {
                 var batchUploadEndpoint = CRS_API_ENDPOINT.BATCH_UPLOAD;
 
@@ -83,6 +89,7 @@ angular.module('conceptRequestServiceApp.batch')
 
             return {
                 getBatch: getBatch,
+                getBatchSummary: getBatchSummary,
                 getBatches: getBatches,
                 uploadBatchFile: uploadBatchFile,
                 importBatch: importBatch,

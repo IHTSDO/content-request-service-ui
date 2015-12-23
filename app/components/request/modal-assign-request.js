@@ -5,19 +5,21 @@ angular.module('conceptRequestServiceApp.request')
         '$scope',
         '$uibModalInstance',
         'scaService',
-        function ($rootScope, $scope, $uibModalInstance, scaService) {
+        'projects',
+        'authors',
+        function ($rootScope, $scope, $uibModalInstance, scaService, projects, authors) {
             var vm = this;
 
             var initView = function () {
                 vm.msgSuccess = null;
                 vm.msgError = null;
 
-                vm.loadingProjectMsg = 'crs.message.loading';
+                /*vm.loadingProjectMsg = 'crs.message.loading';
                 scaService.getProjects().then(function (response) {
                     vm.projects = response;
                 }).finally(function () {
                     vm.loadingProjectMsg = null;
-                });
+                });*/
             };
 
             var hideErrorMessage = function () {
@@ -48,16 +50,18 @@ angular.module('conceptRequestServiceApp.request')
                     vm.assignee) {
                     $uibModalInstance.close({
                         project: vm.selectedProject,
-                        assignee: vm.assignee
+                        assignee: vm.assignee,
+                        summary: vm.summary
                     });
                 } else {
-
+                    showErrorMessage('Please enter all fields');
                 }
             };
 
             vm.assignRequests = assignRequests;
             vm.closeModal = closeModal;
-            vm.projects = null;
+            vm.projects = projects;
+            vm.authors = authors;
             vm.selectedProject = null;
             vm.assignee = null;
             vm.loadingProjectMsg = null;

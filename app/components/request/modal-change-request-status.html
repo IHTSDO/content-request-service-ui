@@ -1,0 +1,43 @@
+<div id="createRequestMModal">
+
+
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="modal.closeModal()">&times;</button>
+        <h4 class="modal-title" translate="crs.request.requestStatusModal.title.{{modal.requestStatus}}"></h4>
+    </div>
+
+    <div class="modal-body">
+        <div class="col-md-12">
+            <form class="form-floating">
+                <div class="form-group">
+                    <!--<form-control type="textangular"
+                          model="modal.appealComment"
+                          label="crs.request.appealModal.comment.label"
+                          ta-toolbar="[['bold','italics', 'ul', 'ol', 'createLink']]"></form-control>-->
+                    <form-control type="textarea"
+                          model="modal.comment"
+                          label="crs.request.requestStatusModal.comment.label"></form-control>
+                </div>
+                <br/>
+            </form>
+        </div>
+
+        <div class="col-md-12 alert alert-success" ng-show="modal.msgSuccess" translate="{{modal.msgSuccess}}"></div>
+        <div class="col-md-12 alert alert-danger" ng-show="modal.msgError" translate="{{modal.msgError}}"></div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="col-md-6">
+            <button type="button" ng-disabled="disabled" class="col-md-12 btn btn-info no-margin "
+                    ng-click="modal.changeRequestStatus()" translate="crs.request.requestStatusModal.button.confirm">
+            </button>
+        </div>
+        <div class="col-md-6">
+            <button type="button" ng-disabled="disabled" class=" col-md-12 btn btn-danger no-margin "
+                    ng-click="modal.closeModal()" translate="crs.request.requestStatusModal.button.cancel">
+            </button>
+        </div>
+    </div>
+
+</div>
+

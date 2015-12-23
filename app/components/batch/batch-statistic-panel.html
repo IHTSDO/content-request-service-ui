@@ -1,0 +1,75 @@
+<div id="request-info-panel">
+    <div class="row">
+        <div class="col col-md-12">
+            <h4 >Statistic</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-md-12">
+
+            <ul class="timeline batch-statistic">
+                <li>
+                    <div class="timeline-badge">
+                        <i class="md md-send NEW"></i>
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.batch.details.statistic.label.submitted"></label>
+                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['NEW'] || '0'):'0'}}</span>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="timeline-badge">
+                        <i class="md md-done ACCEPTED"></i>
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.batch.details.statistic.label.accepted"></label>
+                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['ACCEPTED'] || '0'):'0'}}</span>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="timeline-badge">
+                        <i class="md md-dnd-forwardslash REJECTED"></i>
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.batch.details.statistic.label.rejected"></label>
+                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['REJECTED'] || '0'):'0'}}</span>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="timeline-badge">
+                        <i class="md md-person AUTHORING"></i>
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.batch.details.statistic.label.underAuthoring"></label>
+                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['AUTHORING'] || '0'):'0'}}</span>
+                        </div>
+                    </div>
+                </li>
+
+
+                <li>
+                    <div class="timeline-badge">
+                        <i class="md md-done-all APPROVED"></i>
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.batch.details.statistic.label.approved"></label>
+                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['APPROVED'] || '0'):'0'}}</span>
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</div>

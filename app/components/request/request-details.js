@@ -8,6 +8,7 @@ angular
         '$routeParams',
         '$location',
         '$anchorScroll',
+        '$uibModal',
         'requestService',
         'notificationService',
         'requestMetadataService',
@@ -19,7 +20,7 @@ angular
         'CONCEPT_EDIT_EVENT',
         'REQUEST_STATUS',
         'REQUEST_INPUT_MODE',
-        function ($scope, $rootScope, $routeParams, $location, $anchorScroll, requestService, notificationService, requestMetadataService, objectService, snowowlService, snowowlMetadataService, REQUEST_METADATA_KEY, REQUEST_TYPE, CONCEPT_EDIT_EVENT, REQUEST_STATUS, REQUEST_INPUT_MODE) {
+        function ($scope, $rootScope, $routeParams, $location, $anchorScroll, $uibModal, requestService, notificationService, requestMetadataService, objectService, snowowlService, snowowlMetadataService, REQUEST_METADATA_KEY, REQUEST_TYPE, CONCEPT_EDIT_EVENT, REQUEST_STATUS, REQUEST_INPUT_MODE) {
             var vm = this;
             var REQUEST_MODE = {
                 NEW: {value: 'new', langKey: 'crs.request.requestMode.newRequest'},
@@ -174,7 +175,6 @@ angular
                             requestId = param;
                             $rootScope.pageTitles = ['crs.request.details.title.edit'];
 
-                            $rootScope.showLoading = true;
                             vm.disableSimpleMode = true;
                             loadRequest().then(function (requestData) {
                                 var requestType = requestService.identifyRequestType(vm.request.requestType);
@@ -962,6 +962,9 @@ angular
                     return;
                 }
 
+                // show loading mask
+                $rootScope.showAppLoading = true;
+
                 //console.log(vm.request);
                 if (vm.inputMode === REQUEST_INPUT_MODE.SIMPLE) {
                     vm.concept = buildConceptFromRequest(vm.request);
@@ -978,6 +981,9 @@ angular
                         $location.path('/dashboard').search({});
                     }, function (e) {
                         showErrorMessage(e.message)
+                    })
+                    .finally(function () {
+                        $rootScope.showAppLoading = false;
                     });
             };
 
@@ -988,6 +994,9 @@ angular
                 if (!validateRequest()) {
                     return;
                 }
+
+                // show loading mask
+                $rootScope.showAppLoading = true;
 
                 //console.log(vm.request);
                 if (vm.inputMode === REQUEST_INPUT_MODE.SIMPLE) {
@@ -1010,11 +1019,20 @@ angular
                         $location.path('/dashboard').search({});
                     }, function (e) {
                         showErrorMessage(e.message)
+                    })
+                    .finally(function () {
+                        $rootScope.showAppLoading = false;
                     });
             };
 
-            var changeRequestStatus = function (requestId, requestStatus) {
-                return requestService.changeRequestStatus(requestId, requestStatus);
+            var changeRequestStatus = function (requestId, requestStatus, data) {
+                // show loading mask
+                $rootScope.showAppLoading = true;
+
+                return requestService.changeRequestStatus(requestId, requestStatus, data)
+                    .finally(function () {
+                        $rootScope.showAppLoading = false;
+                    });
             };
 
             var acceptRequest = function () {
@@ -1028,13 +1046,19 @@ angular
             };
 
             var rejectRequest = function () {
-                changeRequestStatus(vm.request.id, REQUEST_STATUS.REJECTED)
-                    .then(function (response) {
-                        notificationService.sendMessage('crs.request.message.requestRejected', 5000);
-                        $location.path('/dashboard').search({});
-                    }, function (e) {
-                        showErrorMessage(e.message)
-                    });
+                var modalInstance = openStatusCommentModal('reject');
+
+                modalInstance.result.then(function (rejectComment) {
+                    changeRequestStatus(vm.request.id, REQUEST_STATUS.REJECTED, {reason:rejectComment})
+                        .then(function (response) {
+                            notificationService.sendMessage('crs.request.message.requestRejected', 5000);
+                            $location.path('/dashboard').search({});
+                        }, function (e) {
+                            showErrorMessage(e.message)
+                        });
+                });
+
+
             };
 
             var requestClarification = function () {
@@ -1045,6 +1069,20 @@ angular
                     }, function (e) {
                         showErrorMessage(e.message)
                     });
+            };
+
+            var appealRequest = function () {
+                var modalInstance = openStatusCommentModal('appeal');
+
+                modalInstance.result.then(function (appealComment) {
+                    changeRequestStatus(vm.request.id, REQUEST_STATUS.APPEAL, {reason:appealComment})
+                        .then(function (response) {
+                            notificationService.sendMessage('crs.request.message.requestAppealed', 5000);
+                            $location.path('/dashboard').search({});
+                        }, function (e) {
+                            showErrorMessage(e.message)
+                        });
+                });
             };
 
             var startEditingConcept = function (conceptObj) {
@@ -1086,6 +1124,19 @@ angular
                 }
             };
 
+            var openStatusCommentModal = function (requestStatus) {
+                return $uibModal.open({
+                    templateUrl: 'components/request/modal-change-request-status.html',
+                    controller: 'ModalChangeRequestStatusCtrl as modal',
+                    resolve: {
+                        requestStatus: function () {
+                            return requestStatus;
+                        }
+                    }
+                });
+            };
+
+
             $scope.$on(CONCEPT_EDIT_EVENT.STOP_EDIT_CONCEPT, function (event, data) {
                 if (!data || !data.concept) {
                     console.error('Cannot remove concept: concept must be supplied');
@@ -1122,7 +1173,13 @@ angular
             vm.setInputMode = setInputMode;
             vm.originalConcept = null;
             vm.onConceptChangedDirectly = onConceptChangedDirectly;
+            vm.appealRequest = appealRequest;
             vm.error = {};
+            vm.conceptStatus = {
+                loading: false,
+                searching: false,
+                valid: true
+            };
 
             $scope.panelId = 'REQUEST_DETAILS';
 

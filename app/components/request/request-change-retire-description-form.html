@@ -7,7 +7,9 @@
                       model="requestVM.originalConcept"
                       label="crs.request.details.label.concept"
                       required
-                      error-model="requestVM.error.concept"></form-control>
+                      error-model="requestVM.error.concept"
+                      concept-status="requestVM.conceptStatus"></form-control>
+
         <form-control type="select"
                       model="requestVM.request.descriptionId"
                       options="suggestion.descriptionId as suggestion.term for suggestion in requestVM.originalConcept.descriptions"
@@ -15,7 +17,7 @@
                       name="slCurrentDescription"
                       required
                       error-model="requestVM.error.descriptionId"
-                      loading-mask="requestVM.loadingDescription"></form-control>
+                      loading-mask="requestVM.conceptStatus.loading || requestVM.conceptStatus.searching"></form-control>
 
         <form-control type="text"
                       model="requestVM.request.proposedDescription"

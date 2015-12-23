@@ -125,6 +125,10 @@ angular
         CLARIFICATION_NEEDED: {
             value: 'CLARIFICATION_NEEDED',
             langKey: 'crs.request.requestStatus.clarificationNeeded'
+        },
+        APPEAL: {
+            value: 'APPEAL',
+            langKey: 'crs.request.requestStatus.appeal'
         }
     })
     .value('REQUEST_METADATA_KEY', {

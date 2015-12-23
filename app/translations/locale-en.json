@@ -61,6 +61,8 @@
                     "conceptFSN": "Concept",
                     "reasonForChange": "Reason for Change",
                     "topic": "Topic",
+                    "assignee": "Assignee",
+                    "project": "Project",
                     "validationResult": "Validation Result"
                 }
             },
@@ -104,7 +106,8 @@
                     "historyAttribute": "History Attribute",
                     "proposedCaseSignificance": "New Case Significance",
                     "descriptionStatus": "New Description Status",
-                    "relationshipStatus": "Relationship Status"
+                    "relationshipStatus": "Relationship Status",
+                    "isPt": "Description is PT"
 
                 },
                 "tip": {
@@ -125,7 +128,7 @@
                         "edit": "Edit Request",
                         "accept": "Accept Request",
                         "reject": "Reject Request",
-                        "appeal": "Appeal",
+                        "appeal": "Appeal Rejection",
                         "pendingForClarification": "Pending for Clarification"
                     },
                     "label": {
@@ -157,9 +160,30 @@
                 "assignee": {
                     "label": "Assignee"
                 },
+                "summary": {
+                    "label": "Summary"
+                },
                 "button": {
                     "assignRequest": "Assign Requests",
                     "cancel": "Cancel"
+                }
+            },
+            "requestStatusModal": {
+                "title": {
+                    "reject": "Reject Request",
+                    "appeal": "Appeal Request Rejection"
+                },
+                "comment": {
+                    "label": "Reason"
+                },
+                "button": {
+                    "confirm": "Confirm",
+                    "cancel": "Cancel"
+                },
+                "message": {
+                    "error": {
+                        "commentRequired": "Please provide reason"
+                    }
                 }
             },
             "message": {
@@ -171,6 +195,7 @@
                 "requestSubmitted": "Request has successfully submitted",
                 "requestAccepted": "Request has successfully accepted",
                 "requestRejected": "Request has successfully rejected",
+                "requestAppealed": "Request has successfully appealed",
                 "requestClarification": "Request has successfully pended to clarification",
 
                 "error": {
@@ -204,7 +229,8 @@
                 "new": "New",
                 "accepted": "Accepted",
                 "rejected": "Rejected",
-                "clarificationNeeded": "Clarifying"
+                "clarificationNeeded": "Clarifying",
+                "appeal": "In Appeal"
             }
         },
         "batch": {
@@ -223,6 +249,25 @@
                     "lastModified": "Last Modified",
 
                     "status": "Status"
+                }
+            },
+            "details": {
+                "info": {
+                    "label": {
+                        "batchId": "BatchId",
+                        "fileName": "Batch File",
+                        "importedTime": "Imported on",
+                        "jiraTicket":"Jira Ticket"
+                    }
+                },
+                "statistic": {
+                    "label": {
+                        "submitted": "Submitted Requests",
+                        "accepted": "Accepted Requests",
+                        "rejected": "Rejected Requests",
+                        "underAuthoring": "Under Authoring",
+                        "approved": "Approved Requests"
+                    }
                 }
             },
             "message": {

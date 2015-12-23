@@ -88,13 +88,17 @@ angular.module('conceptRequestServiceApp.request')
                 }
             };
 
-            var changeRequestStatus = function (requestId, requestStatus) {
+            var changeRequestStatus = function (requestId, requestStatus, data) {
                 var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
                 var params = {
                     status: requestStatus.value
                 };
 
-                return crsService.sendPut(requestEndpoint + '/' + requestId + '/status', params, null);
+                if (!data) {
+                    data = {};
+                }
+
+                return crsService.sendPut(requestEndpoint + '/' + requestId + '/status', params, data);
             };
 
             var submitRequest = function (requestId) {
@@ -119,6 +123,23 @@ angular.module('conceptRequestServiceApp.request')
                 }
             };
 
+            var assignRequests = function (requestList, projectKey, assigneeKey, summary) {
+                var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
+                var params;
+
+                if (requestList !== undefined &&
+                    requestList !== null) {
+                    params = {
+                        requests: requestList,
+                        project: projectKey,
+                        assignee: assigneeKey,
+                        summary: summary
+                    };
+
+                    return crsService.sendPut(requestEndpoint + '/assign', params, null);
+                }
+            };
+
 
             return {
                 identifyRequestType: identifyRequestType,
@@ -130,6 +151,7 @@ angular.module('conceptRequestServiceApp.request')
                 saveRequest: saveRequest,
                 submitRequest: submitRequest,
                 removeRequests: removeRequests,
+                assignRequests: assignRequests,
                 changeRequestStatus: changeRequestStatus
             };
 

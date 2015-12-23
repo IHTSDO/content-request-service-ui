@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="bower_components/ng-table/dist/ng-table.min.css" />
     <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
     <link rel="stylesheet" href="bower_components/angular-ui-tree/dist/angular-ui-tree.min.css" />
+    <link rel="stylesheet" href="bower_components/textAngular/dist/textAngular.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -43,7 +44,7 @@
     <div ng-include="'layout/footer/footer.html'"></div>
 </footer>
 <div ng-show="showSplash" ng-include="'layout/splash/splash.html'"></div>
-<div ng-show="true" class="loadingMask"></div>
+<div ng-show="showAppLoading" class="loadingMask"></div>
 
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -79,6 +80,15 @@
 <script src="bower_components/angular-ui-tree/dist/angular-ui-tree.js"></script>
 <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
 <script src="bower_components/ng-file-upload-shim/ng-file-upload-shim.js"></script>
+<script src="bower_components/rangy/rangy-core.js"></script>
+<script src="bower_components/rangy/rangy-classapplier.js"></script>
+<script src="bower_components/rangy/rangy-highlighter.js"></script>
+<script src="bower_components/rangy/rangy-selectionsaverestore.js"></script>
+<script src="bower_components/rangy/rangy-serializer.js"></script>
+<script src="bower_components/rangy/rangy-textrange.js"></script>
+<script src="bower_components/textAngular/dist/textAngular.js"></script>
+<script src="bower_components/textAngular/dist/textAngular-sanitize.js"></script>
+<script src="bower_components/textAngular/dist/textAngularSetup.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
@@ -94,6 +104,7 @@
 <script src="components/user-preferences/user-preferences.js"></script>
 <script src="components/request/modal-create-request.js"></script>
 <script src="components/request/modal-assign-request.js"></script>
+<script src="components/request/modal-change-request-status.js"></script>
 <script src="components/request/request-service.js"></script>
 <script src="components/request/request-metadata-service.js"></script>
 <script src="components/request/request-list.js"></script>
@@ -117,6 +128,8 @@
 <script src="shared/form-control/form-control.js"></script>
 <script src="shared/form-control/multi-input.js"></script>
 <script src="shared/form-control/concept-input.js"></script>
+<script src="shared/form-control/author-input.js"></script>
+<script src="shared/form-control/author-input-focus.js"></script>
 <script src="shared/form-control/relationship-type-input.js"></script>
 <script src="shared/form-control/form-control-readonly.js"></script>
 <script src="shared/search/search.js"></script>
@@ -131,6 +144,8 @@
 <script src="shared/snowowl/snowowl-service.js"></script>
 <script src="shared/snowowl/snowowl-metadata-service.js"></script>
 <script src="shared/snowowl/sca-service.js"></script>
+<script src="shared/jira/jira.js"></script>
+<script src="shared/jira/jira-service.js"></script>
 <script src="shared/concept-edit/concept-edit.js"></script>
 <script src="shared/concept-edit/typeahead-focus-directive.js"></script>
 <script src="shared/concept-edit/concept-edit-directive.js"></script>
@@ -151,12 +166,18 @@
                             'configServiceProvider',
                             'snowowlServiceProvider',
                             'scaServiceProvider',
-                            function (configServiceProvider, snowowlServiceProvider, scaServiceProvider) {
+                            'jiraServiceProvider',
+                            function (configServiceProvider, snowowlServiceProvider, scaServiceProvider, jiraServiceProvider) {
                                 configServiceProvider.config(data);
+
                                 snowowlServiceProvider.config(data['snomed-ct']);
                                 snowowlServiceProvider.setSnowowlEndpoint(data.endpoint.snowowl);
+
                                 scaServiceProvider.config(data['sca']);
                                 scaServiceProvider.setSnowowlEndpoint(data.endpoint.snowowl);
+
+                                jiraServiceProvider.config(data['jira']);
+                                jiraServiceProvider.setJiraEndpoint(data.endpoint.jira);
                             }]);
 
                 angular.bootstrap(document, ['conceptRequestServiceApp']);

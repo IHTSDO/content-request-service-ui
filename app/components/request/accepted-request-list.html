@@ -17,7 +17,7 @@
                         <button type="button" class="btn btn-round btn-info ng-scope " title="{{'crs.request.list.tip.count' | translate}}" >
                             {{vm.tableParams.total()}} <div class="ripple-wrapper"></div>
                         </button>
-                        <button type="button" class="btn btn-round btn-default " title="{{'crs.request.list.tip.assign' | translate}}" ng-click="vm.assignSelectedRequests()">
+                        <button ng-disabled="vm.loadingProjects || vm.loadingAuthors" type="button" class="btn btn-round btn-default " title="{{'crs.request.list.tip.assign' | translate}}" ng-click="vm.assignSelectedRequests()">
                             <span class="md md-content-paste"></span>
                             <div class="ripple-wrapper"></div>
                         </button>
@@ -54,7 +54,16 @@
                             {{(request.additionalFields)?request.additionalFields.topic:''}}
                         </td>
 
-                        <td data-title="'crs.request.list.tableHeader.validationResult' | translate" sortable="'currentValidationStatus'" style="text-align: center">
+                        <td data-title="'crs.request.list.tableHeader.project' | translate" sortable="'requestHeader.assignedProject'" style="min-width: 150px" >
+                            {{request.requestHeader.assignedProject}}
+                        </td>
+
+                        <td data-title="'crs.request.list.tableHeader.assignee' | translate" sortable="'requestHeader.assignee'" style="min-width: 150px">
+                            <span ng-if="vm.loadingAuthors" class="md md-spin md-autorenew"></span>
+                            <div ng-if="!vm.loadingAuthors" ng-bind-html="vm.getAuthorName(request.requestHeader.assignee)"></div>
+                        </td>
+
+                        <!--<td data-title="'crs.request.list.tableHeader.validationResult' | translate" sortable="'currentValidationStatus'" style="text-align: center">
                             <a class="tooltips-left" >
                                 <button ng-show="request.currentValidationStatus"
                                         type="button"
@@ -63,7 +72,7 @@
                                 </button>
 
                             </a>
-                        </td>
+                        </td>-->
 
                         <td data-title="'crs.request.list.tableHeader.status' | translate" sortable="'requestHeader.status'">
                             <span class="badge requestStatus {{request.requestHeader.status}}">{{request.requestHeader.status | requestStatus | translate}}</span>

@@ -18,6 +18,15 @@ angular
 
             var initView = function () {
                 $rootScope.pageTitles = ['Batch Details', $routeParams.batchId];
+
+                loadBatchSummary($routeParams.batchId);
+            };
+
+            var loadBatchSummary = function (batchId) {
+                batchService.getBatchSummary(batchId).then(function (response) {
+                    vm.batchSummary = response;
+                    console.log(vm.batchSummary);
+                });
             };
 
             var editRequest = function (requestId) {
@@ -45,10 +54,10 @@ angular
                         return batchService.getBatch($routeParams.batchId, params.page() - 1, params.count(), params.filter().search, sortFields, sortDirs).then(function (requests) {
                             params.total(requests.total);
                             if (requests.items && requests.items.length > 0) {
-                                if (!vm.batchHeader) {
+                                /*if (!vm.batchHeader) {
                                     vm.batchHeader = requests.items[0].requestHeader;
                                     vm.batchHeader.batchRequest = requests.items[0].batchRequest;
-                                }
+                                }*/
 
                                 return requests.items;
                             } else {
@@ -63,7 +72,7 @@ angular
 
 
             vm.tableParams = requestTableParams;
-            vm.batchHeader = null;
+            vm.batchSummary = null;
             vm.editRequest = editRequest;
 
             initView();

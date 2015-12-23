@@ -25,6 +25,7 @@ angular
         'ang-drag-drop',
         'ui.tree',
         'ngFileUpload',
+        'textAngular',
 
         // layouts
 
@@ -46,10 +47,15 @@ angular
         'conceptRequestServiceApp.taxonomy',
         'conceptRequestServiceApp.savedList',
         'conceptRequestServiceApp.snowowl',
+        'conceptRequestServiceApp.jira',
         'conceptRequestServiceApp.conceptEdit',
         'conceptRequestServiceApp.objectService'
     ])
-    .config(function ($routeProvider, $modalProvider, $translateProvider, cfpLoadingBarProvider) {
+    .config(function ($rootScopeProvider, $routeProvider, $modalProvider, $translateProvider, cfpLoadingBarProvider) {
+        // up the digest limit to account for extremely long depth of SNOMEDCT trees leading to spurious errors
+        // this is not an ideal solution, but this is a known edge-case until Angular 2.0 (see https://github.com/angular/angular.js/issues/6440)
+        $rootScopeProvider.digestTtl(20);
+
         // set the default redirect/route
         $routeProvider
             .otherwise({
@@ -84,7 +90,7 @@ angular
         'accountService',
         function ($rootScope, $location, accountService) {
 
-            $rootScope.showLoading = false;
+            $rootScope.showAppLoading = false;
             $rootScope.showSplash = true;
             $rootScope.pageTitles = [];
 

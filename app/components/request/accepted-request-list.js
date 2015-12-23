@@ -4,14 +4,16 @@ angular
     .module('conceptRequestServiceApp.request')
     .controller('AcceptedRequestListCtrl', [
         '$filter',
+        '$sce',
         '$uibModal',
         'ngTableParams',
         'requestService',
         'notificationService',
         'accountService',
+        'scaService',
+        'jiraService',
         'CRS_ROLE',
-        'REQUEST_STATUS',
-        function ($filter, $uibModal, ngTableParams, requestService, notificationService, accountService, CRS_ROLE, REQUEST_STATUS) {
+        function ($filter, $sce, $uibModal, ngTableParams, requestService, notificationService, accountService, scaService, jiraService, CRS_ROLE) {
             var vm = this;
 
             var initView = function () {
@@ -21,22 +23,81 @@ angular
                 accountService.checkRoles([CRS_ROLE.ADMINISTRATOR, CRS_ROLE.MANAGER]).then(function (rs) {
                     vm.isAdmin = rs;
                 });
+
+                // load projects
+                loadProjects();
+
+                // load authors
+                loadAuthors();
             };
 
-            var openAssignRequestModal = function () {
+            var loadProjects = function () {
+                vm.loadingProjects = true;
+                scaService.getProjects().then(function (response) {
+                    vm.projects = response;
+                }).finally(function () {
+                    vm.loadingProjects = false;
+                });
+            };
+
+            var loadAuthors = function () {
+                vm.loadingAuthors = true;
+                return jiraService.getAuthorUsers(0, 50, true, []).then(function (users) {
+                    vm.authors = users;
+
+                    return users;
+                }).finally(function () {
+                    vm.loadingAuthors = false;
+                });
+            };
+
+            var getAuthorName = function (authorKey) {
+                if (!vm.authors || vm.authors.length === 0) {
+                    return authorKey;
+                } else {
+                    for (var i = 0; i < vm.authors.length; i++) {
+                        if (vm.authors[i].key === authorKey) {
+                            //return vm.authors[i].displayName;
+                            return $sce.trustAsHtml([
+                                '<img src="' + vm.authors[i].avatarUrls['16x16'] + '"/>',
+                                '<span style="vertical-align:middle">&nbsp;' + vm.authors[i].displayName + '</span>'
+                            ].join(''));
+                        }
+                    }
+                }
+            };
+
+            var openAssignRequestModal = function (selectedRequestIds, defaultSummary) {
                 var modalInstance = $uibModal.open({
                     templateUrl: 'components/request/modal-assign-request.html',
-                    controller: 'ModalAssignRequestCtrl as modal'
+                    controller: 'ModalAssignRequestCtrl as modal',
+                    resolve: {
+                        authors: function () {
+                            return vm.authors
+                        },
+                        projects: function () {
+                            return vm.projects;
+                        },
+                        defaultSummary: function () {
+                            return defaultSummary;
+                        }
+                    }
                 });
 
                 modalInstance.result.then(function (rs) {
-                    console.log(rs);
+                    notificationService.sendMessage('Assigning requests');
+                    requestService.assignRequests(selectedRequestIds, rs.project.key, rs.assignee.key, rs.summary).then(function () {
+                        notificationService.sendMessage('Request assigned successfully', 5000);
+                        vm.selectedRequests = [];
+                        requestTableParams.reload();
+                    });
                 });
             };
 
             var assignSelectedRequests = function () {
                 var selectedRequests = vm.selectedRequests,
-                    selectedRequestIds = [];
+                    selectedRequestIds = [],
+                    defaultSummary;
                 if (selectedRequests &&
                     selectedRequests.items) {
                     angular.forEach(selectedRequests.items, function (isSelected, requestId) {
@@ -46,7 +107,11 @@ angular
                     });
 
                     if (selectedRequestIds.length > 0) {
-                        openAssignRequestModal();
+                        /*if (selectedRequestIds.length === 1) {
+
+                        }*/
+                        console.log(requestTableParams);
+                        openAssignRequestModal(selectedRequestIds, defaultSummary);
                     }
                 }
             };
@@ -86,7 +151,12 @@ angular
 
             vm.tableParams = requestTableParams;
             vm.assignSelectedRequests = assignSelectedRequests;
+            vm.getAuthorName = getAuthorName;
             vm.isAdmin = false;
+            vm.loadingProjects = true;
+            vm.loadingAuthors = true;
+            vm.projects = [];
+            vm.authors = [];
 
             initView();
         }

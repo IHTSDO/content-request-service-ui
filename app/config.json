@@ -3,7 +3,10 @@
         "crs": "http://local.ihtsdotools.org/crs/",
         "_crs": "https://dev-request.ihtsdotools.org/",
         "ims": "https://dev-ims.ihtsdotools.org/",
-        "snowowl": "https://dev-term.ihtsdotools.org/snowowl/",
+        "_snowowl": "https://dev-term.ihtsdotools.org/snowowl/",
+        "snowowl": "http://local.ihtsdotools.org/snowowl/",
+        "jira": "https://dev-jira.ihtsdotools.org/",
+        "_jira": "http://local.ihtsdotools.org/jira/",
         "ims-api": "https://dev-term.ihtsdotools.org/ims-api/"
     },
     "xhrTimeout": 50000,
@@ -15,5 +18,12 @@
     },
     "sca": {
         "path": "ihtsdo-sca/"
+    },
+    "jira": {
+        "rest-api": {
+            "path": "rest/api/",
+            "version": "2"
+        },
+        "author-group": "ihtsdo-sca-author"
     }
 }

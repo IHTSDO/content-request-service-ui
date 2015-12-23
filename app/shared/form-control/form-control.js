@@ -5,11 +5,21 @@ angular
     ])
     .directive('formControl', [
         function () {
-            var buildConceptInputControl = function (name, model, onConceptChanged, readonlyExp) {
-                return '<concept-input concept="' + model + '" ' +
-                    (onConceptChanged?'on-concept-changed="'+ onConceptChanged + '" ': '') +
-                    ((readonlyExp)?'readonly="' + readonlyExp +'" ':'') +
-                    '></concept-input>';
+            var buildConceptInputControl = function (name, model, onConceptChanged, readonlyExp, conceptStatusExp) {
+                return '<concept-input concept="' + model + '"' +
+                    (onConceptChanged?' on-concept-changed="'+ onConceptChanged + '"': '') +
+                    ((readonlyExp)?' readonly="' + readonlyExp +'" ':'') +
+                    ((conceptStatusExp)?' concept-status="' + conceptStatusExp +'"':'') +
+                    ' ></concept-input>';
+            };
+
+            var buildAuthorInputControl = function (name, model, authorList, onConceptChanged, readonlyExp, authorStatusExp) {
+                return '<author-input author="' + model + '"' +
+                    (onConceptChanged?' on-author-changed="'+ onConceptChanged + '"': '') +
+                    ((readonlyExp)?' readonly="' + readonlyExp +'" ':'') +
+                    ((authorStatusExp)?' author-status="' + authorStatusExp +'"':'') +
+                    ((authorList)?' author-list="' + authorList +'"':'') +
+                    ' ></author-input>';
             };
 
             var buildRelationshipTypeControl = function (name, model, parentRelationships, readonlyExp) {
@@ -23,8 +33,8 @@ angular
                 var readonlyExp = attrs.readonly;
                 var elementHtml = '';
 
-                elementHtml += '<input type="text" class="form-control" name="' + name +
-                    '" ng-model="' + attrs.model + '" maxlength="255" ';
+                elementHtml += '<input type="text" class="form-control"'+
+                    ' ng-model="' + attrs.model + '" maxlength="255" ';
 
                 elementHtml += ((readonlyExp)?'readonly="' + readonlyExp +'" ':'');
 
@@ -39,6 +49,28 @@ angular
                 }
 
                 elementHtml += '></input>';
+
+                return elementHtml;
+            };
+
+            var buildTextAngularControl = function (attrs) {
+                var readonlyExp = attrs.readonly;
+                var elementHtml = '';
+
+                elementHtml += '<text-angular class="no-shadow"' +
+                    ' ng-model="' + attrs.model + '" ';
+
+                elementHtml += ((readonlyExp)?'readonly="' + readonlyExp +'" ':'');
+
+                for (var attrKey in attrs) {
+                    if (attrs.hasOwnProperty(attrKey)) {
+                        if (attrKey.indexOf('ta') === 0) {
+                            elementHtml += angular.lowercase(attrKey.replace(/([A-Z])/g, '-$1')) + '="' + attrs[attrKey] + '" '
+                        }
+                    }
+                }
+
+                elementHtml += '></text-angular>';
 
                 return elementHtml;
             };
@@ -109,7 +141,17 @@ angular
                                 $attrs.name,
                                 $attrs.model,
                                 $attrs.onConceptChanged,
-                                $attrs.readonly);
+                                $attrs.readonly,
+                                $attrs.conceptStatus);
+                            break;
+                        case 'author':
+                            elementHtml = buildAuthorInputControl(
+                                $attrs.name,
+                                $attrs.model,
+                                $attrs.authorList,
+                                $attrs.onAuthorChanged,
+                                $attrs.readonly,
+                                $attrs.authorStatus);
                             break;
                         case 'relationshipType':
                             elementHtml = buildRelationshipTypeControl(
@@ -135,6 +177,9 @@ angular
                                 $attrs.name,
                                 $attrs.model,
                                 $attrs.readonly);
+                            break;
+                        case 'textangular':
+                            elementHtml = buildTextAngularControl($attrs);
                             break;
                         case 'text':
                         default:
