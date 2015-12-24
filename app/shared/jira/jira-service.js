@@ -67,6 +67,10 @@ angular.module('conceptRequestServiceApp.jira')
                     return config;
                 };
 
+                var getJiraEndpointConfig = function () {
+                    return jiraEndpoint;
+                };
+
                 var getAuthorUsers = function (startIndex, count, getAll, users) {
                     if (!users) {
                         users = [];
@@ -110,6 +114,7 @@ angular.module('conceptRequestServiceApp.jira')
 
                 return {
                     getJiraConfig: getJiraConfig,
+                    getJiraEndpointConfig: getJiraEndpointConfig,
                     getAuthorUsers: getAuthorUsers
                 };
             }

@@ -21,14 +21,14 @@
                     </div>
                 </li>
 
-                <li>
+                <li ng-if="batchVM.batchSummary.jiraTicketId">
                     <div class="timeline-badge">
                         <i class="icon-circle theme-border"></i>
                     </div>
                     <div class="timeline-panel">
                         <div class="timeline-heading">
                             <label class="control-label" translate="crs.batch.details.info.label.jiraTicket"></label>
-                            <h4 class="timeline-title">{{(batchVM.batchSummary.jiraTicketId)?batchVM.batchSummary.jiraTicketId:'N/A'}}</h4>
+                            <h4 class="timeline-title" jira-link="batchVM.batchSummary.jiraTicketId"></h4>
                         </div>
                     </div>
                 </li>

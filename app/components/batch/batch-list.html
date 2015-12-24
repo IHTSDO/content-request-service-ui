@@ -34,6 +34,10 @@
                             <!--<a class="tooltips-right" ng-href="#/batches/{{batch.batchId}}/view">{{batch.id}} <span translate="crs.batch.list.tip.batchId"></span></a>-->
                             {{batch.id}}
                         </td>
+                        <td data-title="'crs.batch.list.tableHeader.fileName' | translate" sortable="'fileName'" >
+                            {{batch.fileName}}
+                        </td>
+                        <td data-title="'crs.batch.list.tableHeader.ticketId' | translate" sortable="'jiraTicketId'" jira-link="batch.jiraTicketId"></td>
                         <td data-title="'crs.batch.list.tableHeader.uploaded' | translate" sortable="'requestHeader.requestDate'" >
                             {{batch.requestHeader.requestDate | date:'MM-dd-yyyy'}}
                         </td>

@@ -6,8 +6,12 @@ angular
         'ERROR_TYPE',
         'CUSTOM_ERROR_DEF',
         function (ERROR_TYPE, CUSTOM_ERROR_DEF) {
-            var findErrorDef = function (errorCode) {
-                var errorDef = null;
+            var findErrorDef = function (error) {
+                var errorCode = error.errorCode;
+                var errorDef = {
+                    code: error.errorCode,
+                    message: error.message
+                };
 
                 for (var errorKey in CUSTOM_ERROR_DEF) {
                     if (CUSTOM_ERROR_DEF.hasOwnProperty(errorKey) &&
@@ -21,11 +25,11 @@ angular
             };
 
 
-            var buildCustomError = function (errorDef) {
+            var buildCustomError = function (error) {
                 return angular.extend({
                         type: ERROR_TYPE.CUSTOM
                     },
-                    findErrorDef(errorDef.errorCode));
+                    findErrorDef(error));
             };
 
             var buildHttpError = function (httpErrorResponse, errorStatus) {
@@ -33,7 +37,7 @@ angular
                     return angular.extend({
                             type: ERROR_TYPE.CUSTOM
                         },
-                        findErrorDef(httpErrorResponse.errorCode));
+                        findErrorDef(httpErrorResponse));
                 }
 
                 return {

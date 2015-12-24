@@ -130,8 +130,8 @@ angular
             value: 'APPEAL',
             langKey: 'crs.request.requestStatus.appeal'
         },
-        WITHDRAW: {
-            value: 'WITHDRAW',
+        WITHDRAWN: {
+            value: 'WITHDRAWN',
             langKey: 'crs.request.requestStatus.withdraw'
         }
     })

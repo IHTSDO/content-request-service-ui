@@ -34,7 +34,7 @@ angular.module('conceptRequestServiceApp.request')
                 if (vm.comment) {
                     $uibModalInstance.close(vm.comment);
                 } else {
-                    showErrorMessage('crs.request.requestStatusModal.message.error.commentReqired');
+                    showErrorMessage('crs.request.requestStatusModal.message.error.commentRequired');
                 }
             };
 

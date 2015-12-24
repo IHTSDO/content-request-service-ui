@@ -43,19 +43,19 @@
                     </div>
                 </li>
 
-                <li>
+                <li ng-if="requestVM.request.jiraTicketId">
                     <div class="timeline-badge">
                         <i class="icon-circle theme-border"></i>
                     </div>
                     <div class="timeline-panel">
                         <div class="timeline-heading">
                             <label class="control-label" translate="crs.request.details.info.label.ticketId"></label>
-                            <h4 class="timeline-title">{{(requestVM.request.jiraTicketId)?requestVM.request.jiraTicketId:'N/A'}}</h4>
+                            <h4 class="timeline-title" jira-link="requestVM.request.jiraTicketId"></h4>
                         </div>
                     </div>
                 </li>
 
-                <li>
+                <li ng-if="requestVM.request.requestHeader.statusDate">
                     <div class="timeline-badge">
                         <i class="icon-circle theme-border"></i>
                     </div>
@@ -74,7 +74,9 @@
                     <div class="timeline-panel">
                         <div class="timeline-heading">
                             <label class="control-label" translate="crs.request.details.info.label.status"></label>
-                            <h4 class="timeline-title">{{requestVM.request.requestHeader.status | requestStatus | translate}}</h4>
+                            <h4 class="timeline-title">
+                                <span class="badge requestStatus {{requestVM.request.requestHeader.status}}">{{requestVM.request.requestHeader.status | requestStatus | translate}}</span>
+                            </h4>
                         </div>
                     </div>
                 </li>

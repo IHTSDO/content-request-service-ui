@@ -160,6 +160,10 @@ footer {
     background-color: #6d4c41;
     color: white;
   }
+  &.WITHDRAWN {
+    background-color: #43A047;
+    color: white;
+  }
 }
 
 @media (max-width: 1793px) {

@@ -71,7 +71,8 @@
             "details": {
                 "title": {
                     "new": "New Request",
-                    "edit": "Edit Request"
+                    "edit": "Edit Request",
+                    "preview": "Preview Request"
                 },
                 "button": {
                     "save": "Save Request",
@@ -199,12 +200,12 @@
                 "requestLoading": "Loading request {{requestId}}...",
                 "requestLoaded": "Request {{requestId}} loaded",
                 "requestSaved": "Request has successfully saved",
-                "requestSubmitted": "Request has successfully submitted",
-                "requestAccepted": "Request has successfully accepted",
-                "requestRejected": "Request has successfully rejected",
-                "requestAppealed": "Request has successfully appealed",
-                "requestWithdrawn": "Request has successfully withdrawn",
-                "requestClarification": "Request has successfully pended to clarification",
+                "requestSubmitted": "Request has been submitted successfully",
+                "requestAccepted": "Request has been accepted successfully",
+                "requestRejected": "Request has been rejected successfully",
+                "requestAppealed": "Request has been appealed successfully",
+                "requestWithdrawn": "Request has been withdrawn successfully",
+                "requestClarification": "Request has been pended to clarification successfully",
 
                 "error": {
                     "requestTypeRequired": "Please select request type",
@@ -256,7 +257,8 @@
                     "uploaded": "Uploaded On",
                     "submitted": "Submitted On",
                     "lastModified": "Last Modified",
-
+                    "fileName": "File Name",
+                    "ticketId": "Jira Ticket",
                     "status": "Status"
                 }
             },

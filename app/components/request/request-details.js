@@ -1125,7 +1125,7 @@ angular
                 var modalInstance = openStatusCommentModal('withdraw');
 
                 modalInstance.result.then(function (withdrawComment) {
-                    changeRequestStatus(vm.request.id, REQUEST_STATUS.WITHDRAW, {reason:withdrawComment})
+                    changeRequestStatus(vm.request.id, REQUEST_STATUS.WITHDRAWN, {reason:withdrawComment})
                         .then(function (response) {
                             notificationService.sendMessage('crs.request.message.requestWithdrawn', 5000);
                             $location.path('/dashboard').search({});

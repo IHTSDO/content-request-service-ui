@@ -45,9 +45,7 @@
                             <!--<a class="tooltips-right" ng-href="#/requests/edit/{{request.id}}">{{request.fsn}} <span translate="crs.request.list.tip.conceptFSN"></span></a>-->
                             {{request.fsn}}
                         </td>
-                        <td data-title="'crs.request.list.tableHeader.ticketId' | translate" sortable="'jiraTicketId'" >
-                            {{request.jiraTicketId}}
-                        </td>
+                        <td data-title="'crs.request.list.tableHeader.ticketId' | translate" sortable="'jiraTicketId'" jira-link="request.jiraTicketId"></td>
                         <td data-title="'crs.request.list.tableHeader.createdDate' | translate" sortable="'requestHeader.requestDate'" >
                             {{request.requestHeader.requestDate | date:'MM-dd-yyyy'}}
                         </td>
@@ -119,9 +117,7 @@
                             <!--<a class="tooltips-right" ng-href="#/requests/edit/{{request.id}}">{{request.fsn}} <span translate="crs.request.list.tip.conceptFSN"></span></a>-->
                             {{request.fsn}}
                         </td>
-                        <td data-title="'crs.request.list.tableHeader.ticketId' | translate" sortable="'jiraTicketId'" >
-                            {{request.jiraTicketId}}
-                        </td>
+                        <td data-title="'crs.request.list.tableHeader.ticketId' | translate" sortable="'jiraTicketId'" jira-link="request.jiraTicketId" ></td>
                         <td data-title="'crs.request.list.tableHeader.lastModified' | translate" sortable="'requestHeader.statusDate'" >
                             {{request.requestHeader.statusDate | date:'MM-dd-yyyy'}}
                         </td>
