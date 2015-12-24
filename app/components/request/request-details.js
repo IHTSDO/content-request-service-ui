@@ -9,18 +9,20 @@ angular
         '$location',
         '$anchorScroll',
         '$uibModal',
+        '$sce',
         'requestService',
         'notificationService',
         'requestMetadataService',
         'objectService',
         'snowowlService',
         'snowowlMetadataService',
+        'jiraService',
         'REQUEST_METADATA_KEY',
         'REQUEST_TYPE',
         'CONCEPT_EDIT_EVENT',
         'REQUEST_STATUS',
         'REQUEST_INPUT_MODE',
-        function ($scope, $rootScope, $routeParams, $location, $anchorScroll, $uibModal, requestService, notificationService, requestMetadataService, objectService, snowowlService, snowowlMetadataService, REQUEST_METADATA_KEY, REQUEST_TYPE, CONCEPT_EDIT_EVENT, REQUEST_STATUS, REQUEST_INPUT_MODE) {
+        function ($scope, $rootScope, $routeParams, $location, $anchorScroll, $uibModal, $sce, requestService, notificationService, requestMetadataService, objectService, snowowlService, snowowlMetadataService, jiraService, REQUEST_METADATA_KEY, REQUEST_TYPE, CONCEPT_EDIT_EVENT, REQUEST_STATUS, REQUEST_INPUT_MODE) {
             var vm = this;
             var REQUEST_MODE = {
                 NEW: {value: 'new', langKey: 'crs.request.requestMode.newRequest'},
@@ -120,6 +122,33 @@ angular
                 $window.scrollTop = 0;
             };
 
+            var loadAuthors = function () {
+                vm.loadingAuthors = true;
+                return jiraService.getAuthorUsers(0, 50, true, []).then(function (users) {
+                    vm.authors = users;
+
+                    return users;
+                }).finally(function () {
+                    vm.loadingAuthors = false;
+                });
+            };
+
+            var getAuthorName = function (authorKey) {
+                if (!vm.authors || vm.authors.length === 0) {
+                    return authorKey;
+                } else {
+                    for (var i = 0; i < vm.authors.length; i++) {
+                        if (vm.authors[i].key === authorKey) {
+                            //return vm.authors[i].displayName;
+                            return $sce.trustAsHtml([
+                                    '<img style="padding-bottom:2px" src="' + vm.authors[i].avatarUrls['16x16'] + '"/>',
+                                    '<span style="vertical-align:middle">&nbsp;' + vm.authors[i].displayName + '</span>'
+                            ].join(''));
+                        }
+                    }
+                }
+            };
+
             var buildNewConceptDefinitionOfChanges = function (changeId) {
                 return {
                     changeId: (changeId)?changeId:null,
@@ -139,6 +168,9 @@ angular
             var initView = function () {
                 var isValid = isValidViewParams();
                 var originConcept;
+
+                // load authors
+                loadAuthors();
 
                 if (!isValid) {
                     showErrorMessage('crs.request.message.error.invalidPage');
@@ -1018,6 +1050,7 @@ angular
                         notificationService.sendMessage('crs.request.message.requestSubmitted', 5000);
                         $location.path('/dashboard').search({});
                     }, function (e) {
+                        console.log(e);
                         showErrorMessage(e.message)
                     })
                     .finally(function () {
@@ -1057,18 +1090,21 @@ angular
                             showErrorMessage(e.message)
                         });
                 });
-
-
             };
 
             var requestClarification = function () {
-                changeRequestStatus(vm.request.id, REQUEST_STATUS.CLARIFICATION_NEEDED)
-                    .then(function (response) {
-                        notificationService.sendMessage('crs.request.message.requestClarification', 5000);
-                        $location.path('/dashboard').search({});
-                    }, function (e) {
-                        showErrorMessage(e.message)
-                    });
+
+                var modalInstance = openStatusCommentModal('needClarify');
+
+                modalInstance.result.then(function (rejectComment) {
+                    changeRequestStatus(vm.request.id, REQUEST_STATUS.CLARIFICATION_NEEDED, {reason:rejectComment})
+                        .then(function (response) {
+                            notificationService.sendMessage('crs.request.message.requestClarification', 5000);
+                            $location.path('/dashboard').search({});
+                        }, function (e) {
+                            showErrorMessage(e.message)
+                        });
+                });
             };
 
             var appealRequest = function () {
@@ -1078,6 +1114,20 @@ angular
                     changeRequestStatus(vm.request.id, REQUEST_STATUS.APPEAL, {reason:appealComment})
                         .then(function (response) {
                             notificationService.sendMessage('crs.request.message.requestAppealed', 5000);
+                            $location.path('/dashboard').search({});
+                        }, function (e) {
+                            showErrorMessage(e.message)
+                        });
+                });
+            };
+
+            var withdrawRequest = function () {
+                var modalInstance = openStatusCommentModal('withdraw');
+
+                modalInstance.result.then(function (withdrawComment) {
+                    changeRequestStatus(vm.request.id, REQUEST_STATUS.WITHDRAW, {reason:withdrawComment})
+                        .then(function (response) {
+                            notificationService.sendMessage('crs.request.message.requestWithdrawn', 5000);
                             $location.path('/dashboard').search({});
                         }, function (e) {
                             showErrorMessage(e.message)
@@ -1174,12 +1224,15 @@ angular
             vm.originalConcept = null;
             vm.onConceptChangedDirectly = onConceptChangedDirectly;
             vm.appealRequest = appealRequest;
+            vm.withdrawRequest = withdrawRequest;
+            vm.getAuthorName = getAuthorName;
             vm.error = {};
             vm.conceptStatus = {
                 loading: false,
                 searching: false,
                 valid: true
             };
+            vm.loadingAuthors = true;
 
             $scope.panelId = 'REQUEST_DETAILS';
 

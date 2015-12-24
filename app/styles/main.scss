@@ -324,3 +324,29 @@ ul.batch-statistic.timeline {
     }
   }
 }
+
+.comment-container {
+  .comment-item {
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    border-bottom: dotted 1px #ccc;
+
+    .comment-head {
+      margin-bottom: 10px;
+
+      img {
+        padding-bottom: 5px;
+      }
+
+      .user-name {
+        font-size: 14px;
+        color: #00a6e5;
+      }
+
+      .comment-date {
+        font-size: 14px;
+        color: #444;
+      }
+    }
+  }
+}

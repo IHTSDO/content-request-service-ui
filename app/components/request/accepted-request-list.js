@@ -17,7 +17,7 @@ angular
             var vm = this;
 
             var initView = function () {
-                vm.selectedRequests = {checked: false, items: {}};
+                vm.selectedRequests = {checked: false, items: {}, requests: {}};
 
                 // check admin role
                 accountService.checkRoles([CRS_ROLE.ADMINISTRATOR, CRS_ROLE.MANAGER]).then(function (rs) {
@@ -107,12 +107,20 @@ angular
                     });
 
                     if (selectedRequestIds.length > 0) {
-                        /*if (selectedRequestIds.length === 1) {
-
-                        }*/
-                        console.log(requestTableParams);
+                        if (selectedRequestIds.length === 1 &&
+                            selectedRequests.requests) {
+                            defaultSummary = selectedRequests.requests[selectedRequestIds[0]].additionalFields.topic;
+                        }
                         openAssignRequestModal(selectedRequestIds, defaultSummary);
                     }
+                }
+            };
+
+            var pushSelectedRequest = function (event, request) {
+                if (event.target.checked) {
+                    vm.selectedRequests.requests[request.id] = request;
+                } else {
+                    delete vm.selectedRequests.requests[request.id];
                 }
             };
 
@@ -151,6 +159,7 @@ angular
 
             vm.tableParams = requestTableParams;
             vm.assignSelectedRequests = assignSelectedRequests;
+            vm.pushSelectedRequest = pushSelectedRequest;
             vm.getAuthorName = getAuthorName;
             vm.isAdmin = false;
             vm.loadingProjects = true;

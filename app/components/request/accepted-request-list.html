@@ -30,7 +30,7 @@
                     <tr ng-repeat="request in $data" ng-click="dashboard.editRequest(request.id)" class="clickable-row" ng-class="{'row-selected': vm.selectedRequests.items[request.id] === true}">
 
                         <td class="col-checkbox" header="'ng-table/headers/checkbox.html'" ng-click="$event.stopPropagation()">
-                            <input type="checkbox" class="small-checkbox" ng-model="vm.selectedRequests.items[request.id]">
+                            <input type="checkbox" class="small-checkbox" ng-model="vm.selectedRequests.items[request.id]" ng-click="vm.pushSelectedRequest($event, request)">
                         </td>
 
                         <td data-title="'crs.request.list.tableHeader.batchId' | translate" sortable="'batchRequest'" >
@@ -52,6 +52,11 @@
                         </td>-->
                         <td data-title="'crs.request.list.tableHeader.topic' | translate" sortable="'additionalFields.topic'" >
                             {{(request.additionalFields)?request.additionalFields.topic:''}}
+                        </td>
+
+                        <td data-title="'crs.request.list.tableHeader.originator' | translate" sortable="'requestHeader.ogirinatorId'" style="min-width: 150px">
+                            <span ng-if="vm.loadingAuthors" class="md md-spin md-autorenew"></span>
+                            <div ng-if="!vm.loadingAuthors" ng-bind-html="vm.getAuthorName(request.requestHeader.ogirinatorId)"></div>
                         </td>
 
                         <td data-title="'crs.request.list.tableHeader.project' | translate" sortable="'requestHeader.assignedProject'" style="min-width: 150px" >

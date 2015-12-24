@@ -7,7 +7,8 @@ angular.module('conceptRequestServiceApp.request')
         'scaService',
         'projects',
         'authors',
-        function ($rootScope, $scope, $uibModalInstance, scaService, projects, authors) {
+        'defaultSummary',
+        function ($rootScope, $scope, $uibModalInstance, scaService, projects, authors, defaultSummary) {
             var vm = this;
 
             var initView = function () {
@@ -62,6 +63,7 @@ angular.module('conceptRequestServiceApp.request')
             vm.closeModal = closeModal;
             vm.projects = projects;
             vm.authors = authors;
+            vm.summary = defaultSummary;
             vm.selectedProject = null;
             vm.assignee = null;
             vm.loadingProjectMsg = null;

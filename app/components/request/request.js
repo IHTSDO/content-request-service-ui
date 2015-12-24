@@ -129,6 +129,10 @@ angular
         APPEAL: {
             value: 'APPEAL',
             langKey: 'crs.request.requestStatus.appeal'
+        },
+        WITHDRAW: {
+            value: 'WITHDRAW',
+            langKey: 'crs.request.requestStatus.withdraw'
         }
     })
     .value('REQUEST_METADATA_KEY', {

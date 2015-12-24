@@ -37,6 +37,7 @@ angular
         'conceptRequestServiceApp.request',
         'conceptRequestServiceApp.batch',
         'conceptRequestServiceApp.notification',
+        'conceptRequestServiceApp.jiraComment',
 
         // shared
         'conceptRequestServiceApp.imsAuthentication',

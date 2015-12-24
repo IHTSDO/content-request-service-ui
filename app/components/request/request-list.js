@@ -4,13 +4,15 @@ angular
     .module('conceptRequestServiceApp.request')
     .controller('RequestListCtrl', [
         '$filter',
+        '$sce',
+        'jiraService',
         'ngTableParams',
         'requestService',
         'notificationService',
         'accountService',
         'CRS_ROLE',
         'REQUEST_STATUS',
-        function ($filter, ngTableParams, requestService, notificationService, accountService, CRS_ROLE, REQUEST_STATUS) {
+        function ($filter, $sce, jiraService, ngTableParams, requestService, notificationService, accountService, CRS_ROLE, REQUEST_STATUS) {
             var vm = this;
 
             var initView = function () {
@@ -25,6 +27,36 @@ angular
                         vm.submittedTableParams = submittedTableParams;
                     }
                 });
+
+                // load authors
+                loadAuthors();
+            };
+
+            var loadAuthors = function () {
+                vm.loadingAuthors = true;
+                return jiraService.getAuthorUsers(0, 50, true, []).then(function (users) {
+                    vm.authors = users;
+
+                    return users;
+                }).finally(function () {
+                    vm.loadingAuthors = false;
+                });
+            };
+
+            var getAuthorName = function (authorKey) {
+                if (!vm.authors || vm.authors.length === 0) {
+                    return authorKey;
+                } else {
+                    for (var i = 0; i < vm.authors.length; i++) {
+                        if (vm.authors[i].key === authorKey) {
+                            //return vm.authors[i].displayName;
+                            return $sce.trustAsHtml([
+                                    '<img src="' + vm.authors[i].avatarUrls['16x16'] + '"/>',
+                                    '<span style="vertical-align:middle">&nbsp;' + vm.authors[i].displayName + '</span>'
+                            ].join(''));
+                        }
+                    }
+                }
             };
 
             var removeSelectedRequests = function () {
@@ -120,7 +152,9 @@ angular
 
             vm.tableParams = requestTableParams;
             vm.isAdmin = false;
+            vm.loadingAuthors = true;
             vm.removeSelectedRequests = removeSelectedRequests;
+            vm.getAuthorName = getAuthorName;
 
             initView();
         }

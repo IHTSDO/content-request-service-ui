@@ -63,7 +63,9 @@
                     "topic": "Topic",
                     "assignee": "Assignee",
                     "project": "Project",
-                    "validationResult": "Validation Result"
+                    "validationResult": "Validation Result",
+                    "originator": "Created By",
+                    "createdDate": "Created On"
                 }
             },
             "details": {
@@ -129,13 +131,16 @@
                         "accept": "Accept Request",
                         "reject": "Reject Request",
                         "appeal": "Appeal Rejection",
-                        "pendingForClarification": "Pending for Clarification"
+                        "withdraw": "Withdraw Request",
+                        "pendingForClarification": "Pending Clarification"
                     },
                     "label": {
                         "batchId": "Batch Id",
                         "ticketId": "Jira Ticket Id",
                         "status": "Status",
-                        "lastModified": "Last Modified Date"
+                        "lastModified": "Last Modified Date",
+                        "createdDate": "Created Date",
+                        "originator": "Created By"
                     }
                 }
             },
@@ -171,7 +176,9 @@
             "requestStatusModal": {
                 "title": {
                     "reject": "Reject Request",
-                    "appeal": "Appeal Request Rejection"
+                    "withdraw": "Withdraw Request",
+                    "appeal": "Appeal Request Rejection",
+                    "needClarify": "Pending for Clarification"
                 },
                 "comment": {
                     "label": "Reason"
@@ -196,6 +203,7 @@
                 "requestAccepted": "Request has successfully accepted",
                 "requestRejected": "Request has successfully rejected",
                 "requestAppealed": "Request has successfully appealed",
+                "requestWithdrawn": "Request has successfully withdrawn",
                 "requestClarification": "Request has successfully pended to clarification",
 
                 "error": {
@@ -229,8 +237,9 @@
                 "new": "New",
                 "accepted": "Accepted",
                 "rejected": "Rejected",
-                "clarificationNeeded": "Clarifying",
-                "appeal": "In Appeal"
+                "clarificationNeeded": "Pending Clarification",
+                "appeal": "In Appeal",
+                "withdraw": "Withdrawn"
             }
         },
         "batch": {
@@ -352,7 +361,9 @@
                         "relationshipId": "Relationship ID",
                         "newRefinability": "Proposed New Refinability",
                         "newRelationshipStatus": "Proposed New Relationship Status",
-                        "validationResult": "Validation Result"
+                        "validationResult": "Validation Result",
+                        "originator": "Created By",
+                        "createdDate": "Created On"
                     }
                 }
             }

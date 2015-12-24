@@ -103,9 +103,13 @@ angular
             var buildControlLabel = function (controlElement, label, required, errorModel, loadingMsg) {
                 var elBuilder = [
                         '<div class="form-control-element" ng-class="{required:' + required +', \'form-control-error\': ' + errorModel +'}">',
-                        '<label translate="' + label + '" ></label>',
-                        '<span ng-if="' + errorModel +'" translate="{{' + errorModel+ '}}" style="color:#a94442;padding-left:5px"></span>',
                 ];
+
+                if (label) {
+                    elBuilder = elBuilder.concat([
+                        '<label translate="' + label + '" ></label>',
+                        '<span ng-if="' + errorModel +'" translate="{{' + errorModel+ '}}" style="color:#a94442;padding-left:5px"></span>']);
+                }
 
                 elBuilder.push(controlElement);
 

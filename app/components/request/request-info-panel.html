@@ -24,6 +24,31 @@
                     </div>
                     <div class="timeline-panel">
                         <div class="timeline-heading">
+                            <label class="control-label" translate="crs.request.details.info.label.originator"></label>
+                            <span ng-if="vm.loadingAuthors" class="md md-spin md-autorenew"></span>
+                            <h4 ng-if="!vm.loadingAuthors" class="timeline-title" ng-bind-html="requestVM.getAuthorName(requestVM.request.requestHeader.ogirinatorId)"></h4>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="timeline-badge">
+                        <i class="icon-circle theme-border"></i>
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.request.details.info.label.createdDate"></label>
+                            <h4 class="timeline-title">{{requestVM.request.requestHeader.requestDate | date:'MM-dd-yyyy'}}</h4>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="timeline-badge">
+                        <i class="icon-circle theme-border"></i>
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
                             <label class="control-label" translate="crs.request.details.info.label.ticketId"></label>
                             <h4 class="timeline-title">{{(requestVM.request.jiraTicketId)?requestVM.request.jiraTicketId:'N/A'}}</h4>
                         </div>
@@ -36,8 +61,8 @@
                     </div>
                     <div class="timeline-panel">
                         <div class="timeline-heading">
-                            <label class="control-label" translate="crs.request.details.info.label.status"></label>
-                            <h4 class="timeline-title">{{requestVM.request.requestHeader.status | requestStatus | translate}}</h4>
+                            <label class="control-label" translate="crs.request.details.info.label.lastModified"></label>
+                            <h4 class="timeline-title">{{requestVM.request.requestHeader.statusDate | date:'MM-dd-yyyy'}}</h4>
                         </div>
                     </div>
                 </li>
@@ -48,8 +73,8 @@
                     </div>
                     <div class="timeline-panel">
                         <div class="timeline-heading">
-                            <label class="control-label" translate="crs.request.details.info.label.lastModified"></label>
-                            <h4 class="timeline-title">{{requestVM.request.requestHeader.requestDate | date:'MM-dd-yyyy'}}</h4>
+                            <label class="control-label" translate="crs.request.details.info.label.status"></label>
+                            <h4 class="timeline-title">{{requestVM.request.requestHeader.status | requestStatus | translate}}</h4>
                         </div>
                     </div>
                 </li>
@@ -86,6 +111,13 @@
                     ng-click="requestVM.appealRequest()">
                 <span class="md md-forum brown darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.appeal"></span>
+            </button>
+
+            <button ng-if="requestVM.pageMode.value === 'edit' && (requestVM.request.requestHeader.status === 'NEW' || requestVM.request.requestHeader.status === 'ACCEPTED')"
+                    class="btn btn-default green darken-1 classify" style="text-transform: none"
+                    ng-click="requestVM.withdrawRequest()">
+                <span class="md md-backspace green darken-2 iconbase"></span>
+                <span class="button-link" translate="crs.request.details.info.button.withdraw"></span>
             </button>
 
             <!-- Preview request -->
