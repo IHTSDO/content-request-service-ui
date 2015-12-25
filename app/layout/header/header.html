@@ -52,15 +52,38 @@
         </div>
 
 
-        <ul class="nav navbar-nav navbar-right navbar-right-no-collapse identity-services col-md-4" ng-if="!header.isUserLoggedIn">
+        <ul class="nav navbar-nav navbar-right navbar-right-no-collapse col-md-4" ng-if="!header.isUserLoggedIn">
             <li class="pull-right">
                 <a ng-href="#/login" translate="crs.link.login"></a>
             </li>
         </ul>
-        <ul class="nav navbar-nav navbar-right navbar-right-no-collapse  identity-services col-md-4 pull-right" ng-if="header.isUserLoggedIn">
+        <ul class="nav navbar-nav navbar-right navbar-right-no-collapse col-md-4 pull-right" ng-if="header.isUserLoggedIn">
 
-            <li class="pull-right"><button class="dropdown-toggle pointer btn btn-round-sm btn-link withoutripple" ng-click="header.openSettingsModal()">  <i class="md md-settings f20"></i> </button>
-
+            <li class="pull-right">
+                <button class="dropdown-toggle pointer btn btn-round-sm btn-link withoutripple" >
+                    <i class="md md-settings f20"></i>
+                </button>
+            </li>
+            <li class="pull-right notification-container">
+                <button id="btnNotification"
+                        class="dropdown-toggle pointer btn btn-round-sm btn-link withoutripple"
+                        ng-class="{'has-message':(header.newMessagesCount > 0)}"
+                        ng-click="header.toggleMessagesPane($event)"
+                        data-toggle="dropdown">
+                    <i class="md md-notifications-on f20"></i>
+                    <span ng-cloak ng-if="header.newMessagesCount > 0" class="message-badge">{{header.newMessagesCount}}</span>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="btnNotification">
+                    <div class="message-header clearfix" ng-click="$event.stopPropagation()">
+                        <div class="pull-left message-title">Notifications</div>
+                        <div class="pull-right message-action"><a href="#">Clear</a></div>
+                    </div>
+                    <ul class="message-body" scrolly="header.loadMoreMessages()">
+                        <li class="message-item" ng-class="{unread: !message.read}" ng-repeat="message in header.messages.items" message-item="message">
+                        </li>
+                    </ul>
+                    <span style="margin-bottom: 2px;margin-left: 3px;" ng-show="header.loadingMessages"  class="md md-spin md-autorenew"></span>
+                </div>
             </li>
             <li class="pull-right">
                 <a ng-href="#/logout" translate="crs.link.logout"></a>

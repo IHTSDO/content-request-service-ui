@@ -13,5 +13,7 @@ angular
         BATCH_UPLOAD: 'api/batch/upload',
         BATCH_UPLOADED_LIST: 'api/batch/upload/preview/list',
         BATCH_UPLOADED_PREVIEW: 'api/batch/upload/preview',
-        BATCH_LIST: 'api/batch/list'
+        BATCH_LIST: 'api/batch/list',
+        MESSAGE: 'api/notification',
+        MESSAGE_LIST: 'api/notification/list'
     });

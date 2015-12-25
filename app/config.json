@@ -11,6 +11,7 @@
     },
     "xhrTimeout": 50000,
     "fileStatusPollingInterval": 5000,
+    "messagePollingInterval": 10000,
     "snomed-ct": {
         "path": "snomed-ct/v2/",
         "edition": "MAIN",

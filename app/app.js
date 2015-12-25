@@ -37,6 +37,7 @@ angular
         'conceptRequestServiceApp.request',
         'conceptRequestServiceApp.batch',
         'conceptRequestServiceApp.notification',
+        'conceptRequestServiceApp.message',
         'conceptRequestServiceApp.jiraComment',
 
         // shared
@@ -50,7 +51,8 @@ angular
         'conceptRequestServiceApp.snowowl',
         'conceptRequestServiceApp.jira',
         'conceptRequestServiceApp.conceptEdit',
-        'conceptRequestServiceApp.objectService'
+        'conceptRequestServiceApp.objectService',
+        'conceptRequestServiceApp.scroll'
     ])
     .config(function ($rootScopeProvider, $routeProvider, $modalProvider, $translateProvider, cfpLoadingBarProvider) {
         // up the digest limit to account for extremely long depth of SNOMEDCT trees leading to spurious errors

@@ -191,6 +191,23 @@ footer {
   z-index: 1;
 }
 
+.batchImportStatus {
+  &.COMPLETED_UPLOAD {
+    background-color: #01A2E1;
+    color: white;
+  }
+
+  &.ERROR {
+    background-color: red;
+    color: white;
+  }
+
+  &.COMPLETED_IMPORT {
+    background-color: #8bc34a;
+    color: white;
+  }
+}
+
 .fileStatus {
   font-size: 16px;
   font-weight: 500;
@@ -350,6 +367,114 @@ ul.batch-statistic.timeline {
       .comment-date {
         font-size: 14px;
         color: #444;
+      }
+    }
+  }
+}
+
+.navbar .navbar-right-no-collapse .notification-container.open {
+  box-shadow: none;
+  position: relative;
+  background-color: inherit;
+}
+.notification-container {
+  color: #444;
+
+  .dropdown-toggle {
+    &.has-message {
+      color: #fff;
+    }
+
+    span.message-badge {
+      background: #EF5350;
+      padding: 1px 3px!important;
+      font-size: 10px;
+      color: #fff;
+      position: absolute;
+      display: inline-block;
+      top: 0;
+      right: 0;
+      /* height: 10px; */
+      line-height: initial;
+    }
+  }
+
+  &.open {
+    .dropdown-toggle {
+        background-color: #535353;
+        color: #fff;
+    }
+
+    .dropdown-menu {
+      right: -54px;
+      margin-top: 10px;
+      min-width: 450px;
+      max-width: 500px;
+      border-radius: 4px;
+      padding: 0;
+
+      .message-header {
+        padding: 10px;
+        background-color: #eee;
+        border-bottom: solid 1px #ccc;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+
+        .message-title {
+          font-weight: 600;
+        }
+
+        .message-action {
+        }
+      }
+
+      ul.message-body {
+        list-style: none;
+        max-height: 450px;
+        overflow: auto;
+        padding: 0;
+        line-height: initial;
+      }
+
+      li.message-item {
+        padding: 10px;
+        cursor: pointer;
+        position: relative;
+
+        &:not(:last-child) {
+          border-bottom: dotted 1px #ccc;
+        }
+
+        &.unread {
+          background-color: #fffeee;
+        }
+        
+        &:hover {
+          background: #fefefe;
+        }
+
+        .message-detail-header {
+          margin-bottom: 10px;
+          font-weight: 600;
+        }
+        .message-detail-content {
+          margin-bottom: 10px;
+        }
+        .message-detail-date {
+          color: #999;
+        }
+      }
+
+      &:before {
+        content: " ";
+        display: block;
+        width: 20px;
+        height: 20px;
+        top: -18px;
+        position: absolute;
+        right: 63px;
+        border: solid 10px transparent;
+        border-bottom: solid 10px #eee;
       }
     }
   }
