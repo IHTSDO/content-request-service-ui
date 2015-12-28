@@ -137,7 +137,7 @@ footer {
   }
 
   &.NEW {
-    background-color: black;
+    background-color: #F3CB67;
     color: white;
   }
 
@@ -161,7 +161,19 @@ footer {
     color: white;
   }
   &.WITHDRAWN {
+    background-color: #757575;
+    color: white;
+  }
+  &.UNDER_AUTHORING {
+    background-color: #E68FBB;
+    color: white;
+  }
+  &.APPROVED {
     background-color: #43A047;
+    color: white;
+  }
+  &.APPEAL_REJECTED {
+    background-color: #f57c00;
     color: white;
   }
 }

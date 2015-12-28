@@ -104,6 +104,7 @@ angular
                             });
                         }
 
+                        notificationService.sendMessage('crs.request.message.listLoading');
                         return requestService.getRequests(params.page() - 1, params.count(), params.filter().search, sortFields, sortDirs).then(function (requests) {
                             params.total(requests.total);
                             if (requests.items && requests.items.length > 0) {
@@ -113,6 +114,8 @@ angular
                             }
                         }, function () {
                             return [];
+                        }).finally(function () {
+                            notificationService.sendMessage('crs.request.message.listLoaded', 5000);
                         });
                     }
                 }

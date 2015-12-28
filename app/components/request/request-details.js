@@ -17,12 +17,13 @@ angular
         'snowowlService',
         'snowowlMetadataService',
         'jiraService',
+        'accountService',
         'REQUEST_METADATA_KEY',
         'REQUEST_TYPE',
         'CONCEPT_EDIT_EVENT',
         'REQUEST_STATUS',
         'REQUEST_INPUT_MODE',
-        function ($scope, $rootScope, $routeParams, $location, $anchorScroll, $uibModal, $sce, requestService, notificationService, requestMetadataService, objectService, snowowlService, snowowlMetadataService, jiraService, REQUEST_METADATA_KEY, REQUEST_TYPE, CONCEPT_EDIT_EVENT, REQUEST_STATUS, REQUEST_INPUT_MODE) {
+        function ($scope, $rootScope, $routeParams, $location, $anchorScroll, $uibModal, $sce, requestService, notificationService, requestMetadataService, objectService, snowowlService, snowowlMetadataService, jiraService, accountService, REQUEST_METADATA_KEY, REQUEST_TYPE, CONCEPT_EDIT_EVENT, REQUEST_STATUS, REQUEST_INPUT_MODE) {
             var vm = this;
             var REQUEST_MODE = {
                 NEW: {value: 'new', langKey: 'crs.request.requestMode.newRequest'},
@@ -187,7 +188,8 @@ angular
                                 id: requestId,
                                 additionalFields: {},
                                 requestHeader: {
-                                    status: REQUEST_STATUS.DRAFT.value
+                                    status: REQUEST_STATUS.DRAFT.value,
+                                    requestDate: new Date().getTime()
                                 }
                             };
 
@@ -197,6 +199,10 @@ angular
                                 vm.originalConcept = originConcept;
                                 vm.concept = angular.copy(vm.originalConcept);
                             }
+
+                            accountService.getAccountInfo().then(function (accountDetails) {
+                                vm.request.requestHeader.ogirinatorId = accountDetails.data.login;
+                            });
 
                             vm.requestType = requestType;
                             vm.isValidViewParams = isValid;
@@ -994,6 +1000,8 @@ angular
                     return;
                 }
 
+                notificationService.sendMessage('crs.request.message.requestSaving');
+
                 // show loading mask
                 $rootScope.showAppLoading = true;
 
@@ -1026,6 +1034,8 @@ angular
                 if (!validateRequest()) {
                     return;
                 }
+
+                notificationService.sendMessage('crs.request.message.requestSubmitting');
 
                 // show loading mask
                 $rootScope.showAppLoading = true;
@@ -1062,6 +1072,7 @@ angular
                 // show loading mask
                 $rootScope.showAppLoading = true;
 
+                notificationService.sendMessage('crs.request.message.requestProcessing');
                 return requestService.changeRequestStatus(requestId, requestStatus, data)
                     .finally(function () {
                         $rootScope.showAppLoading = false;
@@ -1083,6 +1094,20 @@ angular
 
                 modalInstance.result.then(function (rejectComment) {
                     changeRequestStatus(vm.request.id, REQUEST_STATUS.REJECTED, {reason:rejectComment})
+                        .then(function (response) {
+                            notificationService.sendMessage('crs.request.message.requestRejected', 5000);
+                            $location.path('/dashboard').search({});
+                        }, function (e) {
+                            showErrorMessage(e.message)
+                        });
+                });
+            };
+
+            var rejectAppeal = function () {
+                var modalInstance = openStatusCommentModal('reject');
+
+                modalInstance.result.then(function (rejectComment) {
+                    changeRequestStatus(vm.request.id, REQUEST_STATUS.APPEAL_REJECTED, {reason:rejectComment})
                         .then(function (response) {
                             notificationService.sendMessage('crs.request.message.requestRejected', 5000);
                             $location.path('/dashboard').search({});
@@ -1217,6 +1242,7 @@ angular
             vm.saveRequest = saveRequest;
             vm.acceptRequest = acceptRequest;
             vm.rejectRequest = rejectRequest;
+            vm.rejectAppeal = rejectAppeal;
             vm.requestClarification = requestClarification;
             vm.saveAndSubmitRequest = saveAndSubmitRequest;
             vm.startEditingConcept = startEditingConcept;

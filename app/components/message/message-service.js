@@ -10,13 +10,13 @@ angular.module('conceptRequestServiceApp.message')
             var checkNewMessages = function () {
                 var messageEndpoint = CRS_API_ENDPOINT.MESSAGE;
 
-                return crsService.sendGet(messageEndpoint + '/new/check' , null, null);
+                return crsService.sendGet(messageEndpoint + '/new/check' , null, true);
             };
 
             var countNewMessages = function () {
                 var messageEndpoint = CRS_API_ENDPOINT.MESSAGE;
 
-                return crsService.sendGet(messageEndpoint + '/new/count' , null, null);
+                return crsService.sendGet(messageEndpoint + '/new/count' , null, true);
             };
 
             var getMessages = function (offset, limit) {
@@ -31,7 +31,7 @@ angular.module('conceptRequestServiceApp.message')
                     params.limit = limit;
                 }
 
-                return crsService.sendGet(listEndpoint, params, null);
+                return crsService.sendGet(listEndpoint, params, null, true);
             };
 
             var removeMessages = function (messageList) {

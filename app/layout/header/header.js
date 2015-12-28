@@ -28,6 +28,8 @@ angular
 
                     if (response.hasNew) {
                         countNewMessages();
+                    } else {
+                        vm.newMessagesCount = 0;
                     }
 
                     //start polling messages

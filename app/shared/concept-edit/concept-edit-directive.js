@@ -1457,6 +1457,11 @@ angular
                             return;
                         }
 
+                        // cancel if static
+                        if (scope.isStatic) {
+                            return;
+                        }
+
                         // copy description object and replace target description
                         var copy = angular.copy(source);
 

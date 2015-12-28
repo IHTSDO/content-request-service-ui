@@ -25,6 +25,10 @@
         border-color: green;
     }
 
+    .static.more-button-width {
+        margin-right: 3px !important;
+    }
+
 </style>
 
 <!-- begin validation error -->
@@ -43,17 +47,19 @@
     <div class="pull-left col-md-1 no-padding">
 
 
-        <div ng-if="!concept.definitionOfChanges.changed" class="more-button-width">
+        <div ng-if="!concept.definitionOfChanges.changed" class="more-button-width" ng-class="{static: isStatic}">
         </div>
         <button ng-if="concept.definitionOfChanges.changed" ng-click="showDefinitionOfChange(concept)" type="button"
                     class="btn btn-default morebuttons darken-4 md more-button-width fa fa-pencil tooltips-right tooltips-light normal-case"
-                    ng-class="{red:(concept.definitionOfChanges.changeType === 'CHANGE_RETIRE_CONCEPT'), green:(concept.definitionOfChanges.changeType === 'NEW_CONCEPT')}"
+                    ng-class="{red:(concept.definitionOfChanges.changeType === 'CHANGE_RETIRE_CONCEPT'), green:(concept.definitionOfChanges.changeType === 'NEW_CONCEPT'), static: isStatic}"
                     ><span>Change details</span></button>
 
         <button
                 class="btn btn-default morebuttons grey darken-4 md md-open-with normal-case drag-button-width "
                 ui-draggable="true" drag="getConceptIdNamePair(concept)" drag-channel="conceptPropertiesObj"
-                drop-channel="NA" drag-image="getDragImageForConcept(concept.fsn)"></button>
+                drop-channel="NA" drag-image="getDragImageForConcept(concept.fsn)"
+                ng-class="{'md-open-with': !isStatic}"
+                ng-if="!isStatic"></button>
 
 
     </div>
@@ -157,17 +163,18 @@
              drag-enter-class="sca-drag-target"
              drag-hover-class="sca-drag-hover">
 
-            <div ng-if="conceptChangeType === 'NEW_CONCEPT' || !description.definitionOfChanges.changed" class="more-button-width">
+            <div ng-if="conceptChangeType === 'NEW_CONCEPT' || !description.definitionOfChanges.changed" class="more-button-width" ng-class="{static: isStatic}">
             </div>
             <button ng-if="conceptChangeType !== 'NEW_CONCEPT' && description.definitionOfChanges.changed"
                     class="btn-default darken-3 md morebuttons fa fa-pencil more-button-width tooltips-right tooltips-light normal-case"
-                    ng-class="{red:(description.definitionOfChanges.changeType === 'CHANGE_RETIRE_DESCRIPTION'), green:(description.definitionOfChanges.changeType === 'NEW_DESCRIPTION')}"
+                    ng-class="{red:(description.definitionOfChanges.changeType === 'CHANGE_RETIRE_DESCRIPTION'), green:(description.definitionOfChanges.changeType === 'NEW_DESCRIPTION'), static: isStatic}"
                     ng-click="showDefinitionOfChange(description)"><span>Change details</span></button>
 
             <button
                     class="btn-default grey darken-3 md morebuttons md-open-with drag-button-width"
                     ui-draggable="true" drag="description" drag-channel="descriptionObj"
-                    drag-image="getDragImageForDescription(description)"></button>
+                    drag-image="getDragImageForDescription(description)"
+                    ng-if="!isStatic"></button>
 
 
             <!-- Active/Inactive -->
@@ -280,18 +287,19 @@
              drag-hover-class="sca-drag-hover">
 
             <div class="p-t-5 ">
-                <div ng-if="conceptChangeType === 'NEW_CONCEPT' || !relationship.definitionOfChanges.changed" class="more-button-width">
+                <div ng-if="conceptChangeType === 'NEW_CONCEPT' || !relationship.definitionOfChanges.changed" class="more-button-width" ng-class="{static: isStatic}">
                 </div>
                 <button ng-if="conceptChangeType !== 'NEW_CONCEPT' && relationship.definitionOfChanges.changed"
                         class="btn-default darken-3 md morebuttons more-button-width fa fa-pencil button-width tooltips-right tooltips-light normal-case"
-                        ng-class="{red:(relationship.definitionOfChanges.changeType === 'CHANGE_RETIRE_RELATIONSHIP'), green:(relationship.definitionOfChanges.changeType === 'NEW_RELATIONSHIP')}"
+                        ng-class="{red:(relationship.definitionOfChanges.changeType === 'CHANGE_RETIRE_RELATIONSHIP'), green:(relationship.definitionOfChanges.changeType === 'NEW_RELATIONSHIP'), static: isStatic}"
                         ng-click="showDefinitionOfChange(relationship)"
                   ><span>Change details</span></button>
 
                 <button
                         class="btn-default grey darken-3 md morebuttons pull-left md-open-with drag-button-width "
                         ui-draggable="true" drag="relationship" drag-channel="relationshipObj"
-                        drag-image="getDragImageForRelationship(relationship)"></button>
+                        drag-image="getDragImageForRelationship(relationship)"
+                        ng-if="!isStatic"></button>
 
                 <!-- TODO Fix this   Note: due to weird behavior with ng-class, need to manually add bottom alignment -->
                 <button type="button"
@@ -335,7 +343,7 @@
 
                     </textarea>
             <span class="pull-left md drag-button-width "
-                  ng-class="[{'md-open-with' : !typeTypeaheadLoading}, {'md-cached' : typeTypeaheadLoading}]"
+                  ng-class="[{'md-open-with' : !typeTypeaheadLoading && !isStatic}, {'md-cached' : typeTypeaheadLoading}]"
                   ui-draggable="true"
                   drag="getConceptIdNamePairFromAttributeType(relationship)"
                   drag-channel="conceptPropertiesObj"
@@ -363,7 +371,7 @@
                               typeahead-editable="false" typeahead-min-length="3"></textarea>
 
                         <span class="pull-left drag-button-width "
-                              ng-class="[{'md-open-with' : !targetTypeaheadLoading}, {'md-cached' : targetTypeaheadLoading}]"
+                              ng-class="[{'md-open-with' : !targetTypeaheadLoading && !isStatic}, {'md-cached' : targetTypeaheadLoading}]"
                               ui-draggable="true"
                               drag="getConceptIdNamePairFromRelationshipTarget(relationship)"
                               drag-channel="conceptPropertiesObj"

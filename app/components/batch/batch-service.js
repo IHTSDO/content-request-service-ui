@@ -53,7 +53,7 @@ angular.module('conceptRequestServiceApp.batch')
                 return crsService.sendPut(batchImportEndpoint);
             };
 
-            var getUploadedFiles = function (page, pageCount, searchStr, sortFields, sortDirections) {
+            var getUploadedFiles = function (page, pageCount, searchStr, sortFields, sortDirections, ignoreLoadingBar) {
                 var uploadedFilesEndpoint = CRS_API_ENDPOINT.BATCH_UPLOADED_LIST;
                 var params = {
                     offset: page,
@@ -63,7 +63,7 @@ angular.module('conceptRequestServiceApp.batch')
                     sortDirections: sortDirections
                 };
 
-                return crsService.sendGet(uploadedFilesEndpoint, params, null);
+                return crsService.sendGet(uploadedFilesEndpoint, params, ignoreLoadingBar);
             };
 
             var identifyBatchImportStatus = function (value) {

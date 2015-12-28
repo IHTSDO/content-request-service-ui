@@ -131,6 +131,7 @@
                         "edit": "Edit Request",
                         "accept": "Accept Request",
                         "reject": "Reject Request",
+                        "appealReject": "Reject Appeal",
                         "appeal": "Appeal Rejection",
                         "withdraw": "Withdraw Request",
                         "pendingForClarification": "Pending Clarification"
@@ -199,8 +200,11 @@
                 "listLoaded": "All requests loaded",
                 "requestLoading": "Loading request {{requestId}}...",
                 "requestLoaded": "Request {{requestId}} loaded",
-                "requestSaved": "Request has successfully saved",
+                "requestSaving": "Saving request {{requestId}}...",
+                "requestSaved": "Request {{requestId}} has successfully saved",
+                "requestSubmitting": "Submitting request",
                 "requestSubmitted": "Request has been submitted successfully",
+                "requestProcessing": "Processing request...",
                 "requestAccepted": "Request has been accepted successfully",
                 "requestRejected": "Request has been rejected successfully",
                 "requestAppealed": "Request has been appealed successfully",
@@ -240,7 +244,13 @@
                 "rejected": "Rejected",
                 "clarificationNeeded": "Pending Clarification",
                 "appeal": "In Appeal",
-                "withdraw": "Withdrawn"
+                "appealRejected": "Appeal Rejected",
+                "withdraw": "Withdrawn",
+                "underAuthoring": "Under Authoring",
+                "closed": "Closed",
+                "onHold": "On Hold",
+                "forwarded": "Forwarded",
+                "approved": "Approved"
             }
         },
         "batch": {

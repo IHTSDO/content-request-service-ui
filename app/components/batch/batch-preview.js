@@ -109,49 +109,56 @@ angular
                             });
                         }
 
-                        return batchService.getUploadedFiles(params.page() - 1, params.count(), params.filter().search, sortFields, sortDirs).then(function (response) {
-                            var tmpSelectedFile,
-                                items = response.items;
+                        return batchService.getUploadedFiles(
+                            params.page() - 1,
+                            params.count(),
+                            params.filter().search,
+                            sortFields,
+                            sortDirs,
+                            (fileStatusPoller !== undefined && fileStatusPoller !== null))
+                            .then(function (response) {
+                                var tmpSelectedFile,
+                                    items = response.items;
 
-                            params.total(response.total);
+                                params.total(response.total);
 
-                            if (!fileStatusPoller && !$scope.$$destroyed) {
-                                fileStatusPoller = $interval(function () {
-                                    filesTableParams.reload();
-                                }, fileStatusPollingInterval);
-                            }
-
-                            if (items && items.length > 0) {
-                                if (vm.selectedFile) {
-                                    if (vm.selectedFile.removed === true) {
-                                        vm.selectedFile = null;
-                                    } else {
-                                        for (var i = 0; i < items.length; i++) {
-                                            if (items[i].id === vm.selectedFile.id) {
-                                                tmpSelectedFile = items[i];
-                                                break;
-                                            }
-                                        }
-
-                                        if (tmpSelectedFile) {
-                                            if (vm.selectedFile.status === BATCH_IMPORT_STATUS.PROCESSING_UPLOAD.value &&
-                                                tmpSelectedFile.status === BATCH_IMPORT_STATUS.COMPLETED_UPLOAD.value) {
-                                                loadPreviewData(BATCH_PREVIEW_TAB.NEW_CONCEPT.value, false);
-                                            }
-
-                                            vm.selectedFile = tmpSelectedFile;
-                                        }
-                                    }
+                                if (!fileStatusPoller && !$scope.$$destroyed) {
+                                    fileStatusPoller = $interval(function () {
+                                        filesTableParams.reload();
+                                    }, fileStatusPollingInterval);
                                 }
 
-                                return items;
-                            } else {
+                                if (items && items.length > 0) {
+                                    if (vm.selectedFile) {
+                                        if (vm.selectedFile.removed === true) {
+                                            vm.selectedFile = null;
+                                        } else {
+                                            for (var i = 0; i < items.length; i++) {
+                                                if (items[i].id === vm.selectedFile.id) {
+                                                    tmpSelectedFile = items[i];
+                                                    break;
+                                                }
+                                            }
+
+                                            if (tmpSelectedFile) {
+                                                if (vm.selectedFile.status === BATCH_IMPORT_STATUS.PROCESSING_UPLOAD.value &&
+                                                    tmpSelectedFile.status === BATCH_IMPORT_STATUS.COMPLETED_UPLOAD.value) {
+                                                    loadPreviewData(BATCH_PREVIEW_TAB.NEW_CONCEPT.value, false);
+                                                }
+
+                                                vm.selectedFile = tmpSelectedFile;
+                                            }
+                                        }
+                                    }
+
+                                    return items;
+                                } else {
+                                    return [];
+                                }
+                            }, function () {
+                                vm.selectedFile = null;
                                 return [];
-                            }
-                        }, function () {
-                            vm.selectedFile = null;
-                            return [];
-                        });
+                            });
                     }
                 }
             );
