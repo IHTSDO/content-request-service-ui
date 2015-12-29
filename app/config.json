@@ -6,17 +6,21 @@
         "jira": "https://dev-jira.ihtsdotools.org/",
         "ims-api": "https://dev-term.ihtsdotools.org/ims-api/"
     },
+
     "xhrTimeout": 50000,
     "fileStatusPollingInterval": 5000,
     "messagePollingInterval": 10000,
+
     "snomed-ct": {
         "path": "snomed-ct/v2/",
         "edition": "MAIN",
         "release": ""
     },
+
     "sca": {
         "path": "ihtsdo-sca/"
     },
+
     "jira": {
         "rest-api": {
             "path": "rest/api/",
