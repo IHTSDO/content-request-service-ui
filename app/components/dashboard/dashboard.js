@@ -15,6 +15,9 @@ angular
             })
             .when('/batches', {
                 redirectTo: '/dashboard/batches'
+            })
+            .when('/accepted-requests', {
+                redirectTo: '/dashboard/accepted-requests'
             });
     })
     .controller('DashboardCtrl', [
@@ -23,8 +26,10 @@ angular
         '$routeParams',
         '$location',
         '$route',
+        'accountService',
         'notificationService',
-        function ($rootScope, $uibModal, $routeParams, $location, $route, notificationService) {
+        'CRS_ROLE',
+        function ($rootScope, $uibModal, $routeParams, $location, $route, accountService, notificationService, CRS_ROLE) {
             var vm = this;
 
             var initView = function () {
@@ -34,12 +39,21 @@ angular
                         $rootScope.pageTitles = ['crs.batch.list.title'];
                         vm.listView = 'components/batch/batch-list.html';
                         break;
+                    case 'accepted-requests':
+                        $rootScope.pageTitles = ['crs.request.list.title.acceptedRequests'];
+                        vm.listView = 'components/request/accepted-request-list.html';
+                        break;
                     case 'requests':
                     default:
                         $rootScope.pageTitles = ['crs.request.list.title.requests'];
                         vm.listView = 'components/request/request-list.html';
                         break;
                 }
+
+                // check admin role
+                accountService.checkRoles([CRS_ROLE.ADMINISTRATOR, CRS_ROLE.MANAGER]).then(function (rs) {
+                    vm.isAdmin = rs;
+                });
             };
 
             var createRequest = function (rs) {
@@ -47,12 +61,12 @@ angular
                 $location.path('requests/new/' + rs.requestType).search({inputMode: rs.inputMode});
             };
 
-            var editRequest = function (requestId, batchRequest) {
-                /*if (batchRequest !== undefined && batchRequest !== null) {
-                    return;
-                }
-*/
-                $location.path('requests/edit/' + requestId);
+            var editRequest = function (requestId) {
+                  $location.path('requests/edit/' + requestId);
+            };
+
+            var previewRequest = function (requestId) {
+                  $location.path('requests/preview/' + requestId);
             };
 
             var importBatchFile = function (response) {
@@ -94,7 +108,14 @@ angular
             vm.openCreateRequestModal = openCreateRequestModal;
             vm.openBatchImportModal = openBatchImportModal;
             vm.editRequest = editRequest;
+            vm.previewRequest = previewRequest;
             vm.showBatchDetails = showBatchDetails;
+            vm.isAdmin = false;
+
+            vm.testIMS = function () {
+                accountService.getTestUsers();
+            };
+
             initView();
         }
     ]);

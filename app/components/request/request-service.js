@@ -32,16 +32,43 @@ angular.module('conceptRequestServiceApp.request')
                 return null;
             };
 
-            var getRequests = function () {
+            var getRequests = function (page, pageCount, searchStr, sortFields, sortDirections) {
                 var listEndpoint = CRS_API_ENDPOINT.REQUEST_LIST;
+                var params = {
+                    offset: page,
+                    limit: pageCount,
+                    search: searchStr,
+                    sortFields: sortFields,
+                    sortDirections: sortDirections
+                };
 
-                return crsService.sendGet(listEndpoint, null, null);
+                return crsService.sendGet(listEndpoint, params, null);
             };
 
-            var getSubmittedRequests = function () {
+            var getSubmittedRequests = function (page, pageCount, searchStr, sortFields, sortDirections) {
                 var listEndpoint = CRS_API_ENDPOINT.SUBMITTED_REQUEST_LIST;
+                var params = {
+                    offset: page,
+                    limit: pageCount,
+                    search: searchStr,
+                    sortFields: sortFields,
+                    sortDirections: sortDirections
+                };
 
-                return crsService.sendGet(listEndpoint, null, null);
+                return crsService.sendGet(listEndpoint, params, null);
+            };
+
+            var getAcceptedRequests = function (page, pageCount, searchStr, sortFields, sortDirections) {
+                var listEndpoint = CRS_API_ENDPOINT.ACCEPTED_REQUEST_LIST;
+                var params = {
+                    offset: page,
+                    limit: pageCount,
+                    search: searchStr,
+                    sortFields: sortFields,
+                    sortDirections: sortDirections
+                };
+
+                return crsService.sendGet(listEndpoint, params, null);
             };
 
             var getRequest = function (requestId) {
@@ -59,6 +86,19 @@ angular.module('conceptRequestServiceApp.request')
                 } else {
                     return crsService.sendPut(requestEndpoint + '/' + id, null, requestDetails);
                 }
+            };
+
+            var changeRequestStatus = function (requestId, requestStatus, data) {
+                var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
+                var params = {
+                    status: requestStatus.value
+                };
+
+                if (!data) {
+                    data = {};
+                }
+
+                return crsService.sendPut(requestEndpoint + '/' + requestId + '/status', params, data);
             };
 
             var submitRequest = function (requestId) {
@@ -83,6 +123,23 @@ angular.module('conceptRequestServiceApp.request')
                 }
             };
 
+            var assignRequests = function (requestList, projectKey, assigneeKey, summary) {
+                var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
+                var params;
+
+                if (requestList !== undefined &&
+                    requestList !== null) {
+                    params = {
+                        requests: requestList,
+                        project: projectKey,
+                        assignee: assigneeKey,
+                        summary: summary
+                    };
+
+                    return crsService.sendPut(requestEndpoint + '/assign', params, null);
+                }
+            };
+
 
             return {
                 identifyRequestType: identifyRequestType,
@@ -90,9 +147,12 @@ angular.module('conceptRequestServiceApp.request')
                 getRequest: getRequest,
                 getRequests: getRequests,
                 getSubmittedRequests: getSubmittedRequests,
+                getAcceptedRequests: getAcceptedRequests,
                 saveRequest: saveRequest,
                 submitRequest: submitRequest,
-                removeRequests: removeRequests
+                removeRequests: removeRequests,
+                assignRequests: assignRequests,
+                changeRequestStatus: changeRequestStatus
             };
 
         }]);

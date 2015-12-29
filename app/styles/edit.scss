@@ -121,7 +121,7 @@ button,
 .add-buttons {
   background-color: transparent !important;
   padding: 1px 3px !important;
-  color: #dcdcdc !important;
+  color: #bbb !important;
 }
 
 .add-buttons.pull-right {
@@ -558,6 +558,12 @@ select.primitive {
 
 .form-control:disabled {
   color: white;
+}
+select.form-control:disabled {
+  border-bottom: 1px dotted #ddd;
+  box-shadow: none;
+  color: inherit;
+  cursor: auto;
 }
 
 .projecttasks .btn-success.btn-border {

@@ -4,14 +4,107 @@ angular
     .module('conceptRequestServiceApp')
     .controller('HeaderCtrl', [
         '$rootScope',
+        '$scope',
         '$uibModal',
         '$timeout',
         '$route',
         '$location',
+        '$interval',
         'accountService',
-        function ($rootScope, $uibModal, $timeout, $route, $location, accountService) {
+        'messageService',
+        'configService',
+        function ($rootScope, $scope, $uibModal, $timeout, $route, $location, $interval, accountService, messageService, configService) {
             var vm = this;
             var timeout = null;
+            var messagePoller;
+            var messagePollingInterval = configService.getMessagePollingInterval();
+
+            var initView = function () {
+                checkNewMessages();
+            };
+
+            var checkNewMessages = function () {
+                messageService.checkNewMessages().then(function (response) {
+
+                    if (response.hasNew) {
+                        countNewMessages();
+                    } else {
+                        vm.newMessagesCount = 0;
+                    }
+
+                    //start polling messages
+                    if (!messagePoller && !$scope.$$destroyed) {
+                        messagePoller = $interval(function () {
+                            checkNewMessages();
+                        }, messagePollingInterval);
+                    }
+                });
+            };
+
+            var countNewMessages = function () {
+                messageService.countNewMessages().then(function (response) {
+                    if (vm.newMessagesCount !== response.total) {
+                        //loadMessages(0);
+                        vm.newMessagesCount = response.total;
+                    }
+                });
+            };
+
+            var loadMessages = function (offset) {
+                if (!offset) {
+                    offset = 0;
+                }
+
+                vm.loadingMessages = true;
+                if (offset === 0) {
+                    if (vm.messages && vm.messages.items) {
+                        angular.forEach(vm.messages.items, function (message) {
+                            message.read = true;
+                        });
+                    }
+                }
+
+                messageService.getMessages(offset).then(function (response) {
+                    var unreadMessageIds = [];
+
+                    if (response.offset === 0) {
+                        vm.messages = response;
+                    } else if (vm.messages &&
+                        vm.messages.offset !== undefined && vm.messages.offset !== null &&
+                        response.offset > vm.messages.offset) {
+                        response.items = vm.messages.items.concat(response.items);
+                        vm.messages = response;
+                    }
+
+                    angular.forEach(vm.messages.items, function (message) {
+                        if (!message.read) {
+                            unreadMessageIds.push(message.id);
+                        }
+                    });
+
+                    if (unreadMessageIds.length > 0) {
+                        messageService.readMessages(unreadMessageIds);
+                    }
+
+                }).finally(function () {
+                    vm.loadingMessages = false;
+                });
+            };
+
+            var loadMoreMessages = function () {
+                var currentOffset = vm.messages.offset;
+                if (!vm.loadingMessages &&
+                    (currentOffset + 1) * vm.messages.limit < vm.messages.total) {
+                    loadMessages(currentOffset + 1);
+                }
+            };
+
+            var toggleMessagesPane = function (event) {
+                var parentEl = angular.element(event.currentTarget.parentElement);
+                if (!parentEl.hasClass('open')) {
+                    loadMessages(0);
+                }
+            };
 
             var openSettingsModal = function () {
                 var modalInstance = $uibModal.open({
@@ -89,9 +182,22 @@ angular
                 clearNotification();
             });
 
+            $scope.$on('$destroy', function () {
+                if (messagePoller) {
+                    $interval.cancel(messagePoller);
+                }
+            });
+
             vm.openSettingsModal = openSettingsModal;
+            vm.toggleMessagesPane = toggleMessagesPane;
             vm.notification = null;
             vm.clearNotification = clearNotification;
             vm.gotoNotificationLink = gotoNotificationLink;
+            vm.messages = null;
+            vm.newMessagesCount = 0;
+            vm.loadingMessages = false;
+            vm.loadMoreMessages = loadMoreMessages;
+
+            initView();
         }
     ]);

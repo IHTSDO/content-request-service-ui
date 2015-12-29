@@ -2,7 +2,8 @@
     "crs": {
         "message": {
             "unknownUser": "Logged in as unknown user",
-            "profileTip":"display name will link to profile services in later updates"
+            "profileTip":"display name will link to profile services in later updates",
+            "loading": "Loading..."
         },
         "link": {
             "logout": "Logout",
@@ -23,7 +24,8 @@
                 "myRequest": "My Submitted Requests",
                 "myBatch": "My Batch Requests",
                 "createRequest": "Create New Request",
-                "importBatch": "New Batch Import"
+                "importBatch": "New Batch Import",
+                "acceptedRequest": "Accepted Requests"
             }
         },
         "request": {
@@ -31,6 +33,7 @@
                 "title": {
                     "requests": "Requests",
                     "myRequests": "My Requests",
+                    "acceptedRequests": "Accepted Requests",
                     "submittedRequests": "Submitted Requests"
                 },
                 "tip": {
@@ -38,11 +41,13 @@
                     "create": "Create New Request",
                     "remove": "Remove Selected Requests",
                     "requestorInternalId": "Click to open request editing view",
+                    "assign": "Assign requests to author",
                     "batchId": "Click to open batch details view",
                     "conceptFSN": "Click to open request editing view"
                 },
                 "searchPlaceHolder": {
                     "myRequests": "Search My Requests",
+                    "acceptedRequests": "Search Accepted Requests",
                     "submittedRequests": "Search Submitted Requests"
                 },
                 "tableHeader": {
@@ -56,13 +61,18 @@
                     "conceptFSN": "Concept",
                     "reasonForChange": "Reason for Change",
                     "topic": "Topic",
-                    "validationResult": "Validation Result"
+                    "assignee": "Assignee",
+                    "project": "Project",
+                    "validationResult": "Validation Result",
+                    "originator": "Created By",
+                    "createdDate": "Created On"
                 }
             },
             "details": {
                 "title": {
                     "new": "New Request",
-                    "edit": "Edit Request"
+                    "edit": "Edit Request",
+                    "preview": "Preview Request"
                 },
                 "button": {
                     "save": "Save Request",
@@ -99,7 +109,8 @@
                     "historyAttribute": "History Attribute",
                     "proposedCaseSignificance": "New Case Significance",
                     "descriptionStatus": "New Description Status",
-                    "relationshipStatus": "Relationship Status"
+                    "relationshipStatus": "Relationship Status",
+                    "isPt": "Description is PT"
 
                 },
                 "tip": {
@@ -117,13 +128,21 @@
                     "button": {
                         "submit": "Submit Request",
                         "save": "Save Request",
-                        "edit": "Edit Request"
+                        "edit": "Edit Request",
+                        "accept": "Accept Request",
+                        "reject": "Reject Request",
+                        "appealReject": "Reject Appeal",
+                        "appeal": "Appeal Rejection",
+                        "withdraw": "Withdraw Request",
+                        "pendingForClarification": "Pending Clarification"
                     },
                     "label": {
                         "batchId": "Batch Id",
                         "ticketId": "Jira Ticket Id",
                         "status": "Status",
-                        "lastModified": "Last Modified Date"
+                        "lastModified": "Last Modified Date",
+                        "createdDate": "Created Date",
+                        "originator": "Created By"
                     }
                 }
             },
@@ -140,20 +159,64 @@
                     "cancel": "Cancel"
                 }
             },
+            "assignModal": {
+                "title": "Assign Requests to Authoring Task",
+                "project": {
+                    "label": "Project"
+                },
+                "assignee": {
+                    "label": "Assignee"
+                },
+                "summary": {
+                    "label": "Summary"
+                },
+                "button": {
+                    "assignRequest": "Assign Requests",
+                    "cancel": "Cancel"
+                }
+            },
+            "requestStatusModal": {
+                "title": {
+                    "reject": "Reject Request",
+                    "withdraw": "Withdraw Request",
+                    "appeal": "Appeal Request Rejection",
+                    "needClarify": "Pending for Clarification"
+                },
+                "comment": {
+                    "label": "Reason"
+                },
+                "button": {
+                    "confirm": "Confirm",
+                    "cancel": "Cancel"
+                },
+                "message": {
+                    "error": {
+                        "commentRequired": "Please provide reason"
+                    }
+                }
+            },
             "message": {
                 "listLoading": "Loading requests...",
                 "listLoaded": "All requests loaded",
                 "requestLoading": "Loading request {{requestId}}...",
                 "requestLoaded": "Request {{requestId}} loaded",
-                "requestSaved": "Request has successfully saved",
-                "requestSubmitted": "Request has successfully submitted",
+                "requestSaving": "Saving request {{requestId}}...",
+                "requestSaved": "Request {{requestId}} has successfully saved",
+                "requestSubmitting": "Submitting request",
+                "requestSubmitted": "Request has been submitted successfully",
+                "requestProcessing": "Processing request...",
+                "requestAccepted": "Request has been accepted successfully",
+                "requestRejected": "Request has been rejected successfully",
+                "requestAppealed": "Request has been appealed successfully",
+                "requestWithdrawn": "Request has been withdrawn successfully",
+                "requestClarification": "Request has been pended to clarification successfully",
 
                 "error": {
                     "requestTypeRequired": "Please select request type",
                     "invalidPage": "The page you request is not available",
-                    "requiredConcept": "Please select a concept",
-                    "requiredTopic": "Some fields are required to generate change requests. Please enter all fields that are being marked red before saving or switching input mode.",
-                    "requiredFields": "Some fields are required to generate change requests. Please enter all fields that are being marked red before saving or switching input mode."
+                    "invalidInput": "Please correct request data before saving or generating concept",
+                    "fieldRequired": "required",
+                    "fieldInvalid": "invalid"
                 }
 
             },
@@ -171,11 +234,23 @@
             },
             "requestMode": {
                 "newRequest": "New Request",
-                "editRequest": "Edit Request"
+                "editRequest": "Edit Request",
+                "previewRequest": "Preview Request"
             },
             "requestStatus": {
                 "draft": "Draft",
-                "new": "New"
+                "new": "New",
+                "accepted": "Accepted",
+                "rejected": "Rejected",
+                "clarificationNeeded": "Pending Clarification",
+                "appeal": "In Appeal",
+                "appealRejected": "Appeal Rejected",
+                "withdraw": "Withdrawn",
+                "underAuthoring": "Under Authoring",
+                "closed": "Closed",
+                "onHold": "On Hold",
+                "forwarded": "Forwarded",
+                "approved": "Approved"
             }
         },
         "batch": {
@@ -192,8 +267,28 @@
                     "uploaded": "Uploaded On",
                     "submitted": "Submitted On",
                     "lastModified": "Last Modified",
-
+                    "fileName": "File Name",
+                    "ticketId": "Jira Ticket",
                     "status": "Status"
+                }
+            },
+            "details": {
+                "info": {
+                    "label": {
+                        "batchId": "BatchId",
+                        "fileName": "Batch File",
+                        "importedTime": "Imported on",
+                        "jiraTicket":"Jira Ticket"
+                    }
+                },
+                "statistic": {
+                    "label": {
+                        "submitted": "Submitted Requests",
+                        "accepted": "Accepted Requests",
+                        "rejected": "Rejected Requests",
+                        "underAuthoring": "Under Authoring",
+                        "approved": "Approved Requests"
+                    }
                 }
             },
             "message": {
@@ -278,7 +373,9 @@
                         "relationshipId": "Relationship ID",
                         "newRefinability": "Proposed New Refinability",
                         "newRelationshipStatus": "Proposed New Relationship Status",
-                        "validationResult": "Validation Result"
+                        "validationResult": "Validation Result",
+                        "originator": "Created By",
+                        "createdDate": "Created On"
                     }
                 }
             }

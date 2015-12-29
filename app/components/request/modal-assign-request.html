@@ -1,0 +1,50 @@
+<div id="assignRequestMModal">
+
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="modal.closeModal()">&times;</button>
+        <h4 class="modal-title">{{'crs.request.assignModal.title' | translate}}</h4>
+    </div>
+
+    <div class="modal-body">
+        <div class="col-md-12">
+            <form class="form-floating">
+                <div class="form-group">
+                    <form-control type="select"
+                                  model="modal.selectedProject"
+                                  options="project as project.title for project in modal.projects"
+                                  label="crs.request.assignModal.project.label"
+                                  name="slProjects"
+                                  loading-mask="modal.loadingProjectMsg"></form-control>
+                    <!--<form-control type="text"
+                                  model="modal.assignee"
+                                  label="crs.request.assignModal.assignee.label"></form-control>-->
+                    <form-control type="author"
+                                  model="modal.assignee"
+                                  label="crs.request.assignModal.assignee.label"
+                                  author-list="modal.authors"
+                                  author-status="modal.authorStatus"></form-control>
+                    <form-control type="textarea"
+                                  model="modal.summary"
+                                  label="crs.request.assignModal.summary.label"></form-control>
+                    <br/>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-12 alert alert-success" ng-show="modal.msgSuccess" >{{modal.msgSuccess | translate}}</div>
+        <div class="col-md-12 alert alert-danger" ng-show="modal.msgError" >{{modal.msgError | translate}}</div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="col-md-6">
+            <button type="button" ng-disabled="disabled" class="col-md-12 btn btn-info no-margin "
+                    ng-click="modal.assignRequests()">{{'crs.request.assignModal.button.assignRequest' | translate}}
+            </button>
+        </div>
+        <div class="col-md-6">
+            <button type="button" ng-disabled="disabled" class=" col-md-12 btn btn-danger no-margin "
+                    ng-click="modal.closeModal()">{{'crs.request.assignModal.button.cancel' | translate}}
+            </button>
+        </div>
+    </div>
+</div>

@@ -1457,6 +1457,11 @@ angular
                             return;
                         }
 
+                        // cancel if static
+                        if (scope.isStatic) {
+                            return;
+                        }
+
                         // copy description object and replace target description
                         var copy = angular.copy(source);
 
@@ -2032,7 +2037,7 @@ angular
                             }
                         }
                         response = response.filter(function (item) {
-                            return item.fsn.toLowerCase().indexOf(searchStr.toLowerCase()) !== -1;
+                            return item.fsn.term.toLowerCase().indexOf(searchStr.toLowerCase()) !== -1;
                         });
                         return response;
                     };

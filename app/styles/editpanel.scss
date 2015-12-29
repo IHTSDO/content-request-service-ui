@@ -343,12 +343,26 @@ select.primitive  {
   border-color: #2fa94f;
   background-color: #41ca65;
 }
-textarea,
+/*textarea,
 input {
   height: 30px!important;
   resize: none;
   line-height: 12px!important;
   font-family: 'Open Sans Condensed', sans-serif;
+}*/
+
+textarea,
+input,
+select {
+
+  resize:none!important;
+  min-height:30px!important;
+  max-height:60px;
+  line-height: 12px!important;
+  font-weight:400!important;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: .1px;
+  text-rendering: optimizeLegibility;
 }
 .button-width {
   width: 4.5%;
@@ -787,7 +801,8 @@ button.fsn-title-button {
   float: left;
   font-size: 18px;
 }
-.review.btn-default:hover {
+.review.btn-default:hover,
+.review.btn-default:active {
   background-color: #c2185b;
   color: #fff;
 }
@@ -806,7 +821,18 @@ button.fsn-title-button {
 }
 .promote.btn-default:hover {
   background-color: #1976D2;
-;
+  color: #fff;
+}
+.appeal.btn-default:hover {
+  background-color: #5d4037;
+  color: #fff;
+}
+.appealReject.btn-default:hover {
+  background-color: #f57c00;
+  color: #fff;
+}
+.withdraw.btn-default:hover {
+  background-color: #616161;
   color: #fff;
 }
 .request-info .button-link {
@@ -815,6 +841,10 @@ button.fsn-title-button {
   font-weight: 500
 }
 .pink1 {
+  background-color: #e91e63;
+  color: #fff;
+}
+.pink1.darken-1 {
   background-color: #e91e63;
   color: #fff;
 }

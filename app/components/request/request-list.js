@@ -4,91 +4,59 @@ angular
     .module('conceptRequestServiceApp.request')
     .controller('RequestListCtrl', [
         '$filter',
+        '$sce',
+        'jiraService',
         'ngTableParams',
         'requestService',
         'notificationService',
         'accountService',
         'CRS_ROLE',
         'REQUEST_STATUS',
-        function ($filter, ngTableParams, requestService, notificationService, accountService, CRS_ROLE, REQUEST_STATUS) {
+        function ($filter, $sce, jiraService, ngTableParams, requestService, notificationService, accountService, CRS_ROLE, REQUEST_STATUS) {
             var vm = this;
 
             var initView = function () {
                 vm.selectedRequests = {checked: false, items: {}};
-                loadRequests();
+                vm.selectedSubmittedRequests = {checked: false, items: {}};
 
                 // check admin role
                 accountService.checkRoles([CRS_ROLE.ADMINISTRATOR, CRS_ROLE.MANAGER]).then(function (rs) {
                     vm.isAdmin = rs;
 
                     if (rs === true) {
-                        vm.submittedTableParams = new ngTableParams({
-                                page: 1,
-                                count: 10,
-                                sorting: {'requestHeader.requestDate': 'desc', batchId: 'asc', id: 'asc'}
-                            },
-                            {
-                                filterDelay: 50,
-                                total: vm.submittedRequests ? vm.submittedRequests.length : 0, // length of data
-                                getData: function (params) {
-
-                                    if (!vm.submittedRequests || vm.submittedRequests.length == 0) {
-                                        return [];
-                                    } else {
-
-                                        var searchStr = params.filter().search;
-                                        var mydata = [];
-
-                                        if (searchStr) {
-                                            mydata = vm.submittedRequests.filter(function (item) {
-                                                return (item.batchRequest + '').indexOf(searchStr.toLowerCase()) > -1 ||
-                                                    (item.jiraTicketId || '').toLowerCase().indexOf(searchStr.toLowerCase()) > -1 ||
-                                                    (item.fsn || '').toLowerCase().indexOf(searchStr.toLowerCase()) > -1 ||
-                                                    (item.additionalFields.topic || '').toLowerCase().indexOf(searchStr.toLowerCase()) > -1;
-                                            });
-                                        } else {
-                                            mydata = vm.submittedRequests;
-                                        }
-
-                                        params.total(mydata.length);
-                                        mydata = params.sorting() ? $filter('orderBy')(mydata, params.orderBy()) : mydata;
-
-                                        return mydata.slice((params.page() - 1) * params.count(), params.page() * params.count());
-                                    }
-
-                                }
-                            }
-                        );
-
-                        loadSubmittedRequests();
+                        vm.submittedTableParams = submittedTableParams;
                     }
+                });
+
+                // load authors
+                loadAuthors();
+            };
+
+            var loadAuthors = function () {
+                vm.loadingAuthors = true;
+                return jiraService.getAuthorUsers(0, 50, true, []).then(function (users) {
+                    vm.authors = users;
+
+                    return users;
+                }).finally(function () {
+                    vm.loadingAuthors = false;
                 });
             };
 
-            var loadRequests = function () {
-                notificationService.sendMessage('crs.request.message.listLoading', 0);
-
-                vm.requests = null;
-                requestService.getRequests().then(function (requests) {
-                    vm.requests = requests;
-                    notificationService.sendMessage('crs.request.message.listLoaded', 5000);
-                    if (vm.tableParams) {
-                        vm.tableParams.reload();
+            var getAuthorName = function (authorKey) {
+                if (!vm.authors || vm.authors.length === 0) {
+                    return authorKey;
+                } else {
+                    for (var i = 0; i < vm.authors.length; i++) {
+                        if (vm.authors[i].key === authorKey) {
+                            //return vm.authors[i].displayName;
+                            return $sce.trustAsHtml([
+                                    '<img src="' + vm.authors[i].avatarUrls['16x16'] + '"/>',
+                                    '<span style="vertical-align:middle">&nbsp;' + vm.authors[i].displayName + '</span>'
+                            ].join(''));
+                        }
                     }
-                });
-            };
-
-            var loadSubmittedRequests = function () {
-                notificationService.sendMessage('crs.request.message.listLoading', 0);
-
-                vm.requests = null;
-                requestService.getSubmittedRequests().then(function (requests) {
-                    vm.submittedRequests = requests;
-                    notificationService.sendMessage('crs.request.message.listLoaded', 5000);
-                    if (vm.submittedTableParams) {
-                        vm.submittedTableParams.reload();
-                    }
-                });
+                }
             };
 
             var removeSelectedRequests = function () {
@@ -98,20 +66,16 @@ angular
                     selectedRequests.items) {
                     angular.forEach(selectedRequests.items, function (isSelected, requestId) {
                         if (isSelected) {
-                            for (var i = 0; i < vm.requests.length; i++) {
-                                if (vm.requests[i].id + '' === requestId &&
-                                    vm.requests[i].requestHeader.status === REQUEST_STATUS.DRAFT.value) {
-                                    removingRequestIds.push(requestId);
-                                    break;
-                                }
-                            }
+                            removingRequestIds.push(requestId);
                         }
                     });
 
                     if (removingRequestIds.length > 0) {
                         if (window.confirm('Are you sure you want to remove ' + removingRequestIds.length +' Draft requests?')) {
                             requestService.removeRequests(removingRequestIds).then(function () {
-                                loadRequests();
+                                if (vm.tableParams) {
+                                    vm.tableParams.reload();
+                                }
                             }, function (error) {
                                 notificationService.sendMessage('crs.request.message.requestRemoved', 5000);
                             });
@@ -128,48 +92,72 @@ angular
                     sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'asc', id: 'asc'}
                 },
                 {
-                    filterDelay: 50,
-                    total: vm.requests ? vm.requests.length : 0, // length of data
+                    filterDelay: 700,
                     getData: function (params) {
+                        var sortingObj = params.sorting();
+                        var sortFields = [], sortDirs = [];
 
-                        if (!vm.requests || vm.requests.length == 0) {
-                            return [];
-                        } else {
-
-                            var searchStr = params.filter().search;
-                            var mydata = [];
-
-                            if (searchStr) {
-                                mydata = vm.requests.filter(function (item) {
-                                    return (item.batchRequest + '').indexOf(searchStr.toLowerCase()) > -1 ||
-                                        (item.jiraTicketId || '').toLowerCase().indexOf(searchStr.toLowerCase()) > -1 ||
-                                        (item.fsn || '').toLowerCase().indexOf(searchStr.toLowerCase()) > -1 ||
-                                        (item.additionalFields.topic || '').toLowerCase().indexOf(searchStr.toLowerCase()) > -1;
-                                });
-                            } else {
-                                mydata = vm.requests;
-                            }
-
-                            params.total(mydata.length);
-                            mydata = params.sorting() ? $filter('orderBy')(mydata, params.orderBy()) : mydata;
-
-                            return mydata.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                        if (sortingObj) {
+                            angular.forEach(sortingObj, function (dir, field) {
+                                sortFields.push(field);
+                                sortDirs.push(dir);
+                            });
                         }
 
+                        notificationService.sendMessage('crs.request.message.listLoading');
+                        return requestService.getRequests(params.page() - 1, params.count(), params.filter().search, sortFields, sortDirs).then(function (requests) {
+                            params.total(requests.total);
+                            if (requests.items && requests.items.length > 0) {
+                                return requests.items;
+                            } else {
+                                return [];
+                            }
+                        }, function () {
+                            return [];
+                        }).finally(function () {
+                            notificationService.sendMessage('crs.request.message.listLoaded', 5000);
+                        });
                     }
                 }
             );
-/*
-            var editRequest = function (requestId) {
 
-            };*/
+            var submittedTableParams = new ngTableParams({
+                    page: 1,
+                    count: 10,
+                    sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'asc', id: 'asc'}
+                },
+                {
+                    filterDelay: 700,
+                    getData: function (params) {
+                        var sortingObj = params.sorting();
+                        var sortFields = [], sortDirs = [];
+
+                        if (sortingObj) {
+                            angular.forEach(sortingObj, function (dir, field) {
+                                sortFields.push(field);
+                                sortDirs.push(dir);
+                            });
+                        }
+
+                        return requestService.getSubmittedRequests(params.page() - 1, params.count(), params.filter().search, sortFields, sortDirs).then(function (requests) {
+                            params.total(requests.total);
+                            if (requests.items && requests.items.length > 0) {
+                                return requests.items;
+                            } else {
+                                return [];
+                            }
+                        }, function () {
+                            return [];
+                        });
+                    }
+                }
+            );
 
             vm.tableParams = requestTableParams;
-            vm.requests = null;
-            vm.submittedRequests = null;
             vm.isAdmin = false;
-            //vm.editRequest = editRequest;
+            vm.loadingAuthors = true;
             vm.removeSelectedRequests = removeSelectedRequests;
+            vm.getAuthorName = getAuthorName;
 
             initView();
         }

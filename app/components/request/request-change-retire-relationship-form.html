@@ -1,40 +1,22 @@
 <h4 translate="crs.request.requestType.changeRetireRelationship"></h4>
-<form class="form-floating">
+<form class="form-floating" form-control-readonly="requestVM.request.requestHeader.status !== 'DRAFT'">
 
     <div class="form-group">
-        <!--<form-control type="text"
-                      model="requestVM.request.requestorInternalId"
-                      label="crs.request.details.label.requestorInternalId"
-                      name="txtRequestorInternalId"></form-control>-->
-
-        <!--<div>
-            <div class="form-control-element required">
-                <label >Concept Id</label>
-                <input class="form-control" type="text" ng-model="requestVM.request.conceptId"/>
-            </div>
-            <div class="form-control-element required">
-                <label >Concept FSN</label>
-                <input class="form-control" type="text" ng-model="requestVM.request.conceptFSN"/>
-            </div>
-        </div>
-        <br/>-->
 
         <form-control type="concept"
                       model="requestVM.originalConcept"
                       label="crs.request.details.label.concept"
-                      required></form-control>
-
-        <!--<form-control type="text"
-                      model="requestVM.request.relationshipId"
-                      label="crs.request.details.label.relationshipId"
-                      name="txtRelationshipId"
-                      required></form-control>-->
+                      required
+                      error-model="requestVM.error.concept"></form-control>
 
         <form-control type="select"
                       model="requestVM.request.relationshipId"
                       options="suggestion.relationshipId as (suggestion.type.fsn + ' - ' + suggestion.target.fsn) for suggestion in requestVM.originalConcept.relationships |filter:{active:true}"
                       label="crs.request.details.label.relationship"
-                      name="slRelationship" required></form-control>
+                      name="slRelationship"
+                      required
+                      error-model="requestVM.error.relationshipId"
+                      loading-mask="requestVM.loadingRelationship"></form-control>
 
         <form-control type="select"
                       model="requestVM.request.refinability"

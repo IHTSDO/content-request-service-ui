@@ -8,22 +8,27 @@ angular
         '$routeParams',
         '$location',
         '$anchorScroll',
+        '$uibModal',
+        '$sce',
         'requestService',
         'notificationService',
         'requestMetadataService',
         'objectService',
         'snowowlService',
         'snowowlMetadataService',
+        'jiraService',
+        'accountService',
         'REQUEST_METADATA_KEY',
         'REQUEST_TYPE',
         'CONCEPT_EDIT_EVENT',
         'REQUEST_STATUS',
         'REQUEST_INPUT_MODE',
-        function ($scope, $rootScope, $routeParams, $location, $anchorScroll, requestService, notificationService, requestMetadataService, objectService, snowowlService, snowowlMetadataService, REQUEST_METADATA_KEY, REQUEST_TYPE, CONCEPT_EDIT_EVENT, REQUEST_STATUS, REQUEST_INPUT_MODE) {
+        function ($scope, $rootScope, $routeParams, $location, $anchorScroll, $uibModal, $sce, requestService, notificationService, requestMetadataService, objectService, snowowlService, snowowlMetadataService, jiraService, accountService, REQUEST_METADATA_KEY, REQUEST_TYPE, CONCEPT_EDIT_EVENT, REQUEST_STATUS, REQUEST_INPUT_MODE) {
             var vm = this;
             var REQUEST_MODE = {
                 NEW: {value: 'new', langKey: 'crs.request.requestMode.newRequest'},
-                EDIT: {value: 'edit', langKey: 'crs.request.requestMode.editRequest'}
+                EDIT: {value: 'edit', langKey: 'crs.request.requestMode.editRequest'},
+                PREVIEW: {value: 'preview', langKey: 'crs.request.requestMode.previewRequest'}
             };
             var DESCRIPTION_TYPE = {
                 FSN: 'FSN',
@@ -82,12 +87,16 @@ angular
                 isValidPageMode = (pageMode !== undefined && pageMode !== null);
 
                 // check valid param
-                if (pageMode === REQUEST_MODE.NEW) {
-                    isValidParam = (requestService.identifyRequestType(param) !== null);
-                    isValidInputMode = (identifyInputMode(inputMode) !== null);
-                } else if (pageMode === REQUEST_MODE.EDIT) {
-                    isValidParam = (param !== undefined && param !== null);
-                    isValidInputMode = true;
+                switch(pageMode) {
+                    case  REQUEST_MODE.NEW:
+                        isValidParam = (requestService.identifyRequestType(param) !== null);
+                        isValidInputMode = (identifyInputMode(inputMode) !== null);
+                        break;
+                    case REQUEST_MODE.EDIT:
+                    case REQUEST_MODE.PREVIEW:
+                        isValidParam = (param !== undefined && param !== null);
+                        isValidInputMode = true;
+                        break;
                 }
 
                 return isValidPageMode && isValidParam && isValidInputMode;
@@ -114,9 +123,32 @@ angular
                 $window.scrollTop = 0;
             };
 
-            /*var getDescriptionsForValueTypeahead = function (viewVal) {
-                if (vm.orig)
-            };*/
+            var loadAuthors = function () {
+                vm.loadingAuthors = true;
+                return jiraService.getAuthorUsers(0, 50, true, []).then(function (users) {
+                    vm.authors = users;
+
+                    return users;
+                }).finally(function () {
+                    vm.loadingAuthors = false;
+                });
+            };
+
+            var getAuthorName = function (authorKey) {
+                if (!vm.authors || vm.authors.length === 0) {
+                    return authorKey;
+                } else {
+                    for (var i = 0; i < vm.authors.length; i++) {
+                        if (vm.authors[i].key === authorKey) {
+                            //return vm.authors[i].displayName;
+                            return $sce.trustAsHtml([
+                                    '<img style="padding-bottom:2px" src="' + vm.authors[i].avatarUrls['16x16'] + '"/>',
+                                    '<span style="vertical-align:middle">&nbsp;' + vm.authors[i].displayName + '</span>'
+                            ].join(''));
+                        }
+                    }
+                }
+            };
 
             var buildNewConceptDefinitionOfChanges = function (changeId) {
                 return {
@@ -138,59 +170,71 @@ angular
                 var isValid = isValidViewParams();
                 var originConcept;
 
+                // load authors
+                loadAuthors();
+
                 if (!isValid) {
                     showErrorMessage('crs.request.message.error.invalidPage');
                 } else {
-                    if (mode === REQUEST_MODE.NEW.value) {
-                        requestId = null;
-                        requestType = requestService.identifyRequestType(param);
-                        $rootScope.pageTitles = ['crs.request.details.title.new', requestType.langKey];
+                    vm.pageMode = identifyPageMode(mode);
 
-                        vm.request = {
-                            id: requestId,
-                            additionalFields: {},
-                            requestHeader: {
-                                status: REQUEST_STATUS.DRAFT.value
+                    switch (vm.pageMode) {
+                        case REQUEST_MODE.NEW:
+                            requestId = null;
+                            requestType = requestService.identifyRequestType(param);
+                            $rootScope.pageTitles = ['crs.request.details.title.new', requestType.langKey];
+
+                            vm.request = {
+                                id: requestId,
+                                additionalFields: {},
+                                requestHeader: {
+                                    status: REQUEST_STATUS.DRAFT.value,
+                                    requestDate: new Date().getTime()
+                                }
+                            };
+
+                            if (requestType === REQUEST_TYPE.NEW_CONCEPT) {
+                                originConcept = objectService.getNewConcept();
+                                originConcept.definitionOfChanges = buildNewConceptDefinitionOfChanges();
+                                vm.originalConcept = originConcept;
+                                vm.concept = angular.copy(vm.originalConcept);
                             }
-                        };
 
-                        if (requestType === REQUEST_TYPE.NEW_CONCEPT) {
-                            originConcept = objectService.getNewConcept();
-                            originConcept.definitionOfChanges = buildNewConceptDefinitionOfChanges();
-                            vm.originalConcept = originConcept;
-                            vm.concept = angular.copy(vm.originalConcept);
-                        }
+                            accountService.getAccountInfo().then(function (accountDetails) {
+                                vm.request.requestHeader.ogirinatorId = accountDetails.login;
+                            });
 
-                        vm.requestType = requestType;
-                        vm.isValidViewParams = isValid;
-                        vm.inputMode = identifyInputMode(inputMode);
-                    } else if (mode === REQUEST_MODE.EDIT.value) {
-                        requestId = param;
-                        $rootScope.pageTitles = ['crs.request.details.title.edit'];
+                            vm.requestType = requestType;
+                            vm.isValidViewParams = isValid;
+                            vm.inputMode = identifyInputMode(inputMode);
+                            break;
+                        case REQUEST_MODE.EDIT:
+                        case REQUEST_MODE.PREVIEW:
+                            requestId = param;
+                            $rootScope.pageTitles = ['crs.request.details.title.edit'];
 
-                        $rootScope.showLoading = true;
-                        vm.disableSimpleMode = true;
-                        loadRequest().then(function (requestData) {
-                            var requestType = requestService.identifyRequestType(vm.request.requestType);
-                            var inputMode = identifyInputMode(vm.request.inputMode);
+                            vm.disableSimpleMode = true;
+                            loadRequest().then(function (requestData) {
+                                var requestType = requestService.identifyRequestType(vm.request.requestType);
+                                var inputMode = identifyInputMode(vm.request.inputMode);
 
-                            if (requestType) {
-                                $rootScope.pageTitles.push(vm.request.id);
-                                vm.requestType = requestType;
-                                vm.inputMode = inputMode;
-                                vm.isValidViewParams = isValid;
+                                if (requestType) {
+                                    $rootScope.pageTitles.push(vm.request.id);
+                                    vm.requestType = requestType;
+                                    vm.inputMode = inputMode;
+                                    vm.isValidViewParams = isValid;
 
-                                permanentlyDisableSimpleMode = (vm.inputMode === REQUEST_INPUT_MODE.DIRECT);
-                                vm.disableSimpleMode = (vm.inputMode === REQUEST_INPUT_MODE.DIRECT);
+                                    permanentlyDisableSimpleMode = (vm.inputMode === REQUEST_INPUT_MODE.DIRECT);
+                                    vm.disableSimpleMode = (vm.inputMode === REQUEST_INPUT_MODE.DIRECT);
 
-                                notificationService.sendMessage('crs.request.message.requestLoaded', 5000);
-                            } else {
-                                showErrorMessage('crs.request.message.error.invalidPage');
-                            }
-                        });
+                                    notificationService.sendMessage('crs.request.message.requestLoaded', 5000);
+                                } else {
+                                    showErrorMessage('crs.request.message.error.invalidPage');
+                                }
+                            });
+                            break;
                     }
 
-                    vm.pageMode = identifyPageMode(mode);
                     loadRequestMetadata();
                 }
             };
@@ -407,7 +451,8 @@ angular
                             changeId: null,
                             changeType: REQUEST_TYPE.CHANGE_RETIRE_DESCRIPTION.value,
                             changed: true,
-                            descriptionStatus: descriptionStatus
+                            descriptionStatus: descriptionStatus,
+                            proposedDescription: proposedTerm
                         };
                     }
 
@@ -547,7 +592,7 @@ angular
 
             var extractItemByRequestType = function (requestItems, type) {
                 for (var i = 0 ; i < requestItems.length; i++){
-                    if (requestItems[i].requestType = type.value) {
+                    if (requestItems[i].requestType === type.value) {
                         return requestItems[i];
                     }
                 }
@@ -645,7 +690,7 @@ angular
                         item.descriptionId = changedTarget.descriptionId;
                         item.currentDescription = changedTarget.term;
                         item.conceptDescription = changedTarget.term;
-                        item.proposedDescription = changedTarget.term;
+                        item.proposedDescription = definitionOfChanges.proposedDescription || changedTarget.term;
                         item.proposedCaseSignificance = changedTarget.caseSignificance;
                         item.proposedDescriptionStatus = definitionOfChanges.descriptionStatus;
                         break;
@@ -673,15 +718,16 @@ angular
 
             var buildRequestFromRequestData = function (requestData) {
                 var request = {
-                    id:                 requestData.id,
-                    fsn:                requestData.fsn,
-                    batchRequest:       requestData.batchRequest,
-                    rfcNumber:          requestData.rfcNumber,
-                    additionalFields:   requestData.additionalFields || {},
-                    jiraTicketId:       requestData.jiraTicketId,
-                    requestType:        requestData.requestType,
-                    inputMode:          requestData.inputMode,
-                    requestHeader:      requestData.requestHeader
+                    id:                     requestData.id,
+                    requestorInternalId:    requestData.requestorInternalId,
+                    fsn:                    requestData.fsn,
+                    batchRequest:           requestData.batchRequest,
+                    rfcNumber:              requestData.rfcNumber,
+                    additionalFields:       requestData.additionalFields || {},
+                    jiraTicketId:           requestData.jiraTicketId,
+                    requestType:            requestData.requestType,
+                    inputMode:              requestData.inputMode,
+                    requestHeader:          requestData.requestHeader
                 };
                 var requestItems = requestData.requestItems;
                 var mainItem = extractItemByRequestType(requestItems, requestService.identifyRequestType(request.requestType));
@@ -770,6 +816,7 @@ angular
                 requestDetails.requestType = vm.requestType.value;
 
                 requestDetails.id = request.id;
+                requestDetails.requestorInternalId = request.requestorInternalId;
                 requestDetails.requestItems = [];
                 requestDetails.concept = concept;
 
@@ -813,6 +860,7 @@ angular
                 concept.definitionOfChanges.notes = request.additionalFields.notes;
                 concept.definitionOfChanges.reference = request.additionalFields.reference;
                 concept.definitionOfChanges.reasonForChange = request.additionalFields.reasonForChange;
+                concept.definitionOfChanges.currentFsn = concept.fsn;
             };
 
             var buildConceptFromRequest = function (request) {
@@ -853,7 +901,7 @@ angular
                             concept.definitionOfChanges.proposedStatus = request.proposedStatus;
                             concept.definitionOfChanges.historyAttribute = request.historyAttribute;
                             concept.definitionOfChanges.historyAttributeValue = request.historyAttributeValue;
-                            concept.definitionOfChanges.currentFsn = concept.fsn;
+                            //concept.definitionOfChanges.currentFsn = concept.fsn;
 
                             if (request.proposedFSN && request.proposedFSN !== concept.fsn) {
                                 concept.fsn = request.proposedFSN;
@@ -899,22 +947,25 @@ angular
             };
 
             var validateRequest = function (ignoreGeneralFields) {
-                var field, fieldValue;
+                var field, fieldValue, error = {};
+                var fieldRequiredLangKey = 'crs.request.message.error.fieldRequired',
+                    fieldInvalidLangKey = 'crs.request.message.error.fieldInvalid';
 
-                hideErrorMessage();
+                notificationService.clear();
 
                 // validate concept
-                if (vm.originalConcept === undefined || vm.originalConcept === null) {
-                    showErrorMessage('crs.request.message.error.requiredConcept');
-                    return false;
+                if (vm.originalConcept === undefined || vm.originalConcept === null ||
+                    (vm.originalConcept && !vm.originalConcept.moduleId && !vm.originalConcept.conceptId && !vm.originalConcept.fsn)) {
+                    error.concept = fieldRequiredLangKey;
+                } else if (vm.originalConcept && !vm.originalConcept.moduleId && !vm.originalConcept.conceptId && vm.originalConcept.fsn) {
+                    error.concept = fieldInvalidLangKey;
                 }
 
                 // test general fields
                 if (!ignoreGeneralFields) {
                     if (!vm.request.additionalFields.topic ||
                         !vm.request.additionalFields.topic.trim()) {
-                        showErrorMessage('crs.request.message.error.requiredTopic');
-                        return false;
+                        error.topic = fieldRequiredLangKey;
                     }
                 }
 
@@ -929,10 +980,15 @@ angular
                             fieldValue === null ||
                             (angular.isFunction(fieldValue.trim) && fieldValue.trim() === '' ) ||
                             (angular.isObject(fieldValue) && !fieldValue.conceptId ))) {
-                            showErrorMessage('crs.request.message.error.requiredFields');
-                            return false;
+                            error[field.name] = fieldRequiredLangKey;
                         }
                     }
+                }
+
+                vm.error = error;
+                if (Object.keys(error).length > 0) {
+                    notificationService.sendError('crs.request.message.error.invalidInput');
+                    return false;
                 }
 
                 return true;
@@ -945,6 +1001,11 @@ angular
                 if (!validateRequest()) {
                     return;
                 }
+
+                notificationService.sendMessage('crs.request.message.requestSaving');
+
+                // show loading mask
+                $rootScope.showAppLoading = true;
 
                 //console.log(vm.request);
                 if (vm.inputMode === REQUEST_INPUT_MODE.SIMPLE) {
@@ -962,6 +1023,9 @@ angular
                         $location.path('/dashboard').search({});
                     }, function (e) {
                         showErrorMessage(e.message)
+                    })
+                    .finally(function () {
+                        $rootScope.showAppLoading = false;
                     });
             };
 
@@ -972,6 +1036,11 @@ angular
                 if (!validateRequest()) {
                     return;
                 }
+
+                notificationService.sendMessage('crs.request.message.requestSubmitting');
+
+                // show loading mask
+                $rootScope.showAppLoading = true;
 
                 //console.log(vm.request);
                 if (vm.inputMode === REQUEST_INPUT_MODE.SIMPLE) {
@@ -993,8 +1062,104 @@ angular
                         notificationService.sendMessage('crs.request.message.requestSubmitted', 5000);
                         $location.path('/dashboard').search({});
                     }, function (e) {
+                        console.log(e);
+                        showErrorMessage(e.message)
+                    })
+                    .finally(function () {
+                        $rootScope.showAppLoading = false;
+                    });
+            };
+
+            var changeRequestStatus = function (requestId, requestStatus, data) {
+                // show loading mask
+                $rootScope.showAppLoading = true;
+
+                notificationService.sendMessage('crs.request.message.requestProcessing');
+                return requestService.changeRequestStatus(requestId, requestStatus, data)
+                    .finally(function () {
+                        $rootScope.showAppLoading = false;
+                    });
+            };
+
+            var acceptRequest = function () {
+                changeRequestStatus(vm.request.id, REQUEST_STATUS.ACCEPTED)
+                    .then(function (response) {
+                        notificationService.sendMessage('crs.request.message.requestAccepted', 5000);
+                        $location.path('/dashboard').search({});
+                    }, function (e) {
                         showErrorMessage(e.message)
                     });
+            };
+
+            var rejectRequest = function () {
+                var modalInstance = openStatusCommentModal('reject');
+
+                modalInstance.result.then(function (rejectComment) {
+                    changeRequestStatus(vm.request.id, REQUEST_STATUS.REJECTED, {reason:rejectComment})
+                        .then(function (response) {
+                            notificationService.sendMessage('crs.request.message.requestRejected', 5000);
+                            $location.path('/dashboard').search({});
+                        }, function (e) {
+                            showErrorMessage(e.message)
+                        });
+                });
+            };
+
+            var rejectAppeal = function () {
+                var modalInstance = openStatusCommentModal('reject');
+
+                modalInstance.result.then(function (rejectComment) {
+                    changeRequestStatus(vm.request.id, REQUEST_STATUS.APPEAL_REJECTED, {reason:rejectComment})
+                        .then(function (response) {
+                            notificationService.sendMessage('crs.request.message.requestRejected', 5000);
+                            $location.path('/dashboard').search({});
+                        }, function (e) {
+                            showErrorMessage(e.message)
+                        });
+                });
+            };
+
+            var requestClarification = function () {
+
+                var modalInstance = openStatusCommentModal('needClarify');
+
+                modalInstance.result.then(function (rejectComment) {
+                    changeRequestStatus(vm.request.id, REQUEST_STATUS.CLARIFICATION_NEEDED, {reason:rejectComment})
+                        .then(function (response) {
+                            notificationService.sendMessage('crs.request.message.requestClarification', 5000);
+                            $location.path('/dashboard').search({});
+                        }, function (e) {
+                            showErrorMessage(e.message)
+                        });
+                });
+            };
+
+            var appealRequest = function () {
+                var modalInstance = openStatusCommentModal('appeal');
+
+                modalInstance.result.then(function (appealComment) {
+                    changeRequestStatus(vm.request.id, REQUEST_STATUS.APPEAL, {reason:appealComment})
+                        .then(function (response) {
+                            notificationService.sendMessage('crs.request.message.requestAppealed', 5000);
+                            $location.path('/dashboard').search({});
+                        }, function (e) {
+                            showErrorMessage(e.message)
+                        });
+                });
+            };
+
+            var withdrawRequest = function () {
+                var modalInstance = openStatusCommentModal('withdraw');
+
+                modalInstance.result.then(function (withdrawComment) {
+                    changeRequestStatus(vm.request.id, REQUEST_STATUS.WITHDRAWN, {reason:withdrawComment})
+                        .then(function (response) {
+                            notificationService.sendMessage('crs.request.message.requestWithdrawn', 5000);
+                            $location.path('/dashboard').search({});
+                        }, function (e) {
+                            showErrorMessage(e.message)
+                        });
+                });
             };
 
             var startEditingConcept = function (conceptObj) {
@@ -1036,6 +1201,19 @@ angular
                 }
             };
 
+            var openStatusCommentModal = function (requestStatus) {
+                return $uibModal.open({
+                    templateUrl: 'components/request/modal-change-request-status.html',
+                    controller: 'ModalChangeRequestStatusCtrl as modal',
+                    resolve: {
+                        requestStatus: function () {
+                            return requestStatus;
+                        }
+                    }
+                });
+            };
+
+
             $scope.$on(CONCEPT_EDIT_EVENT.STOP_EDIT_CONCEPT, function (event, data) {
                 if (!data || !data.concept) {
                     console.error('Cannot remove concept: concept must be supplied');
@@ -1061,22 +1239,28 @@ angular
                 }
             });
 
-            /*$scope.$watch(function () {
-                return vm.originalConcept;
-            }, function (newVal) {
-                originalConcept = newVal;
-                //vm.concept = angular.copy(originalConcept);
-            });*/
 
             vm.cancelEditing = cancelEditing;
             vm.saveRequest = saveRequest;
+            vm.acceptRequest = acceptRequest;
+            vm.rejectRequest = rejectRequest;
+            vm.rejectAppeal = rejectAppeal;
+            vm.requestClarification = requestClarification;
             vm.saveAndSubmitRequest = saveAndSubmitRequest;
             vm.startEditingConcept = startEditingConcept;
             vm.setInputMode = setInputMode;
             vm.originalConcept = null;
             vm.onConceptChangedDirectly = onConceptChangedDirectly;
-            //vm.getDescriptionsForValueTypeahead = getDescriptionsForValueTypeahead;
-            //vm.onSelectConcept = onSelectConcept;
+            vm.appealRequest = appealRequest;
+            vm.withdrawRequest = withdrawRequest;
+            vm.getAuthorName = getAuthorName;
+            vm.error = {};
+            vm.conceptStatus = {
+                loading: false,
+                searching: false,
+                valid: true
+            };
+            vm.loadingAuthors = true;
 
             $scope.panelId = 'REQUEST_DETAILS';
 

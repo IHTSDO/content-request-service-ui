@@ -7,13 +7,15 @@ angular
         function (snowowlService) {
             return {
                 restrict: 'E',
-                require: '^form',
+                require: ['?^formControlReadonly', '^form'],
                 scope: {
                     typeConcept: '=',
                     parents: '='
                 },
                 template: [
-                    '<div class="no-padding" style="position:relative" >',
+                    '<div class="no-padding">',
+                    '<input ng-if="readonly" readonly="readonly" class="form-control" type="text" ng-model="typeConcept.fsn" />',
+                    '<div ng-if="!readonly" class="no-padding" style="position:relative" >',
                     //'drag-enter-class="concept-drag-target"',
                     //'drag-hover-class="concept-drag-hover"',
                     //'drop-channel="conceptPropertiesObj"',
@@ -31,9 +33,10 @@ angular
                         'ng-show="showLoading || showError" ' +
                         'class="md" ' +
                         'ng-class="{\'md-spin md-autorenew\':showLoading, \'md-error\':showError}"></span>',
+                    '</div>',
                     '</div>'
                 ].join(''),
-                link: function ($scope) {
+                link: function ($scope, $element, $attrs, reqiredControllers) {
                     /*var dropConcept = function (conceptData) {
                         // enable loading
                         $scope.showLoading = true;
@@ -43,6 +46,14 @@ angular
                             $scope.showLoading = false;
                         });
                     };*/
+
+                    var formControlReadonlyCtrl = reqiredControllers[0];
+
+                    var initControl = function () {
+                        if (formControlReadonlyCtrl) {
+                            $scope.readonly = formControlReadonlyCtrl.getReadonlyStatus();
+                        }
+                    };
 
                     var getConceptsForValueTypeahead = function (viewValue) {
                         var isARelConcept = {
@@ -104,6 +115,9 @@ angular
                     //$scope.dropConcept = dropConcept;
                     $scope.selectTypeConcept = selectTypeConcept;
                     $scope.getTypeConceptsForValueTypeahead = getConceptsForValueTypeahead;
+                    $scope.readonly = false;
+
+                    initControl();
                 }
             }
         }

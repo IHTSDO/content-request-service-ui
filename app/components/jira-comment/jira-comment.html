@@ -1,0 +1,35 @@
+<div ng-controller="JiraCommentCtrl as ctrl">
+    <h4 style="display: inline-block">Comments </h4> <span style="vertical-align: middle;margin-bottom: 5px;margin-left: 3px" ng-if="ctrl.loadingComment" class="md md-spin md-autorenew"></span>
+
+    <div class="comment-container" >
+        <div ng-repeat="comment in ctrl.comments track by comment.id" class="comment-item">
+            <div class="comment-head">
+                <div class="comment-details">
+                    <a class="user-avatar" >
+                        <img ng-src="{{comment.user.avatarUrls['16x16']}}" alt="comment.user.name" />
+                        <span class="user-name">{{comment.user.displayName}}</span>
+                    </a>
+                    <span>added a comment on</span>
+                    <span class="comment-date">{{comment.createDate | date:'MM-dd-yyyy'}}</span>
+                </div>
+            </div>
+            <div class="comment-body">{{comment.body}}</div>
+        </div>
+    </div>
+
+    <form class="form-floating" style="margin-top: 30px">
+        <div class="row">
+            <div class="col-md-11 no-padding">
+                <form-control type="textarea" model="ctrl.message"></form-control>
+            </div>
+            <div class="col-md-1">
+                <a class="tooltips-left">
+                <button ng-disabled="ctrl.postingComment" class="pointer btn btn-round btn-default lighten-1 blue" ng-click="ctrl.postComment()">
+                    <i class="md" ng-class="{'md-forum':!ctrl.postingComment, 'md-spin md-autorenew': ctrl.postingComment}"></i>
+                    <span >{{(ctrl.postingComment)?'your comment is being posted':'click to post your comment'}}</span>
+                </button>
+                </a>
+            </div>
+        </div>
+    </form>
+</div>

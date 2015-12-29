@@ -1,49 +1,23 @@
 <h4 translate="crs.request.requestType.changeRetireDescription"></h4>
-<form class="form-floating">
+<form class="form-floating" form-control-readonly="requestVM.request.requestHeader.status !== 'DRAFT'">
 
     <div class="form-group">
-        <!--<form-control type="text"
-                      model="requestVM.request.requestorInternalId"
-                      label="crs.request.details.label.requestorInternalId"
-                      name="txtRequestorInternalId"></form-control>-->
-
-        <!--<div>
-            <div class="form-control-element required">
-                <label for="">Concept Id</label>
-                <input class="form-control" type="text" ng-model="requestVM.request.conceptId"/>
-            </div>
-            <div class="form-control-element required">
-                <label for="">Concept FSN</label>
-                <input class="form-control" type="text" ng-model="requestVM.request.conceptFSN"/>
-            </div>
-        </div>
-        <br/>-->
 
         <form-control type="concept"
                       model="requestVM.originalConcept"
                       label="crs.request.details.label.concept"
-                      required></form-control>
+                      required
+                      error-model="requestVM.error.concept"
+                      concept-status="requestVM.conceptStatus"></form-control>
 
-<!--        <form-control type="text"
-                      model="requestVM.request.descriptionId"
-                      label="crs.request.details.label.descriptionId"
-                      name="txtDescriptionId"
-                      required></form-control>-->
-
-        <!--<form-control type="typeahead"
-                      model="requestVM.request.description"
-                      label="crs.request.details.label.currentDescription"
-                      name="txtDescription"
-                      crs-typeahead="suggestion as suggestion.term for suggestion in requestVM.originalConcept.descriptions"
-                      typeahead-focus-first="false"
-                      typeahead-wait-ms="700"
-                      typeahead-editable="false" typeahead-min-length="0"
-                      required></form-control>-->
         <form-control type="select"
                       model="requestVM.request.descriptionId"
                       options="suggestion.descriptionId as suggestion.term for suggestion in requestVM.originalConcept.descriptions"
                       label="crs.request.details.label.currentDescription"
-                      name="slCurrentDescription" required></form-control>
+                      name="slCurrentDescription"
+                      required
+                      error-model="requestVM.error.descriptionId"
+                      loading-mask="requestVM.conceptStatus.loading || requestVM.conceptStatus.searching"></form-control>
 
         <form-control type="text"
                       model="requestVM.request.proposedDescription"

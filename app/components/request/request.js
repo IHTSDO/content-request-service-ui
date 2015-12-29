@@ -113,6 +113,50 @@ angular
         NEW: {
             value: 'NEW',
             langKey: 'crs.request.requestStatus.new'
+        },
+        ACCEPTED: {
+            value: 'ACCEPTED',
+            langKey: 'crs.request.requestStatus.accepted'
+        },
+        UNDER_AUTHORING: {
+            value: 'UNDER_AUTHORING',
+            langKey: 'crs.request.requestStatus.underAuthoring'
+        },
+        REJECTED: {
+            value: 'REJECTED',
+            langKey: 'crs.request.requestStatus.rejected'
+        },
+        CLARIFICATION_NEEDED: {
+            value: 'CLARIFICATION_NEEDED',
+            langKey: 'crs.request.requestStatus.clarificationNeeded'
+        },
+        APPEAL: {
+            value: 'APPEAL',
+            langKey: 'crs.request.requestStatus.appeal'
+        },
+        ON_HOLD: {
+            value: 'ON_HOLD',
+            langKey: 'crs.request.requestStatus.onHold'
+        },
+        WITHDRAWN: {
+            value: 'WITHDRAWN',
+            langKey: 'crs.request.requestStatus.withdraw'
+        },
+        APPEAL_REJECTED: {
+            value: 'APPEAL_REJECTED',
+            langKey: 'crs.request.requestStatus.appealRejected'
+        },
+        APPROVED: {
+            value: 'APPROVED',
+            langKey: 'crs.request.requestStatus.approved'
+        },
+        CLOSED: {
+            value: 'CLOSED',
+            langKey: 'crs.request.requestStatus.closed'
+        },
+        FORWARDED: {
+            value: 'FORWARDED',
+            langKey: 'crs.request.requestStatus.forwarded'
         }
     })
     .value('REQUEST_METADATA_KEY', {

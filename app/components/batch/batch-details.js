@@ -6,84 +6,74 @@ angular
         '$rootScope',
         '$filter',
         '$routeParams',
+        '$location',
         'ngTableParams',
         'batchService',
         'requestService',
         'notificationService',
         'accountService',
         'CRS_ROLE',
-        function ($rootScope, $filter, $routeParams, ngTableParams, batchService, requestService, notificationService, accountService, CRS_ROLE) {
+        function ($rootScope, $filter, $routeParams, $location, ngTableParams, batchService, requestService, notificationService, accountService, CRS_ROLE) {
             var vm = this;
 
             var initView = function () {
                 $rootScope.pageTitles = ['Batch Details', $routeParams.batchId];
-                loadBatchRequests();
+
+                loadBatchSummary($routeParams.batchId);
             };
 
-            var loadBatchRequests = function () {
-
-                vm.requests = null;
-                batchService.getBatch($routeParams.batchId).then(function (requests) {
-                    vm.requests = requests;
-
-                    if (angular.isArray(vm.requests) && vm.requests.length > 0) {
-                        vm.batchHeader = vm.requests[0].requestHeader;
-                        vm.batchHeader.batchRequest = vm.requests[0].batchRequest;
-                    }
-
-                    if (vm.tableParams) {
-                        vm.tableParams.reload();
-                    }
+            var loadBatchSummary = function (batchId) {
+                batchService.getBatchSummary(batchId).then(function (response) {
+                    vm.batchSummary = response;
+                    console.log(vm.batchSummary);
                 });
-                /*requestService.getRequests().then(function (requests) {
-                    vm.requests = requests;
-                    if (vm.tableParams) {
-                        vm.tableParams.reload();
-                    }
-                });*/
+            };
+
+            var editRequest = function (requestId) {
+                $location.path('requests/edit/' + requestId);
             };
 
             var requestTableParams = new ngTableParams({
                     page: 1,
                     count: 10,
-                    sorting: {'requestHeader.requestDate': 'desc', batchId: 'asc', id: 'asc'}
+                    sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'asc', id: 'asc'}
                 },
                 {
-                    filterDelay: 50,
-                    total: vm.requests ? vm.requests.length : 0, // length of data
+                    filterDelay: 700,
                     getData: function (params) {
+                        var sortingObj = params.sorting();
+                        var sortFields = [], sortDirs = [];
 
-                        if (!vm.requests || vm.requests.length == 0) {
-                            return [];
-                        } else {
-
-                            var searchStr = params.filter().search;
-                            var mydata = [];
-
-                            if (searchStr) {
-                                mydata = vm.requests.filter(function (item) {
-                                    return (item.batchRequest + '').indexOf(searchStr.toLowerCase()) > -1 ||
-                                        (item.jiraTicketId || '').toLowerCase().indexOf(searchStr.toLowerCase()) > -1 ||
-                                        (item.reasonForChange || '').toLowerCase().indexOf(searchStr.toLowerCase()) > -1;
-                                });
-                            } else {
-                                mydata = vm.requests;
-                            }
-
-                            params.total(mydata.length);
-                            mydata = params.sorting() ? $filter('orderBy')(mydata, params.orderBy()) : mydata;
-
-                            return mydata.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                        if (sortingObj) {
+                            angular.forEach(sortingObj, function (dir, field) {
+                                sortFields.push(field);
+                                sortDirs.push(dir);
+                            });
                         }
 
+                        return batchService.getBatch($routeParams.batchId, params.page() - 1, params.count(), params.filter().search, sortFields, sortDirs).then(function (requests) {
+                            params.total(requests.total);
+                            if (requests.items && requests.items.length > 0) {
+                                /*if (!vm.batchHeader) {
+                                    vm.batchHeader = requests.items[0].requestHeader;
+                                    vm.batchHeader.batchRequest = requests.items[0].batchRequest;
+                                }*/
+
+                                return requests.items;
+                            } else {
+                                return [];
+                            }
+                        }, function () {
+                            return [];
+                        });
                     }
                 }
             );
 
 
             vm.tableParams = requestTableParams;
-            vm.requests = null;
-            vm.batchHeader = {};
+            vm.batchSummary = null;
+            vm.editRequest = editRequest;
 
             initView();
         }
