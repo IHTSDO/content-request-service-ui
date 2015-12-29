@@ -1,12 +1,9 @@
 {
     "endpoint": {
-        "crs": "http://local.ihtsdotools.org/crs/",
-        "_crs": "https://dev-request.ihtsdotools.org/",
+        "crs": "https://dev-request.ihtsdotools.org/ihtsdo-crs/",
         "ims": "https://dev-ims.ihtsdotools.org/",
-        "_snowowl": "https://dev-term.ihtsdotools.org/snowowl/",
-        "snowowl": "http://local.ihtsdotools.org/snowowl/",
+        "snowowl": "https://dev-request.ihtsdotools.org/snowowl/",
         "jira": "https://dev-jira.ihtsdotools.org/",
-        "_jira": "http://local.ihtsdotools.org/jira/",
         "ims-api": "https://dev-term.ihtsdotools.org/ims-api/"
     },
     "xhrTimeout": 50000,
