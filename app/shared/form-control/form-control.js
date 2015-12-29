@@ -13,6 +13,15 @@ angular
                     ' ></concept-input>';
             };
 
+            var buildAttributeValueInputControl = function (name, domainAttribute, model, onConceptChanged, readonlyExp, conceptStatusExp) {
+                return '<attribute-value-input concept="' + model + '"' +
+                    (onConceptChanged?' on-concept-changed="'+ onConceptChanged + '"': '') +
+                    ((readonlyExp)?' readonly="' + readonlyExp +'" ':'') +
+                    ((conceptStatusExp)?' concept-status="' + conceptStatusExp +'"':'') +
+                    ((domainAttribute)?' domain-attribute="' + domainAttribute +'"':'') +
+                    ' ></concept-input>';
+            };
+
             var buildAuthorInputControl = function (name, model, authorList, onConceptChanged, readonlyExp, authorStatusExp) {
                 return '<author-input author="' + model + '"' +
                     (onConceptChanged?' on-author-changed="'+ onConceptChanged + '"': '') +
@@ -143,6 +152,15 @@ angular
                         case 'concept':
                             elementHtml = buildConceptInputControl(
                                 $attrs.name,
+                                $attrs.model,
+                                $attrs.onConceptChanged,
+                                $attrs.readonly,
+                                $attrs.conceptStatus);
+                            break;
+                        case 'attributeValue':
+                            elementHtml = buildAttributeValueInputControl(
+                                $attrs.name,
+                                $attrs.domainAttribute,
                                 $attrs.model,
                                 $attrs.onConceptChanged,
                                 $attrs.readonly,

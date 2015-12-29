@@ -201,7 +201,7 @@ angular
                             }
 
                             accountService.getAccountInfo().then(function (accountDetails) {
-                                vm.request.requestHeader.ogirinatorId = accountDetails.data.login;
+                                vm.request.requestHeader.ogirinatorId = accountDetails.login;
                             });
 
                             vm.requestType = requestType;
@@ -718,15 +718,16 @@ angular
 
             var buildRequestFromRequestData = function (requestData) {
                 var request = {
-                    id:                 requestData.id,
-                    fsn:                requestData.fsn,
-                    batchRequest:       requestData.batchRequest,
-                    rfcNumber:          requestData.rfcNumber,
-                    additionalFields:   requestData.additionalFields || {},
-                    jiraTicketId:       requestData.jiraTicketId,
-                    requestType:        requestData.requestType,
-                    inputMode:          requestData.inputMode,
-                    requestHeader:      requestData.requestHeader
+                    id:                     requestData.id,
+                    requestorInternalId:    requestData.requestorInternalId,
+                    fsn:                    requestData.fsn,
+                    batchRequest:           requestData.batchRequest,
+                    rfcNumber:              requestData.rfcNumber,
+                    additionalFields:       requestData.additionalFields || {},
+                    jiraTicketId:           requestData.jiraTicketId,
+                    requestType:            requestData.requestType,
+                    inputMode:              requestData.inputMode,
+                    requestHeader:          requestData.requestHeader
                 };
                 var requestItems = requestData.requestItems;
                 var mainItem = extractItemByRequestType(requestItems, requestService.identifyRequestType(request.requestType));
@@ -815,6 +816,7 @@ angular
                 requestDetails.requestType = vm.requestType.value;
 
                 requestDetails.id = request.id;
+                requestDetails.requestorInternalId = request.requestorInternalId;
                 requestDetails.requestItems = [];
                 requestDetails.concept = concept;
 

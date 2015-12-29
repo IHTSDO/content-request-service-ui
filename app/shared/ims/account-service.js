@@ -49,16 +49,17 @@ angular
                 var getAccountAPI = 'account';
                 var deferred = $q.defer();
 
-                if (accountDetails !== null) {
+                if (accountDetails !== undefined &&
+                    accountDetails !== null) {
                     deferred.resolve(accountDetails);
                     return deferred.promise;
                 }
 
                 return $http.get(imsApiEndpoint + getAccountAPI, {withCredentials: true})
-                    .success(function (data) {
-                        accountDetails = data;
-                    })
-                    .error(function () {
+                    .then(function (response) {
+                        accountDetails = response.data;
+                        return response.data;
+                    }, function (error) {
                         accountDetails = null;
                     });
             };

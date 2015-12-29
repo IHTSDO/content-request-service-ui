@@ -16,10 +16,11 @@
                       required
                       error-model="requestVM.error.relationshipType"></form-control>
 
-        <form-control type="concept"
+        <form-control type="attributeValue"
                       model="requestVM.request.destinationConcept"
                       label="crs.request.details.label.destinationConcept"
                       required
+                      domain-attribute="requestVM.request.relationshipType"
                       error-model="requestVM.error.destinationConcept"></form-control>
 
         <form-control type="select"
