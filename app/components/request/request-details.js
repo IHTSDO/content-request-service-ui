@@ -16,14 +16,14 @@ angular
         'objectService',
         'snowowlService',
         'snowowlMetadataService',
-        'jiraService',
+        'crsJiraService',
         'accountService',
         'REQUEST_METADATA_KEY',
         'REQUEST_TYPE',
         'CONCEPT_EDIT_EVENT',
         'REQUEST_STATUS',
         'REQUEST_INPUT_MODE',
-        function ($scope, $rootScope, $routeParams, $location, $anchorScroll, $uibModal, $sce, requestService, notificationService, requestMetadataService, objectService, snowowlService, snowowlMetadataService, jiraService, accountService, REQUEST_METADATA_KEY, REQUEST_TYPE, CONCEPT_EDIT_EVENT, REQUEST_STATUS, REQUEST_INPUT_MODE) {
+        function ($scope, $rootScope, $routeParams, $location, $anchorScroll, $uibModal, $sce, requestService, notificationService, requestMetadataService, objectService, snowowlService, snowowlMetadataService, crsJiraService, accountService, REQUEST_METADATA_KEY, REQUEST_TYPE, CONCEPT_EDIT_EVENT, REQUEST_STATUS, REQUEST_INPUT_MODE) {
             var vm = this;
             var REQUEST_MODE = {
                 NEW: {value: 'new', langKey: 'crs.request.requestMode.newRequest'},
@@ -125,7 +125,7 @@ angular
 
             var loadAuthors = function () {
                 vm.loadingAuthors = true;
-                return jiraService.getAuthorUsers(0, 50, true, []).then(function (users) {
+                return crsJiraService.getAuthorUsers(0, 50, true, []).then(function (users) {
                     vm.authors = users;
 
                     return users;

@@ -114,7 +114,7 @@ angular
                 applyUserPreferences: applyUserPreferences,
                 checkRoles: checkRoles,
                 getTestUsers: function () {
-                    return $http.get('http://huy.ihtsdotools.org/crs/api/test/user', {withCredentials: true})
+                    return $http.get('http://local.ihtsdotools.org/crs/api/test/user', {withCredentials: true})
                         .success(function (data) {
                             accountDetails = data;
                         })

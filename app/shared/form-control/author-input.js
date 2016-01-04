@@ -3,8 +3,8 @@
 angular
     .module('conceptRequestServiceApp.formControl')
     .directive('authorInput', [
-        'jiraService',
-        function (jiraService) {
+        'crsJiraService',
+        function (crsJiraService) {
             return {
                 restrict: 'E',
                 require: ['?^formControlReadonly', '^form'],
@@ -74,7 +74,7 @@ angular
                         }
 
                         // search authors
-                        return jiraService.getAuthorUsers(0, 10, true, []).then(function (users) {
+                        return crsJiraService.getAuthorUsers(0, 10, true, []).then(function (users) {
                             $scope.authors = users;
 
                             return users;
@@ -100,7 +100,7 @@ angular
                         }
 
                         // search authors
-                        return jiraService.getAuthorUsers(0, 10, true, []).then(function (users) {
+                        return crsJiraService.getAuthorUsers(0, 10, true, []).then(function (users) {
                             console.log(users);
                             //restore error status
                             if (!isFocused) {

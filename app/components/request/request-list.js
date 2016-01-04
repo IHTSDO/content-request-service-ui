@@ -5,14 +5,14 @@ angular
     .controller('RequestListCtrl', [
         '$filter',
         '$sce',
-        'jiraService',
+        'crsJiraService',
         'ngTableParams',
         'requestService',
         'notificationService',
         'accountService',
         'CRS_ROLE',
         'REQUEST_STATUS',
-        function ($filter, $sce, jiraService, ngTableParams, requestService, notificationService, accountService, CRS_ROLE, REQUEST_STATUS) {
+        function ($filter, $sce, crsJiraService, ngTableParams, requestService, notificationService, accountService, CRS_ROLE, REQUEST_STATUS) {
             var vm = this;
 
             var initView = function () {
@@ -34,7 +34,7 @@ angular
 
             var loadAuthors = function () {
                 vm.loadingAuthors = true;
-                return jiraService.getAuthorUsers(0, 50, true, []).then(function (users) {
+                return crsJiraService.getAuthorUsers(0, 50, true, []).then(function (users) {
                     vm.authors = users;
 
                     return users;

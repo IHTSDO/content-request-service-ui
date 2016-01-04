@@ -82,7 +82,8 @@
                         <li class="message-item" ng-class="{unread: !message.read}" ng-repeat="message in header.messages.items" message-item="message">
                         </li>
                     </ul>
-                    <span style="margin-bottom: 2px;margin-left: 3px;" ng-show="header.loadingMessages"  class="md md-spin md-autorenew"></span>
+                    <span style="margin-bottom: 2px;margin-left: 3px;" ng-if="header.loadingMessages"  class="md md-spin md-autorenew"></span>
+                    <div style="padding:5px 10px" translate="crs.message.noNotification" ng-if="header.messages.items.length === 0 && !header.loadingMessages"></div>
                 </div>
             </li>
             <li class="pull-right">

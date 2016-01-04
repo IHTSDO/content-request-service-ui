@@ -11,9 +11,9 @@ angular
         'notificationService',
         'accountService',
         'scaService',
-        'jiraService',
+        'crsJiraService',
         'CRS_ROLE',
-        function ($filter, $sce, $uibModal, ngTableParams, requestService, notificationService, accountService, scaService, jiraService, CRS_ROLE) {
+        function ($filter, $sce, $uibModal, ngTableParams, requestService, notificationService, accountService, scaService, crsJiraService, CRS_ROLE) {
             var vm = this;
 
             var initView = function () {
@@ -42,7 +42,7 @@ angular
 
             var loadAuthors = function () {
                 vm.loadingAuthors = true;
-                return jiraService.getAuthorUsers(0, 50, true, []).then(function (users) {
+                return crsJiraService.getAuthorUsers(0, 50, true, []).then(function (users) {
                     vm.authors = users;
 
                     return users;

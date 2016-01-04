@@ -3,7 +3,8 @@
         "message": {
             "unknownUser": "Logged in as unknown user",
             "profileTip":"display name will link to profile services in later updates",
-            "loading": "Loading..."
+            "loading": "Loading...",
+            "noNotification": "There is no notification at the moment"
         },
         "link": {
             "logout": "Logout",
