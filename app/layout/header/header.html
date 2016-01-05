@@ -59,11 +59,11 @@
         </ul>
         <ul class="nav navbar-nav navbar-right navbar-right-no-collapse col-md-4 pull-right" ng-if="header.isUserLoggedIn">
 
-            <li class="pull-right">
+            <!--<li class="pull-right">
                 <button class="dropdown-toggle pointer btn btn-round-sm btn-link withoutripple" >
                     <i class="md md-settings f20"></i>
                 </button>
-            </li>
+            </li>-->
             <li class="pull-right notification-container">
                 <button id="btnNotification"
                         class="dropdown-toggle pointer btn btn-round-sm btn-link withoutripple"
@@ -82,7 +82,7 @@
                         <li class="message-item" ng-class="{unread: !message.read}" ng-repeat="message in header.messages.items" message-item="message">
                         </li>
                     </ul>
-                    <span style="margin-bottom: 2px;margin-left: 3px;" ng-if="header.loadingMessages"  class="md md-spin md-autorenew"></span>
+                    <span style="margin-bottom: 2px;margin-left: 3px;" ng-show="header.loadingMessages" ng-class="{'md-spin':header.loadingMessages}"  class="md md-autorenew"></span>
                     <div style="padding:5px 10px" translate="crs.message.noNotification" ng-if="header.messages.items.length === 0 && !header.loadingMessages"></div>
                 </div>
             </li>

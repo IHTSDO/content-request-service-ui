@@ -1,5 +1,5 @@
 <div ng-controller="JiraCommentCtrl as ctrl">
-    <h4 style="display: inline-block">Comments </h4> <span style="vertical-align: middle;margin-bottom: 5px;margin-left: 3px" ng-if="ctrl.loadingComment" class="md md-spin md-autorenew"></span>
+    <h4 style="display: inline-block">Comments </h4> <span style="vertical-align: middle;margin-bottom: 5px;margin-left: 3px" ng-show="ctrl.loadingComment" class="md md-autorenew" ng-class="{'md-spin':ctrl.loadingComment}"></span>
 
     <div class="comment-container" >
         <div ng-repeat="comment in ctrl.comments track by comment.id" class="comment-item">
@@ -17,7 +17,7 @@
         </div>
     </div>
 
-    <form class="form-floating" style="margin-top: 30px">
+    <form ng-if="requestVM.permissionChecked && !requestVM.isViewer" class="form-floating" style="margin-top: 30px">
         <div class="row">
             <div class="col-md-11 no-padding">
                 <form-control type="textarea" model="ctrl.message"></form-control>

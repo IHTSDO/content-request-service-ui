@@ -12,7 +12,8 @@ angular
         '$q',
         '$http',
         'configService',
-        function (LOGIN_STATUS, $q, $http, configService) {
+        'CRS_ROLE',
+        function (LOGIN_STATUS, $q, $http, configService, CRS_ROLE) {
             var loginStatus = LOGIN_STATUS.UNDEFINED;
             var accountDetails = null;
 
@@ -86,6 +87,23 @@ angular
                 });
             };
 
+            var checkUserPermission = function () {
+                return checkRoles([CRS_ROLE.ADMINISTRATOR, CRS_ROLE.MANAGER]).then(function (adminRs) {
+                    if (adminRs === true) {
+                        return {
+                            isAdmin: true
+                        }
+                    } else {
+                        return checkRoles([CRS_ROLE.VIEWER]).then(function (viewerRs) {
+                            return {
+                                isViewer: viewerRs
+                            }
+                        });
+                    }
+                });
+            };
+
+
             var getUserPreferences = function () {
                 var deferred = $q.defer();
                 var mockedUserPref = {};
@@ -113,6 +131,8 @@ angular
                 getUserPreferences: getUserPreferences,
                 applyUserPreferences: applyUserPreferences,
                 checkRoles: checkRoles,
+                checkUserPermission: checkUserPermission,
+
                 getTestUsers: function () {
                     return $http.get('http://local.ihtsdotools.org/crs/api/test/user', {withCredentials: true})
                         .success(function (data) {

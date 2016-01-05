@@ -146,6 +146,11 @@ angular
 
             $rootScope.$on('crs:notification', function (event, notification) {
 
+                if (vm.notification &&
+                    vm.notification.keepMessage) {
+                    return;
+                }
+
                 if (notification) {
 
                     // cancel any existing timeout

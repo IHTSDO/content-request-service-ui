@@ -20,12 +20,16 @@ angular
                 vm.selectedSubmittedRequests = {checked: false, items: {}};
 
                 // check admin role
-                accountService.checkRoles([CRS_ROLE.ADMINISTRATOR, CRS_ROLE.MANAGER]).then(function (rs) {
-                    vm.isAdmin = rs;
+                accountService.checkUserPermission().then(function (rs) {
+                    console.log(rs);
+                    vm.isAdmin = (rs.isAdmin === true);
+                    vm.isViewer = (rs.isViewer === true);
 
-                    if (rs === true) {
-                        vm.submittedTableParams = submittedTableParams;
+                    if (!vm.isViewer) {
+                        vm.tableParams = requestTableParams;
                     }
+
+                    vm.submittedTableParams = submittedTableParams;
                 });
 
                 // load authors
@@ -73,11 +77,10 @@ angular
                     if (removingRequestIds.length > 0) {
                         if (window.confirm('Are you sure you want to remove ' + removingRequestIds.length +' Draft requests?')) {
                             requestService.removeRequests(removingRequestIds).then(function () {
+                                notificationService.sendMessage('crs.request.message.requestRemoved', 5000);
                                 if (vm.tableParams) {
                                     vm.tableParams.reload();
                                 }
-                            }, function (error) {
-                                notificationService.sendMessage('crs.request.message.requestRemoved', 5000);
                             });
                         }
                     } else {
@@ -106,6 +109,8 @@ angular
 
                         notificationService.sendMessage('crs.request.message.listLoading');
                         return requestService.getRequests(params.page() - 1, params.count(), params.filter().search, sortFields, sortDirs).then(function (requests) {
+                            notificationService.sendMessage('crs.request.message.listLoaded', 5000);
+
                             params.total(requests.total);
                             if (requests.items && requests.items.length > 0) {
                                 return requests.items;
@@ -114,8 +119,6 @@ angular
                             }
                         }, function () {
                             return [];
-                        }).finally(function () {
-                            notificationService.sendMessage('crs.request.message.listLoaded', 5000);
                         });
                     }
                 }
@@ -153,8 +156,8 @@ angular
                 }
             );
 
-            vm.tableParams = requestTableParams;
             vm.isAdmin = false;
+            vm.isViewer = false;
             vm.loadingAuthors = true;
             vm.removeSelectedRequests = removeSelectedRequests;
             vm.getAuthorName = getAuthorName;

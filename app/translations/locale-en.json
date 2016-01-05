@@ -22,7 +22,7 @@
         "dashboard": {
             "title": "Dashboard",
             "sidebar": {
-                "myRequest": "My Submitted Requests",
+                "myRequest": "Submitted Requests",
                 "myBatch": "My Batch Requests",
                 "createRequest": "Create New Request",
                 "importBatch": "New Batch Import",

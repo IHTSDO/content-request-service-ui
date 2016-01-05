@@ -9,7 +9,7 @@ angular
         MEMBER: 'ROLE_ihtsdo-crs-members',
         PARTNER: 'ROLE_ihtsdo-crs-partners',
         REQUESTOR: 'ROLE_ihtsdo-crs-requestors',
-        VIEWER: 'ROLE_ihtstdo-crs-viewers'
+        VIEWER: 'ROLE_ihtsdo-crs-viewers'
     })
     .config(function ($routeProvider) {
         $routeProvider

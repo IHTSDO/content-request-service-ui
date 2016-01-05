@@ -38,7 +38,7 @@ angular.module('conceptRequestServiceApp.notification', [])
             $rootScope.$broadcast(NOTIFICATION_EVENT, notification);
         }
 
-        function sendError(message, durationInMs, url, time) {
+        function sendError(message, durationInMs, url, keepMessage) {
 
             if (!message || message.length === 0) {
                 console.error('Cannot send empty application notification');
@@ -48,7 +48,8 @@ angular.module('conceptRequestServiceApp.notification', [])
                 type: 'ERROR',
                 message: message,
                 url: url,
-                durationInMs: durationInMs
+                durationInMs: durationInMs,
+                keepMessage: keepMessage
             };
             $rootScope.$broadcast(NOTIFICATION_EVENT, notification);
         }

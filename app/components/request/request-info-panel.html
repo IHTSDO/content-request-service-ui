@@ -25,8 +25,10 @@
                     <div class="timeline-panel">
                         <div class="timeline-heading">
                             <label class="control-label" translate="crs.request.details.info.label.originator"></label>
-                            <span ng-if="vm.loadingAuthors" class="md md-spin md-autorenew"></span>
-                            <h4 ng-if="!vm.loadingAuthors" class="timeline-title" ng-bind-html="requestVM.getAuthorName(requestVM.request.requestHeader.ogirinatorId)"></h4>
+                            <h4 class="timeline-title" >
+                                <span ng-show="requestVM.loadingAuthors" class="md md-autorenew" ng-class="{'md-spin':requestVM.loadingAuthors}"></span>
+                                <span ng-if="!requestVM.loadingAuthors" ng-bind-html="requestVM.getAuthorName(requestVM.request.requestHeader.ogirinatorId)"></span>
+                            </h4>
                         </div>
                     </div>
                 </li>
@@ -90,7 +92,7 @@
     <hr style="width:93%; border-color:#ddd">
 
     <div class="request-info">
-        <div style="padding: 15px; width: 100%" class="classification-btn">
+        <div ng-if="requestVM.permissionChecked && (requestVM.pageMode.value === 'new' || requestVM.pageMode.value === 'edit' || (requestVM.pageMode.value === 'preview' && requestVM.isAdmin))" style="padding: 15px; width: 100%" class="classification-btn">
             <!-- Edit request -->
             <button ng-if="requestVM.pageMode.value === 'new' || requestVM.pageMode.value === 'edit'"
                     ng-disabled="requestVM.request.requestHeader.status !== 'DRAFT'"
@@ -124,15 +126,15 @@
 
             <!-- Preview request -->
             <button ng-if="requestVM.pageMode.value === 'preview'"
-                    ng-disabled="requestVM.request.requestHeader.status !== 'NEW' && requestVM.request.requestHeader.status !== 'APPEAL'"
+                    ng-disabled="requestVM.request.requestHeader.status !== 'NEW' && requestVM.request.requestHeader.status !== 'APPEAL' && requestVM.request.requestHeader.status !== 'CLARIFICATION_NEEDED'"
                     class="btn btn-default blue darken-1 promote" style="text-transform: none"
                     ng-click="requestVM.acceptRequest()">
                 <span class="md md-done blue darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.accept"></span>
             </button>
 
-            <button ng-if="requestVM.pageMode.value === 'preview' && requestVM.request.requestHeader.status === 'NEW'"
-                    ng-disabled="requestVM.request.requestHeader.status !== 'NEW' && requestVM.request.requestHeader.status !== 'APPEAL'"
+            <button ng-if="requestVM.pageMode.value === 'preview' && (requestVM.request.requestHeader.status === 'NEW' || requestVM.request.requestHeader.status === 'CLARIFICATION_NEEDED')"
+                    ng-disabled="requestVM.request.requestHeader.status !== 'NEW' && requestVM.request.requestHeader.status !== 'APPEAL' && requestVM.request.requestHeader.status !== 'CLARIFICATION_NEEDED'"
                     class="btn btn-default deep-purple darken-1 validate"
                     ng-click="requestVM.rejectRequest()" style="text-transform: none">
                 <span class="md md-dnd-forwardslash deep-purple darken-2 iconbase"></span>
@@ -146,7 +148,7 @@
                 <span class="button-link" translate="crs.request.details.info.button.appealReject"></span>
             </button>
 
-            <button ng-if="requestVM.pageMode.value === 'preview'"
+            <button ng-if="requestVM.pageMode.value === 'preview' && requestVM.request.requestHeader.status !== 'CLARIFICATION_NEEDED'"
                     ng-disabled="requestVM.request.requestHeader.status !== 'NEW' && requestVM.request.requestHeader.status !== 'APPEAL'"
                     class="btn btn-default pink1 darken-1 review" style="text-transform: none"
                     ng-click="requestVM.requestClarification()">

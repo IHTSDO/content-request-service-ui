@@ -26,4 +26,9 @@ angular
         REQUEST_STATUS_TRANSITION_INVALID: {code: 10112, message: "Cannot update new status from current status"},
         REQUEST_STATUS_INVALID: {code: 10113, message: "Invalid Request Status"},
         REQUEST_STATUS_CHANGE_REASON_MISSING: {code: 10114, message: "Missing Status Reason"}
+    })
+    .value('HTTP_ERROR_DEF', {
+        INTERNAL_SERVER_ERROR: {code: 500, message: 'Internal server error'},
+        UNAUTHORIZED: {code: 401, message: 'Unathorized'},
+        FORBIDDEN: {code: 403, message: 'Forbidden'}
     });

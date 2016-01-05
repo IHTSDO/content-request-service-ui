@@ -20,8 +20,9 @@ angular
                 vm.selectedRequests = {checked: false, items: {}, requests: {}};
 
                 // check admin role
-                accountService.checkRoles([CRS_ROLE.ADMINISTRATOR, CRS_ROLE.MANAGER]).then(function (rs) {
-                    vm.isAdmin = rs;
+                accountService.checkUserPermission().then(function (rs) {
+                    vm.isAdmin = (rs.isAdmin === true);
+                    vm.isViewer = (rs.isViewer === true);
                 });
 
                 // load projects
@@ -162,6 +163,7 @@ angular
             vm.pushSelectedRequest = pushSelectedRequest;
             vm.getAuthorName = getAuthorName;
             vm.isAdmin = false;
+            vm.isViewer = false;
             vm.loadingProjects = true;
             vm.loadingAuthors = true;
             vm.projects = [];

@@ -53,7 +53,7 @@
                         </td>
 
                         <td data-title="'crs.request.list.tableHeader.originator' | translate" sortable="'requestHeader.ogirinatorId'" style="min-width: 150px">
-                            <span ng-if="vm.loadingAuthors" class="md md-spin md-autorenew"></span>
+                            <span ng-show="vm.loadingAuthors" class="md md-autorenew" ng-class="{'md-spin':vm.loadingAuthors}"></span>
                             <div ng-if="!vm.loadingAuthors" ng-bind-html="vm.getAuthorName(request.requestHeader.ogirinatorId)"></div>
                         </td>
 
@@ -62,7 +62,7 @@
                         </td>
 
                         <td data-title="'crs.request.list.tableHeader.assignee' | translate" sortable="'requestHeader.assignee'" style="min-width: 150px">
-                            <span ng-if="vm.loadingAuthors" class="md md-spin md-autorenew"></span>
+                            <span ng-show="vm.loadingAuthors" class="md md-autorenew" ng-class="{'md-spin':vm.loadingAuthors}"></span>
                             <div ng-if="!vm.loadingAuthors" ng-bind-html="vm.getAuthorName(request.requestHeader.assignee)"></div>
                         </td>
 

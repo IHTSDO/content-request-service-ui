@@ -51,8 +51,10 @@ angular
                 }
 
                 // check admin role
-                accountService.checkRoles([CRS_ROLE.ADMINISTRATOR, CRS_ROLE.MANAGER]).then(function (rs) {
-                    vm.isAdmin = rs;
+                accountService.checkUserPermission().then(function (rs) {
+                    vm.permissionChecked = true;
+                    vm.isAdmin = (rs.isAdmin === true);
+                    vm.isViewer = (rs.isViewer === true);
                 });
             };
 
@@ -110,7 +112,9 @@ angular
             vm.editRequest = editRequest;
             vm.previewRequest = previewRequest;
             vm.showBatchDetails = showBatchDetails;
+            vm.permissionChecked = false;
             vm.isAdmin = false;
+            vm.isViewer = false;
 
             vm.testIMS = function () {
                 accountService.getTestUsers();

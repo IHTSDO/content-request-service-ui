@@ -170,6 +170,14 @@ angular
                 var isValid = isValidViewParams();
                 var originConcept;
 
+                // check permission
+                accountService.checkUserPermission().then(function (rs) {
+                    console.log(rs);
+                    vm.permissionChecked = true;
+                    vm.isAdmin = (rs.isAdmin === true);
+                    vm.isViewer = (rs.isViewer === true);
+                });
+
                 // load authors
                 loadAuthors();
 
@@ -1254,6 +1262,9 @@ angular
             vm.appealRequest = appealRequest;
             vm.withdrawRequest = withdrawRequest;
             vm.getAuthorName = getAuthorName;
+            vm.isAdmin = false;
+            vm.isViewer = false;
+            vm.permissionChecked = false;
             vm.error = {};
             vm.conceptStatus = {
                 loading: false,
