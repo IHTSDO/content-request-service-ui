@@ -36,16 +36,22 @@ angular
                 var list = $routeParams.list;
                 switch (list) {
                     case 'batches':
-                        $rootScope.pageTitles = ['crs.batch.list.title'];
+                        $rootScope.pageTitles = [
+                            {url: '#/batches', label: 'crs.batch.list.title'}
+                        ];
                         vm.listView = 'components/batch/batch-list.html';
                         break;
                     case 'accepted-requests':
-                        $rootScope.pageTitles = ['crs.request.list.title.acceptedRequests'];
+                        $rootScope.pageTitles = [
+                            {url: '#/accepted-requests', label: 'crs.request.list.title.acceptedRequests'}
+                        ];
                         vm.listView = 'components/request/accepted-request-list.html';
                         break;
                     case 'requests':
                     default:
-                        $rootScope.pageTitles = ['crs.request.list.title.requests'];
+                        $rootScope.pageTitles = [
+                            {url: '#/requests', label: 'crs.request.list.title.requests'}
+                        ];
                         vm.listView = 'components/request/request-list.html';
                         break;
                 }
@@ -64,11 +70,11 @@ angular
             };
 
             var editRequest = function (requestId) {
-                  $location.path('requests/edit/' + requestId);
+                  $location.path('requests/edit/' + requestId).search({kb:true});
             };
 
             var previewRequest = function (requestId) {
-                  $location.path('requests/preview/' + requestId);
+                  $location.path('requests/preview/' + requestId).search({kb:true});
             };
 
             var importBatchFile = function (response) {

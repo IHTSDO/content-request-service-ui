@@ -48,7 +48,8 @@ angular.module('conceptRequestServiceApp.request')
             var assignRequests = function () {
                 //console.log(vm.selectedProject);
                 if (vm.selectedProject &&
-                    vm.assignee) {
+                    vm.assignee &&
+                    vm.summary) {
                     $uibModalInstance.close({
                         project: vm.selectedProject,
                         assignee: vm.assignee,

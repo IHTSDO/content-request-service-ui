@@ -17,9 +17,45 @@ angular
             var vm = this;
 
             var initView = function () {
-                $rootScope.pageTitles = ['Batch Details', $routeParams.batchId];
+                //$rootScope.pageTitles = ['Batch Details', $routeParams.batchId];
+                initBreadcrumb();
 
                 loadBatchSummary($routeParams.batchId);
+            };
+
+            var initBreadcrumb = function () {
+                var currentPathUrl = '#' + $location.path();
+                var foundCurrentPath = false,
+                    foundBatchesNode = false,
+                    currentPathIndex = 0;
+
+                for (var i = 0; i < $rootScope.pageTitles.length; i++) {
+                    if ($rootScope.pageTitles[i].url ) {
+                        if ($rootScope.pageTitles[i].url === currentPathUrl) {
+                            foundCurrentPath = true;
+                            currentPathIndex = i;
+                        }
+
+                        if ($rootScope.pageTitles[i].url === '#/batches') {
+                            foundBatchesNode = true;
+                        }
+
+                    }
+                }
+
+                if (!foundBatchesNode) {
+                    $rootScope.pageTitles = [
+                        {url: '#/batches', label: 'crs.batch.list.title'},
+                        {url: currentPathUrl, label: $routeParams.batchId}
+                    ];
+                } else if (foundCurrentPath) {
+                    $rootScope.pageTitles = $rootScope.pageTitles.slice(0, currentPathIndex + 1);
+                } else {
+                    $rootScope.pageTitles.push({
+                        url: '#' + $location.path(),
+                        label: $routeParams.batchId
+                    });
+                }
             };
 
             var loadBatchSummary = function (batchId) {
@@ -30,7 +66,7 @@ angular
             };
 
             var editRequest = function (requestId) {
-                $location.path('requests/edit/' + requestId);
+                $location.path('requests/edit/' + requestId).search({kb:true});
             };
 
             var requestTableParams = new ngTableParams({

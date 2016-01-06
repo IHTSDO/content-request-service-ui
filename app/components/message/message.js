@@ -14,5 +14,9 @@ angular.module('conceptRequestServiceApp.message', [])
         BATCH_IMPORT_SUCCESS: {
             value: 'BATCH_IMPORT_SUCCESS',
             titleLangKey: 'Batch requests have been imported successfully'
+        },
+        COMMENT_ADDED: {
+            value: 'COMMENT_ADDED',
+            titleLangKey: 'Comment has been added'
         }
     });

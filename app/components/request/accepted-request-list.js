@@ -89,7 +89,7 @@ angular
                     notificationService.sendMessage('Assigning requests');
                     requestService.assignRequests(selectedRequestIds, rs.project.key, rs.assignee.key, rs.summary).then(function () {
                         notificationService.sendMessage('Request assigned successfully', 5000);
-                        vm.selectedRequests = [];
+                        vm.selectedRequests = {checked: false, items: {}, requests: {}};
                         requestTableParams.reload();
                     });
                 });

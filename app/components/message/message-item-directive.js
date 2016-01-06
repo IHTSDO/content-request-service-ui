@@ -40,7 +40,7 @@ angular.module('conceptRequestServiceApp.message')
                         msgItemHtml.push(translateFilter(requestStatusFilter(message.details.status)));
                         msgItemHtml.push('</span></div>');
 
-                        targetUrl = '#/requests/edit/' + message.details.id;
+                        targetUrl = '#/requests/view/' + message.details.id;
                         break;
                     case MESSAGE_TYPE.BATCH_IMPORT_SUCCESS:
                         msgItemHtml.push('<div class="message-detail-content">');
@@ -52,6 +52,15 @@ angular.module('conceptRequestServiceApp.message')
                         msgItemHtml.push('</span></div>');
 
                         targetUrl = '#/batches/' + message.details.batchId + '/view';
+                        break;
+                    case MESSAGE_TYPE.COMMENT_ADDED:
+                        msgItemHtml.push('<div class="message-detail-content">');
+                        msgItemHtml.push(message.details.ticketId);
+                        msgItemHtml.push(' - ');
+                        msgItemHtml.push(message.details.topic);
+                        msgItemHtml.push('</div>');
+
+                        targetUrl = '#/requests/view/' + message.details.id;
                         break;
                     default:
                         break;

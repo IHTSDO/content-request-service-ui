@@ -28,7 +28,8 @@ angular
             var REQUEST_MODE = {
                 NEW: {value: 'new', langKey: 'crs.request.requestMode.newRequest'},
                 EDIT: {value: 'edit', langKey: 'crs.request.requestMode.editRequest'},
-                PREVIEW: {value: 'preview', langKey: 'crs.request.requestMode.previewRequest'}
+                PREVIEW: {value: 'preview', langKey: 'crs.request.requestMode.previewRequest'},
+                VIEW: {value: 'view', langKey: 'crs.request.requestMode.viewRequest'}
             };
             var DESCRIPTION_TYPE = {
                 FSN: 'FSN',
@@ -45,10 +46,13 @@ angular
             };
             var mode = $routeParams.mode,
                 param = $routeParams.param,
-                inputMode = $routeParams.inputMode;
+                inputMode = $routeParams.inputMode,
+                kbMode = $routeParams.kb;
 
             var requestId,
                 requestType;
+
+            var prevPage = '/dashboard';
 
             var permanentlyDisableSimpleMode = false;
 
@@ -94,6 +98,7 @@ angular
                         break;
                     case REQUEST_MODE.EDIT:
                     case REQUEST_MODE.PREVIEW:
+                    case REQUEST_MODE.VIEW:
                         isValidParam = (param !== undefined && param !== null);
                         isValidInputMode = true;
                         break;
@@ -172,7 +177,6 @@ angular
 
                 // check permission
                 accountService.checkUserPermission().then(function (rs) {
-                    console.log(rs);
                     vm.permissionChecked = true;
                     vm.isAdmin = (rs.isAdmin === true);
                     vm.isViewer = (rs.isViewer === true);
@@ -218,16 +222,29 @@ angular
                             break;
                         case REQUEST_MODE.EDIT:
                         case REQUEST_MODE.PREVIEW:
+                        case REQUEST_MODE.VIEW:
                             requestId = param;
-                            $rootScope.pageTitles = ['crs.request.details.title.edit'];
+                            //$rootScope.pageTitles = ['crs.request.details.title.edit'];
+                            initBreadcrumb(requestId);
 
                             vm.disableSimpleMode = true;
                             loadRequest().then(function (requestData) {
                                 var requestType = requestService.identifyRequestType(vm.request.requestType);
                                 var inputMode = identifyInputMode(vm.request.inputMode);
 
+                                accountService.getAccountInfo().then(function (accountDetails) {
+                                    if (requestData.requestHeader.ogirinatorId === accountDetails.login &&
+                                        (vm.pageMode === REQUEST_MODE.VIEW ||
+                                            (vm.pageMode === REQUEST_MODE.PREVIEW &&
+                                                requestData.requestHeader.status === REQUEST_STATUS.DRAFT.value))) {
+                                        vm.pageMode = REQUEST_MODE.EDIT;
+                                    } else if (vm.pageMode === REQUEST_MODE.VIEW) {
+                                        vm.pageMode = REQUEST_MODE.PREVIEW;
+                                    }
+                                });
+
                                 if (requestType) {
-                                    $rootScope.pageTitles.push(vm.request.id);
+                                    //$rootScope.pageTitles.push(vm.request.id);
                                     vm.requestType = requestType;
                                     vm.inputMode = inputMode;
                                     vm.isValidViewParams = isValid;
@@ -244,6 +261,28 @@ angular
                     }
 
                     loadRequestMetadata();
+                }
+            };
+
+            var initBreadcrumb = function (requestId) {
+                var tmpUrl;
+                if (kbMode === true) {
+                    $rootScope.pageTitles.push({url: '#' + $location.path(), label: requestId});
+                } else {
+                    $rootScope.pageTitles = [
+                        {url: '#/requests', label: 'crs.request.list.title.requests'},
+                        {url: '#' + $location.path(), label: requestId}
+                    ];
+                }
+
+                if ($rootScope.pageTitles.length > 1) {
+                    for (var i = $rootScope.pageTitles.length - 2; i >= 0; i--) {
+                        tmpUrl = $rootScope.pageTitles[i].url;
+                        if (tmpUrl) {
+                            prevPage = tmpUrl.substring(tmpUrl.indexOf('#')+1);
+                            break;
+                        }
+                    }
                 }
             };
 
@@ -307,7 +346,7 @@ angular
             };
 
             var cancelEditing = function () {
-                $location.path('/dashboard').search({});
+                $location.path(prevPage).search({});
             };
 
             var identifyParentConcept = function (concept) {
@@ -1028,7 +1067,7 @@ angular
                 requestService.saveRequest(requestData)
                     .then(function (response) {
                         notificationService.sendMessage('crs.request.message.requestSaved', 5000);
-                        $location.path('/dashboard').search({});
+                        $location.path(prevPage).search({});
                     }, function (e) {
                         showErrorMessage(e.message)
                     })
@@ -1068,7 +1107,7 @@ angular
                     })
                     .then(function (response) {
                         notificationService.sendMessage('crs.request.message.requestSubmitted', 5000);
-                        $location.path('/dashboard').search({});
+                        $location.path(prevPage).search({});
                     }, function (e) {
                         console.log(e);
                         showErrorMessage(e.message)
@@ -1093,7 +1132,7 @@ angular
                 changeRequestStatus(vm.request.id, REQUEST_STATUS.ACCEPTED)
                     .then(function (response) {
                         notificationService.sendMessage('crs.request.message.requestAccepted', 5000);
-                        $location.path('/dashboard').search({});
+                        $location.path(prevPage).search({});
                     }, function (e) {
                         showErrorMessage(e.message)
                     });
@@ -1106,7 +1145,7 @@ angular
                     changeRequestStatus(vm.request.id, REQUEST_STATUS.REJECTED, {reason:rejectComment})
                         .then(function (response) {
                             notificationService.sendMessage('crs.request.message.requestRejected', 5000);
-                            $location.path('/dashboard').search({});
+                            $location.path(prevPage).search({});
                         }, function (e) {
                             showErrorMessage(e.message)
                         });
@@ -1120,7 +1159,7 @@ angular
                     changeRequestStatus(vm.request.id, REQUEST_STATUS.APPEAL_REJECTED, {reason:rejectComment})
                         .then(function (response) {
                             notificationService.sendMessage('crs.request.message.requestRejected', 5000);
-                            $location.path('/dashboard').search({});
+                            $location.path(prevPage).search({});
                         }, function (e) {
                             showErrorMessage(e.message)
                         });
@@ -1135,7 +1174,7 @@ angular
                     changeRequestStatus(vm.request.id, REQUEST_STATUS.CLARIFICATION_NEEDED, {reason:rejectComment})
                         .then(function (response) {
                             notificationService.sendMessage('crs.request.message.requestClarification', 5000);
-                            $location.path('/dashboard').search({});
+                            $location.path(prevPage).search({});
                         }, function (e) {
                             showErrorMessage(e.message)
                         });
@@ -1149,7 +1188,7 @@ angular
                     changeRequestStatus(vm.request.id, REQUEST_STATUS.APPEAL, {reason:appealComment})
                         .then(function (response) {
                             notificationService.sendMessage('crs.request.message.requestAppealed', 5000);
-                            $location.path('/dashboard').search({});
+                            $location.path(prevPage).search({});
                         }, function (e) {
                             showErrorMessage(e.message)
                         });
@@ -1163,7 +1202,7 @@ angular
                     changeRequestStatus(vm.request.id, REQUEST_STATUS.WITHDRAWN, {reason:withdrawComment})
                         .then(function (response) {
                             notificationService.sendMessage('crs.request.message.requestWithdrawn', 5000);
-                            $location.path('/dashboard').search({});
+                            $location.path(prevPage).search({});
                         }, function (e) {
                             showErrorMessage(e.message)
                         });

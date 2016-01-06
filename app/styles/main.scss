@@ -491,3 +491,15 @@ ul.batch-statistic.timeline {
     }
   }
 }
+
+.dashboard-sidebar {
+  min-height: 100%;
+  position: fixed;
+  width: 25%;
+  z-index: 1;
+}
+
+.dashboard-content {
+  min-height: 100%;
+  margin-left:25%;
+}

@@ -184,6 +184,7 @@
             $.get('config.json', function (data) {
 
                 angular.module('conceptRequestServiceApp')
+                        .value('CRS_ROLE', data.userRole)
                         .config([
                             'configServiceProvider',
                             'snowowlServiceProvider',

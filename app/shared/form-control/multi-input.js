@@ -28,7 +28,7 @@ angular
                         $scope.readonly = formControlReadonlyCtrl.getReadonlyStatus();
                     }
 
-                    if (!angular.isArray($scope.models)) {
+                    if (!angular.isArray($scope.models) || $scope.models.length === 0) {
                         $scope.models = [''];
                     }
 

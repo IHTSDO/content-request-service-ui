@@ -27,10 +27,10 @@
                        class="table table-full table-full-small table-requests">
                     <tr ng-repeat="request in $data" ng-click="batchVM.editRequest(request.id, request.batchRequest)" class="clickable-row">
 
-                        <td data-title="'crs.request.list.tableHeader.batchId' | translate" sortable="'batchRequest'" >
-                            <!--<a class="tooltips-right" ng-href="#/batches/view/{{request.batchRequest}}">{{request.batchRequest}} <span translate="crs.request.list.tip.batchId"></span></a>-->
+                        <!--<td data-title="'crs.request.list.tableHeader.batchId' | translate" sortable="'batchRequest'" >
+                            &lt;!&ndash;<a class="tooltips-right" ng-href="#/batches/view/{{request.batchRequest}}">{{request.batchRequest}} <span translate="crs.request.list.tip.batchId"></span></a>&ndash;&gt;
                             {{request.batchRequest}}
-                        </td>
+                        </td>-->
                         <td data-title="'crs.request.list.tableHeader.conceptFSN' | translate" sortable="'fsn'" >
                             <!--<a class="tooltips-right" ng-href="#/requests/edit/{{request.id}}">{{request.fsn}} <span translate="crs.request.list.tip.conceptFSN"></span></a>-->
                             {{request.fsn}}

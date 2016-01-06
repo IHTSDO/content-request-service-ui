@@ -99,6 +99,12 @@ angular
                 }
             };
 
+            var clearMessages = function () {
+                messageService.removeMessages().then(function () {
+                    vm.messages = {items: []};
+                });
+            };
+
             var toggleMessagesPane = function (event) {
                 var parentEl = angular.element(event.currentTarget.parentElement);
                 if (!parentEl.hasClass('open')) {
@@ -202,6 +208,7 @@ angular
             vm.newMessagesCount = 0;
             vm.loadingMessages = false;
             vm.loadMoreMessages = loadMoreMessages;
+            vm.clearMessages = clearMessages;
 
             initView();
         }

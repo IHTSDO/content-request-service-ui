@@ -65,7 +65,7 @@ angular
                     case HTTP_ERROR_DEF.FORBIDDEN:
                         notificationService.sendError('You are not allowed to access this page', 5000, null, true);
                         if ($location.path() !== '/dashboard') {
-                            $location.path('/dashboard');
+                            $location.path('/dashboard').search({});
                         }
 
                         break;

@@ -21,7 +21,6 @@ angular
 
                 // check admin role
                 accountService.checkUserPermission().then(function (rs) {
-                    console.log(rs);
                     vm.isAdmin = (rs.isAdmin === true);
                     vm.isViewer = (rs.isViewer === true);
 

@@ -43,9 +43,9 @@ angular.module('conceptRequestServiceApp.message')
                     params = {
                         notificationIds: messageList
                     };
-
-                    return crsService.sendDelete(messageEndpoint, params, null);
                 }
+
+                return crsService.sendDelete(messageEndpoint, params, null);
             };
 
             var readMessages = function (messageList) {

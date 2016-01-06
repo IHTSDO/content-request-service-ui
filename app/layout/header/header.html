@@ -12,7 +12,10 @@
             <li>
                 <ul class="breadcrumb" style="line-height: 2em;">
                     <li><a ng-href="#/">{{'crs.dashboard.title' | translate}}</a></li>
-                    <li ng-repeat = "titleSection in pageTitles" translate="{{titleSection}}"></li>
+                    <li ng-repeat = "titleSection in pageTitles">
+                        <a ng-if="titleSection.url && !$last" ng-href="{{titleSection.url}}" translate="{{titleSection.label}}"></a>
+                        <span ng-if="!titleSection.url || $last" translate="{{titleSection.label || titleSection}}"></span>
+                    </li>
                 </ul>
             </li>
 
@@ -75,15 +78,15 @@
                 </button>
                 <div class="dropdown-menu" aria-labelledby="btnNotification">
                     <div class="message-header clearfix" ng-click="$event.stopPropagation()">
-                        <div class="pull-left message-title">Notifications</div>
-                        <div class="pull-right message-action"><a href="#">Clear</a></div>
+                        <div class="pull-left message-title" translate="crs.notification.title"></div>
+                        <div class="pull-right message-action"><a role="button" ng-click="header.clearMessages()" translate="crs.notification.button.clear"></a></div>
                     </div>
                     <ul class="message-body" scrolly="header.loadMoreMessages()">
                         <li class="message-item" ng-class="{unread: !message.read}" ng-repeat="message in header.messages.items" message-item="message">
                         </li>
                     </ul>
                     <span style="margin-bottom: 2px;margin-left: 3px;" ng-show="header.loadingMessages" ng-class="{'md-spin':header.loadingMessages}"  class="md md-autorenew"></span>
-                    <div style="padding:5px 10px" translate="crs.message.noNotification" ng-if="header.messages.items.length === 0 && !header.loadingMessages"></div>
+                    <div style="padding:5px 10px" translate="crs.notification.message.noNotification" ng-if="header.messages.items.length === 0 && !header.loadingMessages"></div>
                 </div>
             </li>
             <li class="pull-right">
