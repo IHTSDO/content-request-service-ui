@@ -150,9 +150,9 @@ angular
             value: 'APPROVED',
             langKey: 'crs.request.requestStatus.approved'
         },
-        CLOSED: {
-            value: 'CLOSED',
-            langKey: 'crs.request.requestStatus.closed'
+        RELEASED: {
+            value: 'RELEASED',
+            langKey: 'crs.request.requestStatus.released'
         },
         FORWARDED: {
             value: 'FORWARDED',
