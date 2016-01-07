@@ -6,8 +6,9 @@ angular.module('conceptRequestServiceApp.batch')
         '$q',
         'crsService',
         'CRS_API_ENDPOINT',
+        'BATCH_STATUS',
         'BATCH_IMPORT_STATUS',
-        function ($rootScope, $q, crsService, CRS_API_ENDPOINT, BATCH_IMPORT_STATUS) {
+        function ($rootScope, $q, crsService, CRS_API_ENDPOINT, BATCH_STATUS, BATCH_IMPORT_STATUS) {
 
             var getBatches = function (page, pageCount, searchStr, sortFields, sortDirections) {
                 var listEndpoint = CRS_API_ENDPOINT.BATCH_LIST;
@@ -75,6 +76,15 @@ angular.module('conceptRequestServiceApp.batch')
                 }
             };
 
+            var identifyBatchStatus = function (value) {
+                for (var statusKey in BATCH_STATUS) {
+                    if (BATCH_STATUS.hasOwnProperty(statusKey) &&
+                        BATCH_STATUS[statusKey].value === value) {
+                        return BATCH_STATUS[statusKey];
+                    }
+                }
+            };
+
             var getImportingRequests = function (batchFileId, requestType) {
                 var batchPreviewEndpoint = CRS_API_ENDPOINT.BATCH_UPLOADED_PREVIEW;
 
@@ -94,6 +104,7 @@ angular.module('conceptRequestServiceApp.batch')
                 uploadBatchFile: uploadBatchFile,
                 importBatch: importBatch,
                 getUploadedFiles: getUploadedFiles,
+                identifyBatchStatus: identifyBatchStatus,
                 identifyBatchImportStatus: identifyBatchImportStatus,
                 getImportingRequests: getImportingRequests,
                 removeBatchPreview: removeBatchPreview

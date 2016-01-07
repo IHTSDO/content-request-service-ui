@@ -189,7 +189,7 @@ angular
                 }
             });
 
-            $rootScope.$on('crs:clearNotifications', function (event, data) {
+            $rootScope.$on('crs:clearNotifications', function () {
                 clearNotification();
             });
 

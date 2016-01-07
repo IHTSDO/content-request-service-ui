@@ -1,3 +1,4 @@
+/*jshint sub:true*/
 'use strict';
 
 angular.module('conceptRequestServiceApp.jira')
@@ -34,7 +35,7 @@ angular.module('conceptRequestServiceApp.jira')
                     }
 
                     if (param !== undefined && param !== null) {
-                        url += '/' + param
+                        url += '/' + param;
                     }
 
                     return url;
@@ -99,7 +100,7 @@ angular.module('conceptRequestServiceApp.jira')
                     return sendJiraRequest('GET', null, JIRA_TARGET.GROUP, null, buildParams(startIndex, count)).then(function (response) {
                         var data = response.data;
                         if (data.error) {
-                            return []
+                            return [];
                         } else if (data.users) {
                             users = users.concat(data.users.items);
 

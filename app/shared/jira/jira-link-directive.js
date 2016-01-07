@@ -2,8 +2,7 @@
 
 angular.module('conceptRequestServiceApp.jira')
     .directive('jiraLink', [
-        'jiraService',
-        function (jiraService) {
+        function () {
             /*var getJiraLink = function (issueId) {
                 var jiraEndpoint = jiraService.getJiraEndpointConfig();
 
@@ -16,7 +15,7 @@ angular.module('conceptRequestServiceApp.jira')
                 scope: {
                     ticketId: '=jiraLink'
                 },
-                link: function ($scope, $element, $attrs) {
+                link: function ($scope, $element) {
                     if ($scope.ticketId) {
                         /*$element.html(
                             [
@@ -33,6 +32,6 @@ angular.module('conceptRequestServiceApp.jira')
                         });*/
                     }
                 }
-            }
+            };
         }
     ]);

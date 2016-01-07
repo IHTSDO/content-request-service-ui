@@ -61,6 +61,6 @@ angular
                 removeItem: removeItem,
                 editItem: editItem,
                 stopEditingItem: stopEditingItem
-            }
+            };
         }
     ]);

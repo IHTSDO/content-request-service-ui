@@ -50,9 +50,9 @@ angular
                 for (var attrKey in attrs) {
                     if (attrs.hasOwnProperty(attrKey)) {
                         if (attrKey === 'crsTypeahead') {
-                            elementHtml += 'uib-typeahead="' + attrs[attrKey] + '" '
+                            elementHtml += 'uib-typeahead="' + attrs[attrKey] + '" ';
                         } else if (attrKey.indexOf('typeahead') === 0) {
-                            elementHtml += angular.lowercase(attrKey.replace(/([A-Z])/g, '-$1')) + '="' + attrs[attrKey] + '" '
+                            elementHtml += angular.lowercase(attrKey.replace(/([A-Z])/g, '-$1')) + '="' + attrs[attrKey] + '" ';
                         }
                     }
                 }
@@ -74,7 +74,7 @@ angular
                 for (var attrKey in attrs) {
                     if (attrs.hasOwnProperty(attrKey)) {
                         if (attrKey.indexOf('ta') === 0) {
-                            elementHtml += angular.lowercase(attrKey.replace(/([A-Z])/g, '-$1')) + '="' + attrs[attrKey] + '" '
+                            elementHtml += angular.lowercase(attrKey.replace(/([A-Z])/g, '-$1')) + '="' + attrs[attrKey] + '" ';
                         }
                     }
                 }
@@ -111,7 +111,7 @@ angular
 
             var buildControlLabel = function (controlElement, label, required, errorModel, loadingMsg) {
                 var elBuilder = [
-                        '<div class="form-control-element" ng-class="{required:' + required +', \'form-control-error\': ' + errorModel +'}">',
+                        '<div class="form-control-element" ng-class="{required:' + required +', \'form-control-error\': ' + errorModel +'}">'
                 ];
 
                 if (label) {
@@ -204,7 +204,6 @@ angular
                             elementHtml = buildTextAngularControl($attrs);
                             break;
                         case 'text':
-                        default:
                             elementHtml = buildTextControl(
                                 $attrs.name,
                                 $attrs.model,
@@ -221,9 +220,9 @@ angular
 
                     $element.html(elementHtml);
 
-                    return function ($scope, $element, $attrs, formCtrl) {
-                    };
+                    /*return function ($scope, $element, $attrs, formCtrl) {
+                    };*/
                 }
-            }
+            };
         }
     ]);

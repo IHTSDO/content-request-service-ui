@@ -41,11 +41,11 @@
                         <td data-title="'crs.batch.list.tableHeader.uploaded' | translate" sortable="'requestHeader.requestDate'" >
                             {{batch.requestHeader.requestDate | date:'MM-dd-yyyy'}}
                         </td>
-                        <td data-title="'crs.batch.list.tableHeader.lastModified' | translate" sortable="'requestHeader.statusDate'" >
+                        <!--<td data-title="'crs.batch.list.tableHeader.lastModified' | translate" sortable="'requestHeader.statusDate'" >
                             {{batch.requestHeader.statusDate | date:'MM-dd-yyyy'}}
-                        </td>
+                        </td>-->
                         <td data-title="'crs.batch.list.tableHeader.status' | translate" sortable="'status'">
-                            <span class="badge requestStatus {{batch.requestHeader.status}}">{{batch.requestHeader.status | requestStatus | translate}}</span>
+                            <span class="badge batchStatus {{batch.requestHeader.status}}">{{batch.requestHeader.status | batchStatus | translate}}</span>
                         </td>
                     </tr>
                 </table>

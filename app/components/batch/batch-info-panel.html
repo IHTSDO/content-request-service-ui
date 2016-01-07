@@ -57,6 +57,20 @@
                     </div>
                 </li>
 
+                <li>
+                    <div class="timeline-badge">
+                        <i class="icon-circle theme-border"></i>
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.batch.details.info.label.status"></label>
+                            <h4 class="timeline-title">
+                                <span class="badge batchStatus {{batchVM.batchSummary.status}}">{{batchVM.batchSummary.status | batchStatus | translate}}</span>
+                            </h4>
+                        </div>
+                    </div>
+                </li>
+
             </ul>
         </div>
 

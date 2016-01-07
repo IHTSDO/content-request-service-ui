@@ -15,7 +15,7 @@ angular.module('conceptRequestServiceApp.message')
                 var targetUrl;
                 var msgItemHtml = [];
                 msgItemHtml.push('<div class="message-detail-date" style="float:right">' + dateFilter(message.createdDate, 'MM-dd-yyyy H:mm:ss') + '</div>');
-                msgItemHtml.push('<div class="message-detail-header">' + messageType.titleLangKey + '</div>');
+                msgItemHtml.push('<div class="message-detail-header">' + translateFilter(messageType.titleLangKey) + '</div>');
 
                 switch(messageType) {
                     case MESSAGE_TYPE.BATCH_IMPORT_STATUS_CHANGE:

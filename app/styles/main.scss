@@ -178,6 +178,23 @@ footer {
   }
 }
 
+.batchStatus {
+  &.NEW {
+    background-color: #F3CB67;
+    color: white;
+  }
+
+  &.IN_PROGRESS {
+    background-color: #E68FBB;
+    color: white;
+  }
+
+  &.COMPLETED {
+    background-color: #43A047;
+    color: white;
+  }
+}
+
 @media (max-width: 1793px) {
   .nav > li > a {
     position: relative;

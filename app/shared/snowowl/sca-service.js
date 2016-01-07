@@ -24,7 +24,7 @@ angular.module('conceptRequestServiceApp.snowowl')
                     var url = snowowlEndpoint + config.path ;
 
                     if (param !== undefined && param !== null) {
-                        url +=  param
+                        url +=  param;
                     }
 
                     return url;

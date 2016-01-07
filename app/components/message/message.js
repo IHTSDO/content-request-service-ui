@@ -4,19 +4,19 @@ angular.module('conceptRequestServiceApp.message', [])
     .value('MESSAGE_TYPE', {
         BATCH_IMPORT_STATUS_CHANGE: {
             value: 'BATCH_IMPORT_STATUS_CHANGE',
-            titleLangKey: 'Batch file status has been changed'
+            titleLangKey: 'crs.notification.message.batchImportStatusChange'
         },
         REQUEST_STATUS_CHANGE: {
             value: 'REQUEST_STATUS_CHANGE',
-            titleLangKey: 'Request status has been changed'
+            titleLangKey: 'crs.notification.message.requestStatusChange'
 
         },
         BATCH_IMPORT_SUCCESS: {
             value: 'BATCH_IMPORT_SUCCESS',
-            titleLangKey: 'Batch requests have been imported successfully'
+            titleLangKey: 'crs.notification.message.batchImportSuccess'
         },
         COMMENT_ADDED: {
             value: 'COMMENT_ADDED',
-            titleLangKey: 'Comment has been added'
+            titleLangKey: 'crs.notification.message.commentAdded'
         }
     });

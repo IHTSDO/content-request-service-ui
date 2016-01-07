@@ -3,6 +3,20 @@
 angular
     .module('conceptRequestServiceApp.batch', [
     ])
+    .value('BATCH_STATUS', {
+        NEW: {
+            value: 'NEW',
+            langKey: 'crs.batch.batchStatus.new'
+        },
+        IN_PROGRESS: {
+            value: 'IN_PROGRESS',
+            langKey: 'crs.batch.batchStatus.inProgress'
+        },
+        COMPLETED: {
+            value: 'COMPLETED',
+            langKey: 'crs.batch.batchStatus.completed'
+        }
+    })
     .value('BATCH_IMPORT_STATUS', {
         PROCESSING_UPLOAD: {
             value: 'PROCESSING_UPLOAD',

@@ -40,6 +40,6 @@ angular
                         $scope.models.splice(index, 1);
                     };
                 }
-            }
+            };
         }
     ]);

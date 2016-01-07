@@ -55,7 +55,7 @@ angular
                         }
                     };
 
-                    var getConceptsForValueTypeahead = function (viewValue) {
+                    var getConceptsForValueTypeahead = function () {
                         var isARelConcept = {
                             conceptId: '116680003',
                             fsn: 'Is a (attribute)'
@@ -76,8 +76,7 @@ angular
 
                         return snowowlService.getDomainAttributes(null, null, idList).then(function (response) {
                             var allowedConcepts = [],
-                                items = response.items,
-                                item;
+                                items = response.items;
 
                             if (items && items.length > 0) {
                                 angular.forEach(items, function (item) {
@@ -119,6 +118,6 @@ angular
 
                     initControl();
                 }
-            }
+            };
         }
     ]);

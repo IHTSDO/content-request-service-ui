@@ -60,7 +60,7 @@ angular
                     .then(function (response) {
                         accountDetails = response.data;
                         return response.data;
-                    }, function (error) {
+                    }, function () {
                         accountDetails = null;
                     });
             };
@@ -92,12 +92,12 @@ angular
                     if (adminRs === true) {
                         return {
                             isAdmin: true
-                        }
+                        };
                     } else {
                         return checkRoles([CRS_ROLE.VIEWER]).then(function (viewerRs) {
                             return {
                                 isViewer: viewerRs
-                            }
+                            };
                         });
                     }
                 });

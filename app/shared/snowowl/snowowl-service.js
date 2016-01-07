@@ -1,3 +1,4 @@
+/*jshint sub:true*/
 'use strict';
 
 angular.module('conceptRequestServiceApp.snowowl')
@@ -38,7 +39,7 @@ angular.module('conceptRequestServiceApp.snowowl')
                     url += '/' + target;
 
                     if (param !== undefined && param !== null) {
-                        url += '/' + param
+                        url += '/' + param;
                     }
 
                     return url;
@@ -117,7 +118,7 @@ angular.module('conceptRequestServiceApp.snowowl')
                     return sendSnowowlRequest('GET', SNOWOWL_API.MRCM, projectKey, taskKey, SNOWOWL_TARGET.DOMAIN_ATTRIBUTE.path, null, params, null)
                         .then(function (response) {
                             return response.data ? response.data : [];
-                        }, function (error) {
+                        }, function () {
                             return null;
                         });
                 };
@@ -139,9 +140,8 @@ angular.module('conceptRequestServiceApp.snowowl')
 
                     return sendSnowowlRequest('GET', SNOWOWL_API.MRCM, projectKey, taskKey, SNOWOWL_TARGET.DOMAIN_ATTRIBUTE_VALUE.path, attributeId, params, null)
                         .then(function (response) {
-                            console.log(response);
                             return (response.data && response.data.items) ? response.data.items : [];
-                        }, function (error) {
+                        }, function () {
                             return null;
                         });
                 };

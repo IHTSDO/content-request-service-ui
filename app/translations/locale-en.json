@@ -21,7 +21,11 @@
         "notification": {
             "title": "Notifications",
             "message": {
-                "noNotification": "There is no notification at the moment"
+                "noNotification": "There is no notification at the moment",
+                "batchImportStatusChange": "Batch file status has been changed",
+                "requestStatusChange": "Request status has been changed",
+                "batchImportSuccess": "Batch requests have been imported successfully",
+                "commentAdded": "Comment has been added"
             },
             "button": {
                 "clear": "Clear"
@@ -288,7 +292,8 @@
                         "batchId": "BatchId",
                         "fileName": "Batch File",
                         "importedTime": "Imported on",
-                        "jiraTicket":"Jira Ticket"
+                        "jiraTicket":"Jira Ticket",
+                        "status": "Status"
                     }
                 },
                 "statistic": {
@@ -316,6 +321,11 @@
                     "upload": "Upload",
                     "import": "Import"
                 }
+            },
+            "batchStatus": {
+                "new": "New",
+                "inProgress": "In Progress",
+                "completed": "Completed"
             },
             "batchImportStatus": {
                 "processingUpload": "Uploading",
