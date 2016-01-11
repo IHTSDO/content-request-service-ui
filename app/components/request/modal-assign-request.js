@@ -48,7 +48,6 @@ angular.module('conceptRequestServiceApp.request')
             var assignRequests = function () {
                 //console.log(vm.selectedProject);
                 if (vm.selectedProject &&
-                    vm.assignee &&
                     vm.summary) {
                     $uibModalInstance.close({
                         project: vm.selectedProject,
@@ -56,7 +55,7 @@ angular.module('conceptRequestServiceApp.request')
                         summary: vm.summary
                     });
                 } else {
-                    showErrorMessage('Please enter all fields');
+                    showErrorMessage('Please enter required fields');
                 }
             };
 

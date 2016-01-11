@@ -87,7 +87,7 @@ angular
 
                 modalInstance.result.then(function (rs) {
                     notificationService.sendMessage('Assigning requests');
-                    requestService.assignRequests(selectedRequestIds, rs.project.key, rs.assignee.key, rs.summary).then(function () {
+                    requestService.assignRequests(selectedRequestIds, rs.project.key, ((rs.assignee)?rs.assignee.key:null), rs.summary).then(function () {
                         notificationService.sendMessage('Request assigned successfully', 5000);
                         vm.selectedRequests = {checked: false, items: {}, requests: {}};
                         requestTableParams.reload();
@@ -125,6 +125,10 @@ angular
                 }
             };
 
+            var toggleShowUnassignedRequests = function () {
+                vm.showUnassignedRequests = !vm.showUnassignedRequests;
+                vm.tableParams.reload();
+            };
 
             var requestTableParams = new ngTableParams({
                     page: 1,
@@ -144,7 +148,7 @@ angular
                             });
                         }
 
-                        return requestService.getAcceptedRequests(params.page() - 1, params.count(), params.filter().search, sortFields, sortDirs).then(function (requests) {
+                        return requestService.getAcceptedRequests(params.page() - 1, params.count(), params.filter().search, sortFields, sortDirs, vm.showUnassignedRequests).then(function (requests) {
                             params.total(requests.total);
                             if (requests.items && requests.items.length > 0) {
                                 return requests.items;
@@ -162,10 +166,12 @@ angular
             vm.assignSelectedRequests = assignSelectedRequests;
             vm.pushSelectedRequest = pushSelectedRequest;
             vm.getAuthorName = getAuthorName;
+            vm.toggleShowUnassignedRequests = toggleShowUnassignedRequests;
             vm.isAdmin = false;
             vm.isViewer = false;
             vm.loadingProjects = true;
             vm.loadingAuthors = true;
+            vm.showUnassignedRequests = false;
             vm.projects = [];
             vm.authors = [];
 

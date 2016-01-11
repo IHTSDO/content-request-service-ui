@@ -58,14 +58,15 @@ angular.module('conceptRequestServiceApp.request')
                 return crsService.sendGet(listEndpoint, params, null);
             };
 
-            var getAcceptedRequests = function (page, pageCount, searchStr, sortFields, sortDirections) {
+            var getAcceptedRequests = function (page, pageCount, searchStr, sortFields, sortDirections, onlyUnassigned) {
                 var listEndpoint = CRS_API_ENDPOINT.ACCEPTED_REQUEST_LIST;
                 var params = {
                     offset: page,
                     limit: pageCount,
                     search: searchStr,
                     sortFields: sortFields,
-                    sortDirections: sortDirections
+                    sortDirections: sortDirections,
+                    onlyUnassigned: (onlyUnassigned === true)
                 };
 
                 return crsService.sendGet(listEndpoint, params, null);

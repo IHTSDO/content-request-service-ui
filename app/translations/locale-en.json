@@ -147,7 +147,9 @@
                         "appealReject": "Reject Appeal",
                         "appeal": "Appeal Rejection",
                         "withdraw": "Withdraw Request",
-                        "pendingForClarification": "Pending Clarification"
+                        "pendingForClarification": "Pending Clarification",
+                        "acceptAndAssign": "Accept and Assign",
+                        "assign": "Assign Request"
                     },
                     "label": {
                         "batchId": "Batch Id",
