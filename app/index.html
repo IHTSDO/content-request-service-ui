@@ -178,19 +178,8 @@
 
 <script src="layout/header/header.js"></script>
 <!-- endbuild -->
-<script type="text/javascript" src="https://jira.ihtsdotools.org/s/2ebaf932312f53221f61a6838c666674-T/en_USgrrjqp/64027/64/1.4.27/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-US&collectorId=d0808496"></script>
-<!--<script type="text/javascript" src="https://jira.ihtsdotools.org/s/f890da76f5b668bf7eb9dc26a2170e6e-T/en_US-je3gdv/64027/28/1.4.27/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-US&collectorId=248feca3"></script>-->
 <script type="application/javascript">
     (function ($) {
-        window.ATL_JQ_PAGE_PROPS = {
-            "triggerFunction": function(showCollectorDialog) {
-                $("#myCustomTrigger").click(function(e) {
-                    e.preventDefault();
-                    showCollectorDialog();
-                });
-            }
-        };
-
         angular.element(document).ready(function () {
             $.get('config.json', function (data) {
 
