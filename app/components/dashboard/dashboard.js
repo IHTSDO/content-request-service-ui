@@ -15,6 +15,9 @@ angular
             })
             .when('/batches', {
                 redirectTo: '/dashboard/batches'
+            })
+            .when('/accepted-requests', {
+                redirectTo: '/dashboard/accepted-requests'
             });
     })
     .controller('DashboardCtrl', [
@@ -23,35 +26,58 @@ angular
         '$routeParams',
         '$location',
         '$route',
+        'accountService',
         'notificationService',
-        function ($rootScope, $uibModal, $routeParams, $location, $route, notificationService) {
+        'CRS_ROLE',
+        function ($rootScope, $uibModal, $routeParams, $location, $route, accountService, notificationService, CRS_ROLE) {
             var vm = this;
 
             var initView = function () {
                 var list = $routeParams.list;
                 switch (list) {
                     case 'batches':
-                        $rootScope.pageTitles = ['crs.batch.list.title'];
+                        $rootScope.pageTitles = [
+                            {url: '#/batches', label: 'crs.batch.list.title'}
+                        ];
                         vm.listView = 'components/batch/batch-list.html';
+                        break;
+                    case 'accepted-requests':
+                        $rootScope.pageTitles = [
+                            {url: '#/accepted-requests', label: 'crs.request.list.title.acceptedRequests'}
+                        ];
+                        vm.listView = 'components/request/accepted-request-list.html';
                         break;
                     case 'requests':
                     default:
-                        $rootScope.pageTitles = ['crs.request.list.title.requests'];
+                        $rootScope.pageTitles = [
+                            {url: '#/requests', label: 'crs.request.list.title.requests'}
+                        ];
                         vm.listView = 'components/request/request-list.html';
                         break;
                 }
+
+                // check admin role
+                accountService.checkUserPermission().then(function (rs) {
+                    vm.permissionChecked = true;
+                    vm.isAdmin = (rs.isAdmin === true);
+                    vm.isViewer = (rs.isViewer === true);
+                });
             };
 
-            var createRequest = function (requestType) {
-                $location.path('requests/new/' + requestType);
+            var createRequest = function (rs) {
+                //$location.url('requests/new/' + rs.requestType + ((rs.inputMode)?'?inputMode=' + rs.inputMode : ''));
+                $location.path('requests/new/' + rs.requestType).search({inputMode: rs.inputMode});
             };
 
             var editRequest = function (requestId) {
-                $location.path('requests/edit/' + requestId);
+                  $location.path('requests/edit/' + requestId).search({kb:true});
+            };
+
+            var previewRequest = function (requestId) {
+                  $location.path('requests/preview/' + requestId).search({kb:true});
             };
 
             var importBatchFile = function (response) {
-                console.log(response);
                 //$route.reload();
                 notificationService.sendMessage('Successfully import ' + response.success + ' requests from batch file' , 5000);
                 showBatchDetails(response.batchId);
@@ -90,7 +116,16 @@ angular
             vm.openCreateRequestModal = openCreateRequestModal;
             vm.openBatchImportModal = openBatchImportModal;
             vm.editRequest = editRequest;
+            vm.previewRequest = previewRequest;
             vm.showBatchDetails = showBatchDetails;
+            vm.permissionChecked = false;
+            vm.isAdmin = false;
+            vm.isViewer = false;
+
+            vm.testIMS = function () {
+                accountService.getTestUsers();
+            };
+
             initView();
         }
     ]);

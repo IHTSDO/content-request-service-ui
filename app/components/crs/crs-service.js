@@ -39,19 +39,20 @@ angular
                 return deferred.promise;
             };
 
-            var sendCrsRequest = function (method, resource, params, data) {
+            var sendCrsRequest = function (method, resource, params, data, ignoreLoadingBar) {
                 var url = getCrsEndpointUrl(resource);
 
                 return sendRequest({
                     method: method,
                     url: url,
                     params: params,
-                    data: data
+                    data: data,
+                    ignoreLoadingBar: (ignoreLoadingBar === true)
                 });
             };
 
-            var sendGet = function (resource, params) {
-                return sendCrsRequest(HTTP_METHOD.GET, resource, params);
+            var sendGet = function (resource, params, ignoreLoadingBar) {
+                return sendCrsRequest(HTTP_METHOD.GET, resource, params, null, ignoreLoadingBar);
             };
 
             var sendPut = function (resource, params, data) {
@@ -62,7 +63,7 @@ angular
                 return sendCrsRequest(HTTP_METHOD.POST, resource, params, data);
             };
 
-            var sendDelete = function (resource, params) {
+            var sendDelete = function (resource, params, data) {
                 return sendCrsRequest(HTTP_METHOD.DELETE, resource, params, data);
             };
 

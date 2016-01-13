@@ -225,7 +225,7 @@ angular.module('conceptRequestServiceApp.search')
             };
 
             $scope.openConceptInformationModal = function (result) {
-                var modalInstance = $uibModal.open({
+                /*var modalInstance = */$uibModal.open({
                     templateUrl: 'shared/concept-information/concept-info-modal.html',
                     controller: 'conceptInfoModalCtrl',
                     resolve: {
@@ -238,11 +238,11 @@ angular.module('conceptRequestServiceApp.search')
                     }
                 });
 
-                modalInstance.result.then(function (response) {
+                /*modalInstance.result.then(function (response) {
                     // do nothing
                 }, function () {
                     // do nothing
-                });
+                });*/
             };
 
             /**

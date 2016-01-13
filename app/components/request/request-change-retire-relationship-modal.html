@@ -1,0 +1,17 @@
+<form class="form-floating" form-control-readonly="isStatic">
+
+    <div class="form-group">
+        <form-control type="select"
+                      model="definitionOfChanges.refinability"
+                      options="refinability for refinability in requestMetadata.refinabilities"
+                      label="crs.request.details.label.newRefinability"
+                      name="slRefinability"></form-control>
+
+
+        <form-control type="select"
+                      model="definitionOfChanges.relationshipStatus"
+                      options="relationshipStatus for relationshipStatus in requestMetadata.relationshipStatuses"
+                      label="crs.request.details.label.relationshipStatus"
+                      name="slRelationshipStatus"></form-control>
+    </div>
+</form>

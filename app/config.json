@@ -1,14 +1,40 @@
 {
     "endpoint": {
-        "crs": "http://huy.ihtsdotools.org/crs/",
+        "crs": "https://dev-request2.ihtsdotools.org/ihtsdo-crs/",
         "ims": "https://dev-ims.ihtsdotools.org/",
-        "snowowl": "https://dev-term.ihtsdotools.org/snowowl/",
+        "snowowl": "https://dev-request2.ihtsdotools.org/snowowl/",
+        "jira": "https://dev-jira.ihtsdotools.org/",
         "ims-api": "https://dev-term.ihtsdotools.org/ims-api/"
     },
+
     "xhrTimeout": 50000,
+    "fileStatusPollingInterval": 5000,
+    "messagePollingInterval": 10000,
+
     "snomed-ct": {
         "path": "snomed-ct/v2/",
         "edition": "MAIN",
         "release": ""
+    },
+
+    "sca": {
+        "path": "ihtsdo-sca/"
+    },
+
+    "jira": {
+        "rest-api": {
+            "path": "rest/api/",
+            "version": "2"
+        },
+        "author-group": "ihtsdo-sca-author"
+    },
+    "userRole": {
+        "ADMINISTRATOR": "ROLE_ihtsdo-crs-administrators",
+        "MANAGER": "ROLE_ihtsdo-crs-managers",
+        "STAFF": "ROLE_ihtsdo-crs-staff",
+        "MEMBER": "ROLE_ihtsdo-crs-members",
+        "PARTNER": "ROLE_ihtsdo-crs-partners",
+        "REQUESTOR": "ROLE_ihtsdo-crs-requestors",
+        "VIEWER": "ROLE_ihtsdo-crs-viewers"
     }
 }

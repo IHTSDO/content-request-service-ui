@@ -1,49 +1,26 @@
-<!--<h4 translate="crs.request.requestType.newDescription"></h4>-->
-<form class="form-floating">
+<h4 translate="crs.request.requestType.newDescription"></h4>
+<form class="form-floating" form-control-readonly="requestVM.request.requestHeader.status !== 'DRAFT'">
 
     <div class="form-group">
-        <!--<form-control type="text"
-                      model="requestVM.request.requestorInternalId"
-                      label="crs.request.details.label.requestorInternalId"
-                      name="txtRequestorInternalId"></form-control>
-        <div>
-            <div class="form-control-element required">
-                <label for="">Concept Id</label>
-                <input class="form-control" type="text" ng-model="requestVM.request.conceptId"/>
-            </div>
-            <div class="form-control-element required">
-                <label for="">Concept FSN</label>
-                <input class="form-control" type="text" ng-model="requestVM.request.conceptFSN"/>
-            </div>
-        </div>
-        <br/>
+
+        <form-control type="concept"
+                      model="requestVM.originalConcept"
+                      label="crs.request.details.label.concept"
+                      required
+                      error-model="requestVM.error.concept"></form-control>
 
         <form-control type="text"
                       model="requestVM.request.proposedDescription"
                       label="crs.request.details.label.description"
                       name="txtDescription"
-                      required></form-control>
+                      required
+                      error-model="requestVM.error.proposedDescription"></form-control>
 
         <div class="form-control-element">
             <input type="checkbox"
                    ng-model="requestVM.request.descriptionIsPT"
                    name="chkIsPT">
-            <label for="">Description is PT</label>
-        </div>-->
-
-        <!--<form-control type="text"
-                      model="requestVM.request.reasonForChange"
-                      label="crs.request.details.label.reasonForChange"
-                      name="txtReasonForChange"></form-control>
-
-        <form-control type="textarea"
-                      model="requestVM.request.notes"
-                      label="crs.request.details.label.notes"
-                      name="txtNotes"></form-control>
-
-        <form-control type="text"
-                      model="requestVM.request.reference"
-                      label="crs.request.details.label.reference"
-                      name="txtReference"></form-control>-->
+            <label translate="crs.request.details.label.isPt"></label>
+        </div>
     </div>
 </form>

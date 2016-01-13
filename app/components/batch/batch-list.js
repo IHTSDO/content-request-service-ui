@@ -10,58 +10,38 @@ angular
         function ($filter, ngTableParams, batchService, notificationService) {
             var vm = this;
 
-            var loadBatches = function () {
-                notificationService.sendMessage('crs.batch.message.listLoading', 0);
-
-                vm.batches = null;
-                batchService.getBatches().then(function (batches) {
-                    vm.batches = batches;
-                    notificationService.sendMessage('crs.batch.message.listLoaded', 5000);
-                    if (vm.tableParams) {
-                        vm.tableParams.reload();
-                    }
-                });
-            };
-
             var batchTableParams = new ngTableParams({
                     page: 1,
                     count: 10,
-                    sorting: {modifiedDate: 'desc', uploadedDate: 'desc', id: 'asc'}
+                    sorting: {'requestHeader.statusDate': 'desc', 'requestHeader.requestDate': 'desc', id: 'asc'}
                 },
                 {
-                    filterDelay: 50,
-                    total: vm.batches ? vm.batches.length : 0, // length of data
+                    filterDelay: 700,
                     getData: function (params) {
+                        var sortingObj = params.sorting();
+                        var sortFields = [], sortDirs = [];
 
-                        if (!vm.batches || vm.batches.length == 0) {
-                            return [];
-                        } else {
-
-                            var searchStr = params.filter().search;
-                            var mydata = [];
-
-                            if (searchStr) {
-                                mydata = vm.batches.filter(function (item) {
-                                    return (item.id + '').indexOf(searchStr.toLowerCase()) > -1
-                                        || item.fsn.toLowerCase().indexOf(searchStr.toLowerCase()) > -1;
-                                });
-                            } else {
-                                mydata = vm.batches;
-                            }
-
-                            params.total(mydata.length);
-                            mydata = params.sorting() ? $filter('orderBy')(mydata, params.orderBy()) : mydata;
-
-                            return mydata.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                        if (sortingObj) {
+                            angular.forEach(sortingObj, function (dir, field) {
+                                sortFields.push(field);
+                                sortDirs.push(dir);
+                            });
                         }
 
+                        return batchService.getBatches(params.page() - 1, params.count(), params.filter().search, sortFields, sortDirs).then(function (requests) {
+                            params.total(requests.total);
+                            if (requests.items && requests.items.length > 0) {
+                                return requests.items;
+                            } else {
+                                return [];
+                            }
+                        }, function () {
+                            return [];
+                        });
                     }
                 }
             );
 
             vm.tableParams = batchTableParams;
-            vm.batches = null;
-
-            loadBatches();
         }
     ]);

@@ -3,14 +3,16 @@
 angular
     .module('conceptRequestServiceApp.request', [
     ])
-    .value('GENERAL_REQUEST_TYPE', {
-        NEW_CONCEPT: {
-            value: 'NEW_CONCEPT',
-            langKey: 'crs.request.requestType.newConcept'
+    .value('REQUEST_INPUT_MODE', {
+        SIMPLE: {
+            value: 'SIMPLE',
+            langKey: 'crs.request.inputMode.simple',
+            requestTypes: ['NEW_CONCEPT', 'NEW_DESCRIPTION', 'NEW_RELATIONSHIP', 'CHANGE_RETIRE_CONCEPT', 'CHANGE_RETIRE_DESCRIPTION', 'CHANGE_RETIRE_RELATIONSHIP']
         },
-        EDIT_CONCEPT: {
-            value: 'EDIT_CONCEPT',
-            langKey: 'crs.request.requestType.changeRetireConcept'
+        DIRECT: {
+            value: 'DIRECT',
+            langKey: 'crs.request.inputMode.direct',
+            requestTypes: ['NEW_CONCEPT', 'CHANGE_RETIRE_CONCEPT']
         }
     })
     .value('REQUEST_TYPE', {
@@ -21,17 +23,12 @@ angular
                 template: 'components/request/request-new-concept-form.html',
                 fields: [
                     { name: 'requestorInternalId'},
-                    { name: 'parentId'},
                     { name: 'proposedFSN', required: true},
                     { name: 'conceptPT', required: true},
-                    { name: 'proposedSynonym'},
-                    { name: 'proposedDefinition'},
-                    { name: 'reasonForChange'},
-                    { name: 'notes'},
-                    { name: 'reference'}
+                    { name: 'proposedSynonyms'},
+                    { name: 'proposedDefinitions'}
                 ]
             }
-
         },
         NEW_DESCRIPTION: {
             value: 'NEW_DESCRIPTION',
@@ -40,13 +37,8 @@ angular
                 template: 'components/request/request-new-description-form.html',
                 "fields": [
                     {"name": "requestorInternalId"},
-                    {"name": "conceptId", "required": true},
-                    {"name": "proposedFSN", "required": true},
                     {"name": "proposedDescription", "required": true},
-                    {"name": "descriptionIsPT"},
-                    {"name": "reasonForChange"},
-                    {"name": "notes"},
-                    {"name": "reference"}
+                    {"name": "descriptionIsPT"}
                 ]
 
             }
@@ -56,17 +48,13 @@ angular
             langKey: 'crs.request.requestType.newRelationship',
             form: {
                 template: 'components/request/request-new-relationship-form.html',
+                modal: 'components/request/request-new-relationship-modal.html',
                 "fields": [
                     {"name": "requestorInternalId"},
-                    {"name": "conceptId", "required": true},
                     {"name": "relationshipType", "required": true},
-                    {"name": "destConceptId", "required": true},
+                    {"name": "destinationConcept", "required": true},
                     {"name": "characteristicType"},
-                    {"name": "refinability"},
-                    {"name": "relationshipGroup"},
-                    {"name": "reasonForChange"},
-                    {"name": "notes"},
-                    {"name": "reference"}
+                    {"name": "refinability"}
                 ]
             }
         },
@@ -75,17 +63,13 @@ angular
             langKey: 'crs.request.requestType.changeRetireConcept',
             form: {
                 template: 'components/request/request-change-retire-concept-form.html',
+                modal: 'components/request/request-change-retire-concept-modal.html',
                 "fields": [
                     {"name": "requestorInternalId"},
-                    {"name": "conceptId", "required": true},
-                    {"name": "conceptFSN", "required": true},
                     {"name": "proposedFSN"},
                     {"name": "proposedStatus"},
                     {"name": "historyAttribute"},
-                    {"name": "historyAttributeValue"},
-                    {"name": "reasonForChange"},
-                    {"name": "notes"},
-                    {"name": "reference"}
+                    {"name": "historyAttributeValue"}
                 ]
 
             }
@@ -95,18 +79,13 @@ angular
             langKey: 'crs.request.requestType.changeRetireDescription',
             form: {
                 template: 'components/request/request-change-retire-description-form.html',
+                modal: 'components/request/request-change-retire-description-modal.html',
                 "fields": [
                     {"name": "requestorInternalId"},
-                    {"name": "conceptId", "required": true},
-                    {"name": "conceptFSN", "required": true},
                     {"name": "descriptionId", "required": true},
-                    {"name": "description", "required": true},
                     {"name": "proposedDescription"},
                     {"name": "proposedCaseSignificance"},
-                    {"name": "proposedDescriptionStatus"},
-                    {"name": "reasonForChange"},
-                    {"name": "notes"},
-                    {"name": "reference"}
+                    {"name": "proposedDescriptionStatus"}
                 ]
             }
         },
@@ -115,16 +94,12 @@ angular
             langKey: 'crs.request.requestType.changeRetireRelationship',
             form: {
                 template: 'components/request/request-change-retire-relationship-form.html',
+                modal: 'components/request/request-change-retire-relationship-modal.html',
                 "fields": [
                     {"name": "requestorInternalId"},
-                    {"name": "conceptId", "required": true},
-                    {"name": "conceptFSN", "required": true},
                     {"name": "relationshipId", "required": true},
                     {"name": "refinability"},
-                    {"name": "relationshipStatus"},
-                    {"name": "reasonForChange"},
-                    {"name": "notes"},
-                    {"name": "reference"}
+                    {"name": "relationshipStatus"}
                 ]
             }
         }
@@ -138,6 +113,50 @@ angular
         NEW: {
             value: 'NEW',
             langKey: 'crs.request.requestStatus.new'
+        },
+        ACCEPTED: {
+            value: 'ACCEPTED',
+            langKey: 'crs.request.requestStatus.accepted'
+        },
+        UNDER_AUTHORING: {
+            value: 'UNDER_AUTHORING',
+            langKey: 'crs.request.requestStatus.underAuthoring'
+        },
+        REJECTED: {
+            value: 'REJECTED',
+            langKey: 'crs.request.requestStatus.rejected'
+        },
+        CLARIFICATION_NEEDED: {
+            value: 'CLARIFICATION_NEEDED',
+            langKey: 'crs.request.requestStatus.clarificationNeeded'
+        },
+        APPEAL: {
+            value: 'APPEAL',
+            langKey: 'crs.request.requestStatus.appeal'
+        },
+        ON_HOLD: {
+            value: 'ON_HOLD',
+            langKey: 'crs.request.requestStatus.onHold'
+        },
+        WITHDRAWN: {
+            value: 'WITHDRAWN',
+            langKey: 'crs.request.requestStatus.withdraw'
+        },
+        APPEAL_REJECTED: {
+            value: 'APPEAL_REJECTED',
+            langKey: 'crs.request.requestStatus.appealRejected'
+        },
+        APPROVED: {
+            value: 'APPROVED',
+            langKey: 'crs.request.requestStatus.approved'
+        },
+        RELEASED: {
+            value: 'RELEASED',
+            langKey: 'crs.request.requestStatus.released'
+        },
+        FORWARDED: {
+            value: 'FORWARDED',
+            langKey: 'crs.request.requestStatus.forwarded'
         }
     })
     .value('REQUEST_METADATA_KEY', {

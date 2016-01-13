@@ -121,7 +121,7 @@ button,
 .add-buttons {
   background-color: transparent !important;
   padding: 1px 3px !important;
-  color: #dcdcdc !important;
+  color: #bbb !important;
 }
 
 .add-buttons.pull-right {
@@ -559,6 +559,12 @@ select.primitive {
 .form-control:disabled {
   color: white;
 }
+select.form-control:disabled {
+  border-bottom: 1px dotted #ddd;
+  box-shadow: none;
+  color: inherit;
+  cursor: auto;
+}
 
 .projecttasks .btn-success.btn-border {
   border-color: #11c78e !important;
@@ -704,6 +710,12 @@ sca-column
 .btn-default.blue:hover,
 .btn-default.blue:active {
   background-color: #097fda;
+  color: #fff;
+}
+
+.btn-default.red:hover,
+.btn-default.red:active {
+  background-color: #D32F2F;
   color: #fff;
 }
 
@@ -873,4 +885,19 @@ sca-column
 .popover-content {
   padding: 3px 7px !important;
   max-height: 40px;
+}
+
+.concept-drag-target {
+  input {
+    border: 1px dashed #9f9f9f !important;
+    background: #dedede !important;
+  }
+}
+
+.concept-drag-hover {
+  input {
+    border: 1px dashed #fff !important;
+    background: #00a6e5 !important;
+    color: #fff !important;
+  }
 }

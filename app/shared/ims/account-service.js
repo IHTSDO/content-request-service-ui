@@ -12,7 +12,8 @@ angular
         '$q',
         '$http',
         'configService',
-        function (LOGIN_STATUS, $q, $http, configService) {
+        'CRS_ROLE',
+        function (LOGIN_STATUS, $q, $http, configService, CRS_ROLE) {
             var loginStatus = LOGIN_STATUS.UNDEFINED;
             var accountDetails = null;
 
@@ -49,16 +50,17 @@ angular
                 var getAccountAPI = 'account';
                 var deferred = $q.defer();
 
-                if (accountDetails !== null) {
+                if (accountDetails !== undefined &&
+                    accountDetails !== null) {
                     deferred.resolve(accountDetails);
                     return deferred.promise;
                 }
 
                 return $http.get(imsApiEndpoint + getAccountAPI, {withCredentials: true})
-                    .success(function (data) {
-                        accountDetails = data;
-                    })
-                    .error(function () {
+                    .then(function (response) {
+                        accountDetails = response.data;
+                        return response.data;
+                    }, function () {
                         accountDetails = null;
                     });
             };
@@ -84,6 +86,23 @@ angular
                     return rs;
                 });
             };
+
+            var checkUserPermission = function () {
+                return checkRoles([CRS_ROLE.ADMINISTRATOR, CRS_ROLE.MANAGER]).then(function (adminRs) {
+                    if (adminRs === true) {
+                        return {
+                            isAdmin: true
+                        };
+                    } else {
+                        return checkRoles([CRS_ROLE.VIEWER]).then(function (viewerRs) {
+                            return {
+                                isViewer: viewerRs
+                            };
+                        });
+                    }
+                });
+            };
+
 
             var getUserPreferences = function () {
                 var deferred = $q.defer();
@@ -111,7 +130,18 @@ angular
                 getAccountInfo: getAccountInfo,
                 getUserPreferences: getUserPreferences,
                 applyUserPreferences: applyUserPreferences,
-                checkRoles: checkRoles
+                checkRoles: checkRoles,
+                checkUserPermission: checkUserPermission,
+
+                getTestUsers: function () {
+                    return $http.get('http://local.ihtsdotools.org/crs/api/test/user', {withCredentials: true})
+                        .success(function (data) {
+                            accountDetails = data;
+                        })
+                        .error(function () {
+                            accountDetails = null;
+                        });
+                }
             };
         }
     ]);

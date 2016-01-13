@@ -2,7 +2,8 @@
     "crs": {
         "message": {
             "unknownUser": "Logged in as unknown user",
-            "profileTip":"display name will link to profile services in later updates"
+            "profileTip":"display name will link to profile services in later updates",
+            "loading": "Loading..."
         },
         "link": {
             "logout": "Logout",
@@ -17,13 +18,27 @@
             "name": "Concept Request Service",
             "copyright": "Copyright IHTSDO 2015"
         },
+        "notification": {
+            "title": "Notifications",
+            "message": {
+                "noNotification": "There is no notification at the moment",
+                "batchImportStatusChange": "Batch file status has been changed",
+                "requestStatusChange": "Request status has been changed",
+                "batchImportSuccess": "Batch requests have been imported successfully",
+                "commentAdded": "Comment has been added"
+            },
+            "button": {
+                "clear": "Clear"
+            }
+        },
         "dashboard": {
             "title": "Dashboard",
             "sidebar": {
-                "myRequest": "My Submitted Requests",
+                "myRequest": "Submitted Requests",
                 "myBatch": "My Batch Requests",
                 "createRequest": "Create New Request",
-                "importBatch": "New Batch Import"
+                "importBatch": "New Batch Import",
+                "acceptedRequest": "Accepted Requests"
             }
         },
         "request": {
@@ -31,17 +46,21 @@
                 "title": {
                     "requests": "Requests",
                     "myRequests": "My Requests",
+                    "acceptedRequests": "Accepted Requests",
                     "submittedRequests": "Submitted Requests"
                 },
                 "tip": {
                     "count": "Number of requests",
                     "create": "Create New Request",
+                    "remove": "Remove Selected Requests",
                     "requestorInternalId": "Click to open request editing view",
+                    "assign": "Assign requests to author",
                     "batchId": "Click to open batch details view",
                     "conceptFSN": "Click to open request editing view"
                 },
                 "searchPlaceHolder": {
                     "myRequests": "Search My Requests",
+                    "acceptedRequests": "Search Accepted Requests",
                     "submittedRequests": "Search Submitted Requests"
                 },
                 "tableHeader": {
@@ -53,13 +72,20 @@
                     "requestType": "Request Type",
                     "status": "Status",
                     "conceptFSN": "Concept",
-                    "reasonForChange": "Reason for Change"
+                    "reasonForChange": "Reason for Change",
+                    "topic": "Topic",
+                    "assignee": "Assignee",
+                    "project": "Project",
+                    "validationResult": "Validation Result",
+                    "originator": "Created By",
+                    "createdDate": "Created On"
                 }
             },
             "details": {
                 "title": {
                     "new": "New Request",
-                    "edit": "Edit Request"
+                    "edit": "Edit Request",
+                    "preview": "Preview Request"
                 },
                 "button": {
                     "save": "Save Request",
@@ -67,9 +93,15 @@
                     "cancel": "Cancel"
                 },
                 "label": {
+                    "topic": "Topic",
                     "requestorInternalId": "Requestor Internal Id",
                     "proposedFSN": "New Concept FSN",
+                    "parentConcept": "Parent Concept",
+                    "concept": "Concept",
+                    "sourceConcept": "Source Concept",
+                    "destinationConcept": "Destination Concept",
                     "conceptPT": "Preferred Term",
+                    "proposedSynonym": "Synonym(s)",
                     "proposedDefinition": "Definition",
                     "reasonForChange": "Reason of Changes",
                     "reference": "Reference",
@@ -79,6 +111,7 @@
                     "proposedDescription": "Proposed New Description",
                     "relationshipGroup": "Relationship Group",
                     "relationshipId": "Relationship Id",
+                    "relationship": "Relationship",
                     "historyAttributeValue": "History Attribute Value",
                     "notes": "Notes",
                     "relationshipType": "Relationship Type",
@@ -89,7 +122,8 @@
                     "historyAttribute": "History Attribute",
                     "proposedCaseSignificance": "New Case Significance",
                     "descriptionStatus": "New Description Status",
-                    "relationshipStatus": "Relationship Status"
+                    "relationshipStatus": "Relationship Status",
+                    "isPt": "Description is PT"
 
                 },
                 "tip": {
@@ -107,13 +141,23 @@
                     "button": {
                         "submit": "Submit Request",
                         "save": "Save Request",
-                        "edit": "Edit Request"
+                        "edit": "Edit Request",
+                        "accept": "Accept Request",
+                        "reject": "Reject Request",
+                        "appealReject": "Reject Appeal",
+                        "appeal": "Appeal Rejection",
+                        "withdraw": "Withdraw Request",
+                        "pendingForClarification": "Pending Clarification",
+                        "acceptAndAssign": "Accept and Assign",
+                        "assign": "Assign Request"
                     },
                     "label": {
                         "batchId": "Batch Id",
                         "ticketId": "Jira Ticket Id",
                         "status": "Status",
-                        "lastModified": "Last Modified Date"
+                        "lastModified": "Last Modified Date",
+                        "createdDate": "Created Date",
+                        "originator": "Created By"
                     }
                 }
             },
@@ -122,22 +166,72 @@
                 "requestType": {
                     "label": "Request Type"
                 },
+                "inputMode": {
+                    "label": "Input Mode"
+                },
                 "button": {
                     "createRequest": "Create Request",
                     "cancel": "Cancel"
                 }
             },
+            "assignModal": {
+                "title": "Assign Requests to Authoring Task",
+                "project": {
+                    "label": "Project"
+                },
+                "assignee": {
+                    "label": "Assignee"
+                },
+                "summary": {
+                    "label": "Summary"
+                },
+                "button": {
+                    "assignRequest": "Assign Requests",
+                    "cancel": "Cancel"
+                }
+            },
+            "requestStatusModal": {
+                "title": {
+                    "reject": "Reject Request",
+                    "withdraw": "Withdraw Request",
+                    "appeal": "Appeal Request Rejection",
+                    "needClarify": "Pending for Clarification"
+                },
+                "comment": {
+                    "label": "Reason"
+                },
+                "button": {
+                    "confirm": "Confirm",
+                    "cancel": "Cancel"
+                },
+                "message": {
+                    "error": {
+                        "commentRequired": "Please provide reason"
+                    }
+                }
+            },
             "message": {
                 "listLoading": "Loading requests...",
-                "listLoaded": "All requests loaded",
+                "listLoaded": "Requests loaded",
                 "requestLoading": "Loading request {{requestId}}...",
                 "requestLoaded": "Request {{requestId}} loaded",
-                "requestSaved": "Request has successfully saved",
-                "requestSubmitted": "Request has successfully submitted",
+                "requestSaving": "Saving request {{requestId}}...",
+                "requestSaved": "Request {{requestId}} has successfully saved",
+                "requestSubmitting": "Submitting request",
+                "requestSubmitted": "Request has been submitted successfully",
+                "requestProcessing": "Processing request...",
+                "requestAccepted": "Request has been accepted successfully",
+                "requestRejected": "Request has been rejected successfully",
+                "requestAppealed": "Request has been appealed successfully",
+                "requestWithdrawn": "Request has been withdrawn successfully",
+                "requestClarification": "Request has been pended to clarification successfully",
 
                 "error": {
                     "requestTypeRequired": "Please select request type",
-                    "invalidPage": "The page you request is not available"
+                    "invalidPage": "The page you request is not available",
+                    "invalidInput": "Please correct request data before saving or generating concept",
+                    "fieldRequired": "required",
+                    "fieldInvalid": "invalid"
                 }
 
             },
@@ -149,13 +243,30 @@
                 "changeRetireDescription": "Change or Retire Description",
                 "changeRetireRelationship": "Change or Retire Relationship"
             },
+            "inputMode": {
+                "simple": "Simple",
+                "direct": "Direct"
+            },
             "requestMode": {
                 "newRequest": "New Request",
-                "editRequest": "Edit Request"
+                "editRequest": "Edit Request",
+                "viewRequest": "View Request",
+                "previewRequest": "Preview Request"
             },
             "requestStatus": {
                 "draft": "Draft",
-                "new": "New"
+                "new": "New",
+                "accepted": "Accepted",
+                "rejected": "Rejected",
+                "clarificationNeeded": "Pending Clarification",
+                "appeal": "In Appeal",
+                "appealRejected": "Appeal Rejected",
+                "withdraw": "Withdrawn",
+                "underAuthoring": "Under Authoring",
+                "released": "Released",
+                "onHold": "On Hold",
+                "forwarded": "Forwarded",
+                "approved": "Approved"
             }
         },
         "batch": {
@@ -172,13 +283,35 @@
                     "uploaded": "Uploaded On",
                     "submitted": "Submitted On",
                     "lastModified": "Last Modified",
-
+                    "fileName": "File Name",
+                    "ticketId": "Jira Ticket",
                     "status": "Status"
+                }
+            },
+            "details": {
+                "info": {
+                    "label": {
+                        "batchId": "BatchId",
+                        "fileName": "Batch File",
+                        "importedTime": "Imported on",
+                        "jiraTicket":"Jira Ticket",
+                        "status": "Status"
+                    }
+                },
+                "statistic": {
+                    "label": {
+                        "submitted": "Submitted Requests",
+                        "accepted": "Accepted Requests",
+                        "rejected": "Rejected Requests",
+                        "underAuthoring": "Under Authoring",
+                        "approved": "Approved Requests"
+                    }
                 }
             },
             "message": {
                 "listLoading": "Loading batches...",
                 "listLoaded": "All batches loaded",
+                "requestRemoved": "Requests has been removed successfully",
                 "error": {
                     "fileRequired": "Please select a file to upload."
                 }
@@ -187,7 +320,85 @@
                 "title": "Import Batch File",
                 "button": {
                     "cancel": "Cancel",
-                    "upload": "Upload"
+                    "upload": "Upload",
+                    "import": "Import"
+                }
+            },
+            "batchStatus": {
+                "new": "New",
+                "inProgress": "In Progress",
+                "completed": "Completed"
+            },
+            "batchImportStatus": {
+                "processingUpload": "Uploading",
+                "completedUpload": "Uploaded",
+                "processingImport": "Importing",
+                "completedImport": "Imported",
+                "error": "Error",
+                "aborted": "Aborted"
+            },
+            "preview": {
+                "title": {
+                    "pageTitle": "Batch Import",
+                    "uploadedFiles": "Uploaded Files"
+                },
+                "fileList": {
+                    "tableHeader": {
+                        "name": "Name",
+                        "uploaded": "Uploaded",
+                        "status": "Status"
+                    }
+                },
+                "upload": {
+                    "hint": "Select or Drop Batch File Here",
+                    "uploading": "Uploading"
+                },
+                "button": {
+                    "import": "Import Requests",
+                    "remove": "Remove Request"
+                },
+                "requestList": {
+                    "tableHeader": {
+                        "sourceTerminology": "Source Terminology",
+                        "sourceTerminologyVersion": "Source Terminology Version",
+                        "requestorInternalId": "Requestor Internal ID",
+                        "reasonForChange": "Reason for Change",
+                        "topic": "Topic",
+                        "notes": "Notes",
+                        "references": "References",
+                        "parentId": "Parent ID",
+                        "parentFSN": "Parent FSN",
+                        "FSN": "FSN",
+                        "semanticTag": "Semantic Tag",
+                        "synonym": "Synonym",
+                        "definition": "Definition",
+                        "conceptId": "Concept ID",
+                        "sourceConceptId": "Source Concept ID",
+                        "conceptFSN": "Concept FSN",
+                        "description": "Description",
+                        "descriptionIsPT": "Description is PT",
+                        "relationshipType": "Relationship Type",
+                        "destinationTerminology": "Destination Terminology",
+                        "destinationConceptId": "Destination Concept ID",
+                        "characteristicType": "Characteristic Type",
+                        "refinability": "Refinability",
+                        "relationshipGroup": "Relationship Group",
+                        "newFSN": "New FSN",
+                        "newConceptStatus": "New Concept Status",
+                        "historyAttribute": "Concept History Attribute",
+                        "historyAttributeValue": "Concept History Attribute Value",
+                        "descriptionId": "Description ID",
+                        "currentDescription": "Current Description",
+                        "newDescription": "Proposed New Description",
+                        "newCaseSignature": "Proposed New Case Signature",
+                        "newDescriptionStatus": "Proposed New Description Status",
+                        "relationshipId": "Relationship ID",
+                        "newRefinability": "Proposed New Refinability",
+                        "newRelationshipStatus": "Proposed New Relationship Status",
+                        "validationResult": "Validation Result",
+                        "originator": "Created By",
+                        "createdDate": "Created On"
+                    }
                 }
             }
         }

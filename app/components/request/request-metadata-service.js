@@ -58,9 +58,9 @@ angular.module('conceptRequestServiceApp.request')
 
             // Case Significance
             metadata[REQUEST_METADATA_KEY.CASE_SIGNIFICANCE] = [
-                'Entire term case sensitive',
-                'Entire term case insensitive',
-                'Only initial character case insensitive'
+                {value: 'ENTIRE_TERM_CASE_SENSITIVE', text: 'Entire term case sensitive'},
+                {value: 'CASE_INSENSITIVE', text: 'Entire term case insensitive'},
+                {value: 'INITIAL_CHARACTER_CASE_INSENSITIVE', text: 'Only initial character case insensitive'},
             ];
 
             // Relationship Type

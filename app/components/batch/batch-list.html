@@ -15,7 +15,7 @@
                 <div class="col-md-2">
                     <div class="pull-right p-t-20">
                         <button type="button" class="btn btn-round btn-info ng-scope " title="{{'crs.batch.list.tip.count' | translate}}" title="Total Batch Count">
-                            {{vm.batches.length}} <div class="ripple-wrapper"></div>
+                            {{vm.tableParams.total()}} <div class="ripple-wrapper"></div>
                         </button>
                         <button type="button" class="btn btn-round btn-default " title="{{'crs.batch.list.tip.create' | translate}}" ng-click="dashboard.openBatchImportModal()">
                             <span class="md md-add"></span>
@@ -34,14 +34,18 @@
                             <!--<a class="tooltips-right" ng-href="#/batches/{{batch.batchId}}/view">{{batch.id}} <span translate="crs.batch.list.tip.batchId"></span></a>-->
                             {{batch.id}}
                         </td>
-                        <td data-title="'crs.batch.list.tableHeader.uploaded' | translate" sortable="'uploadedDate'" >
+                        <td data-title="'crs.batch.list.tableHeader.fileName' | translate" sortable="'fileName'" >
+                            {{batch.fileName}}
+                        </td>
+                        <td data-title="'crs.batch.list.tableHeader.ticketId' | translate" sortable="'jiraTicketId'" jira-link="batch.jiraTicketId"></td>
+                        <td data-title="'crs.batch.list.tableHeader.uploaded' | translate" sortable="'requestHeader.requestDate'" >
                             {{batch.requestHeader.requestDate | date:'MM-dd-yyyy'}}
                         </td>
-                        <td data-title="'crs.batch.list.tableHeader.lastModified' | translate" sortable="'modifiedDate'" >
+                        <!--<td data-title="'crs.batch.list.tableHeader.lastModified' | translate" sortable="'requestHeader.statusDate'" >
                             {{batch.requestHeader.statusDate | date:'MM-dd-yyyy'}}
-                        </td>
+                        </td>-->
                         <td data-title="'crs.batch.list.tableHeader.status' | translate" sortable="'status'">
-                            <span class="badge requestStatus {{batch.requestHeader.status}}">{{batch.requestHeader.status | requestStatus | translate}}</span>
+                            <span class="badge batchStatus {{batch.requestHeader.status}}">{{batch.requestHeader.status | batchStatus | translate}}</span>
                         </td>
                     </tr>
                 </table>

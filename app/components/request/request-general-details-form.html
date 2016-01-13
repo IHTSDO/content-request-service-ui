@@ -1,20 +1,32 @@
 <h4 >{{requestVM.pageMode.langKey | translate}}</h4>
-<form class="form-floating">
+<form class="form-floating" form-control-readonly="requestVM.request.requestHeader.status !== 'DRAFT'">
 
     <div class="form-group" >
 
         <form-control type="text"
-                      model="requestVM.concept.definitionOfChanges.reasonForChange"
+                      model="requestVM.request.requestorInternalId"
+                      label="crs.request.details.label.requestorInternalId"
+                      error-model="requestVM.error.requestorInternalId"></form-control>
+
+        <form-control type="text"
+                      model="requestVM.request.additionalFields.topic"
+                      label="crs.request.details.label.topic"
+                      name="txtTopic"
+                      required
+                      error-model="requestVM.error.topic"></form-control>
+
+        <form-control type="text"
+                      model="requestVM.request.additionalFields.reasonForChange"
                       label="crs.request.details.label.reasonForChange"
                       name="txtReasonForChange"></form-control>
 
         <form-control type="textarea"
-                      model="requestVM.concept.definitionOfChanges.notes"
+                      model="requestVM.request.additionalFields.notes"
                       label="crs.request.details.label.notes"
                       name="txtNotes"></form-control>
 
         <form-control type="text"
-                      model="requestVM.concept.definitionOfChanges.reference"
+                      model="requestVM.request.additionalFields.reference"
                       label="crs.request.details.label.reference"
                       name="txtReference"></form-control>
     </div>

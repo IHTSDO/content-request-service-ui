@@ -1,0 +1,71 @@
+<div id="batchImportModal">
+
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="modal.closeModal()">&times;</button>
+        <h4 class="modal-title">{{'crs.batch.importModal.title' | translate}}</h4>
+    </div>
+
+    <div class="modal-body batch-import-confirm-modal">
+        <div class="row" style="margin-top:-15px">
+            <div class="col-md-12 no-padding">
+                <h4 ng-bind="modal.batchFile.fileName"></h4>
+
+                <div style="margin-top: -8px">Uploaded: {{modal.batchFile.uploadedTime |
+                    date:'MMMM dd, yyyy h:mm:ss a'}}
+                </div>
+            </div>
+        </div>
+        <hr style="margin-bottom: 13px; margin-top:13px"/>
+        <div class="row">
+            <div class="col-md-12 no-padding">
+                <label>Total number of new requests that are being imported:</label> <span>{{modal.batchFile.totalRequests}}</span>
+            </div>
+        </div>
+        <div class="row" style="padding-left: 20px">
+            <div class="col-md-12 no-padding">
+                <label>New Concept requests:</label> <span>{{modal.batchFile.requestTypeNumber.NEW_CONCEPT}}</span>
+            </div>
+            <div class="col-md-12 no-padding">
+                <label>New Description requests:</label> <span>{{modal.batchFile.requestTypeNumber.NEW_DESCRIPTION}}</span>
+            </div>
+            <div class="col-md-12 no-padding">
+                <label>New Relationship requests:</label> <span>{{modal.batchFile.requestTypeNumber.NEW_RELATIONSHIP}}</span>
+            </div>
+            <div class="col-md-12 no-padding">
+                <label>Change or Retire Concept requests:</label> <span>{{modal.batchFile.requestTypeNumber.CHANGE_RETIRE_CONCEPT}}</span>
+            </div>
+            <div class="col-md-12 no-padding">
+                <label>Change or Retire Description requests:</label> <span>{{modal.batchFile.requestTypeNumber.CHANGE_RETIRE_DESCRIPTION}}</span>
+            </div>
+            <div class="col-md-12 no-padding">
+                <label>Change or Retire Relationship requests:</label> <span>{{modal.batchFile.requestTypeNumber.CHANGE_RETIRE_RELATIONSHIP}}</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 no-padding">
+                <label>Total number of valid requests:</label> <span class="green-text">{{modal.batchFile.totalRequests - modal.batchFile.invalidRequests}}</span>
+            </div>
+            <div class="col-md-12 no-padding">
+                <label>Total number of invalid requests:</label> <span class="red-text">{{modal.batchFile.invalidRequests}}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="col-md-6">
+            <button type="button" ng-disabled="disabled" class="col-md-12 btn btn-info no-margin "
+                    ng-click="modal.importFile()">{{'crs.batch.importModal.button.import' | translate}}
+            </button>
+        </div>
+        <div class="col-md-6">
+            <button type="button" ng-disabled="disabled" class=" col-md-12 btn btn-danger no-margin "
+                    ng-click="modal.closeModal()">{{'crs.batch.importModal.button.cancel' | translate}}
+            </button>
+        </div>
+    </div>
+
+</div>
+
+
+</div>

@@ -54,11 +54,12 @@ angular.module('conceptRequestServiceApp.conceptEdit')
                 $uibModalInstance.dismiss();
             };
 
+            $scope.isStatic = isStatic;
+
             vm.changeType = changeType;
             vm.changeTarget = changeTarget;
             vm.selectDefinitionOfChanges = selectDefinitionOfChanges;
             vm.cancel = cancel;
-            vm.isStatic = isStatic;
 
             loadRequestMetadata();
         }]

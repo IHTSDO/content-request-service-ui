@@ -1,0 +1,16 @@
+<div class="editpanel grey darken-3"
+     style="height: 100%;overflow-y:auto;overflow-x:hidden">
+    <div ng-if="requestVM.concept" concept-edit concept="requestVM.concept" id="height-{{concept.conceptId}}" autosave="true"
+         static="{{requestVM.request.requestHeader.status !== 'DRAFT'}}" save-function="conceptUpdateFunction(project, task, concept)"
+         on-concept-changed="requestVM.onConceptChangedDirectly(historyCount)">
+    </div>
+    <div ng-if="!requestVM.concept" class="edit-dropzone-wrapper" >
+        <div class="edit-dropzone"
+             drag-enter-class="request-drag-target"
+             drag-hover-class="request-drag-hover"
+             drop-channel="conceptPropertiesObj"
+             ui-on-drop="requestVM.startEditingConcept($data)"
+                ><span ng-if="requestVM.requestType && requestVM.requestType.value !== 'NEW_CONCEPT'"
+                       translate="crs.request.details.tip.editConceptHint"></span> </div>
+    </div>
+</div>
