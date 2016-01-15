@@ -1,0 +1,55 @@
+<div class="table-responsive white">
+    <table ng-table="batchPreviewVM.previewTableParams" template-pagination="layout/template/data-table-pager.html"
+           class="table table-full table-full-small">
+        <tr ng-repeat="request in $data" ng-class="{'importing-request-error': request.currentValidationStatus !== null}">
+
+            <td style="text-align: center;min-width: initial">
+                <a class="tooltips-right" >
+                    <button ng-show="request.currentValidationStatus"
+                            type="button"
+                            class="btn btn-round btn-default lighten-2 red" >
+                        <div class="md md-school"></div>  <span class="red" style="text-transform: initial">{{request.currentValidationStatus}}</span>
+                    </button>
+                </a>
+            </td>
+
+            <td data-title="'crs.batch.preview.requestList.tableHeader.topic' | translate" >
+                {{request.topic}}
+            </td>
+            <td data-title="'crs.batch.preview.requestList.tableHeader.sourceTerminology' | translate" >
+                {{request.sourceTerminology}}
+            </td>
+            <td data-title="'crs.batch.preview.requestList.tableHeader.sourceTerminologyVersion' | translate" >
+                {{request.sourceTerminologyVersion}}
+            </td>
+            <td data-title="'crs.batch.preview.requestList.tableHeader.requestorInternalId' | translate" >
+                {{request.requestorInternalId}}
+            </td>
+            <td data-title="'crs.batch.preview.requestList.tableHeader.conceptId' | translate" >
+                {{request.conceptId}}
+            </td>
+            <td data-title="'crs.batch.preview.requestList.tableHeader.conceptFSN' | translate" >
+                {{request.conceptFSN}}
+            </td>
+            <td data-title="'crs.batch.preview.requestList.tableHeader.relationshipId' | translate" >
+                {{request.relationshipId}}
+            </td>
+            <td data-title="'crs.batch.preview.requestList.tableHeader.newRefinability' | translate" >
+                {{request.refinability}}
+            </td>
+            <td data-title="'crs.batch.preview.requestList.tableHeader.newRelationshipStatus' | translate" >
+                {{request.relationshipStatus}}
+            </td>
+            <td data-title="'crs.batch.preview.requestList.tableHeader.reasonForChange' | translate" >
+                {{request.reasonForChange}}
+            </td>
+            <td data-title="'crs.batch.preview.requestList.tableHeader.notes' | translate" >
+                {{request.notes}}
+            </td>
+            <td data-title="'crs.batch.preview.requestList.tableHeader.references' | translate" >
+                {{request.reference}}
+            </td>
+        </tr>
+    </table>
+
+</div>

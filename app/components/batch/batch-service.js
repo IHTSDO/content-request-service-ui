@@ -6,79 +6,108 @@ angular.module('conceptRequestServiceApp.batch')
         '$q',
         'crsService',
         'CRS_API_ENDPOINT',
-        function ($rootScope, $q, crsService, CRS_API_ENDPOINT) {
+        'BATCH_STATUS',
+        'BATCH_IMPORT_STATUS',
+        function ($rootScope, $q, crsService, CRS_API_ENDPOINT, BATCH_STATUS, BATCH_IMPORT_STATUS) {
 
-            // mock batches
-            /*var batches = [
-                {
-                    id: 367877,
-                    status: 'Draft',
-                    uploadedDate: '03-11-2015',
-                    modifiedDate: '03-11-2015',
-                    submittedDate: 'N/A'
-                },
-                {
-                    id: 315869,
-                    status: 'Submitted',
-                    uploadedDate: '01-11-2015',
-                    modifiedDate: '02-11-2015',
-                    submittedDate: '03-11-2015'
-                },
-                {
-                    id: 322014,
-                    status: 'Submitted',
-                    uploadedDate: '01-11-2015',
-                    modifiedDate: '02-11-2015',
-                    submittedDate: '03-11-2015'
-                }
-            ];*/
-
-            /*var getBatches = function () {
-                var deferred = $q.defer();
-
-
-                deferred.resolve(batches);
-
-                return deferred.promise;
-            };
-
-            var getBatch = function (batchId) {
-                var batch = null;
-                var deferred = $q.defer();
-
-                angular.forEach(batches, function (item) {
-                    if ((item.id + '') === batchId) {
-                        batch = item;
-                    }
-                });
-
-                deferred.resolve(batch);
-
-                return deferred.promise;
-            };*/
-
-            var getBatches = function () {
+            var getBatches = function (page, pageCount, searchStr, sortFields, sortDirections) {
                 var listEndpoint = CRS_API_ENDPOINT.BATCH_LIST;
+                var params = {
+                    offset: page,
+                    limit: pageCount,
+                    search: searchStr,
+                    sortFields: sortFields,
+                    sortDirections: sortDirections
+                };
 
-                return crsService.sendGet(listEndpoint, null, null);
+                return crsService.sendGet(listEndpoint, params, null);
             };
 
-            var getBatch = function (batchId) {
-
+            var getBatch = function (batchId, page, pageCount, searchStr, sortFields, sortDirections) {
                 var requestEndpoint = CRS_API_ENDPOINT.BATCH;
-                return crsService.sendGet(requestEndpoint + '/' + batchId, null);
+                var params = {
+                    offset: page,
+                    limit: pageCount,
+                    search: searchStr,
+                    sortFields: sortFields,
+                    sortDirections: sortDirections
+                };
+
+                return crsService.sendGet(requestEndpoint + '/' + batchId, params);
+            };
+
+            var getBatchSummary = function (batchId) {
+                var requestEndpoint = CRS_API_ENDPOINT.BATCH;
+
+                return crsService.sendGet(requestEndpoint + '/' + batchId + '/summary', null);
             };
 
             var uploadBatchFile = function (batchFile) {
-                var batchImportEndpoint = CRS_API_ENDPOINT.BATCH_IMPORT;
+                var batchUploadEndpoint = CRS_API_ENDPOINT.BATCH_UPLOAD;
 
-                return crsService.sendUpload(batchImportEndpoint, batchFile);
+                return crsService.sendUpload(batchUploadEndpoint, batchFile);
+            };
+
+            var importBatch = function (previewBatchId) {
+                var batchImportEndpoint = CRS_API_ENDPOINT.BATCH_UPLOADED_PREVIEW + '/' + previewBatchId + '/import';
+
+                return crsService.sendPut(batchImportEndpoint);
+            };
+
+            var getUploadedFiles = function (page, pageCount, searchStr, sortFields, sortDirections, ignoreLoadingBar) {
+                var uploadedFilesEndpoint = CRS_API_ENDPOINT.BATCH_UPLOADED_LIST;
+                var params = {
+                    offset: page,
+                    limit: pageCount,
+                    search: searchStr,
+                    sortFields: sortFields,
+                    sortDirections: sortDirections
+                };
+
+                return crsService.sendGet(uploadedFilesEndpoint, params, ignoreLoadingBar);
+            };
+
+            var identifyBatchImportStatus = function (value) {
+                for (var statusKey in BATCH_IMPORT_STATUS) {
+                    if (BATCH_IMPORT_STATUS.hasOwnProperty(statusKey) &&
+                        BATCH_IMPORT_STATUS[statusKey].value === value) {
+                        return BATCH_IMPORT_STATUS[statusKey];
+                    }
+                }
+            };
+
+            var identifyBatchStatus = function (value) {
+                for (var statusKey in BATCH_STATUS) {
+                    if (BATCH_STATUS.hasOwnProperty(statusKey) &&
+                        BATCH_STATUS[statusKey].value === value) {
+                        return BATCH_STATUS[statusKey];
+                    }
+                }
+            };
+
+            var getImportingRequests = function (batchFileId, requestType) {
+                var batchPreviewEndpoint = CRS_API_ENDPOINT.BATCH_UPLOADED_PREVIEW;
+
+                return crsService.sendGet(batchPreviewEndpoint + '/' + batchFileId + '/' + requestType, null, null);
+            };
+
+            var removeBatchPreview = function (batchFileId) {
+                var batchPreviewEndpoint = CRS_API_ENDPOINT.BATCH_UPLOADED_PREVIEW;
+
+                return crsService.sendDelete(batchPreviewEndpoint + '/' + batchFileId, null, null);
             };
 
             return {
                 getBatch: getBatch,
+                getBatchSummary: getBatchSummary,
                 getBatches: getBatches,
-                uploadBatchFile: uploadBatchFile
+                uploadBatchFile: uploadBatchFile,
+                importBatch: importBatch,
+                getUploadedFiles: getUploadedFiles,
+                identifyBatchStatus: identifyBatchStatus,
+                identifyBatchImportStatus: identifyBatchImportStatus,
+                getImportingRequests: getImportingRequests,
+                removeBatchPreview: removeBatchPreview
             };
 
         }]);

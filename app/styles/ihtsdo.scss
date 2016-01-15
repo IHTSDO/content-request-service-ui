@@ -5219,7 +5219,7 @@ select {
 }
 .btn {
   border: 0;
-  text-transform: uppercase;
+  text-transform: none;
   -webkit-box-shadow: none;
   box-shadow: none;
   transition: all .2s;
@@ -5960,7 +5960,7 @@ input[type=checkbox]:after {
   height: 25px;
   margin-top: -2px;
   margin-right: 5px;
-  border: 2px solid #666;
+  border: 2px solid #a8a8a8;
   border-radius: 2px;
   -webkit-transition: 240ms;
   -o-transition: 240ms;
@@ -6733,7 +6733,7 @@ fieldset[disabled] .btn-secondary:hover {
   margin: 7px 0 0;
 }
 .table-full input[type=checkbox]:after {
-  border-color: #DBDBDB;
+  border-color: #bbb;
 }
 .table-full .btn-round {
   width: 30px;
@@ -7110,16 +7110,23 @@ legend {
   box-shadow: none;
 }
 .drop-box {
-  background-color: #F1F1F1;
+  background-color: #FAFAFA;
   text-align: center;
-  height: 100px;
-  line-height: 100px;
+  height: 60px;
+  line-height: 60px;
   display: block;
   border: 1px dashed #DDD;
+  margin-top: 2px;
+  cursor: pointer;
 }
 .drop-box:hover {
-  background-color: #F9F9F9;
+  background-color: #FFF;
 }
+
+.drop-box.dragover {
+  background-color: #009cd7;
+}
+
 .navbar .btn-link:hover {
   background-color: #535353;
 }
@@ -13605,4 +13612,16 @@ textarea.noresize {
 .ripple.ripple-out {
   transition: opacity 0.1s linear 0s !important;
   opacity: 0;
+}
+
+form {
+  .required {
+    label {
+      color: red;
+    }
+  }
+
+  label {
+    font-weight: 500;
+  }
 }

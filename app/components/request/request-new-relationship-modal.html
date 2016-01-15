@@ -1,0 +1,15 @@
+<form class="form-floating" form-control-readonly="isStatic">
+    <div class="form-group">
+        <form-control type="select"
+                      model="definitionOfChanges.characteristicType"
+                      options="characteristicType for characteristicType in requestMetadata.characteristicTypes"
+                      label="crs.request.details.label.characteristicType"
+                      name="slCharacteristicType"></form-control>
+
+        <form-control type="select"
+                      model="definitionOfChanges.refinability"
+                      options="refinability for refinability in requestMetadata.refinabilities"
+                      label="crs.request.details.label.refinability"
+                      name="slRefinability"></form-control>
+    </div>
+</form>

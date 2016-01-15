@@ -1,57 +1,31 @@
 <h4 translate="crs.request.requestType.newConcept"></h4>
-<form class="form-floating">
+<form class="form-floating" form-control-readonly="requestVM.request.requestHeader.status !== 'DRAFT'">
 
     <div class="form-group">
-        <form-control type="text"
-                      model="requestVM.request.requestorInternalId"
-                      label="crs.request.details.label.requestorInternalId"
-                      name="txtRequestorInternalId"></form-control>
-        <div>
-            <div class="form-control-element">
-                <label for="">Parent Concept Id</label>
-                <input class="form-control" type="text" ng-model="requestVM.request.parentId"/>
-            </div>
-            <div class="form-control-element">
-                <label for="">Parent Concept FSN</label>
-                <input class="form-control" type="text" ng-model="requestVM.request.parentFSN"/>
-            </div>
-        </div>
-        <br/>
+
+        <form-control type="concept"
+                      model="requestVM.request.parentConcept"
+                      label="crs.request.details.label.parentConcept"></form-control>
 
         <form-control type="text"
                       model="requestVM.request.proposedFSN"
                       label="crs.request.details.label.proposedFSN"
                       name="txtFSN"
-                      required></form-control>
+                      required
+                      error-model="requestVM.error.proposedFSN"></form-control>
         <form-control type="text"
                       model="requestVM.request.conceptPT"
                       label="crs.request.details.label.conceptPT"
                       name="txtPT"
-                      required></form-control>
-
-        <div class="form-control-element">
-            <label for="">Synonym</label>
-            <input class="form-control" type="text" ng-model="requestVM.request.proposedSynonym"/>
-        </div>
-
+                      required
+                      error-model="requestVM.error.conceptPT"></form-control>
         <form-control type="text"
-                      model="requestVM.request.proposedDefinition"
+                      model="requestVM.request.proposedSynonyms"
+                      label="crs.request.details.label.proposedSynonym"
+                      multi="true"></form-control>
+        <form-control type="text"
+                      model="requestVM.request.proposedDefinitions"
                       label="crs.request.details.label.proposedDefinition"
-                      name="txtDefinition"></form-control>
-
-        <!--<form-control type="text"
-                      model="requestVM.request.reasonForChange"
-                      label="crs.request.details.label.reasonForChange"
-                      name="txtReasonForChange"></form-control>
-
-        <form-control type="textarea"
-                      model="requestVM.request.notes"
-                      label="crs.request.details.label.notes"
-                      name="txtNotes"></form-control>
-
-        <form-control type="text"
-                      model="requestVM.request.reference"
-                      label="crs.request.details.label.reference"
-                      name="txtReference"></form-control>-->
+                      multi="true"></form-control>
     </div>
 </form>

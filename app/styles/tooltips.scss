@@ -15,7 +15,9 @@ font-size:12px;
 text-transform:lowercase;
   line-height: 12px;
   text-align: center;
-  visibility: hidden;
+ /* visibility: hidden;*/
+  display: none;
+
   border-radius: 6px;
       font-family: 'Roboto', sans-serif;
 	  
@@ -48,7 +50,8 @@ a.tooltips-left span:after, button.tooltips-left span:after {
   border-bottom: 8px solid transparent;
 }
 a:hover.tooltips-left span, button:hover.tooltips-left span {
-  visibility: visible;
+  /*visibility: visible;*/
+  display:inline;
   opacity: 1.0;
   right: 100%;
   top: 50%;
@@ -56,6 +59,9 @@ a:hover.tooltips-left span, button:hover.tooltips-left span {
   margin-right: 15px;
   z-index: 999;
 }
+
+.tooltips-right span.red{background-color: #E57373 !important;}
+.tooltips-right span.red:after, button.tooltips-right span.red:after {border-right: 8px solid #E57373 !important;}
 
 a.tooltips-right, button.tooltips-right{
   position: relative;

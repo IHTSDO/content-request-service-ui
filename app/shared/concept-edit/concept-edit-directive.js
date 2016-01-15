@@ -54,7 +54,9 @@ angular
                     //        }
                     additionalFields: '=?',
 
-                    saveFunction: '&?'
+                    saveFunction: '&?',
+
+                    onConceptChanged: '&?'
                 },
                 templateUrl: 'shared/concept-edit/concept-edit.html',
 
@@ -402,15 +404,15 @@ angular
                         // if inactive, simply set active and autoSave
                         if (!scope.concept.active) {
                             scope.concept.active = true;
-                            scope.concept.definitionOfChanges.changed = false;
+                            //scope.concept.definitionOfChanges.changed = false;
                             //scope.saveConcept();
                         }
 
                         // otherwise, open a select reason modal
                         else {
-                            showDefinitionOfChange(scope.concept.definitionOfChanges.changeType, scope.concept).then(function (defOfChange) {
+                            showDefinitionOfChange(scope.concept).then(function (defOfChange) {
                                 scope.concept.active = false;
-                                scope.concept.definitionOfChanges = defOfChange;
+                                //scope.concept.definitionOfChanges = defOfChange;
                                 scope.concept.definitionOfChanges.changed = true;
                             });
 
@@ -828,9 +830,9 @@ angular
                                 }
                             }
 
-                            showDefinitionOfChange(description.definitionOfChanges.changeType, description).then(function (defOfChange) {
+                            showDefinitionOfChange(description).then(function (defOfChange) {
                                 description.active = false;
-                                description.definitionOfChanges = defOfChange;
+                                //description.definitionOfChanges = defOfChange;
                                 description.definitionOfChanges.changed = true;
                             });
 
@@ -1034,11 +1036,15 @@ angular
                      }
                      };*/
 
-                    scope.addRelationship = function (afterIndex, relGroup) {
+                    scope.addRelationship = function (afterIndex, relGroup, baseRel) {
 
-                        //  // console.debug('adding attribute relationship', afterIndex);
+                        var relationship;
 
-                        var relationship = objectService.getNewAttributeRelationship(null);
+                        if (baseRel) {
+                            relationship = baseRel;
+                        } else {
+                            relationship = objectService.getNewAttributeRelationship(null);
+                        }
 
                         var addRel = function () {
                             // set role group if specified
@@ -1056,7 +1062,8 @@ angular
                             // otherwise, add at the index specified
                             else {
                                 // find the index of the requested insertion point
-                                var rels = scope.getAttributeRelationships();
+                                //var rels = scope.getAttributeRelationships();
+                                var rels = scope.getRelationships(true);
                                 var relIndex = scope.concept.relationships.indexOf(rels[afterIndex]);
 
                                 //   // console.debug('found relationship index', relIndex);
@@ -1075,8 +1082,8 @@ angular
                                 changed: true
                             };
 
-                            showDefinitionOfChange(REQUEST_TYPE.NEW_RELATIONSHIP.value, relationship).then(function (defOfChange) {
-                                relationship.definitionOfChanges = defOfChange;
+                            showDefinitionOfChange(relationship).then(function (defOfChange) {
+                                //relationship.definitionOfChanges = defOfChange;
                                 addRel();
 
                             });
@@ -1121,9 +1128,9 @@ angular
                                 }
                             }
 
-                            showDefinitionOfChange(relationship.definitionOfChanges.changeType, relationship).then(function (defOfChange) {
+                            showDefinitionOfChange(relationship).then(function (defOfChange) {
                                 relationship.active = false;
-                                relationship.definitionOfChanges = defOfChange;
+                                //relationship.definitionOfChanges = defOfChange;
                                 relationship.definitionOfChanges.changed = true;
                             });
                         }
@@ -1234,38 +1241,53 @@ angular
                         return deferred.promise;
                     };
 
-                    var showDefinitionOfChange = function (changeType, changeTarget) {
+                    var showDefinitionOfChange = function (changeTarget) {
+                        var modalInstance, changeType;
                         var deferred = $q.defer();
 
-                        var modalInstance = $uibModal.open({
-                            templateUrl: 'shared/concept-edit/definition-of-change-modal.html',
-                            controller: 'definitionOfChangeModalCtrl as defOfChangeModalCtrl',
-                            resolve: {
-                                changeType: function () {
-                                    return requestService.identifyRequestType(changeType);
-                                },
-                                changeTarget: function () {
-                                    return changeTarget;
-                                },
-                                isStatic: function () {
-                                    return scope.isStatic;
-                                }
-                            }
-                        });
+                        if (changeTarget.definitionOfChanges &&
+                            changeTarget.definitionOfChanges.changeType) {
+                            changeType = requestService.identifyRequestType(changeTarget.definitionOfChanges.changeType);
+                        }
 
-                        modalInstance.result.then(function (results) {
-                            deferred.resolve(results);
-                        }, function () {
+                        if (changeType &&
+                            changeType.form &&
+                            changeType.form.modal) {
+                            modalInstance = $uibModal.open({
+                                templateUrl: 'shared/concept-edit/definition-of-change-modal.html',
+                                controller: 'definitionOfChangeModalCtrl as defOfChangeModalCtrl',
+                                resolve: {
+                                    changeType: function () {
+                                        return changeType;
+                                    },
+                                    changeTarget: function () {
+                                        return changeTarget;
+                                    },
+                                    isStatic: function () {
+                                        return scope.isStatic;
+                                    }
+                                }
+                            });
+
+                            modalInstance.result.then(function (results) {
+                                changeTarget.definitionOfChanges = results;
+                                deferred.resolve(results);
+                            }, function () {
+                                deferred.reject();
+                            });
+                        } else {
                             deferred.reject();
-                        });
+                        }
 
                         return deferred.promise;
                     };
 
-                    scope.showConceptDefinitionOfChange = function (concept) {
-                        /*if (scope.isStatic) {
+                    scope.showDefinitionOfChange = showDefinitionOfChange;
+
+                    /*scope.showConceptDefinitionOfChange = function (concept) {
+                        *//*if (scope.isStatic) {
                             return;
-                        }*/
+                        }*//*
 
                         if (concept.definitionOfChanges.changeType === REQUEST_TYPE.NEW_CONCEPT.value) {
                             return;
@@ -1277,9 +1299,9 @@ angular
                     };
 
                     scope.showDescriptionDefinitionOfChange = function (description) {
-                        /*if (scope.isStatic) {
+                        *//*if (scope.isStatic) {
                             return;
-                        }*/
+                        }*//*
 
                         if (description.definitionOfChanges.changeType === REQUEST_TYPE.NEW_DESCRIPTION.value) {
                             return;
@@ -1291,14 +1313,14 @@ angular
                     };
 
                     scope.showRelationshipDefinitionOfChange = function (relationship) {
-                        /*if (scope.isStatic) {
+                        *//*if (scope.isStatic) {
                             return;
-                        }*/
+                        }*//*
 
                         showDefinitionOfChange(relationship.definitionOfChanges.changeType, relationship).then(function (defOfChange) {
                             relationship.definitionOfChanges = defOfChange;
                         });
-                    };
+                    };*/
 
                     ////////////////////////////////////
                     // Drag and drop functions
@@ -1362,7 +1384,7 @@ angular
                         relationship.target.fsn = 'Validating...';
 
                         // check if allowable relationship target using concept id
-                        scope.getConceptsForValueTypeahead(relationship.type.conceptId, data.id).then(function (response) {
+                        scope.getConceptsForValueTypeahead(relationship.type.conceptId, data.name).then(function (response) {
                             if (response && response.length > 0) {
                                 relationship.target.conceptId = data.id;
                                 relationship.target.fsn = data.name;
@@ -1435,6 +1457,11 @@ angular
                             return;
                         }
 
+                        // cancel if static
+                        if (scope.isStatic) {
+                            return;
+                        }
+
                         // copy description object and replace target description
                         var copy = angular.copy(source);
 
@@ -1453,11 +1480,19 @@ angular
 
                         // if target not blank, add afterward
                         if (target.term) {
+                            copy.active = true;
+                            copy.definitionOfChanges = {
+                                changeId: null,
+                                changeType: REQUEST_TYPE.NEW_DESCRIPTION.value,
+                                changed: true
+                            };
                             scope.concept.descriptions.splice(targetIndex + 1, 0, copy);
                         }
 
                         // otherwise find the matching description and replace
                         else {
+                            copy.active = target.active;
+                            copy.definitionOfChanges = target.definitionOfChanges;
                             scope.concept.descriptions[targetIndex] = copy;
                         }
 
@@ -1492,6 +1527,7 @@ angular
 
                         // copy relationship object and replace target relationship
                         var copy = angular.copy(source);
+                        var tg;
 
                         // clear the effective time and source information
                         copy.sourceId = null;
@@ -1510,11 +1546,20 @@ angular
 
                         // if existing relationship, insert source relationship afterwards
                         if (target.target.conceptId) {
-                            scope.concept.relationships.splice(targetIndex + 1, 0, copy);
+                            copy.active = true;
+                            /*copy.definitionOfChanges = {
+                                changeId: null,
+                                changeType: REQUEST_TYPE.NEW_RELATIONSHIP.value,
+                                changed: true
+                            };
+                            scope.concept.relationships.splice(targetIndex + 1, 0, copy);*/
+                            scope.addRelationship(targetIndex, copy.groupId, copy);
                         }
 
                         // otherwise replace the relationship
                         else {
+                            copy.active = target.active;
+                            copy.definitionOfChanges = target.definitionOfChanges;
                             scope.concept.relationships[targetIndex] = copy;
                         }
 
@@ -1963,7 +2008,6 @@ angular
                     };
 
                     scope.$watch(scope.concept.relationships, function (newValue, oldValue) {
-                        console.log('watcher');
                         var changed = false;
                         angular.forEach(scope.concept.relationships, function (relationship) {
                             if (relationship.type.conceptId === '116680003' && relationship.active === true) {
@@ -1974,6 +2018,12 @@ angular
                             scope.getDomainAttributes();
                         }
                     }, true);
+
+                    scope.$watch('conceptHistoryPtr', function (newVal) {
+                        if (scope.onConceptChanged) {
+                            scope.onConceptChanged({historyCount: newVal});
+                        }
+                    });
 
                     scope.getConceptsForAttributeTypeahead = function (searchStr) {
                         console.debug('getConceptsForAttributeTypeahead', searchStr, scope.allowedAttributes);
@@ -1987,11 +2037,12 @@ angular
                             }
                         }
                         response = response.filter(function (item) {
-                            return item.fsn.toLowerCase().indexOf(searchStr.toLowerCase()) !== -1;
+                            return item.fsn.term.toLowerCase().indexOf(searchStr.toLowerCase()) !== -1;
                         });
                         return response;
                     };
                     scope.getConceptsForValueTypeahead = function (attributeId, searchStr) {
+                        console.log(attributeId, searchStr);
                         return snowowlService.getDomainAttributeValues(null, null, attributeId, searchStr).then(function (response) {
                             // remove duplicates
                             if (response && response.length > 0) {
@@ -2018,7 +2069,7 @@ angular
                         // console.debug('setting relationship type concept', relationship, item);
 
                         relationship.type.conceptId = item.id;
-                        relationship.type.fsn = item.fsn;
+                        relationship.type.fsn = item.fsn.term;
 
                         scope.updateRelationship(relationship);
                     };
@@ -2032,7 +2083,7 @@ angular
                         // console.debug('setting relationship type concept', relationship, item);
 
                         relationship.target.conceptId = item.id;
-                        relationship.target.fsn = item.fsn;
+                        relationship.target.fsn = item.fsn.term;
 
                         scope.updateRelationship(relationship);
                     };

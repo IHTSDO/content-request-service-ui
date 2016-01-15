@@ -2,15 +2,27 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>IHTSDO CRS (Concept Request Service)</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="apple-touch-icon-57x57.png"/>
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="apple-touch-icon-114x114.png"/>
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="apple-touch-icon-144x144.png"/>
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="apple-touch-icon-120x120.png"/>
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="apple-touch-icon-152x152.png"/>
+    <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32"/>
+    <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16"/>
+    <meta name="application-name" content="Concept Request Service"/>
+    <meta name="msapplication-TileColor" content="#00A4E4"/>
+    <meta name="msapplication-TileImage" content="mstile-144x144.png"/>
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/ng-table/dist/ng-table.min.css" />
     <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
     <link rel="stylesheet" href="bower_components/angular-ui-tree/dist/angular-ui-tree.min.css" />
+    <link rel="stylesheet" href="bower_components/textAngular/dist/textAngular.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -24,6 +36,7 @@
         }
     </style>
 </head>
+
 <body class="crs-default">
 <!--[if lte IE 8]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
@@ -43,6 +56,7 @@
     <div ng-include="'layout/footer/footer.html'"></div>
 </footer>
 <div ng-show="showSplash" ng-include="'layout/splash/splash.html'"></div>
+<div ng-show="showAppLoading" class="loadingMask"></div>
 
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -78,6 +92,15 @@
 <script src="bower_components/angular-ui-tree/dist/angular-ui-tree.js"></script>
 <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
 <script src="bower_components/ng-file-upload-shim/ng-file-upload-shim.js"></script>
+<script src="bower_components/rangy/rangy-core.js"></script>
+<script src="bower_components/rangy/rangy-classapplier.js"></script>
+<script src="bower_components/rangy/rangy-highlighter.js"></script>
+<script src="bower_components/rangy/rangy-selectionsaverestore.js"></script>
+<script src="bower_components/rangy/rangy-serializer.js"></script>
+<script src="bower_components/rangy/rangy-textrange.js"></script>
+<script src="bower_components/textAngular/dist/textAngular.js"></script>
+<script src="bower_components/textAngular/dist/textAngular-sanitize.js"></script>
+<script src="bower_components/textAngular/dist/textAngularSetup.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
@@ -86,15 +109,19 @@
 
 <script src="components/crs/crs.js"></script>
 <script src="components/crs/crs-service.js"></script>
+<script src="components/crs/crs-jira-service.js"></script>
 <script src="components/error/error.js"></script>
 <script src="components/error/error-handler-service.js"></script>
 <script src="components/dashboard/dashboard.js"></script>
 <script src="components/request/request.js"></script>
 <script src="components/user-preferences/user-preferences.js"></script>
 <script src="components/request/modal-create-request.js"></script>
+<script src="components/request/modal-assign-request.js"></script>
+<script src="components/request/modal-change-request-status.js"></script>
 <script src="components/request/request-service.js"></script>
 <script src="components/request/request-metadata-service.js"></script>
 <script src="components/request/request-list.js"></script>
+<script src="components/request/accepted-request-list.js"></script>
 <script src="components/request/request-details.js"></script>
 <script src="components/request/request-type-filter.js"></script>
 <script src="components/request/request-status-filter.js"></script>
@@ -103,12 +130,29 @@
 <script src="components/batch/batch-details.js"></script>
 <script src="components/batch/batch-service.js"></script>
 <script src="components/batch/modal-batch-import.js"></script>
+<script src="components/batch/modal-batch-import-confirm.js"></script>
+<script src="components/batch/batch-preview.js"></script>
+<script src="components/batch/batch-import-status-filter.js"></script>
+<script src="components/batch/batch-status-filter.js"></script>
 <script src="components/notification/notification-service.js"></script>
+<script src="components/message/message.js"></script>
+<script src="components/message/message-service.js"></script>
+<script src="components/message/message-item-directive.js"></script>
+<script src="components/jira-comment/jira-comment.js"></script>
+<script src="components/jira-comment/jira-comment-ctrl.js"></script>
+<script src="components/jira-comment/jira-comment-service.js"></script>
 
 <script src="shared/configuration/config-service.js"></script>
 <script src="shared/ims/ims.js"></script>
 <script src="shared/ims/account-service.js"></script>
 <script src="shared/form-control/form-control.js"></script>
+<script src="shared/form-control/multi-input.js"></script>
+<script src="shared/form-control/concept-input.js"></script>
+<script src="shared/form-control/author-input.js"></script>
+<script src="shared/form-control/author-input-focus.js"></script>
+<script src="shared/form-control/relationship-type-input.js"></script>
+<script src="shared/form-control/attribute-value-input.js"></script>
+<script src="shared/form-control/form-control-readonly.js"></script>
 <script src="shared/search/search.js"></script>
 <script src="shared/search/search-panel.js"></script>
 <script src="shared/concept-information/concept-info-modal.js"></script>
@@ -120,29 +164,43 @@
 <script src="shared/snowowl/snowowl.js"></script>
 <script src="shared/snowowl/snowowl-service.js"></script>
 <script src="shared/snowowl/snowowl-metadata-service.js"></script>
+<script src="shared/snowowl/sca-service.js"></script>
+<script src="shared/jira/jira.js"></script>
+<script src="shared/jira/jira-service.js"></script>
+<script src="shared/jira/jira-link-directive.js"></script>
 <script src="shared/concept-edit/concept-edit.js"></script>
 <script src="shared/concept-edit/typeahead-focus-directive.js"></script>
 <script src="shared/concept-edit/concept-edit-directive.js"></script>
 <script src="shared/concept-edit/inactivate-component-modal.js"></script>
 <script src="shared/concept-edit/definition-of-change-modal.js"></script>
 <script src="shared/object-service/object-service.js"></script>
+<script src="shared/scroll/scrolly-directive.js"></script>
 
 <script src="layout/header/header.js"></script>
 <!-- endbuild -->
-
 <script type="application/javascript">
     (function ($) {
         angular.element(document).ready(function () {
             $.get('config.json', function (data) {
 
                 angular.module('conceptRequestServiceApp')
+                        .value('CRS_ROLE', data.userRole)
                         .config([
                             'configServiceProvider',
                             'snowowlServiceProvider',
-                            function (configServiceProvider, snowowlServiceProvider) {
+                            'scaServiceProvider',
+                            'jiraServiceProvider',
+                            function (configServiceProvider, snowowlServiceProvider, scaServiceProvider, jiraServiceProvider) {
                                 configServiceProvider.config(data);
+
                                 snowowlServiceProvider.config(data['snomed-ct']);
-                                snowowlServiceProvider.setSnowowlEndpoint(data.endpoint.snowowl)
+                                snowowlServiceProvider.setSnowowlEndpoint(data.endpoint.snowowl);
+
+                                scaServiceProvider.config(data['sca']);
+                                scaServiceProvider.setSnowowlEndpoint(data.endpoint.snowowl);
+
+                                jiraServiceProvider.config(data['jira']);
+                                jiraServiceProvider.setJiraEndpoint(data.endpoint.jira);
                             }]);
 
                 angular.bootstrap(document, ['conceptRequestServiceApp']);
@@ -150,5 +208,7 @@
         });
     })(jQuery);
 </script>
+
 </body>
+
 </html>

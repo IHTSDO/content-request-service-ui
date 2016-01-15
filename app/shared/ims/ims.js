@@ -2,15 +2,6 @@
 
 angular
     .module('conceptRequestServiceApp.imsAuthentication', [])
-    .value('CRS_ROLE', {
-        ADMINISTRATOR: 'ROLE_ihtsdo-crs-administrators',
-        MANAGER: 'ROLE_ihtsdo-crs-managers',
-        STAFF: 'ROLE_ihtsdo-crs-staff',
-        MEMBER: 'ROLE_ihtsdo-crs-members',
-        PARTNER: 'ROLE_ihtsdo-crs-partners',
-        REQUESTOR: 'ROLE_ihtsdo-crs-requestors',
-        VIEWER: 'ROLE_ihtstdo-crs-viewers'
-    })
     .config(function ($routeProvider) {
         $routeProvider
             .when('/login', {

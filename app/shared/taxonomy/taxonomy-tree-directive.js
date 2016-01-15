@@ -77,7 +77,7 @@ angular
                         var rootConceptId = TAXONOMY_ROOT_NODE.conceptId;
                         var rootNode, firstNode;
 
-                        angular.forEach(nodes, function (node, index) {
+                        angular.forEach(nodes, function (node) {
                             //console.debug('constructing node', node);
                             node.children = [];
 

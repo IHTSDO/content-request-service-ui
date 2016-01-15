@@ -26,4 +26,9 @@ angular
             path: 'attribute-values'
         }
     })
+    .value('SCA_TARGET', {
+        PROJECT: {
+            path: 'projects'
+        }
+    })
     .value('SNOWOWL_BASIC_AUTHORIZATION', 'Basic c25vd293bDpzbm93b3ds');

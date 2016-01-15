@@ -123,7 +123,11 @@
 
 </style>
 <div style="height: 100%">
-    <div class="row no-gutter" style="height: 100%">
+    <div class="button-nav">
+        <div ng-include="'components/request/request-details-button-nav.html'" ></div>
+    </div>
+
+    <div class="row no-gutter" style="height: 100%;padding-left: 50px">
         <!-- sidebar -->
         <div class="col-sm-3 editpanel no-padding" style="position: relative;height: 100%;background-color:#eee;">
             <div ng-include="'components/request/request-details-sidebar.html'"
@@ -139,23 +143,15 @@
                     <div class="alert alert-success" ng-show="requestVM.msgSuccess">{{requestVM.msgSuccess | translate}}</div>
                     <div class="alert alert-danger" ng-show="requestVM.msgError">{{requestVM.msgError | translate}}</div>
 
-                    <div ng-include="'components/request/request-general-details-form.html'" ng-if="requestVM.concept !== undefined && requestVM.concept !== null"></div><br/>
-                    <!--<div ng-include="requestVM.requestType.form.template"></div>-->
-
+                    <div ng-include="'components/request/request-general-details-form.html'"></div><br/>
+                    <div ng-if="requestVM.request.requestHeader.status !== 'DRAFT' &&
+                        requestVM.request.jiraTicketId"
+                        ng-include="'components/jira-comment/jira-comment.html'" ng-init="request=requestVM.request"></div><br/>
                 </div>
-                <div class="col-sm-6 editpanel no-padding grey darken-3" style="height: 100%;overflow-y:auto;overflow-x:hidden">
-                    <div ng-if="requestVM.concept" concept-edit concept="requestVM.concept" id="height-{{concept.conceptId}}" autosave="true"
-                         static="{{requestVM.request.requestHeader.status !== 'DRAFT'}}" save-function="conceptUpdateFunction(project, task, concept)">
-                    </div>
-                    <div ng-if="!requestVM.concept" class="edit-dropzone-wrapper" >
-                        <div class="edit-dropzone"
-                             drag-enter-class="request-drag-target"
-                             drag-hover-class="request-drag-hover"
-                             drop-channel="conceptPropertiesObj"
-                             ui-on-drop="requestVM.startEditingConcept($data)"
-                             ><span ng-if="requestVM.generalRequestType && requestVM.generalRequestType.value === 'EDIT_CONCEPT'"
-                                    translate="crs.request.details.tip.editConceptHint"></span> </div>
-                    </div>
+
+                <div class="col-sm-6" style="height: 100%;"
+                     ng-include="requestVM.inputModePage"
+                     ng-class="{'simple-form':requestVM.inputMode.value === 'SIMPLE', 'no-padding': requestVM.inputMode.value === 'DIRECT'}" >
                 </div>
             </div>
          </div>

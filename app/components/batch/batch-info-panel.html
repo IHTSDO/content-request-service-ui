@@ -1,7 +1,11 @@
-<div id="request-info-panel">
+<div id="request-info-panel" style="padding-top: 10px">
     <!-- Timeline formatter and concept ids.extension input -->
+       <div class="row">
+        <div class="col col-md-12">
+            <h4 >Batch Details</h4>
+        </div>
+    </div>
     <div class="row">
-
         <div class="col col-md-12">
 
             <ul class="timeline">
@@ -11,8 +15,20 @@
                     </div>
                     <div class="timeline-panel">
                         <div class="timeline-heading">
-                            <label class="control-label" translate="crs.request.details.info.label.batchId"></label>
-                            <h4 class="timeline-title">{{(batchVM.batchHeader.batchRequest)?batchVM.batchHeader.batchRequest:'N/A'}}</h4>
+                            <label class="control-label" translate="crs.batch.details.info.label.batchId"></label>
+                            <h4 class="timeline-title">{{(batchVM.batchSummary.id)?batchVM.batchSummary.id:'N/A'}}</h4>
+                        </div>
+                    </div>
+                </li>
+
+                <li ng-if="batchVM.batchSummary.jiraTicketId">
+                    <div class="timeline-badge">
+                        <i class="icon-circle theme-border"></i>
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.batch.details.info.label.jiraTicket"></label>
+                            <h4 class="timeline-title" jira-link="batchVM.batchSummary.jiraTicketId"></h4>
                         </div>
                     </div>
                 </li>
@@ -23,8 +39,8 @@
                     </div>
                     <div class="timeline-panel">
                         <div class="timeline-heading">
-                            <label class="control-label" translate="crs.request.details.info.label.status"></label>
-                            <h4 class="timeline-title">{{batchVM.batchHeader.status | requestStatus | translate}}</h4>
+                            <label class="control-label" translate="crs.batch.details.info.label.fileName"></label>
+                            <h4 class="timeline-title">{{batchVM.batchSummary.fileName}}</h4>
                         </div>
                     </div>
                 </li>
@@ -35,8 +51,22 @@
                     </div>
                     <div class="timeline-panel">
                         <div class="timeline-heading">
-                            <label class="control-label">Uploaded On</label>
-                            <h4 class="timeline-title">{{batchVM.batchHeader.requestDate | date:'MM-dd-yyyy'}}</h4>
+                            <label class="control-label" translate="crs.batch.details.info.label.importedTime"></label>
+                            <h4 class="timeline-title">{{batchVM.batchSummary.importedTime | date:'MM-dd-yyyy'}}</h4>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="timeline-badge">
+                        <i class="icon-circle theme-border"></i>
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.batch.details.info.label.status"></label>
+                            <h4 class="timeline-title">
+                                <span class="badge batchStatus {{batchVM.batchSummary.status}}">{{batchVM.batchSummary.status | batchStatus | translate}}</span>
+                            </h4>
                         </div>
                     </div>
                 </li>
