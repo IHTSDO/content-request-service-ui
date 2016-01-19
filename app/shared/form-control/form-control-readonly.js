@@ -12,9 +12,9 @@ angular
                 controller: function ($scope) {
                     this.getReadonlyStatus = function () {
                         return $scope.formControlReadonly;
-                    }
+                    };
                 },
-                link: function ($scope, $element, $attrs) {
+                link: function ($scope, $element) {
                     $scope.$watch('formControlReadonly', function (val) {
                         if (typeof val === 'boolean') {
                             $element.find('input,textarea').prop('readonly', val);
@@ -24,6 +24,6 @@ angular
                     });
 
                 }
-            }
+            };
         }
     ]);

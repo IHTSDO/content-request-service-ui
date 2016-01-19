@@ -25,6 +25,6 @@ angular
             return {
                 getComments: getComments,
                 postComments: postComments
-            }
+            };
         }
     ]);

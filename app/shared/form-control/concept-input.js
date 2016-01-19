@@ -181,7 +181,7 @@ angular
                                 newConcept !== currentConcept) {
                                 $scope.onConceptChanged({
                                     concept: newConcept
-                                })
+                                });
                             }
                         });
                     }
@@ -195,6 +195,6 @@ angular
 
                     initControl();
                 }
-            }
+            };
         }
     ]);

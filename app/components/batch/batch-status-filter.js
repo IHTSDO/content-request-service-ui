@@ -8,5 +8,5 @@ angular.module('conceptRequestServiceApp.batch')
                 var batchStatus = batchService.identifyBatchStatus(batchStatusValue);
 
                 return (batchStatus)?batchStatus.langKey:'';
-            }
+            };
         }]);

@@ -48,9 +48,10 @@
         </div>
     </div>
 
-    <hr style="width:93%; border-color:#ddd">
+    <hr style="width:93%; border-color:#ddd; margin-bottom: 5px">
+    <a ng-href="{{link.batchTemplate || '#/'}}" role="button" style="margin-left: 15px; color: #5cbaff;" translate="crs.batch.preview.button.downloadTemplate"></a>
 
-    <div class="request-info">
+    <div class="request-info" style="margin-top: 5px">
 
         <div style="padding: 15px; width: 100%" class="classification-btn">
             <button ng-disabled="batchPreviewVM.selectedFile.status !== 'COMPLETED_UPLOAD'"

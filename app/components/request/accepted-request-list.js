@@ -1,3 +1,4 @@
+/*jshint newcap:false*/
 'use strict';
 
 angular
@@ -12,8 +13,7 @@ angular
         'accountService',
         'scaService',
         'crsJiraService',
-        'CRS_ROLE',
-        function ($filter, $sce, $uibModal, ngTableParams, requestService, notificationService, accountService, scaService, crsJiraService, CRS_ROLE) {
+        function ($filter, $sce, $uibModal, ngTableParams, requestService, notificationService, accountService, scaService, crsJiraService) {
             var vm = this;
 
             var initView = function () {
@@ -74,7 +74,7 @@ angular
                     controller: 'ModalAssignRequestCtrl as modal',
                     resolve: {
                         authors: function () {
-                            return vm.authors
+                            return vm.authors;
                         },
                         projects: function () {
                             return vm.projects;

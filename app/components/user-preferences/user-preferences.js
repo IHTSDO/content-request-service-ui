@@ -38,7 +38,7 @@ angular.module('conceptRequestServiceApp.userPreferences', [])
                         }
                     });
                     $uibModalInstance.close(userPreferences);
-                }, function (error) {
+                }, function () {
                     vm.errorMsg = 'Unexpected error applying settings';
                 });
             };

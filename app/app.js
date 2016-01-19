@@ -90,12 +90,16 @@ angular
     .run([
         '$rootScope',
         '$location',
+        'configService',
         'accountService',
-        function ($rootScope, $location, accountService) {
+        function ($rootScope, $location, configService, accountService) {
+            var config = configService.getConfig();
 
             $rootScope.showAppLoading = false;
             $rootScope.showSplash = true;
             $rootScope.pageTitles = [];
+
+            $rootScope.link = (config && config.link)?config.link: {};
 
             if (!accountService.isCredentialChecked()) {
                 $rootScope.showSplash = true;

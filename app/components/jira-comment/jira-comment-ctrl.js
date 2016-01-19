@@ -23,7 +23,7 @@ angular
             var postComment = function () {
                 if (vm.message && vm.message.trim()) {
                     vm.postingComment = true;
-                    jiraCommentService.postComments($scope.request.id, vm.message).then(function (response) {
+                    jiraCommentService.postComments($scope.request.id, vm.message).then(function () {
                         vm.message = null;
                         vm.postingComment = false;
                         loadComments();

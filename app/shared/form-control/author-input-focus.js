@@ -16,7 +16,7 @@ angular
                         // console.debug('typeaheadFocus click event', ngModel.$viewValue);
 
                         var viewValue = ngModel.$viewValue;
-                        var modelValue = ngModel.$modelValue;
+                        //var modelValue = ngModel.$modelValue;
 
                         //restore to null value so that the typeahead can detect a change
                         if (viewValue === ' ') {

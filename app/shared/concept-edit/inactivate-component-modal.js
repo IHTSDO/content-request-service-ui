@@ -1,3 +1,4 @@
+/*jshint newcap:false*/
 'use strict';
 
 angular.module('conceptRequestServiceApp.conceptEdit')
@@ -13,7 +14,7 @@ angular.module('conceptRequestServiceApp.conceptEdit')
         'conceptId',
         'branch',
         '$routeParams',
-        function ($scope, $uibModalInstance, $filter, ngTableParams, snowowlService, componentType, reasons, associationTargets, conceptId, branch, $routeParams) {
+        function ($scope, $uibModalInstance, $filter, ngTableParams, snowowlService, componentType, reasons, associationTargets, conceptId, branch) {
 
             // required arguments
             $scope.componentType = componentType;
@@ -166,7 +167,7 @@ angular.module('conceptRequestServiceApp.conceptEdit')
 
             });
 
-// declare table parameters
+
             $scope.tableParamsChildren = new ngTableParams({
                     page: 1,
                     count: 10,
@@ -191,7 +192,6 @@ angular.module('conceptRequestServiceApp.conceptEdit')
                 }
             );
 
-// declare table parameters
             $scope.tableParamsDescendants = new ngTableParams({
                     page: 1,
                     count: 10,
@@ -218,7 +218,6 @@ angular.module('conceptRequestServiceApp.conceptEdit')
                 }
             );
 
-// declare table parameters
             $scope.tableParamsInboundRelationships = new ngTableParams({
                     page: 1,
                     count: 10,

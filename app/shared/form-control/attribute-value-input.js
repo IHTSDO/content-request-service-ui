@@ -89,7 +89,7 @@ angular
 
                             // remove duplicates
                             if (response && response.length > 0) {
-                                return snowowlService.getFullConcept(null, null, conceptData.id)
+                                return snowowlService.getFullConcept(null, null, conceptData.id);
                             } else {
                                 $scope.showError = true;
                                 $scope.concept = buildInvalidConcept(conceptData.id, conceptData.name);
@@ -212,7 +212,7 @@ angular
                                 newConcept !== currentConcept) {
                                 $scope.onConceptChanged({
                                     concept: newConcept
-                                })
+                                });
                             }
                         });
                     }
@@ -233,6 +233,6 @@ angular
 
                     initControl();
                 }
-            }
+            };
         }
     ]);

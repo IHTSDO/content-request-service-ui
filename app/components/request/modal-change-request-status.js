@@ -8,9 +8,9 @@ angular.module('conceptRequestServiceApp.request')
         function ($rootScope, $scope, $uibModalInstance, requestStatus) {
             var vm = this;
 
-            var hideErrorMessage = function () {
+            /*var hideErrorMessage = function () {
                 vm.msgError = null;
-            };
+            };*/
 
             var hideSuccessMessage = function () {
                 vm.msgSuccess = null;
@@ -21,10 +21,10 @@ angular.module('conceptRequestServiceApp.request')
                 vm.msgError = msg;
             };
 
-            var showSuccessMessage = function (msg) {
+            /*var showSuccessMessage = function (msg) {
                 hideErrorMessage();
                 vm.msgSuccess = msg;
-            };
+            };*/
 
             var closeModal = function () {
                 $uibModalInstance.dismiss('cancel');

@@ -8,5 +8,5 @@ angular.module('conceptRequestServiceApp.request')
                 var requestStatus = requestService.identifyRequestStatus(requestStatusValue);
 
                 return (requestStatus)?requestStatus.langKey:'';
-            }
+            };
         }]);

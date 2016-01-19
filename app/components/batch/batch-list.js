@@ -1,3 +1,4 @@
+/*jshint newcap:false*/
 'use strict';
 
 angular
@@ -6,8 +7,7 @@ angular
         '$filter',
         'ngTableParams',
         'batchService',
-        'notificationService',
-        function ($filter, ngTableParams, batchService, notificationService) {
+        function ($filter, ngTableParams, batchService) {
             var vm = this;
 
             var batchTableParams = new ngTableParams({

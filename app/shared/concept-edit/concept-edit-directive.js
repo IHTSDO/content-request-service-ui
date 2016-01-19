@@ -1,3 +1,4 @@
+/*jshint ignore:start*/
 'use strict';
 
 angular
@@ -827,7 +828,7 @@ angular
                                     changeId: null,
                                     changeType: REQUEST_TYPE.CHANGE_RETIRE_DESCRIPTION.value,
                                     changed: false
-                                }
+                                };
                             }
 
                             showDefinitionOfChange(description).then(function (defOfChange) {
@@ -1125,7 +1126,7 @@ angular
                                     changeId: null,
                                     changeType: REQUEST_TYPE.CHANGE_RETIRE_RELATIONSHIP.value,
                                     changed: false
-                                }
+                                };
                             }
 
                             showDefinitionOfChange(relationship).then(function (defOfChange) {

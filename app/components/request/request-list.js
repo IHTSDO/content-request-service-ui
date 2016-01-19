@@ -1,3 +1,4 @@
+/*jshint newcap:false*/
 'use strict';
 
 angular
@@ -10,9 +11,7 @@ angular
         'requestService',
         'notificationService',
         'accountService',
-        'CRS_ROLE',
-        'REQUEST_STATUS',
-        function ($filter, $sce, crsJiraService, ngTableParams, requestService, notificationService, accountService, CRS_ROLE, REQUEST_STATUS) {
+        function ($filter, $sce, crsJiraService, ngTableParams, requestService, notificationService, accountService) {
             var vm = this;
 
             var initView = function () {
@@ -74,7 +73,7 @@ angular
                     });
 
                     if (removingRequestIds.length > 0) {
-                        if (window.confirm('Are you sure you want to remove ' + removingRequestIds.length +' Draft requests?')) {
+                        if (window.confirm('Are you sure you want to remove ' + removingRequestIds.length +' requests?')) {
                             requestService.removeRequests(removingRequestIds).then(function () {
                                 notificationService.sendMessage('crs.request.message.requestRemoved', 5000);
                                 if (vm.tableParams) {

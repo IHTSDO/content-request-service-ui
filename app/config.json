@@ -1,11 +1,11 @@
 {
     "endpoint": {
-        "crs": "http://uat-request.ihtsdotools.org/crs/",
-        "snowowl": "http://uat-request.ihtsdotools.org/snowowl/",
-        "ims": "https://uat-ims.ihtsdotools.org/",
+        "crs": "http://local.ihtsdotools.org/crs/",
+        "snowowl": "http://local.ihtsdotools.org/snowowl/",
+        "ims": "https://dev-ims.ihtsdotools.org/",
 
-        "jira": "https://uat-jira.ihtsdotools.org/",
-        "ims-api": "https://uat-term.ihtsdotools.org/ims-api/"
+        "jira": "https://dev-jira.ihtsdotools.org/",
+        "ims-api": "https://dev-term.ihtsdotools.org/ims-api/"
     },
     "xhrTimeout": 50000,
     "fileStatusPollingInterval": 5000,
@@ -33,5 +33,9 @@
         "PARTNER": "ROLE_ihtsdo-crs-partners",
         "REQUESTOR": "ROLE_ihtsdo-crs-requestors",
         "VIEWER": "ROLE_ihtsdo-crs-viewers"
+    },
+    "link": {
+        "userGuide": "https://confluence.ihtsdotools.org/display/SCTCR/CRS+User+Guide",
+        "batchTemplate": "#/"
     }
 }

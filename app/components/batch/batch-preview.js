@@ -1,3 +1,4 @@
+/*jshint newcap:false*/
 'use strict';
 
 angular
@@ -65,13 +66,13 @@ angular
                         // reload file list
                         filesTableParams.data.splice(0, 0, response.data);
                         filesTableParams.reload();
-                    }, function (error) { // error
+                    }, function () { // error
                         vm.uploading = false;
                         vm.uploadingProgress = 0;
                     }, function (evt) { // uploadingProgress
                         vm.uploading = true;
                         vm.uploadingProgress = parseInt(100.0 * evt.loaded / evt.total);
-                    })
+                    });
 
                 } else {
                     vm.uploading = false;
@@ -171,11 +172,11 @@ angular
                     filterDelay: 50,
                     total: vm.importingRequests ? vm.importingRequests.length : 0, // length of data
                     getData: function (params) {
-                        if (!vm.importingRequests || vm.importingRequests.length == 0) {
+                        if (!vm.importingRequests || vm.importingRequests.length === 0) {
                             return [];
                         } else {
 
-                            var searchStr = params.filter().search;
+                            //var searchStr = params.filter().search;
                             var mydata = vm.importingRequests;
 
                             params.total(mydata.length);

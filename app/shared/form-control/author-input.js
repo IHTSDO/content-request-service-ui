@@ -89,7 +89,7 @@ angular
                         $scope.author = authorData;
                     };
 
-                    var getAuthorsForValueTypeahead = function (viewValue) {
+                    var getAuthorsForValueTypeahead = function () {
                         $scope.showError = false;
                         $scope.showLoading = true;
                         $scope.authorStatus.loading = false;
@@ -101,11 +101,10 @@ angular
 
                         // search authors
                         return crsJiraService.getAuthorUsers(0, 10, true, []).then(function (users) {
-                            console.log(users);
                             //restore error status
-                            if (!isFocused) {
+                            /*if (!isFocused) {
                                 validateAuthorInput(viewValue);
-                            }
+                            }*/
 
                             return users;
                         }).finally(function () {
@@ -127,7 +126,7 @@ angular
                         $scope.showError = (viewValue && (!$scope.author || !$scope.author.key));
                     };
 
-                    var authorInputOnFocus = function (event) {
+                    var authorInputOnFocus = function () {
                         isFocused = true;
                     };
 
@@ -137,7 +136,7 @@ angular
                                 newAuthor !== currentAuthor) {
                                 $scope.onAuthorChanged({
                                     author: newAuthor
-                                })
+                                });
                             }
                         });
                     }
@@ -151,7 +150,7 @@ angular
 
                     initControl();
                 }
-            }
+            };
         }
     ])
     .run([

@@ -23,9 +23,9 @@ angular.module('conceptRequestServiceApp.request')
                 });*/
             };
 
-            var hideErrorMessage = function () {
+            /*var hideErrorMessage = function () {
                 vm.msgError = null;
-            };
+            };*/
 
             var hideSuccessMessage = function () {
                 vm.msgSuccess = null;
@@ -36,10 +36,10 @@ angular.module('conceptRequestServiceApp.request')
                 vm.msgError = msg;
             };
 
-            var showSuccessMessage = function (msg) {
+            /*var showSuccessMessage = function (msg) {
                 hideErrorMessage();
                 vm.msgSuccess = msg;
-            };
+            };*/
 
             var closeModal = function () {
                 $uibModalInstance.dismiss('cancel');

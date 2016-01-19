@@ -28,8 +28,7 @@ angular
         '$route',
         'accountService',
         'notificationService',
-        'CRS_ROLE',
-        function ($rootScope, $uibModal, $routeParams, $location, $route, accountService, notificationService, CRS_ROLE) {
+        function ($rootScope, $uibModal, $routeParams, $location, $route, accountService, notificationService) {
             var vm = this;
 
             var initView = function () {
@@ -48,6 +47,7 @@ angular
                         vm.listView = 'components/request/accepted-request-list.html';
                         break;
                     case 'requests':
+                    /* falls through */
                     default:
                         $rootScope.pageTitles = [
                             {url: '#/requests', label: 'crs.request.list.title.requests'}

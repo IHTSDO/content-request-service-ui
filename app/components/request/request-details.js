@@ -1,3 +1,4 @@
+/*jshint newcap:false*/
 'use strict';
 
 angular
@@ -10,6 +11,7 @@ angular
         '$anchorScroll',
         '$uibModal',
         '$sce',
+        '$q',
         'requestService',
         'notificationService',
         'requestMetadataService',
@@ -24,7 +26,7 @@ angular
         'CONCEPT_EDIT_EVENT',
         'REQUEST_STATUS',
         'REQUEST_INPUT_MODE',
-        function ($scope, $rootScope, $routeParams, $location, $anchorScroll, $uibModal, $sce, requestService, notificationService, requestMetadataService, objectService, snowowlService, snowowlMetadataService, crsJiraService, scaService, accountService, REQUEST_METADATA_KEY, REQUEST_TYPE, CONCEPT_EDIT_EVENT, REQUEST_STATUS, REQUEST_INPUT_MODE) {
+        function ($scope, $rootScope, $routeParams, $location, $anchorScroll, $uibModal, $sce, $q, requestService, notificationService, requestMetadataService, objectService, snowowlService, snowowlMetadataService, crsJiraService, scaService, accountService, REQUEST_METADATA_KEY, REQUEST_TYPE, CONCEPT_EDIT_EVENT, REQUEST_STATUS, REQUEST_INPUT_MODE) {
             var vm = this;
             var REQUEST_MODE = {
                 NEW: {value: 'new', langKey: 'crs.request.requestMode.newRequest'},
@@ -108,9 +110,9 @@ angular
                 return isValidPageMode && isValidParam && isValidInputMode;
             };
 
-            var hideErrorMessage = function () {
+            /*var hideErrorMessage = function () {
                 vm.msgError = null;
-            };
+            };*/
 
             var hideSuccessMessage = function () {
                 vm.msgSuccess = null;
@@ -123,11 +125,11 @@ angular
                 $anchorScroll('messagePaneLocation');
             };
 
-            var showSuccessMessage = function (msg) {
+            /*var showSuccessMessage = function (msg) {
                 hideErrorMessage();
                 vm.msgSuccess = msg;
                 $window.scrollTop = 0;
-            };
+            };*/
 
             var loadProjects = function () {
                 vm.loadingProjects = true;
@@ -170,7 +172,7 @@ angular
                     changeId: (changeId)?changeId:null,
                     changeType: REQUEST_TYPE.NEW_CONCEPT.value,
                     changed: true
-                }
+                };
             };
 
             var buildChangeConceptDefinitionOfChanges = function () {
@@ -178,7 +180,7 @@ angular
                     changeId: null,
                     changeType: REQUEST_TYPE.CHANGE_RETIRE_CONCEPT.value,
                     changed: true
-                }
+                };
             };
 
             var initView = function () {
@@ -331,7 +333,7 @@ angular
                     // rebuild concept from request data
                     vm.concept = requestData.concept;
 
-                    return requestData
+                    return requestData;
                 });
             };
 
@@ -422,7 +424,7 @@ angular
                         changed: true,
                         characteristicType: characteristicType,
                         refinability: refinability
-                    }
+                    };
                 }
 
                 concept.relationships.push(relationship);
@@ -437,9 +439,9 @@ angular
                     for (var i = 0; i < concept.descriptions.length; i++) {
                         description = concept.descriptions[i];
 
-                        if (description.type === descriptionType
-                            && (extractAll || description.definitionOfChanges) // extract all or only changes descriptions
-                            && description.active === true) {
+                        if (description.type === descriptionType &&
+                            (extractAll || description.definitionOfChanges) && // extract all or only changes descriptions
+                            description.active === true) {
                             descriptions.push(description);
                         }
                     }
@@ -548,7 +550,7 @@ angular
                             changeType: REQUEST_TYPE.CHANGE_RETIRE_DESCRIPTION.value,
                             changed: true,
                             descriptionStatus: 'Retired'
-                        }
+                        };
                     }
                 }
 
@@ -1078,11 +1080,11 @@ angular
                 //console.log(requestData);
 
                 requestService.saveRequest(requestData)
-                    .then(function (response) {
+                    .then(function () {
                         notificationService.sendMessage('crs.request.message.requestSaved', 5000);
                         $location.path(prevPage).search({});
                     }, function (e) {
-                        showErrorMessage(e.message)
+                        showErrorMessage(e.message);
                     })
                     .finally(function () {
                         $rootScope.showAppLoading = false;
@@ -1118,12 +1120,12 @@ angular
 
                         return requestService.submitRequest(requestId);
                     })
-                    .then(function (response) {
+                    .then(function () {
                         notificationService.sendMessage('crs.request.message.requestSubmitted', 5000);
                         $location.path(prevPage).search({});
                     }, function (e) {
                         console.log(e);
-                        showErrorMessage(e.message)
+                        showErrorMessage(e.message);
                     })
                     .finally(function () {
                         $rootScope.showAppLoading = false;
@@ -1143,11 +1145,11 @@ angular
 
             var acceptRequest = function () {
                 changeRequestStatus(vm.request.id, REQUEST_STATUS.ACCEPTED)
-                    .then(function (response) {
+                    .then(function () {
                         notificationService.sendMessage('crs.request.message.requestAccepted', 5000);
                         $location.path(prevPage).search({});
                     }, function (e) {
-                        showErrorMessage(e.message)
+                        showErrorMessage(e.message);
                     });
             };
 
@@ -1157,7 +1159,7 @@ angular
                     controller: 'ModalAssignRequestCtrl as modal',
                     resolve: {
                         authors: function () {
-                            return vm.authors
+                            return vm.authors;
                         },
                         projects: function () {
                             return vm.projects;
@@ -1186,7 +1188,7 @@ angular
 
                 modalInstance.result.then(function (rs) {
                     changeRequestStatus(vm.request.id, REQUEST_STATUS.ACCEPTED)
-                        .then(function (response) {
+                        .then(function () {
                             return requestService.assignRequests([vm.request.id], rs.project.key, ((rs.assignee)?rs.assignee.key:null), rs.summary);
                         }, function (e) {
                             showErrorMessage(e.message);
@@ -1204,11 +1206,11 @@ angular
 
                 modalInstance.result.then(function (rejectComment) {
                     changeRequestStatus(vm.request.id, REQUEST_STATUS.REJECTED, {reason:rejectComment})
-                        .then(function (response) {
+                        .then(function () {
                             notificationService.sendMessage('crs.request.message.requestRejected', 5000);
                             $location.path(prevPage).search({});
                         }, function (e) {
-                            showErrorMessage(e.message)
+                            showErrorMessage(e.message);
                         });
                 });
             };
@@ -1218,11 +1220,11 @@ angular
 
                 modalInstance.result.then(function (rejectComment) {
                     changeRequestStatus(vm.request.id, REQUEST_STATUS.APPEAL_REJECTED, {reason:rejectComment})
-                        .then(function (response) {
+                        .then(function () {
                             notificationService.sendMessage('crs.request.message.requestRejected', 5000);
                             $location.path(prevPage).search({});
                         }, function (e) {
-                            showErrorMessage(e.message)
+                            showErrorMessage(e.message);
                         });
                 });
             };
@@ -1233,11 +1235,11 @@ angular
 
                 modalInstance.result.then(function (rejectComment) {
                     changeRequestStatus(vm.request.id, REQUEST_STATUS.CLARIFICATION_NEEDED, {reason:rejectComment})
-                        .then(function (response) {
+                        .then(function () {
                             notificationService.sendMessage('crs.request.message.requestClarification', 5000);
                             $location.path(prevPage).search({});
                         }, function (e) {
-                            showErrorMessage(e.message)
+                            showErrorMessage(e.message);
                         });
                 });
             };
@@ -1247,11 +1249,11 @@ angular
 
                 modalInstance.result.then(function (appealComment) {
                     changeRequestStatus(vm.request.id, REQUEST_STATUS.APPEAL, {reason:appealComment})
-                        .then(function (response) {
+                        .then(function () {
                             notificationService.sendMessage('crs.request.message.requestAppealed', 5000);
                             $location.path(prevPage).search({});
                         }, function (e) {
-                            showErrorMessage(e.message)
+                            showErrorMessage(e.message);
                         });
                 });
             };
@@ -1261,11 +1263,11 @@ angular
 
                 modalInstance.result.then(function (withdrawComment) {
                     changeRequestStatus(vm.request.id, REQUEST_STATUS.WITHDRAWN, {reason:withdrawComment})
-                        .then(function (response) {
+                        .then(function () {
                             notificationService.sendMessage('crs.request.message.requestWithdrawn', 5000);
                             $location.path(prevPage).search({});
                         }, function (e) {
-                            showErrorMessage(e.message)
+                            showErrorMessage(e.message);
                         });
                 });
             };

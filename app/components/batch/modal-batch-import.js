@@ -16,9 +16,9 @@ angular.module('conceptRequestServiceApp.batch')
                 vm.msgError = null;
             };
 
-            var hideErrorMessage = function () {
+            /*var hideErrorMessage = function () {
                 vm.msgError = null;
-            };
+            };*/
 
             var hideSuccessMessage = function () {
                 vm.msgSuccess = null;
@@ -29,10 +29,10 @@ angular.module('conceptRequestServiceApp.batch')
                 vm.msgError = msg;
             };
 
-            var showSuccessMessage = function (msg) {
+            /*var showSuccessMessage = function (msg) {
                 hideErrorMessage();
                 vm.msgSuccess = msg;
-            };
+            };*/
 
             var closeModal = function () {
                 $uibModalInstance.dismiss('cancel');
@@ -49,7 +49,7 @@ angular.module('conceptRequestServiceApp.batch')
                     }, function (evt) { // progress
                         vm.uploading = true;
                         vm.progress = parseInt(100.0 * evt.loaded / evt.total);
-                    })
+                    });
 
                 } else {
                     showErrorMessage('crs.batch.message.error.fileRequired');

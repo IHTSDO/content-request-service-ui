@@ -91,6 +91,6 @@ angular.module('conceptRequestServiceApp.message')
                         $element.html(buildMessageItem(messageType, $scope.message));
                     }
                 }
-            }
+            };
         }
     ]);

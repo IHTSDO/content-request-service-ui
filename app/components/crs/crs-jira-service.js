@@ -37,7 +37,7 @@ angular
 
                 return crsService.sendGet(requestEndpoint + '/authoringUser/list', buildParams(startIndex, count)).then(function (data) {
                     if (data.error) {
-                        return []
+                        return [];
                     } else if (data.users) {
                         users = users.concat(data.users.items);
 

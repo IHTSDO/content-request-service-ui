@@ -36,7 +36,7 @@ angular
                     findErrorDef(error));
             };
 
-            var identifyHttpErrorObject = function (httpErrorCode, httpErrorResponse) {
+            var identifyHttpErrorObject = function (httpErrorCode) {
                 var UNKNOWN_ERROR = {
                     code: httpErrorCode,
                     message: 'Internal server error.'
@@ -54,7 +54,7 @@ angular
 
             var isUnauthorizeError = function (httpErrorObject) {
                 return (httpErrorObject === HTTP_ERROR_DEF.UNAUTHORIZED ||
-                    httpErrorObject === HTTP_ERROR_DEF.FORBIDDEN)
+                    httpErrorObject === HTTP_ERROR_DEF.FORBIDDEN);
             };
 
             var handleUnauthorizeHttpError = function (httpErrorObject) {

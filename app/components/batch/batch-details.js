@@ -1,3 +1,4 @@
+/*jshint newcap:false*/
 'use strict';
 
 angular
@@ -9,11 +10,7 @@ angular
         '$location',
         'ngTableParams',
         'batchService',
-        'requestService',
-        'notificationService',
-        'accountService',
-        'CRS_ROLE',
-        function ($rootScope, $filter, $routeParams, $location, ngTableParams, batchService, requestService, notificationService, accountService, CRS_ROLE) {
+        function ($rootScope, $filter, $routeParams, $location, ngTableParams, batchService) {
             var vm = this;
 
             var initView = function () {

@@ -212,7 +212,7 @@ angular.module('conceptRequestServiceApp.request')
 
                     angular.forEach(metadataKeys, function (key) {
                         if (angular.isString(key) && metadata.hasOwnProperty(key)) {
-                            rtMetadata[key] = angular.copy(metadata[key])
+                            rtMetadata[key] = angular.copy(metadata[key]);
                         }
                     });
                 }

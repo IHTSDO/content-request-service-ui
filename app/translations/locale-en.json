@@ -355,7 +355,8 @@
                 },
                 "button": {
                     "import": "Import Requests",
-                    "remove": "Remove Request"
+                    "remove": "Remove Request",
+                    "downloadTemplate": "Download batch template"
                 },
                 "requestList": {
                     "tableHeader": {

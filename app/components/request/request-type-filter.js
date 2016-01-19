@@ -8,5 +8,5 @@ angular.module('conceptRequestServiceApp.request')
                 var requestType = requestService.identifyRequestType(requestTypeValue);
 
                 return (requestType !== null)?requestType.langKey:'';
-            }
+            };
         }]);
