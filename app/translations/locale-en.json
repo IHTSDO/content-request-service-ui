@@ -64,9 +64,9 @@
                     "submittedRequests": "Search Submitted Requests"
                 },
                 "tableHeader": {
-                    "batchId": "Batch Id",
-                    "requestorInternalId": "Requestor Interal Id",
-                    "ticketId": "Request Id",
+                    "batchId": "Batch ID",
+                    "requestorInternalId": "Requestor Interal ID",
+                    "ticketId": "Request ID",
                     "description": "Description",
                     "lastModified": "Last Modified",
                     "requestType": "Request Type",
@@ -94,7 +94,7 @@
                 },
                 "label": {
                     "topic": "Topic",
-                    "requestorInternalId": "Requestor Internal Id",
+                    "requestorInternalId": "Requestor Internal ID",
                     "proposedFSN": "New Concept FSN",
                     "parentConcept": "Parent Concept",
                     "concept": "Concept",
@@ -106,11 +106,11 @@
                     "reasonForChange": "Reason of Changes",
                     "reference": "Reference",
                     "description": "Description",
-                    "descriptionId": "Description Id",
+                    "descriptionId": "Description ID",
                     "currentDescription": "Current Description",
                     "proposedDescription": "Proposed New Description",
                     "relationshipGroup": "Relationship Group",
-                    "relationshipId": "Relationship Id",
+                    "relationshipId": "Relationship ID",
                     "relationship": "Relationship",
                     "historyAttributeValue": "History Attribute Value",
                     "notes": "Notes",
@@ -152,8 +152,8 @@
                         "assign": "Assign Request"
                     },
                     "label": {
-                        "batchId": "Batch Id",
-                        "ticketId": "Jira Ticket Id",
+                        "batchId": "Batch ID",
+                        "ticketId": "Jira Ticket ID",
                         "status": "Status",
                         "lastModified": "Last Modified Date",
                         "createdDate": "Created Date",
@@ -279,7 +279,7 @@
                 },
                 "searchPlaceHolder": "Search Batches",
                 "tableHeader": {
-                    "batchId": "Batch Id",
+                    "batchId": "Batch ID",
                     "uploaded": "Uploaded On",
                     "submitted": "Submitted On",
                     "lastModified": "Last Modified",

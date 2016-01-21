@@ -78,7 +78,8 @@ angular.module('conceptRequestServiceApp.search')
                 // cycle over all results
                 for (var i = 0; i < $scope.storedResults.length; i++) {
 
-                    console.debug('checking', i, $scope.storedResults[i].concept.fsn);
+                    //console.debug('checking', i, $scope.storedResults[i].concept.fsn);
+                    //console.log($scope.storedResults[i].concept.conceptId);
 
                     // if item already added skip
                     if (tempIds.indexOf($scope.storedResults[i].concept.conceptId) === -1) {
@@ -140,9 +141,10 @@ angular.module('conceptRequestServiceApp.search')
                 // initialize or clear the results list
                 if (!$scope.results || !appendResults) {
                     $scope.results = [];
+                    $scope.storedResults = [];
                 }
 
-                snowowlService.findConcepts(null, null, $scope.searchStr, $scope.results.length + 1, $scope.resultsSize).then(function (concepts) {
+                snowowlService.findConcepts(null, null, $scope.searchStr, $scope.storedResults.length + 1, $scope.resultsSize).then(function (concepts) {
 
 
                     if (!concepts) {
@@ -153,6 +155,7 @@ angular.module('conceptRequestServiceApp.search')
                     $scope.loadPerformed = true;
                     $scope.loadMoreEnabled = concepts.length === $scope.resultsSize;
 
+                    //console.log($scope.storedResults.length);
                     $scope.storedResults = appendResults ? $scope.storedResults.concat(concepts) : concepts;
 
                     $scope.processResults();
@@ -184,6 +187,7 @@ angular.module('conceptRequestServiceApp.search')
                 $scope.resultsPage = 1;
                 $scope.results = [];
                 $scope.searchStatus = null;
+                $scope.loadPerformed = false;
             };
 
             /**
