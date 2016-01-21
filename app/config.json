@@ -1,9 +1,8 @@
 {
     "endpoint": {
-        "crs": "http://local.ihtsdotools.org/crs/",
-        "snowowl": "http://local.ihtsdotools.org/snowowl/",
+        "crs": "https://dev-request2.ihtsdotools.org/ihtsdo-crs/",
         "ims": "https://dev-ims.ihtsdotools.org/",
-
+        "snowowl": "https://dev-request2.ihtsdotools.org/snowowl/",
         "jira": "https://dev-jira.ihtsdotools.org/",
         "ims-api": "https://dev-term.ihtsdotools.org/ims-api/"
     },
