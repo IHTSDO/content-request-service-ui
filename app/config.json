@@ -25,13 +25,13 @@
         "author-group": "ihtsdo-sca-author"
     },
     "userRole": {
-        "ADMINISTRATOR": "ROLE_ihtsdo-crs-administrators",
-        "MANAGER": "ROLE_ihtsdo-crs-managers",
-        "STAFF": "ROLE_ihtsdo-crs-staff",
-        "MEMBER": "ROLE_ihtsdo-crs-members",
-        "PARTNER": "ROLE_ihtsdo-crs-partners",
-        "REQUESTOR": "ROLE_ihtsdo-crs-requestors",
-        "VIEWER": "ROLE_ihtsdo-crs-viewers"
+        "ADMINISTRATOR": "ROLE_crs-administrator",
+        "MANAGER": "ROLE_crs-manager",
+        "STAFF": "ROLE_crs-staff",
+        "MEMBER": "ROLE_crs-member",
+        "PARTNER": "ROLE_crs-partner",
+        "REQUESTOR": "ROLE_crs-requestor",
+        "VIEWER": "ROLE_crs-viewer"
     },
     "link": {
         "userGuide": "https://confluence.ihtsdotools.org/display/SCTCR/CRS+User+Guide",
