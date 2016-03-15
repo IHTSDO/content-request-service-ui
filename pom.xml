@@ -32,7 +32,7 @@
 							<goal>build</goal>
 						</goals>
 						<configuration>
-							<gruntBuildArgs>--force</gruntBuildArgs>
+                            <gruntBuildArgs>--force --clientVersion=${project.version}</gruntBuildArgs>
 						</configuration>
 					</execution>
 				</executions>

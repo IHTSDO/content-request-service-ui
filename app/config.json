@@ -1,6 +1,7 @@
 {
+    "version": "0.1.5-SNAPSHOT",
     "endpoint": {
-        "crs": "https://dev-request2.ihtsdotools.org/ihtsdo-crs/",
+        "crs": "http://huy.ihtsdotools.org/crs/",
         "ims": "https://dev-ims.ihtsdotools.org/",
         "snowowl": "https://dev-request2.ihtsdotools.org/snowowl/",
         "jira": "https://dev-jira.ihtsdotools.org/",
