@@ -10,7 +10,7 @@ angular
                 require: ['?^formControlReadonly', '^form'],
                 scope: {
                     concept: '=',
-                    conceptStatus: '=',
+                    conceptStatus: '=?',
                     onConceptChanged: '&'
                 },
                 template: [
@@ -52,7 +52,7 @@ angular
                         $scope.showLoading = false;
                         $scope.showError = false;
 
-                        if (!$scope.conceptStatus) {
+                        if ($scope.conceptStatus === undefined || !$scope.conceptStatus) {
                             $scope.conceptStatus = {
                                 loading: false,
                                 searching: false,
