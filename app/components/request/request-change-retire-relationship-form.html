@@ -11,7 +11,7 @@
 
         <form-control type="select"
                       model="requestVM.request.relationshipId"
-                      options="suggestion.relationshipId as (suggestion.type.fsn + ' - ' + suggestion.target.fsn) for suggestion in requestVM.originalConcept.relationships |filter:{active:true}"
+                      options="suggestion.relationshipId as (suggestion.type.fsn + ' - ' + suggestion.target.fsn) for suggestion in requestVM.originalConcept.relationships |filter:{active:true , characteristicType:requestVM.request.showInferredRel?'':'STATED_RELATIONSHIP'}"
                       label="crs.request.details.label.relationship"
                       name="slRelationship"
                       required
@@ -29,6 +29,12 @@
                       model="requestVM.request.relationshipStatus"
                       options="relationshipStatus for relationshipStatus in requestVM.relationshipStatuses"
                       label="crs.request.details.label.relationshipStatus"
-                      name="slRelationshipStatus"></form-control>
+                      name="slRelationshipStatus"></form-control>                      
+        <div class="form-control-element">
+            <input type="checkbox"
+                   ng-model="requestVM.request.showInferredRel"
+                   name="chkShowInferredRel">
+            <label translate="crs.request.details.label.showInferredRel"></label>
+        </div>
     </div>
 </form>

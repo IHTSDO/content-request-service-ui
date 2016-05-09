@@ -112,6 +112,7 @@
                     "relationshipGroup": "Relationship Group",
                     "relationshipId": "Relationship ID",
                     "relationship": "Relationship",
+                    "showInferredRel": "Show Inferred Relationship",
                     "historyAttributeValue": "History Attribute Value",
                     "notes": "Notes",
                     "relationshipType": "Relationship Type",
