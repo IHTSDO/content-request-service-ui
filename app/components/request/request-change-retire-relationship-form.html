@@ -1,7 +1,7 @@
 <h4 translate="crs.request.requestType.changeRetireRelationship"></h4>
 <form class="form-floating" form-control-readonly="requestVM.request.requestHeader.status !== 'DRAFT'">
 
-    <div class="form-group">
+    <div class="form-group" ng-init="requestVM.request.showRel = 'STATED_RELATIONSHIP'" >
 
         <form-control type="concept"
                       model="requestVM.originalConcept"
@@ -11,7 +11,7 @@
 
         <form-control type="select"
                       model="requestVM.request.relationshipId"
-                      options="suggestion.relationshipId as (suggestion.type.fsn + ' - ' + suggestion.target.fsn) for suggestion in requestVM.originalConcept.relationships |filter:{active:true , characteristicType:requestVM.request.showInferredRel?'':'STATED_RELATIONSHIP'}"
+                      options="suggestion.relationshipId as (suggestion.type.fsn + ' - ' + suggestion.target.fsn) for suggestion in requestVM.originalConcept.relationships |filter:{active:true , characteristicType:requestVM.request.showRel}"
                       label="crs.request.details.label.relationship"
                       name="slRelationship"
                       required
@@ -30,11 +30,14 @@
                       options="relationshipStatus for relationshipStatus in requestVM.relationshipStatuses"
                       label="crs.request.details.label.relationshipStatus"
                       name="slRelationshipStatus"></form-control>                      
-        <div class="form-control-element">
-            <input type="checkbox"
-                   ng-model="requestVM.request.showInferredRel"
-                   name="chkShowInferredRel">
-            <label translate="crs.request.details.label.showInferredRel"></label>
-        </div>
+
+      <div class="form-control-element" uib-dropdown is-open="status.isopen">
+        <button id="single-button"class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled"> <span style="margin"translate = "{{(requestVM.request.showRel === 'STATED_RELATIONSHIP'?'crs.request.details.label.statedRel':'crs.request.details.label.inferredRel')}}" ></span><span style="margin-left:10px" class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+          <li role="menuitem"><a class="btn" translate='crs.request.details.label.statedRel' ng-model="requestVM.request.showRel" uib-btn-radio="'STATED_RELATIONSHIP'"></a></li>
+          <li role="menuitem"><a class="btn" translate='crs.request.details.label.inferredRel' ng-model="requestVM.request.showRel" uib-btn-radio="'INFERRED_RELATIONSHIP'"></a></li>
+        </ul>
+      </div>
     </div>
 </form>
