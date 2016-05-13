@@ -334,6 +334,11 @@ angular
                     vm.concept = requestData.concept;
 
                     return requestData;
+                },function(reason){
+                    notificationService.sendError(reason.message, 5000, null, true);
+                    if ($location.path() !== '/dashboard') {
+                        $location.path('/dashboard').search({});
+                    }
                 });
             };
 

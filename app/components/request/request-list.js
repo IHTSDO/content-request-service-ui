@@ -79,6 +79,9 @@ angular
                                 if (vm.tableParams) {
                                     vm.tableParams.reload();
                                 }
+                                if (vm.submittedTableParams) {
+                                    vm.submittedTableParams.reload();
+                                }
                             });
                         }
                     } else {
