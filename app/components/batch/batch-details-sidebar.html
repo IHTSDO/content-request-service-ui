@@ -16,12 +16,14 @@
             </div>
         </div>
         <div class="tab-content col-md-12 request-info">
-                <button 
+            <div class="classification-btn">
+                <button ng-disabled="batchVM.batchSummary.status !== 'NEW'"
                     class="btn btn-default red darken-1 import" style="text-transform: none"
-                    ng-click="batchPreviewVM.deleteBatch()">
+                    ng-click="batchVM.removeBatchRequest(batchVM.batchSummary.id)">
                 <span class="md md-highlight-remove red darken-2 iconbase" style="line-height: initial;padding-top:10px"></span>
                 <span class="button-link" translate="crs.batch.button.delete"></span>
             </button>
+        </div>
         </div>
     </div>
 
