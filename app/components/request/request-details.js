@@ -183,6 +183,18 @@ angular
                 };
             };
 
+            vm.filterRelationshipType = function(relationshipType){
+                vm.relationshipsFilter = vm.originalConcept.relationships.filter(function(obj){
+                    return (obj.characteristicType === relationshipType && obj.active === true);
+                });
+            };
+
+            // $scope.$watch(function () {
+            //     return vm.originalConcept;
+            // }, function (newVal) {
+            //     vm.filterRelationshipType();
+            // });
+
             var initView = function () {
                 var isValid = isValidViewParams();
                 var originConcept;
@@ -311,6 +323,54 @@ angular
                 return requestService.getRequest(requestId).then(function (requestData) {
                     // build request
                     vm.request = buildRequestFromRequestData(requestData);
+
+                    // var arr = requestData.concept.relationships;
+
+                    // function isRelationshipActive(obj){
+                    //     var requestItems = requestData.requestItems;
+                    //     for(var i=0;i<requestItems.length;i++){
+                    //         obj.viewName = obj.type.fsn + " " + obj.target.fsn;
+                    //         if(requestItems[i].relationshipId !== null
+                    //             && obj.active === true
+                    //             && obj.characteristicType === 'STATED_RELATIONSHIP'){
+                    //             if(requestItems[i].relationshipId === obj.relationshipId){
+                    //                 obj.ticked = true;
+                    //             }
+                    //             return true;
+                    //         }
+                    //     }
+                    //     return false;
+                    // }
+                    // vm.relationshipsFilter = arr.filter(function(obj){
+                    //     return isRelationshipActive(obj);
+                    // });
+                    // for(var i=0;i<vm.relationshipsFilter.length;i++){
+                    //     var item = vm.relationshipsFilter[i];
+                    //     if(){
+
+                    //     }
+                    // }
+                    console.log(vm.relationshipsFilter);
+                    for(var i in requestData.requestItems){
+                        for(var j in requestData.concept.relationships){
+                            requestData.concept.relationships[j].viewName = requestData.concept.relationships[j].type.fsn + " " + requestData.concept.relationships[j].target.fsn;
+                            if(requestData.requestItems[i].relationshipId !== null || requestData.requestItems[i].relationshipId !== undefined){
+                                if(requestData.requestItems[i].relationshipId ===  requestData.concept.relationships[j].relationshipId){
+                                    requestData.concept.relationships[j].ticked = true;
+
+                                    // function isRelationshipActicve(value){
+                                    //     return (value.active === true && value.characteristicType === 'STATED_RELATIONSHIP');
+                                    // }
+
+                                    // var relationshipsFilter = requestData.concept.relationships.filter(isRelationshipActicve);
+                                    vm.relationshipsFilter = requestData.concept.relationships;
+                                    // console.log(relationshipsFilter);
+                                }
+                            }
+                        }
+                    }
+                    // vm.relationshipsFilter = (requestData.requestItems != null)? $utility.buildDropdownModel([requestData.requestItems],[requestData.requestItems], 'relationshipId') : [];
+                    vm.selectedRelationships = requestData.requestItems? [requestData.requestItems] : [];
 
                     // get original concept
                     if (requestData.requestType === REQUEST_TYPE.NEW_CONCEPT.value) {
@@ -994,16 +1054,18 @@ angular
 
                         case REQUEST_TYPE.CHANGE_RETIRE_RELATIONSHIP:
                             for (var i = 0; i < concept.relationships.length; i++) {
-                                if (concept.relationships[i].relationshipId === request.relationshipId) {
-                                    concept.relationships[i].active = false;
-                                    concept.relationships[i].definitionOfChanges = {
-                                        changeId: null,
-                                        changeType: REQUEST_TYPE.CHANGE_RETIRE_RELATIONSHIP.value,
-                                        changed: true,
-                                        relationshipStatus: request.relationshipStatus,
-                                        refinability: request.refinability
-                                    };
-                                    break;
+                                for(var j = 0; j < request.relationshipId.length; j++){
+                                    if (concept.relationships[i].relationshipId === request.relationshipId[j]) {
+                                        concept.relationships[i].active = false;
+                                        concept.relationships[i].definitionOfChanges = {
+                                            changeId: null,
+                                            changeType: REQUEST_TYPE.CHANGE_RETIRE_RELATIONSHIP.value,
+                                            changed: true,
+                                            relationshipStatus: request.relationshipStatus,
+                                            refinability: request.refinability
+                                        };
+                                        break;
+                                    }
                                 }
                             }
                             break;
@@ -1046,8 +1108,14 @@ angular
                             (fieldValue === undefined ||
                             fieldValue === null ||
                             (angular.isFunction(fieldValue.trim) && fieldValue.trim() === '' ) ||
-                            (angular.isObject(fieldValue) && !fieldValue.conceptId ))) {
-                            error[field.name] = fieldRequiredLangKey;
+                            angular.isObject(fieldValue))) {
+                            if(angular.isArray(fieldValue)){
+                                if(fieldValue.length === 0){
+                                    error[field.name] = fieldRequiredLangKey;
+                                }
+                            }else if(!fieldValue.conceptId){
+                                error[field.name] = fieldRequiredLangKey;
+                            }
                         }
                     }
                 }
@@ -1062,6 +1130,14 @@ angular
             };
 
             var saveRequest = function () {
+                function selectedRelationshipsOutput(){
+                    var relIdArr = [];
+                    for(var key in vm.selectedRelationships){
+                        relIdArr.push(vm.selectedRelationships[key].relationshipId);
+                    }
+                    return relIdArr;
+                }
+                vm.request.relationshipId = selectedRelationshipsOutput();
                 // requestData
                 var requestData;
 

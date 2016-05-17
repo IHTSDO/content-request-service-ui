@@ -26,6 +26,7 @@ angular
         'ui.tree',
         'ngFileUpload',
         'textAngular',
+        'isteven-multi-select',
 
         // layouts
 
