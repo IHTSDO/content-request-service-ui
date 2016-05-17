@@ -227,6 +227,7 @@
                 "requestAppealed": "Request has been appealed successfully",
                 "requestWithdrawn": "Request has been withdrawn successfully",
                 "requestClarification": "Request has been pended to clarification successfully",
+                "requestRemoved": "Requests have been removed successfully",
 
                 "error": {
                     "requestTypeRequired": "Please select request type",

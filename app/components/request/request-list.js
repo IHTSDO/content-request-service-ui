@@ -69,23 +69,26 @@ angular
                     angular.forEach(selectedRequests.items, function (isSelected, requestId) {
                         if (isSelected) {
                             removingRequestIds.push(requestId);
+                            vm.selectedRequests.items[requestId]=false;
                         }
                     });
 
                     if (removingRequestIds.length > 0) {
                         if (window.confirm('Are you sure you want to remove ' + removingRequestIds.length +' requests?')) {
                             requestService.removeRequests(removingRequestIds).then(function () {
-                                notificationService.sendMessage('crs.request.message.requestRemoved', 5000);
+                                //notificationService.sendMessage('crs.request.message.requestRemoved', 5000);
+                                window.alert('Requests have been removed successfully ! ');
                                 if (vm.tableParams) {
                                     vm.tableParams.reload();
                                 }
                                 if (vm.submittedTableParams) {
                                     vm.submittedTableParams.reload();
                                 }
+
                             });
                         }
                     } else {
-                        window.alert('Please select at least a Draft request.');
+                        window.alert('Please select at least a request to delete.');
                     }
                 }
             };
@@ -111,7 +114,6 @@ angular
                         notificationService.sendMessage('crs.request.message.listLoading');
                         return requestService.getRequests(params.page() - 1, params.count(), params.filter().search, sortFields, sortDirs).then(function (requests) {
                             notificationService.sendMessage('crs.request.message.listLoaded', 5000);
-
                             params.total(requests.total);
                             if (requests.items && requests.items.length > 0) {
                                 return requests.items;
