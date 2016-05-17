@@ -226,6 +226,7 @@ angular
                             vm.request = {
                                 id: requestId,
                                 additionalFields: {},
+                                characteristicType: "STATED_RELATIONSHIP", 
                                 requestHeader: {
                                     status: REQUEST_STATUS.DRAFT.value,
                                     requestDate: new Date().getTime()
@@ -836,6 +837,7 @@ angular
                         item.relationshipId = changedTarget.relationshipId;
                         item.refinability = definitionOfChanges.refinability;
                         item.relationshipStatus = definitionOfChanges.relationshipStatus;
+                        item.characteristicType = changedTarget.characteristicType;
                         break;
                 }
 
@@ -927,6 +929,7 @@ angular
                         request.relationshipId = mainItem.relationshipId;
                         request.relationshipStatus = mainItem.relationshipStatus;
                         request.refinability = mainItem.refinability;
+                        request.characteristicType = mainItem.characteristicType;
 
                         break;
                 }
