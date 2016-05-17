@@ -18,6 +18,7 @@ $fa-font-path: "../bower_components/font-awesome/fonts";
 @import "tables.scss";
 @import "ta.scss";
 @import "tooltips.scss";
+@import "../lib/isteven-multi-select/isteven-multi-select.css";
 
 .browsehappy {
   margin: 0.2em 0;
@@ -528,4 +529,45 @@ ul.batch-statistic.timeline {
 .promoted-check-box {
   color: #9B9B9B;
   padding-top: 15px;
+}
+
+.multiSelect {
+  margin-bottom: 20px;
+
+  & > button {
+    text-align: left;
+    min-height: 30px !important;
+    border-radius: 0;
+    width: 100%;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAMAAACelLz8AAAAJ1BMVEVmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmaP/QSjAAAADHRSTlMAAgMJC0uWpKa6wMxMdjkoAAAANUlEQVR4AeXJyQEAERAAsNl7Hf3X6xt0QL6JpZWq30pdvdadme+0PMdzvHm8YThHcT1H7K0BtOMDniZhWOgAAAAASUVORK5CYII=) !important;
+    background-size: 10px;
+    background-repeat: no-repeat;
+    background-position: 100% center;
+    background-color: #F9F9F9;
+    outline: none;
+    cursor: default;
+    box-shadow: inset 0 -1px 0 #ddd;
+    padding: 0;
+
+    .buttonLabel {
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      width: 100%;
+      text-overflow: ellipsis;
+      padding: 0;
+    }
+
+    .caret{
+      display: none;
+    }
+  }
+}
+
+.filter-relationship{
+  padding: 0 30px 0 10px;
+  cursor: pointer;
+}
+.filter-relationship:hover{
+  background: #ddd;
 }

@@ -311,6 +311,9 @@
                     }
                 }
             },
+            "button": {
+                "delete": "Delete Batch"
+            },
             "message": {
                 "listLoading": "Loading batches...",
                 "listLoaded": "All batches loaded",

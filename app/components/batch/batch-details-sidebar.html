@@ -15,7 +15,14 @@
                 <div ng-include="'components/batch/batch-statistic-panel.html'"></div>
             </div>
         </div>
-
+        <div class="tab-content col-md-12 request-info">
+                <button 
+                    class="btn btn-default red darken-1 import" style="text-transform: none"
+                    ng-click="batchPreviewVM.deleteBatch()">
+                <span class="md md-highlight-remove red darken-2 iconbase" style="line-height: initial;padding-top:10px"></span>
+                <span class="button-link" translate="crs.batch.button.delete"></span>
+            </button>
+        </div>
     </div>
 
     <div style="float: right; width: 10px; color: red"></div>
