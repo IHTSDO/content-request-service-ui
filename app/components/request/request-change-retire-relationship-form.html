@@ -45,11 +45,11 @@
                       name="slRelationshipStatus"></form-control>                      
 
       <div class="form-control-element" uib-dropdown is-open="status.isopen">
-        <button id="single-button"class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled"> <span style="margin"translate = "{{(requestVM.request.characteristicType === 'STATED_RELATIONSHIP'?'crs.request.details.label.statedRel':'crs.request.details.label.inferredRel')}}" ></span><span style="margin-left:10px" class="caret"></span>
+        <button id="single-button"class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled"> <span style="margin" translate= "{{(requestVM.request.characteristicType === 'STATED_RELATIONSHIP'?'crs.request.details.label.statedRel':'crs.request.details.label.inferredRel')}}" ></span><span style="margin-left:10px" class="caret"></span>
         </button>
         <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-          <li role="menuitem" ng-click="requestVM.filterRelationshipType('STATED_RELATIONSHIP')" translate='crs.request.details.label.statedRel' ng-model="requestVM.request.showRel" uib-btn-radio="'STATED_RELATIONSHIP'" class="filter-relationship"></li>
-          <li role="menuitem" ng-click="requestVM.filterRelationshipType('INFERRED_RELATIONSHIP')" translate='crs.request.details.label.inferredRel' ng-model="requestVM.request.showRel" uib-btn-radio="'INFERRED_RELATIONSHIP'" class="filter-relationship"></li>
+          <li role="menuitem" ng-click="requestVM.filterRelationshipType('STATED_RELATIONSHIP')" translate='crs.request.details.label.statedRel' ng-model="requestVM.request.characteristicType" uib-btn-radio="'STATED_RELATIONSHIP'" class="filter-relationship"></li>
+          <li role="menuitem" ng-click="requestVM.filterRelationshipType('INFERRED_RELATIONSHIP')" translate='crs.request.details.label.inferredRel' ng-model="requestVM.request.characteristicType" uib-btn-radio="'INFERRED_RELATIONSHIP'" class="filter-relationship"></li>
         </ul>
       </div>
     </div>
