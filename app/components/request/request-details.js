@@ -331,7 +331,7 @@ angular
                     // build request
                     vm.request = buildRequestFromRequestData(requestData);
 
-                    if(requestData.concept !== null){
+                    if(requestData.concept !== null && requestData.requestType === 'CHANGE_RETIRE_RELATIONSHIP'){
                         var arr = requestData.concept.relationships;
                         var isRelationshipActive = function(obj){
                             var requestItems = requestData.requestItems;
@@ -346,7 +346,7 @@ angular
                         vm.relationshipsFilter = arr.filter(function(obj){
                             return isRelationshipActive(obj);
                         });
-                        console.log(vm.relationshipsFilter);
+                        // console.log(vm.relationshipsFilter);
                         for(var i in requestData.requestItems){
                             for(var j in requestData.concept.relationships){
                                 requestData.concept.relationships[j].viewName = requestData.concept.relationships[j].type.fsn + " " + requestData.concept.relationships[j].target.fsn;
