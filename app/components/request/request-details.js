@@ -184,9 +184,16 @@ angular
             };
 
             vm.filterRelationshipType = function(relationshipType){
-                vm.relationshipsFilter = vm.originalConcept.relationships.filter(function(obj){
-                    return (obj.characteristicType === relationshipType && obj.active === true);
-                });
+                console.log(vm.pageMode);
+                if(vm.pageMode !== REQUEST_MODE.NEW){
+                    vm.relationshipsFilter = vm.concept.relationships.filter(function(obj){
+                        return (obj.characteristicType === relationshipType && obj.active === true);
+                    });
+                }else{
+                    vm.relationshipsFilter = vm.originalConcept.relationships.filter(function(obj){
+                        return (obj.characteristicType === relationshipType && obj.active === true);
+                    });
+                }
             };
 
             // $scope.$watch(function () {
