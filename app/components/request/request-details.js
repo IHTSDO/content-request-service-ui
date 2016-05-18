@@ -331,36 +331,37 @@ angular
                     // build request
                     vm.request = buildRequestFromRequestData(requestData);
 
-                    var arr = requestData.concept.relationships;
-
-                    function isRelationshipActive(obj){
-                        var requestItems = requestData.requestItems;
-                        for(var i=0;i<requestItems.length;i++){
-                            obj.viewName = obj.type.fsn + " " + obj.target.fsn;
-                            if(requestItems[i].relationshipId !== null
-                                && obj.active === true
-                                && obj.characteristicType === requestItems[1].characteristicType){
-                                return true;
+                    if(requestData.concept !== null){
+                        var arr = requestData.concept.relationships;
+                        function isRelationshipActive(obj){
+                            var requestItems = requestData.requestItems;
+                            for(var i=0;i<requestItems.length;i++){
+                                obj.viewName = obj.type.fsn + " " + obj.target.fsn;
+                                if(requestItems[i].relationshipId !== null
+                                    && obj.active === true
+                                    && obj.characteristicType === requestItems[1].characteristicType){
+                                    return true;
+                                }
                             }
+                            return false;
                         }
-                        return false;
-                    }
-                    vm.relationshipsFilter = arr.filter(function(obj){
-                        return isRelationshipActive(obj);
-                    });
-                    console.log(vm.relationshipsFilter);
-                    for(var i in requestData.requestItems){
-                        for(var j in requestData.concept.relationships){
-                            requestData.concept.relationships[j].viewName = requestData.concept.relationships[j].type.fsn + " " + requestData.concept.relationships[j].target.fsn;
-                            if(requestData.requestItems[i].relationshipId !== null || requestData.requestItems[i].relationshipId !== undefined){
-                                if(requestData.requestItems[i].relationshipId ===  requestData.concept.relationships[j].relationshipId){
-                                    requestData.concept.relationships[j].ticked = true;
+                        vm.relationshipsFilter = arr.filter(function(obj){
+                            return isRelationshipActive(obj);
+                        });
+                        console.log(vm.relationshipsFilter);
+                        for(var i in requestData.requestItems){
+                            for(var j in requestData.concept.relationships){
+                                requestData.concept.relationships[j].viewName = requestData.concept.relationships[j].type.fsn + " " + requestData.concept.relationships[j].target.fsn;
+                                if(requestData.requestItems[i].relationshipId !== null || requestData.requestItems[i].relationshipId !== undefined){
+                                    if(requestData.requestItems[i].relationshipId ===  requestData.concept.relationships[j].relationshipId){
+                                        requestData.concept.relationships[j].ticked = true;
+                                    }
                                 }
                             }
                         }
+                        // vm.relationshipsFilter = (requestData.requestItems != null)? $utility.buildDropdownModel([requestData.requestItems],[requestData.requestItems], 'relationshipId') : [];
+                        vm.selectedRelationships = requestData.requestItems? [requestData.requestItems] : [];    
                     }
-                    // vm.relationshipsFilter = (requestData.requestItems != null)? $utility.buildDropdownModel([requestData.requestItems],[requestData.requestItems], 'relationshipId') : [];
-                    vm.selectedRelationships = requestData.requestItems? [requestData.requestItems] : [];
 
                     // get original concept
                     if (requestData.requestType === REQUEST_TYPE.NEW_CONCEPT.value) {
@@ -914,7 +915,7 @@ angular
 
                     case REQUEST_TYPE.CHANGE_RETIRE_RELATIONSHIP.value:
                         //mainItem = extractItemByRequestType(requestItems, REQUEST_TYPE.CHANGE_RETIRE_RELATIONSHIP);
-
+                        
                         request.relationshipId = mainItem.relationshipId;
                         request.relationshipStatus = mainItem.relationshipStatus;
                         request.refinability = mainItem.refinability;
