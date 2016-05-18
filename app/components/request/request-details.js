@@ -221,7 +221,7 @@ angular
                         case REQUEST_MODE.NEW:
                             $scope.$watch(function () {
                                 return vm.originalConcept;
-                            }, function (newVal) {
+                            }, function () {
                                 vm.filterRelationshipType('STATED_RELATIONSHIP');
                             });
                             requestId = null;
@@ -333,18 +333,16 @@ angular
 
                     if(requestData.concept !== null){
                         var arr = requestData.concept.relationships;
-                        function isRelationshipActive(obj){
+                        var isRelationshipActive = function(obj){
                             var requestItems = requestData.requestItems;
                             for(var i=0;i<requestItems.length;i++){
                                 obj.viewName = obj.type.fsn + " " + obj.target.fsn;
-                                if(requestItems[i].relationshipId !== null
-                                    && obj.active === true
-                                    && obj.characteristicType === requestItems[1].characteristicType){
+                                if(requestItems[i].relationshipId !== null && obj.active === true && obj.characteristicType === requestItems[1].characteristicType){
                                     return true;
                                 }
                             }
                             return false;
-                        }
+                        };
                         vm.relationshipsFilter = arr.filter(function(obj){
                             return isRelationshipActive(obj);
                         });
@@ -915,7 +913,7 @@ angular
 
                     case REQUEST_TYPE.CHANGE_RETIRE_RELATIONSHIP.value:
                         //mainItem = extractItemByRequestType(requestItems, REQUEST_TYPE.CHANGE_RETIRE_RELATIONSHIP);
-                        
+
                         request.relationshipId = mainItem.relationshipId;
                         request.relationshipStatus = mainItem.relationshipStatus;
                         request.refinability = mainItem.refinability;
@@ -1091,7 +1089,7 @@ angular
                     }
                 }
 
-                var isNotValidObj = function(obj){
+                var isNotValidObj = function(){
                     if(angular.isObject(fieldValue)){
                         if(angular.isArray(fieldValue)){
                             if(fieldValue.length === 0){
