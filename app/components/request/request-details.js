@@ -219,6 +219,11 @@ angular
 
                     switch (vm.pageMode) {
                         case REQUEST_MODE.NEW:
+                            $scope.$watch(function () {
+                                return vm.originalConcept;
+                            }, function (newVal) {
+                                vm.filterRelationshipType('STATED_RELATIONSHIP');
+                            });
                             requestId = null;
                             requestType = requestService.identifyRequestType(param);
                             $rootScope.pageTitles = ['crs.request.details.title.new', requestType.langKey];
@@ -251,6 +256,7 @@ angular
                         case REQUEST_MODE.EDIT:
                         case REQUEST_MODE.PREVIEW:
                         case REQUEST_MODE.VIEW:
+
                             requestId = param;
                             //$rootScope.pageTitles = ['crs.request.details.title.edit'];
                             initBreadcrumb(requestId);
@@ -325,32 +331,23 @@ angular
                     // build request
                     vm.request = buildRequestFromRequestData(requestData);
 
-                    // var arr = requestData.concept.relationships;
+                    var arr = requestData.concept.relationships;
 
-                    // function isRelationshipActive(obj){
-                    //     var requestItems = requestData.requestItems;
-                    //     for(var i=0;i<requestItems.length;i++){
-                    //         obj.viewName = obj.type.fsn + " " + obj.target.fsn;
-                    //         if(requestItems[i].relationshipId !== null
-                    //             && obj.active === true
-                    //             && obj.characteristicType === 'STATED_RELATIONSHIP'){
-                    //             if(requestItems[i].relationshipId === obj.relationshipId){
-                    //                 obj.ticked = true;
-                    //             }
-                    //             return true;
-                    //         }
-                    //     }
-                    //     return false;
-                    // }
-                    // vm.relationshipsFilter = arr.filter(function(obj){
-                    //     return isRelationshipActive(obj);
-                    // });
-                    // for(var i=0;i<vm.relationshipsFilter.length;i++){
-                    //     var item = vm.relationshipsFilter[i];
-                    //     if(){
-
-                    //     }
-                    // }
+                    function isRelationshipActive(obj){
+                        var requestItems = requestData.requestItems;
+                        for(var i=0;i<requestItems.length;i++){
+                            obj.viewName = obj.type.fsn + " " + obj.target.fsn;
+                            if(requestItems[i].relationshipId !== null
+                                && obj.active === true
+                                && obj.characteristicType === requestItems[1].characteristicType){
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+                    vm.relationshipsFilter = arr.filter(function(obj){
+                        return isRelationshipActive(obj);
+                    });
                     console.log(vm.relationshipsFilter);
                     for(var i in requestData.requestItems){
                         for(var j in requestData.concept.relationships){
@@ -358,14 +355,6 @@ angular
                             if(requestData.requestItems[i].relationshipId !== null || requestData.requestItems[i].relationshipId !== undefined){
                                 if(requestData.requestItems[i].relationshipId ===  requestData.concept.relationships[j].relationshipId){
                                     requestData.concept.relationships[j].ticked = true;
-
-                                    // function isRelationshipActicve(value){
-                                    //     return (value.active === true && value.characteristicType === 'STATED_RELATIONSHIP');
-                                    // }
-
-                                    // var relationshipsFilter = requestData.concept.relationships.filter(isRelationshipActicve);
-                                    vm.relationshipsFilter = requestData.concept.relationships;
-                                    // console.log(relationshipsFilter);
                                 }
                             }
                         }
@@ -1059,7 +1048,7 @@ angular
                             for (var i = 0; i < concept.relationships.length; i++) {
                                 for(var j = 0; j < request.relationshipId.length; j++){
                                     if (concept.relationships[i].relationshipId === request.relationshipId[j]) {
-                                        concept.relationships[i].active = false;
+                                        concept.relationships[i].active = true;
                                         concept.relationships[i].definitionOfChanges = {
                                             changeId: null,
                                             changeType: REQUEST_TYPE.CHANGE_RETIRE_RELATIONSHIP.value,
@@ -1101,6 +1090,19 @@ angular
                     }
                 }
 
+                var isNotValidObj = function(obj){
+                    if(angular.isObject(fieldValue)){
+                        if(angular.isArray(fieldValue)){
+                            if(fieldValue.length === 0){
+                                return true;
+                            }
+                        }else if(!fieldValue.conceptId){
+                            return true;
+                        }
+                    }
+                    return  false;
+                };
+
                 // validate require fields
                 if (vm.inputMode === REQUEST_INPUT_MODE.SIMPLE) {
                     for (var i = 0; i < vm.requestType.form.fields.length; i++) {
@@ -1111,14 +1113,8 @@ angular
                             (fieldValue === undefined ||
                             fieldValue === null ||
                             (angular.isFunction(fieldValue.trim) && fieldValue.trim() === '' ) ||
-                            angular.isObject(fieldValue))) {
-                            if(angular.isArray(fieldValue)){
-                                if(fieldValue.length === 0){
-                                    error[field.name] = fieldRequiredLangKey;
-                                }
-                            }else if(!fieldValue.conceptId){
-                                error[field.name] = fieldRequiredLangKey;
-                            }
+                            isNotValidObj(fieldValue))) {
+                            error[field.name] = fieldRequiredLangKey;
                         }
                     }
                 }

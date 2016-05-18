@@ -11,7 +11,7 @@ angular
                 scope: {
                     domainAttribute: '=',
                     concept: '=',
-                    conceptStatus: '=',
+                    conceptStatus: '=?',
                     onConceptChanged: '&'
                 },
                 template: [
