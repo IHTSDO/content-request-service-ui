@@ -188,7 +188,6 @@ angular
             };
 
             vm.filterRelationshipType = function(relationshipType, element){
-                console.log(vm.originalConcept);
                 if(vm.pageMode !== REQUEST_MODE.NEW && vm.originalConcept.relationships !== undefined){
                     vm.relationshipsFilter = vm.originalConcept.relationships.filter(function(obj){
                         return (obj.characteristicType === relationshipType && obj.active === true);
@@ -199,7 +198,7 @@ angular
                             var requestItems = vm.requestItems;
                             for(var i=0;i<requestItems.length;i++){
                                 obj.viewName = obj.type.fsn + " " + obj.target.fsn;
-                                if(requestItems[i].relationshipId !== null && obj.active === true && obj.characteristicType === requestItems[1].characteristicType){
+                                if(requestItems[i].relationshipId !== null && obj.active === true && obj.characteristicType === relationshipType){
                                     return true;
                                 }
                             }
@@ -208,7 +207,6 @@ angular
                         vm.relationshipsFilter = arr.filter(function(obj){
                             return isRelationshipActive(obj);
                         });
-                        // console.log(vm.relationshipsFilter);
                         for(var i in vm.requestItems){
                             for(var j in vm.originalConcept.relationships){
                                 vm.originalConcept.relationships[j].viewName = vm.originalConcept.relationships[j].type.fsn + " " + vm.originalConcept.relationships[j].target.fsn;
@@ -219,7 +217,6 @@ angular
                                 }
                             }
                         }
-                        // vm.relationshipsFilter = (requestData.requestItems != null)? $utility.buildDropdownModel([requestData.requestItems],[requestData.requestItems], 'relationshipId') : [];
                         vm.selectedRelationships = vm.requestItems? [vm.requestItems] : [];    
                     }
                 }else{
@@ -228,14 +225,6 @@ angular
                     });
                 }
             };
-
-            // $scope.$watch(function () {
-            //     return vm.concept;
-            // }, function (newVal) {
-            //     if(newVal !== null){
-            //         vm.filterRelationshipType('STATED_RELATIONSHIP');
-            //     }
-            // });
 
             $scope.$watch(function () {
                 return vm.originalConcept;
@@ -1173,7 +1162,6 @@ angular
                 // show loading mask
                 $rootScope.showAppLoading = true;
 
-                //console.log(vm.request);
                 if (vm.inputMode === REQUEST_INPUT_MODE.SIMPLE) {
                     vm.concept = buildConceptFromRequest(vm.request);
                 } else if (vm.inputMode === REQUEST_INPUT_MODE.DIRECT) {
@@ -1181,7 +1169,6 @@ angular
                 }
 
                 requestData = buildRequestData(vm.request, vm.concept);
-                //console.log(requestData);
 
                 requestService.saveRequest(requestData)
                     .then(function () {
@@ -1208,7 +1195,6 @@ angular
                 // show loading mask
                 $rootScope.showAppLoading = true;
 
-                //console.log(vm.request);
                 if (vm.inputMode === REQUEST_INPUT_MODE.SIMPLE) {
                     vm.concept = buildConceptFromRequest(vm.request);
                 } else if (vm.inputMode === REQUEST_INPUT_MODE.DIRECT) {
@@ -1216,7 +1202,6 @@ angular
                 }
 
                 requestData = buildRequestData(vm.request, vm.concept);
-                //console.log(requestData);
 
                 requestService.saveRequest(requestData)
                     .then(function (response) {
