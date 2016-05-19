@@ -17,18 +17,21 @@
                       required
                       error-model="requestVM.error.relationshipId"
                       loading-mask="requestVM.loadingRelationship"></form-control> -->
-        <label translate="crs.request.details.label.relationship" style="color: red"></label>
-        <div
-            isteven-multi-select
-            input-model="requestVM.relationshipsFilter"
-            output-model="requestVM.selectedRelationships"
-            button-label="viewName"
-            item-label="viewName"
-            tick-property="ticked"
-            output-properties="relationshipId"
-            max-labels = "1"
-            style="margin-bottom: 20px;"
-        >
+        <div class="multi-select-element" ng-class="{required:true, 'form-control-error': requestVM.error.relationshipId}">
+          <label translate="crs.request.details.label.relationship" style="color: red"></label>
+          <span ng-if="requestVM.error.topic" translate="crs.request.message.error.fieldRequired" style="color: rgb(169, 68, 66); padding-left: 5px;" class="ng-scope">required</span>
+          <div
+              isteven-multi-select
+              input-model="requestVM.relationshipsFilter"
+              output-model="requestVM.selectedRelationships"
+              button-label="viewName"
+              item-label="viewName"
+              tick-property="ticked"
+              output-properties="relationshipId"
+              max-labels = "1"
+              style="margin-bottom: 20px;"
+          >
+          </div>
         </div>
 
         <form-control type="select"
@@ -48,8 +51,8 @@
         <button id="single-button"class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled"> <span style="margin" translate= "{{(requestVM.request.characteristicType === 'STATED_RELATIONSHIP'?'crs.request.details.label.statedRel':'crs.request.details.label.inferredRel')}}" ></span><span style="margin-left:10px" class="caret"></span>
         </button>
         <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-          <li role="menuitem" ng-click="requestVM.filterRelationshipType('STATED_RELATIONSHIP')" translate='crs.request.details.label.statedRel' ng-model="requestVM.request.characteristicType" uib-btn-radio="'STATED_RELATIONSHIP'" class="filter-relationship"></li>
-          <li role="menuitem" ng-click="requestVM.filterRelationshipType('INFERRED_RELATIONSHIP')" translate='crs.request.details.label.inferredRel' ng-model="requestVM.request.characteristicType" uib-btn-radio="'INFERRED_RELATIONSHIP'" class="filter-relationship"></li>
+          <li role="menuitem" ng-click="requestVM.filterRelationshipType(requestVM.request.characteristicType, 'menuitem')" translate='crs.request.details.label.statedRel' ng-model="requestVM.request.characteristicType" uib-btn-radio="'STATED_RELATIONSHIP'" class="filter-relationship"></li>
+          <li role="menuitem" ng-click="requestVM.filterRelationshipType(requestVM.request.characteristicType, 'menuitem')" translate='crs.request.details.label.inferredRel' ng-model="requestVM.request.characteristicType" uib-btn-radio="'INFERRED_RELATIONSHIP'" class="filter-relationship"></li>
         </ul>
       </div>
     </div>

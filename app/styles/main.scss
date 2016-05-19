@@ -130,6 +130,22 @@ footer {
   }
 }
 
+.multi-select-element {
+  margin-bottom: 20px;
+
+  &.form-control-error {
+    background: #f2dede;
+    .multiSelect {
+      button {
+        background-color: #f2dede !important;
+      }
+      label {
+        color: #444 !important;
+      }
+    }
+  }
+}
+
 .requestStatus {
   &.DRAFT {
     background-color: white;
@@ -532,6 +548,10 @@ ul.batch-statistic.timeline {
 
 .multiSelect {
   margin-bottom: 20px;
+
+  label {
+    color: #444 !important;
+  }
 
   & > button {
     text-align: left;
