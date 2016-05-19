@@ -47,6 +47,10 @@ angular
                 PREFERRED: 'PREFERRED',
                 ACCEPTABLE: 'ACCEPTABLE'
             };
+            var RELATIONSHIP_CHARACTERISTIC_TYPE = {
+                STATED:"STATED_RELATIONSHIP",
+                INFERRED:"INFERRED_RELATIONSHIP"
+            }
             var mode = $routeParams.mode,
                 param = $routeParams.param,
                 inputMode = $routeParams.inputMode,
@@ -238,7 +242,7 @@ angular
                             vm.request = {
                                 id: requestId,
                                 additionalFields: {},
-                                characteristicType: "STATED_RELATIONSHIP", 
+                                characteristicType: null, 
                                 requestHeader: {
                                     status: REQUEST_STATUS.DRAFT.value,
                                     requestDate: new Date().getTime()
@@ -250,6 +254,10 @@ angular
                                 originConcept.definitionOfChanges = buildNewConceptDefinitionOfChanges();
                                 vm.originalConcept = originConcept;
                                 vm.concept = angular.copy(vm.originalConcept);
+                            }
+
+                            if (requestType === REQUEST_TYPE.CHANGE_RETIRE_RELATIONSHIP) {
+                                vm.request.characteristicType = RELATIONSHIP_CHARACTERISTIC_TYPE.STATED;
                             }
 
                             accountService.getAccountInfo().then(function (accountDetails) {
