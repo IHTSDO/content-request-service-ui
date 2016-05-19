@@ -188,11 +188,11 @@ angular
             };
 
             vm.filterRelationshipType = function(relationshipType, element){
-                if(vm.pageMode !== REQUEST_MODE.NEW && vm.originalConcept.relationships !== undefined){
+                if(vm.originalConcept.relationships !== undefined){
                     vm.relationshipsFilter = vm.originalConcept.relationships.filter(function(obj){
                         return (obj.characteristicType === relationshipType && obj.active === true);
                     });
-                    if(element === undefined && relationshipType !== undefined && vm.originalConcept !== null && vm.requestType.value === 'CHANGE_RETIRE_RELATIONSHIP'){
+                    if(vm.pageMode !== REQUEST_MODE.NEW && element === undefined && relationshipType !== undefined && vm.originalConcept !== null && vm.requestType.value === 'CHANGE_RETIRE_RELATIONSHIP'){
                         var arr = vm.originalConcept.relationships;
                         var isRelationshipActive = function(obj){
                             var requestItems = vm.requestItems;
@@ -219,10 +219,6 @@ angular
                         }
                         vm.selectedRelationships = vm.requestItems? [vm.requestItems] : [];    
                     }
-                }else{
-                    vm.relationshipsFilter = vm.originalConcept.relationships.filter(function(obj){
-                        return (obj.characteristicType === relationshipType && obj.active === true);
-                    });
                 }
             };
 
@@ -1141,14 +1137,16 @@ angular
                 return true;
             };
 
-            var saveRequest = function () {
-                function selectedRelationshipsOutput(){
-                    var relIdArr = [];
-                    for(var key in vm.selectedRelationships){
-                        relIdArr.push(vm.selectedRelationships[key].relationshipId);
-                    }
-                    return relIdArr;
+            var selectedRelationshipsOutput = function(){
+                var relIdArr = [];
+                for(var key in vm.selectedRelationships){
+                    relIdArr.push(vm.selectedRelationships[key].relationshipId);
                 }
+                return relIdArr;
+            };
+
+
+            var saveRequest = function () {
                 vm.request.relationshipId = selectedRelationshipsOutput();
                 // requestData
                 var requestData;
@@ -1183,6 +1181,7 @@ angular
             };
 
             var saveAndSubmitRequest = function () {
+                vm.request.relationshipId = selectedRelationshipsOutput();
                 // requestData
                 var requestData;
 
