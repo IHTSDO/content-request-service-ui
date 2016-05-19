@@ -19,7 +19,7 @@
                       loading-mask="requestVM.loadingRelationship"></form-control> -->
         <div class="multi-select-element" ng-class="{required:true, 'form-control-error': requestVM.error.relationshipId}">
           <label translate="crs.request.details.label.relationship" style="color: red"></label>
-          <span ng-if="requestVM.error.topic" translate="crs.request.message.error.fieldRequired" style="color: rgb(169, 68, 66); padding-left: 5px;" class="ng-scope">required</span>
+          <span ng-if="requestVM.error.relationshipId" translate="crs.request.message.error.fieldRequired" style="color: rgb(169, 68, 66); padding-left: 5px;" class="ng-scope">required</span>
           <div
               isteven-multi-select
               input-model="requestVM.relationshipsFilter"
