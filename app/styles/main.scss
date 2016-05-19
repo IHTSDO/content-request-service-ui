@@ -553,6 +553,19 @@ ul.batch-statistic.timeline {
     color: #444 !important;
   }
 
+  .checkboxLayer{
+    width: 100%;
+    .acol{
+      width: 100%;
+      span{
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+
   & > button {
     text-align: left;
     min-height: 30px !important;
@@ -572,7 +585,7 @@ ul.batch-statistic.timeline {
       display: block;
       white-space: nowrap;
       overflow: hidden;
-      width: 100%;
+      width: 94%;
       text-overflow: ellipsis;
       padding: 0;
     }
