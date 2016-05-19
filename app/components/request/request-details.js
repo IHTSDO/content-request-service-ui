@@ -50,7 +50,7 @@ angular
             var RELATIONSHIP_CHARACTERISTIC_TYPE = {
                 STATED:"STATED_RELATIONSHIP",
                 INFERRED:"INFERRED_RELATIONSHIP"
-            }
+            };
             var mode = $routeParams.mode,
                 param = $routeParams.param,
                 inputMode = $routeParams.inputMode,
