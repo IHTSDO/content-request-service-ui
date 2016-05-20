@@ -1054,6 +1054,9 @@ angular
                             break;
 
                         case REQUEST_TYPE.CHANGE_RETIRE_RELATIONSHIP:
+                            // collect selected relationships       
+                            //vm.request.relationshipId = selectedRelationshipsOutput();
+
                             for (var i = 0; i < concept.relationships.length; i++) {
                                 for(var j = 0; j < request.relationshipId.length; j++){
                                     if (concept.relationships[i].relationshipId === request.relationshipId[j]) {
@@ -1077,6 +1080,7 @@ angular
             };
 
             var validateRequest = function (ignoreGeneralFields) {
+                //vm.request.relationshipId = selectedRelationshipsOutput();
                 var field, fieldValue, error = {};
                 var fieldRequiredLangKey = 'crs.request.message.error.fieldRequired',
                     fieldInvalidLangKey = 'crs.request.message.error.fieldInvalid';
@@ -1147,7 +1151,7 @@ angular
 
 
             var saveRequest = function () {
-                vm.request.relationshipId = selectedRelationshipsOutput();
+                // vm.request.relationshipId = selectedRelationshipsOutput();
                 // requestData
                 var requestData;
 
@@ -1437,6 +1441,13 @@ angular
                 }
             });
 
+            $scope.$watch(function () {
+                return vm.selectedRelationships;
+            }, function (newVal) {
+                if (angular.isArray(newVal)) {
+                    vm.request.relationshipId = selectedRelationshipsOutput();
+                }
+            });
 
             vm.cancelEditing = cancelEditing;
             vm.saveRequest = saveRequest;
