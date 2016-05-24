@@ -132,6 +132,7 @@ footer {
 
 .multi-select-element {
   margin-bottom: 20px;
+  width: 100%;
 
   &.form-control-error {
     background: #f2dede;
@@ -570,7 +571,7 @@ ul.batch-statistic.timeline {
     text-align: left;
     min-height: 30px !important;
     border-radius: 0;
-    width: 100%;
+    width: 50%;
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAMAAACelLz8AAAAJ1BMVEVmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmaP/QSjAAAADHRSTlMAAgMJC0uWpKa6wMxMdjkoAAAANUlEQVR4AeXJyQEAERAAsNl7Hf3X6xt0QL6JpZWq30pdvdadme+0PMdzvHm8YThHcT1H7K0BtOMDniZhWOgAAAAASUVORK5CYII=) !important;
     background-size: 10px;
     background-repeat: no-repeat;
@@ -602,4 +603,8 @@ ul.batch-statistic.timeline {
 }
 .filter-relationship:hover{
   background: #ddd;
+}
+.dropdown{
+  margin-left: 57%;
+  margin-top: -55px;
 }
