@@ -25,6 +25,8 @@ module.exports = function (grunt) {
         dist: 'dist'
     };
 
+    var clientVersion = grunt.option('clientVersion');
+
     // Define the configuration for all the tasks
     grunt.initConfig({
 
@@ -108,6 +110,10 @@ module.exports = function (grunt) {
                                 '/app/styles',
                                 connect.static('./app/styles')
                             ),
+                            connect().use(
+                                '/app/lib',
+                                connect.static('./app/lib')
+                            ),
                             connect.static(appConfig.app)
                         ];
                     }
@@ -123,6 +129,10 @@ module.exports = function (grunt) {
                             connect().use(
                                 '/bower_components',
                                 connect.static('./bower_components')
+                            ),
+                            connect().use(
+                                '/app/lib',
+                                connect.static('./app/lib')
                             ),
                             connect.static(appConfig.app)
                         ];
@@ -470,7 +480,8 @@ module.exports = function (grunt) {
                             'layout/{,*/}*.html',
                             'images/{,*/}*.{webp}',
                             'fonts/{,*/}*.*',
-                            'translations/{,*/}*.*'
+                            'translations/{,*/}*.*',
+                            'lib/{,*/}*.*'
                         ]
                     },
                     {
@@ -522,10 +533,23 @@ module.exports = function (grunt) {
                 configFile: 'test/karma.conf.js',
                 singleRun: true
             }
+        },
+
+        // set client version
+        modify_json: {
+            client: {
+                options: {
+                    fields: {
+                        version: clientVersion
+                    }
+                },
+                src: ['app/config.json']
+            }
         }
     });
 
     grunt.loadNpmTasks('grunt-google-translate');
+    grunt.loadNpmTasks('grunt-modify-json');
 
     grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
         if (target === 'dist') {
@@ -558,6 +582,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', [
         'clean:dist',
+        'modify_json',
         'wiredep',
         'useminPrepare',
         'concurrent:dist',

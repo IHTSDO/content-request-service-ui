@@ -90,13 +90,21 @@ angular
                 });*/
             };
 
+
+            var getServerVersion = function () {
+                var SERVER_VERSION_ENDPOINT = 'common/version';
+
+                return sendGet(SERVER_VERSION_ENDPOINT);
+            };
+
             return {
                 sendRequest: sendRequest,
                 sendGet: sendGet,
                 sendPut: sendPut,
                 sendPost: sendPost,
                 sendDelete: sendDelete,
-                sendUpload: sendUpload
+                sendUpload: sendUpload,
+                getServerVersion: getServerVersion
             };
         }
     ]);

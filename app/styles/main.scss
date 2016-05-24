@@ -130,6 +130,23 @@ footer {
   }
 }
 
+.multi-select-element {
+  margin-bottom: 20px;
+  width: 100%;
+
+  &.form-control-error {
+    background: #f2dede;
+    .multiSelect {
+      button {
+        background-color: #f2dede !important;
+      }
+      label {
+        color: #444 !important;
+      }
+    }
+  }
+}
+
 .requestStatus {
   &.DRAFT {
     background-color: white;
@@ -528,4 +545,66 @@ ul.batch-statistic.timeline {
 .promoted-check-box {
   color: #9B9B9B;
   padding-top: 15px;
+}
+
+.multiSelect {
+  margin-bottom: 20px;
+
+  label {
+    color: #444 !important;
+  }
+
+  .checkboxLayer{
+    width: 100%;
+    .acol{
+      width: 100%;
+      span{
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+
+  & > button {
+    text-align: left;
+    min-height: 30px !important;
+    border-radius: 0;
+    width: 50%;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAMAAACelLz8AAAAJ1BMVEVmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmaP/QSjAAAADHRSTlMAAgMJC0uWpKa6wMxMdjkoAAAANUlEQVR4AeXJyQEAERAAsNl7Hf3X6xt0QL6JpZWq30pdvdadme+0PMdzvHm8YThHcT1H7K0BtOMDniZhWOgAAAAASUVORK5CYII=) !important;
+    background-size: 10px;
+    background-repeat: no-repeat;
+    background-position: 100% center;
+    background-color: #F9F9F9;
+    outline: none;
+    cursor: default;
+    box-shadow: inset 0 -1px 0 #ddd;
+    padding: 0;
+
+    .buttonLabel {
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      width: 94%;
+      text-overflow: ellipsis;
+      padding: 0;
+    }
+
+    .caret{
+      display: none;
+    }
+  }
+}
+
+.filter-relationship{
+  padding: 0 30px 0 10px;
+  cursor: pointer;
+}
+.filter-relationship:hover{
+  background: #ddd;
+}
+.dropdown{
+  margin-left: 57%;
+  margin-top: -55px;
 }

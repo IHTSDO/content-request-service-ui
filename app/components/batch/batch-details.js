@@ -66,6 +66,17 @@ angular
                 $location.path('requests/edit/' + requestId).search({kb:true});
             };
 
+            var removeBatchRequest = function (batchId) {
+                
+                if (window.confirm('Are you sure you want to remove this entire batch request?')) {
+                    batchService.removeBatchRequest(batchId).then(function(){
+                        $location.path('/dashboard/batches').search();
+                        window.alert('This entire batch request has been removed successfully !');
+                    });
+                }
+
+            };
+
             var requestTableParams = new ngTableParams({
                     page: 1,
                     count: 10,
@@ -107,6 +118,7 @@ angular
             vm.tableParams = requestTableParams;
             vm.batchSummary = null;
             vm.editRequest = editRequest;
+            vm.removeBatchRequest = removeBatchRequest;
 
             initView();
         }

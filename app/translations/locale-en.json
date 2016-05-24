@@ -103,7 +103,7 @@
                     "conceptPT": "Preferred Term",
                     "proposedSynonym": "Synonym(s)",
                     "proposedDefinition": "Definition",
-                    "reasonForChange": "Reason of Changes",
+                    "reasonForChange": "Reason for Request",
                     "reference": "Reference",
                     "description": "Description",
                     "descriptionId": "Description ID",
@@ -112,6 +112,8 @@
                     "relationshipGroup": "Relationship Group",
                     "relationshipId": "Relationship ID",
                     "relationship": "Relationship",
+                    "inferredRel": "Show Inferred Relationship",
+                    "statedRel": "Show Stated Relationship",
                     "historyAttributeValue": "History Attribute Value",
                     "notes": "Notes",
                     "relationshipType": "Relationship Type",
@@ -225,6 +227,7 @@
                 "requestAppealed": "Request has been appealed successfully",
                 "requestWithdrawn": "Request has been withdrawn successfully",
                 "requestClarification": "Request has been pended to clarification successfully",
+                "requestRemoved": "Requests have been removed successfully",
 
                 "error": {
                     "requestTypeRequired": "Please select request type",
@@ -307,6 +310,9 @@
                         "approved": "Approved Requests"
                     }
                 }
+            },
+            "button": {
+                "delete": "Delete Batch"
             },
             "message": {
                 "listLoading": "Loading batches...",

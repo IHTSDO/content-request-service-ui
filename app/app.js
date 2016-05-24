@@ -26,6 +26,7 @@ angular
         'ui.tree',
         'ngFileUpload',
         'textAngular',
+        'isteven-multi-select',
 
         // layouts
 
@@ -92,7 +93,8 @@ angular
         '$location',
         'configService',
         'accountService',
-        function ($rootScope, $location, configService, accountService) {
+        'crsService',
+        function ($rootScope, $location, configService, accountService, crsService) {
             var config = configService.getConfig();
 
             $rootScope.showAppLoading = false;
@@ -100,6 +102,14 @@ angular
             $rootScope.pageTitles = [];
 
             $rootScope.link = (config && config.link)?config.link: {};
+            $rootScope.clientVersion = config.version;
+
+
+            $rootScope.clientVersion = config.version;
+
+            crsService.getServerVersion().then(function (serverVersion) {
+                $rootScope.serverVersion = serverVersion;
+            });
 
             if (!accountService.isCredentialChecked()) {
                 $rootScope.showSplash = true;
