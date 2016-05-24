@@ -611,3 +611,9 @@ ul.batch-statistic.timeline {
     min-width: 197px;
   }
 }
+.modal-body{
+  textarea{
+    resize: vertical !important;
+    max-height: none;
+  }
+}
