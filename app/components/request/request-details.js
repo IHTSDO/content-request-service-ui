@@ -227,6 +227,7 @@ angular
             }, function (newVal) {
                 if(newVal !== null){
                     vm.filterRelationshipType(vm.request.characteristicType);
+                    vm.isShowFilter = true;
                 }
             });
 
@@ -578,7 +579,8 @@ angular
                             changeType: REQUEST_TYPE.CHANGE_RETIRE_DESCRIPTION.value,
                             changed: true,
                             descriptionStatus: descriptionStatus,
-                            proposedDescription: proposedTerm
+                            proposedDescription: proposedTerm,
+                            proposedCaseSignificance: proposedCaseSignificance
                         };
                     }
 
@@ -817,7 +819,7 @@ angular
                         item.currentDescription = changedTarget.term;
                         item.conceptDescription = changedTarget.term;
                         item.proposedDescription = definitionOfChanges.proposedDescription || changedTarget.term;
-                        item.proposedCaseSignificance = changedTarget.caseSignificance;
+                        item.proposedCaseSignificance = definitionOfChanges.proposedCaseSignificance;
                         item.proposedDescriptionStatus = definitionOfChanges.descriptionStatus;
                         break;
 
@@ -959,6 +961,7 @@ angular
 
                 if (concept.definitionOfChanges.changeType === REQUEST_TYPE.CHANGE_RETIRE_CONCEPT.value) {
                     angular.forEach(concept.descriptions, function (description) {
+
                         if (description.definitionOfChanges && description.definitionOfChanges.changed) {
                             requestDetails.requestItems.push(buildRequestWorkItem(concept, description.definitionOfChanges, description));
                         }
