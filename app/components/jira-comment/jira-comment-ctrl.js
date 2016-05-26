@@ -7,6 +7,7 @@ angular
         'jiraCommentService',
         function ($scope, jiraCommentService) {
             var vm = this;
+            var isInternal = false;
 
             var initView = function () {
                 loadComments();
@@ -21,9 +22,14 @@ angular
             };
 
             var postComment = function () {
+                if(vm.internalComment){
+                    isInternal = true;
+                }else{
+                    isInternal = false;
+                }
                 if (vm.message && vm.message.trim()) {
                     vm.postingComment = true;
-                    jiraCommentService.postComments($scope.request.id, vm.message).then(function () {
+                    jiraCommentService.postComments($scope.request.id, vm.message, isInternal).then(function () {
                         vm.message = null;
                         vm.postingComment = false;
                         loadComments();

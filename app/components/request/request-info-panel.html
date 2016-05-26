@@ -140,7 +140,7 @@
                 <span class="button-link" translate="crs.request.details.info.button.acceptAndAssign"></span>
             </button>
             <button ng-if="requestVM.pageMode.value === 'preview' && requestVM.request.requestHeader.status === 'ACCEPTED'"
-                    ng-disabled="requestVM.request.requestHeader.assignedProject"
+                    ng-disabled="requestVM.request.requestHeader.assignee"
                     class="btn btn-default blue darken-1 promote" style="text-transform: none"
                     ng-click="requestVM.assignRequest()">
                 <span class="md md-content-paste blue darken-2 iconbase"></span>
