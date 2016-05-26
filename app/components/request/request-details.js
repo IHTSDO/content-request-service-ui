@@ -187,8 +187,10 @@ angular
                 };
             };
 
+            vm.reFilterRelationship = true;
+
             vm.filterRelationshipType = function(relationshipType, element){
-                if(vm.originalConcept.relationships !== undefined){
+                if(vm.originalConcept.relationships !== undefined && vm.reFilterRelationship){
                     vm.relationshipsFilter = vm.originalConcept.relationships.filter(function(obj){
                         return (obj.characteristicType === relationshipType && obj.active === true);
                     });
@@ -227,6 +229,7 @@ angular
             }, function (newVal) {
                 if(newVal !== null){
                     vm.filterRelationshipType(vm.request.characteristicType);
+                    vm.reFilterRelationship = true;
                     vm.isShowFilter = true;
                 }
             });
@@ -1437,6 +1440,7 @@ angular
             }, function (newVal) {
                 if (newVal === REQUEST_INPUT_MODE.DIRECT) {
                     vm.inputModePage = 'components/request/request-details-edit-panel.html';
+                    vm.reFilterRelationship = false;
                 } else if (newVal === REQUEST_INPUT_MODE.SIMPLE) {
                     vm.inputModePage = vm.requestType.form.template;
                 } else {
