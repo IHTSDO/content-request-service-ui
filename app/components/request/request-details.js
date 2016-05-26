@@ -179,6 +179,14 @@ angular
                 };
             };
 
+            var buildOtherRequestDefinitionOfChanges = function (changeId) {
+                return {
+                    changeId: (changeId)?changeId:null,
+                    changeType: REQUEST_TYPE.OTHER.value,
+                    changed: true
+                };
+            };
+
             var buildChangeConceptDefinitionOfChanges = function () {
                 return {
                     changeId: null,
@@ -284,6 +292,12 @@ angular
                                 vm.request.characteristicType = RELATIONSHIP_CHARACTERISTIC_TYPE.STATED;
                             }
 
+                            if (requestType === REQUEST_TYPE.OTHER) {
+                                vm.request.definitionOfChanges = buildOtherRequestDefinitionOfChanges();
+                                vm.disableDirectMode=true;
+                            }
+
+
                             accountService.getAccountInfo().then(function (accountDetails) {
                                 vm.request.requestHeader.ogirinatorId = accountDetails.login;
                             });
@@ -324,6 +338,7 @@ angular
 
                                     permanentlyDisableSimpleMode = (vm.inputMode === REQUEST_INPUT_MODE.DIRECT);
                                     vm.disableSimpleMode = (vm.inputMode === REQUEST_INPUT_MODE.DIRECT);
+                                    vm.disableDirectMode = (requestType === REQUEST_TYPE.OTHER);
 
                                     notificationService.sendMessage('crs.request.message.requestLoaded', 5000);
                                 } else {
@@ -378,7 +393,11 @@ angular
                         vm.originalConcept = originConcept;
 
                         //return null;
-                    } else {
+                    } else if (requestData.requestType === REQUEST_TYPE.OTHER.value) {
+                        vm.originalConcept = null;
+                        vm.request.definitionOfChanges=buildOtherRequestDefinitionOfChanges();
+                    }
+                    else {
                         vm.originalConcept = {
                             conceptId: requestData.concept.conceptId,
                             fsn: requestData.concept.fsn
@@ -929,11 +948,31 @@ angular
                         request.refinability = mainItem.refinability;
                         request.characteristicType = mainItem.characteristicType;
 
+                        break;                    
+
+                    case REQUEST_TYPE.OTHER.value:
+                        //mainItem = extractItemByRequestType(requestItems, REQUEST_TYPE.CHANGE_RETIRE_RELATIONSHIP);
+                        request.requestDescription = mainItem.requestDescription;
+
                         break;
                 }
 
                 return request;
 
+            };
+
+            var buildOtherRequestWorkItem = function(request){
+                var item = {};
+                if(request.definitionOfChanges){
+                    item.requestDescription = request.requestDescription                  
+                    item.requestType = request.definitionOfChanges.changeType;
+                    item.id = request.definitionOfChanges.changeId;
+                    item.topic = request.additionalFields.topic;
+                    item.notes = request.additionalFields.notes;
+                    item.reference = request.additionalFields.reference;
+                    item.reasonForChange = request.additionalFields.reasonForChange;
+                }
+                return item;
             };
 
             var buildRequestData = function (request, concept) {
@@ -950,6 +989,12 @@ angular
 
                 //buildRequestAdditionalFields(requestDetails, concept);
                 requestDetails.additionalFields = request.additionalFields;
+
+                if(vm.requestType === REQUEST_TYPE.OTHER){
+                   requestDetails.requestItems.push(buildOtherRequestWorkItem(request));
+                   return requestDetails;
+                }
+
                 requestDetails.fsn = concept.fsn;
 
                 // check concept changes
@@ -1088,11 +1133,13 @@ angular
                 notificationService.clear();
 
                 // validate concept
-                if (vm.originalConcept === undefined || vm.originalConcept === null ||
-                    (vm.originalConcept && !vm.originalConcept.moduleId && !vm.originalConcept.conceptId && !vm.originalConcept.fsn)) {
-                    error.concept = fieldRequiredLangKey;
-                } else if (vm.originalConcept && !vm.originalConcept.moduleId && !vm.originalConcept.conceptId && vm.originalConcept.fsn) {
-                    error.concept = fieldInvalidLangKey;
+                if(vm.requestType !== REQUEST_TYPE.OTHER){
+                    if (vm.originalConcept === undefined || vm.originalConcept === null ||
+                        (vm.originalConcept && !vm.originalConcept.moduleId && !vm.originalConcept.conceptId && !vm.originalConcept.fsn)) {
+                        error.concept = fieldRequiredLangKey;
+                    } else if (vm.originalConcept && !vm.originalConcept.moduleId && !vm.originalConcept.conceptId && vm.originalConcept.fsn) {
+                        error.concept = fieldInvalidLangKey;
+                    }
                 }
 
                 // test general fields

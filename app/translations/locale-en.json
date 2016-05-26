@@ -125,7 +125,8 @@
                     "proposedCaseSignificance": "New Case Significance",
                     "descriptionStatus": "New Description Status",
                     "relationshipStatus": "Relationship Status",
-                    "isPt": "Description is PT"
+                    "isPt": "Description is PT",
+                    "requestDescription": "Description Of Request"
 
                 },
                 "tip": {
@@ -244,7 +245,8 @@
                 "newRelationship": "New Relationship",
                 "changeRetireConcept": "Change or Retire Concept",
                 "changeRetireDescription": "Change or Retire Description",
-                "changeRetireRelationship": "Change or Retire Relationship"
+                "changeRetireRelationship": "Change or Retire Relationship",
+                "other": "Other"
             },
             "inputMode": {
                 "simple": "Simple",
