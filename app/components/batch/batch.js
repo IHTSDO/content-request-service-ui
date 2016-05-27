@@ -67,6 +67,10 @@ angular
         CHANGE_RETIRE_RELATIONSHIP: {
             value: 'CHANGE_RETIRE_RELATIONSHIP',
             previewTable: 'components/batch/batch-preview-change-retire-relationship-table.html'
+        },
+        OTHER: {
+            value: 'OTHER',
+            previewTable: 'components/batch/batch-preview-other-table.html'
         }
     })
     .config(function ($routeProvider) {

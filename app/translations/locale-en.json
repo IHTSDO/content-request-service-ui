@@ -78,7 +78,8 @@
                     "project": "Project",
                     "validationResult": "Validation Result",
                     "originator": "Created By",
-                    "createdDate": "Created On"
+                    "createdDate": "Created On",
+                    "requestDescription": "Descripion of Request"
                 }
             },
             "details": {
@@ -125,7 +126,8 @@
                     "proposedCaseSignificance": "New Case Significance",
                     "descriptionStatus": "New Description Status",
                     "relationshipStatus": "Relationship Status",
-                    "isPt": "Description is PT"
+                    "isPt": "Description is PT",
+                    "requestDescription": "Description Of Request"
 
                 },
                 "tip": {
@@ -244,7 +246,8 @@
                 "newRelationship": "New Relationship",
                 "changeRetireConcept": "Change or Retire Concept",
                 "changeRetireDescription": "Change or Retire Description",
-                "changeRetireRelationship": "Change or Retire Relationship"
+                "changeRetireRelationship": "Change or Retire Relationship",
+                "other": "Other"
             },
             "inputMode": {
                 "simple": "Simple",
@@ -404,7 +407,8 @@
                         "newRelationshipStatus": "Proposed New Relationship Status",
                         "validationResult": "Validation Result",
                         "originator": "Created By",
-                        "createdDate": "Created On"
+                        "createdDate": "Created On",
+                        "requestDescription": "Description of Request"
                     }
                 }
             }

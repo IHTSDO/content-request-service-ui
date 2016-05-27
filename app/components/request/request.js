@@ -7,7 +7,7 @@ angular
         SIMPLE: {
             value: 'SIMPLE',
             langKey: 'crs.request.inputMode.simple',
-            requestTypes: ['NEW_CONCEPT', 'NEW_DESCRIPTION', 'NEW_RELATIONSHIP', 'CHANGE_RETIRE_CONCEPT', 'CHANGE_RETIRE_DESCRIPTION', 'CHANGE_RETIRE_RELATIONSHIP']
+            requestTypes: ['NEW_CONCEPT', 'NEW_DESCRIPTION', 'NEW_RELATIONSHIP', 'CHANGE_RETIRE_CONCEPT', 'CHANGE_RETIRE_DESCRIPTION', 'CHANGE_RETIRE_RELATIONSHIP','OTHER']
         },
         DIRECT: {
             value: 'DIRECT',
@@ -100,6 +100,17 @@ angular
                     {"name": "relationshipId", "required": true},
                     {"name": "refinability"},
                     {"name": "relationshipStatus"}
+                ]
+            }
+        },
+        OTHER: {
+            value: 'OTHER',
+            langKey: 'crs.request.requestType.other',
+            form: {
+                template: 'components/request/request-other-form.html',
+                "fields": [
+                    {"name": "requestorInternalId"},
+                    {"name": "requestDescription", "required": true}
                 ]
             }
         }
