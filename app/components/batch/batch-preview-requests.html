@@ -57,6 +57,11 @@
                             CHANGE/RETIRE RELATIONSHIP ({{batchPreviewVM.selectedFile.requestTypeNumber.CHANGE_RETIRE_RELATIONSHIP || 0}})
                         </a>
                     </li>
+                    <li role="presentation" ng-class="{active: batchPreviewVM.previewTab.value === 'OTHER'}">
+                        <a ng-click="batchPreviewVM.loadPreviewData('OTHER', true)" aria-controls="home" role="tab" data-toggle="tab">
+                            OTHER ({{batchPreviewVM.selectedFile.requestTypeNumber.OTHER || 0}})
+                        </a>
+                    </li>
                 </ul>
                 <!-- Tab panes -->
                 <div class="tab-content col-md-12 no-padding ">

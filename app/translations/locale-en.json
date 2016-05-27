@@ -78,7 +78,8 @@
                     "project": "Project",
                     "validationResult": "Validation Result",
                     "originator": "Created By",
-                    "createdDate": "Created On"
+                    "createdDate": "Created On",
+                    "requestDescription": "Descripion of Request"
                 }
             },
             "details": {
@@ -406,7 +407,8 @@
                         "newRelationshipStatus": "Proposed New Relationship Status",
                         "validationResult": "Validation Result",
                         "originator": "Created By",
-                        "createdDate": "Created On"
+                        "createdDate": "Created On",
+                        "requestDescription": "Description of Request"
                     }
                 }
             }
