@@ -295,7 +295,7 @@ footer {
 
 .batch-preview-tabs {
   li {
-    width: 16.66666667% !important;
+    /*width: 16.66666667% !important;*/
 
     a {
       border-radius: 0;
@@ -607,6 +607,7 @@ ul.batch-statistic.timeline {
 .other-type{
   textarea{
     resize: vertical !important;
-    max-height: 185px;
+    min-height: 185px !important;
+    max-height: 100%;
   }
 }
