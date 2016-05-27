@@ -28,7 +28,7 @@ angular
         REQUEST_STATUS_CHANGE_REASON_MISSING: {code: 10114, message: "Missing Status Reason"}
     })
     .value('HTTP_ERROR_DEF', {
-        INTERNAL_SERVER_ERROR: {code: 500, message: 'Internal server error'},
+        INTERNAL_SERVER_ERROR: {code: 500, message: 'A server error occurred. Please contact techsupport@ihtsdo.org'},
         UNAUTHORIZED: {code: 401, message: 'Unathorized'},
         FORBIDDEN: {code: 403, message: 'Forbidden'}
     });

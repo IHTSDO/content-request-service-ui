@@ -39,7 +39,7 @@ angular
             var identifyHttpErrorObject = function (httpErrorCode) {
                 var UNKNOWN_ERROR = {
                     code: httpErrorCode,
-                    message: 'Internal server error.'
+                    message: 'A server error occurred. Please contact techsupport@ihtsdo.org'
                 };
 
                 for (var httpErrorKey in HTTP_ERROR_DEF) {
