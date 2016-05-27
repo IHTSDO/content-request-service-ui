@@ -969,7 +969,7 @@ angular
             var buildOtherRequestWorkItem = function(request){
                 var item = {};
                 if(request.definitionOfChanges){
-                    item.requestDescription = request.requestDescription                  
+                    item.requestDescription = request.requestDescription;                
                     item.requestType = request.definitionOfChanges.changeType;
                     item.id = request.definitionOfChanges.changeId;
                     item.topic = request.additionalFields.topic;
