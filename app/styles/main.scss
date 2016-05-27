@@ -603,3 +603,10 @@ ul.batch-statistic.timeline {
 .filter-relationship:hover{
   background: #ddd;
 }
+
+.other-type{
+  textarea{
+    resize: vertical !important;
+    max-height: 185px;
+  }
+}
