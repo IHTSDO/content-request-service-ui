@@ -43,7 +43,7 @@ angular.module('conceptRequestServiceApp.request')
                 $uibModalInstance.dismiss('cancel');
             };
 
-            var assignRequests = function() {
+            var assignRequestsToStaff = function() {
                 //console.log(vm.selectedProject);
                 if (vm.assignee) {
                     $uibModalInstance.close({
@@ -54,7 +54,7 @@ angular.module('conceptRequestServiceApp.request')
                 }
             };
 
-            vm.assignRequests = assignRequests;
+            vm.assignRequestsToStaff = assignRequestsToStaff;
             vm.closeModal = closeModal;
             vm.staffs = staffs;
             vm.assignee = null;

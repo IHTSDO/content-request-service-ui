@@ -141,7 +141,7 @@ angular
 
                 modalInstance.result.then(function (rs) {
                     notificationService.sendMessage('Assigning requests');
-                    requestService.assignRequests(selectedRequestIds, rs.project.key, ((rs.assignee)?rs.assignee.key:null), rs.summary).then(function () {
+                    requestService.assignSelectedRequestsToStaff(selectedRequestIds, ((rs.assignee)?rs.assignee.key:null)).then(function () {
                         notificationService.sendMessage('Request assigned successfully', 5000);
                         vm.selectedRequests = {checked: false, items: {}, requests: {}};
                         requestTableParams.reload();

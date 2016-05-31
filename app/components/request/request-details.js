@@ -1397,17 +1397,7 @@ angular
                 var modalInstance = openAssignRequestToStaffModal();
 
                 modalInstance.result.then(function(rs) {
-                    // changeRequestStatus(vm.request.id, REQUEST_STATUS.ACCEPTED)
-                    //     .then(function() {
-                            requestService.assignRequests([vm.request.id], null, ((rs.assignee) ? rs.assignee.key : null));
-                        // }, function(e) {
-                        //     showErrorMessage(e.message);
-                        //     $q.reject(e);
-                        // })
-                        // .then(function() {
-                        //     notificationService.sendMessage('Request accepted and assigned successfully', 5000);
-                        //     $location.path(prevPage).search({});
-                        // });
+                    requestService.assignRequestsToStaff([vm.request.id], ((rs.assignee) ? rs.assignee.key : null));
                 });
             };
 
