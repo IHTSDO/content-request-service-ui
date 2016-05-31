@@ -1,0 +1,39 @@
+<div id="assignRequetToStaffModal">
+
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="modal.closeModal()">&times;</button>
+        <h4 class="modal-title">{{'crs.request.assignModal.assignToStaffTitle' | translate}}</h4>
+    </div>
+
+    <div class="modal-body">
+        <div class="col-md-12">
+            <form class="form-floating">
+                <div class="form-group">
+                    <form-control type="author"
+                                  model="modal.assignee"
+                                  label="crs.request.assignModal.assignee.label"
+                                  author-list="modal.staffs"
+                                  author-status="modal.authorStatus"
+                                  required></form-control>
+                    <br/>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-12 alert alert-success" ng-show="modal.msgSuccess" >{{modal.msgSuccess | translate}}</div>
+        <div class="col-md-12 alert alert-danger" ng-show="modal.msgError" >{{modal.msgError | translate}}</div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="col-md-6">
+            <button type="button" ng-disabled="disabled" class="col-md-12 btn btn-info no-margin "
+                    ng-click="modal.assignRequests()">{{'crs.request.assignModal.button.assignRequest' | translate}}
+            </button>
+        </div>
+        <div class="col-md-6">
+            <button type="button" ng-disabled="disabled" class=" col-md-12 btn btn-danger no-margin "
+                    ng-click="modal.closeModal()">{{'crs.request.assignModal.button.cancel' | translate}}
+            </button>
+        </div>
+    </div>
+</div>

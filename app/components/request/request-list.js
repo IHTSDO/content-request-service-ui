@@ -11,7 +11,8 @@ angular
         'requestService',
         'notificationService',
         'accountService',
-        function ($filter, $sce, crsJiraService, ngTableParams, requestService, notificationService, accountService) {
+        'jiraService',
+        function ($filter, $sce, crsJiraService, ngTableParams, requestService, notificationService, accountService, jiraService) {
             var vm = this;
 
             var initView = function () {
@@ -35,8 +36,10 @@ angular
             };
 
             var loadAuthors = function () {
+                var jiraConfig = jiraService.getJiraConfig();
+                var groupName = jiraConfig['author-group'];
                 vm.loadingAuthors = true;
-                return crsJiraService.getAuthorUsers(0, 50, true, []).then(function (users) {
+                return crsJiraService.getAuthorUsers(0, 50, true, [], groupName).then(function (users) {
                     vm.authors = users;
 
                     return users;

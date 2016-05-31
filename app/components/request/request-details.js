@@ -26,13 +26,14 @@ angular
         'CONCEPT_EDIT_EVENT',
         'REQUEST_STATUS',
         'REQUEST_INPUT_MODE',
-        function ($scope, $rootScope, $routeParams, $location, $anchorScroll, $uibModal, $sce, $q, requestService, notificationService, requestMetadataService, objectService, snowowlService, snowowlMetadataService, crsJiraService, scaService, accountService, REQUEST_METADATA_KEY, REQUEST_TYPE, CONCEPT_EDIT_EVENT, REQUEST_STATUS, REQUEST_INPUT_MODE) {
+        'jiraService',
+        function($scope, $rootScope, $routeParams, $location, $anchorScroll, $uibModal, $sce, $q, requestService, notificationService, requestMetadataService, objectService, snowowlService, snowowlMetadataService, crsJiraService, scaService, accountService, REQUEST_METADATA_KEY, REQUEST_TYPE, CONCEPT_EDIT_EVENT, REQUEST_STATUS, REQUEST_INPUT_MODE, jiraService) {
             var vm = this;
             var REQUEST_MODE = {
-                NEW: {value: 'new', langKey: 'crs.request.requestMode.newRequest'},
-                EDIT: {value: 'edit', langKey: 'crs.request.requestMode.editRequest'},
-                PREVIEW: {value: 'preview', langKey: 'crs.request.requestMode.previewRequest'},
-                VIEW: {value: 'view', langKey: 'crs.request.requestMode.viewRequest'}
+                NEW: { value: 'new', langKey: 'crs.request.requestMode.newRequest' },
+                EDIT: { value: 'edit', langKey: 'crs.request.requestMode.editRequest' },
+                PREVIEW: { value: 'preview', langKey: 'crs.request.requestMode.previewRequest' },
+                VIEW: { value: 'view', langKey: 'crs.request.requestMode.viewRequest' }
             };
             var DESCRIPTION_TYPE = {
                 FSN: 'FSN',
@@ -48,8 +49,8 @@ angular
                 ACCEPTABLE: 'ACCEPTABLE'
             };
             var RELATIONSHIP_CHARACTERISTIC_TYPE = {
-                STATED:"STATED_RELATIONSHIP",
-                INFERRED:"INFERRED_RELATIONSHIP"
+                STATED: "STATED_RELATIONSHIP",
+                INFERRED: "INFERRED_RELATIONSHIP"
             };
             var mode = $routeParams.mode,
                 param = $routeParams.param,
@@ -63,7 +64,7 @@ angular
 
             var permanentlyDisableSimpleMode = false;
 
-            var identifyPageMode = function (pm) {
+            var identifyPageMode = function(pm) {
                 for (var requestModeKey in REQUEST_MODE) {
                     if (REQUEST_MODE.hasOwnProperty(requestModeKey) &&
                         REQUEST_MODE[requestModeKey].value === pm) {
@@ -74,7 +75,7 @@ angular
                 return null;
             };
 
-            var identifyInputMode = function (im) {
+            var identifyInputMode = function(im) {
                 if (im !== undefined && im !== null) {
                     for (var inputModeKey in REQUEST_INPUT_MODE) {
                         if (REQUEST_INPUT_MODE.hasOwnProperty(inputModeKey) &&
@@ -87,7 +88,7 @@ angular
                 return null;
             };
 
-            var isValidViewParams = function () {
+            var isValidViewParams = function() {
                 var pageMode,
                     isValidPageMode = false,
                     isValidParam = false,
@@ -98,8 +99,8 @@ angular
                 isValidPageMode = (pageMode !== undefined && pageMode !== null);
 
                 // check valid param
-                switch(pageMode) {
-                    case  REQUEST_MODE.NEW:
+                switch (pageMode) {
+                    case REQUEST_MODE.NEW:
                         isValidParam = (requestService.identifyRequestType(param) !== null);
                         isValidInputMode = (identifyInputMode(inputMode) !== null);
                         break;
@@ -118,11 +119,11 @@ angular
                 vm.msgError = null;
             };*/
 
-            var hideSuccessMessage = function () {
+            var hideSuccessMessage = function() {
                 vm.msgSuccess = null;
             };
 
-            var showErrorMessage = function (msg) {
+            var showErrorMessage = function(msg) {
                 hideSuccessMessage();
                 vm.msgError = msg;
 
@@ -135,27 +136,42 @@ angular
                 $window.scrollTop = 0;
             };*/
 
-            var loadProjects = function () {
+            var loadProjects = function() {
                 vm.loadingProjects = true;
-                scaService.getProjects().then(function (response) {
+                scaService.getProjects().then(function(response) {
                     vm.projects = response;
-                }).finally(function () {
+                }).finally(function() {
                     vm.loadingProjects = false;
                 });
             };
 
-            var loadAuthors = function () {
+            var loadAuthors = function() {
+                var jiraConfig = jiraService.getJiraConfig();
+                var groupName = jiraConfig['author-group'];
                 vm.loadingAuthors = true;
-                return crsJiraService.getAuthorUsers(0, 50, true, []).then(function (users) {
+                return crsJiraService.getAuthorUsers(0, 50, true, [], groupName).then(function(users) {
                     vm.authors = users;
 
                     return users;
-                }).finally(function () {
+                }).finally(function() {
                     vm.loadingAuthors = false;
                 });
             };
 
-            var getAuthorName = function (authorKey) {
+            var loadStaff = function() {
+                var jiraConfig = jiraService.getJiraConfig();
+                var groupName = jiraConfig['staff-group'];
+                vm.loadingAuthors = true;
+                return crsJiraService.getAuthorUsers(0, 50, true, [], groupName).then(function(users) {
+                    vm.staffs = users;
+
+                    return users;
+                }).finally(function() {
+                    vm.loadingAuthors = false;
+                });
+            };
+
+            var getAuthorName = function(authorKey) {
                 if (!vm.authors || vm.authors.length === 0) {
                     return authorKey;
                 } else {
@@ -163,31 +179,47 @@ angular
                         if (vm.authors[i].key === authorKey) {
                             //return vm.authors[i].displayName;
                             return $sce.trustAsHtml([
-                                    '<img style="padding-bottom:2px" src="' + vm.authors[i].avatarUrls['16x16'] + '"/>',
-                                    '<span style="vertical-align:middle">&nbsp;' + vm.authors[i].displayName + '</span>'
+                                '<img style="padding-bottom:2px" src="' + vm.authors[i].avatarUrls['16x16'] + '"/>',
+                                '<span style="vertical-align:middle">&nbsp;' + vm.authors[i].displayName + '</span>'
                             ].join(''));
                         }
                     }
                 }
             };
 
-            var buildNewConceptDefinitionOfChanges = function (changeId) {
+            var getStaffName = function(authorKey) {
+                if (!vm.staffs || vm.staffs.length === 0) {
+                    return authorKey;
+                } else {
+                    for (var i = 0; i < vm.staffs.length; i++) {
+                        if (vm.staffs[i].key === authorKey) {
+                            //return vm.authors[i].displayName;
+                            return $sce.trustAsHtml([
+                                '<img style="padding-bottom:2px" src="' + vm.staffs[i].avatarUrls['16x16'] + '"/>',
+                                '<span style="vertical-align:middle">&nbsp;' + vm.staffs[i].displayName + '</span>'
+                            ].join(''));
+                        }
+                    }
+                }
+            };
+
+            var buildNewConceptDefinitionOfChanges = function(changeId) {
                 return {
-                    changeId: (changeId)?changeId:null,
+                    changeId: (changeId) ? changeId : null,
                     changeType: REQUEST_TYPE.NEW_CONCEPT.value,
                     changed: true
                 };
             };
 
-            var buildOtherRequestDefinitionOfChanges = function (changeId) {
+            var buildOtherRequestDefinitionOfChanges = function(changeId) {
                 return {
-                    changeId: (changeId)?changeId:null,
+                    changeId: (changeId) ? changeId : null,
                     changeType: REQUEST_TYPE.OTHER.value,
                     changed: true
                 };
             };
 
-            var buildChangeConceptDefinitionOfChanges = function () {
+            var buildChangeConceptDefinitionOfChanges = function() {
                 return {
                     changeId: null,
                     changeType: REQUEST_TYPE.CHANGE_RETIRE_CONCEPT.value,
@@ -197,57 +229,57 @@ angular
 
             vm.reFilterRelationship = true;
 
-            vm.filterRelationshipType = function(relationshipType, element){
-                if(vm.originalConcept.relationships !== undefined && vm.reFilterRelationship){
-                    vm.relationshipsFilter = vm.originalConcept.relationships.filter(function(obj){
+            vm.filterRelationshipType = function(relationshipType, element) {
+                if (vm.originalConcept.relationships !== undefined && vm.reFilterRelationship) {
+                    vm.relationshipsFilter = vm.originalConcept.relationships.filter(function(obj) {
                         return (obj.characteristicType === relationshipType && obj.active === true);
                     });
-                    if(vm.pageMode !== REQUEST_MODE.NEW && element === undefined && relationshipType !== undefined && vm.originalConcept !== null && vm.requestType.value === 'CHANGE_RETIRE_RELATIONSHIP'){
+                    if (vm.pageMode !== REQUEST_MODE.NEW && element === undefined && relationshipType !== undefined && vm.originalConcept !== null && vm.requestType.value === 'CHANGE_RETIRE_RELATIONSHIP') {
                         var arr = vm.originalConcept.relationships;
-                        var isRelationshipActive = function(obj){
+                        var isRelationshipActive = function(obj) {
                             var requestItems = vm.requestItems;
-                            for(var i=0;i<requestItems.length;i++){
+                            for (var i = 0; i < requestItems.length; i++) {
                                 obj.viewName = obj.type.fsn + " " + obj.target.fsn;
-                                if(requestItems[i].relationshipId !== null && obj.active === true && obj.characteristicType === relationshipType){
+                                if (requestItems[i].relationshipId !== null && obj.active === true && obj.characteristicType === relationshipType) {
                                     return true;
                                 }
                             }
                             return false;
                         };
-                        vm.relationshipsFilter = arr.filter(function(obj){
+                        vm.relationshipsFilter = arr.filter(function(obj) {
                             return isRelationshipActive(obj);
                         });
-                        for(var i in vm.requestItems){
-                            for(var j in vm.originalConcept.relationships){
+                        for (var i in vm.requestItems) {
+                            for (var j in vm.originalConcept.relationships) {
                                 vm.originalConcept.relationships[j].viewName = vm.originalConcept.relationships[j].type.fsn + " " + vm.originalConcept.relationships[j].target.fsn;
-                                if(vm.requestItems[i].relationshipId !== null || vm.requestItems[i].relationshipId !== undefined){
-                                    if(vm.requestItems[i].relationshipId ===  vm.originalConcept.relationships[j].relationshipId){
+                                if (vm.requestItems[i].relationshipId !== null || vm.requestItems[i].relationshipId !== undefined) {
+                                    if (vm.requestItems[i].relationshipId === vm.originalConcept.relationships[j].relationshipId) {
                                         vm.originalConcept.relationships[j].ticked = true;
                                     }
                                 }
                             }
                         }
-                        vm.selectedRelationships = vm.requestItems? [vm.requestItems] : [];    
+                        vm.selectedRelationships = vm.requestItems ? [vm.requestItems] : [];
                     }
                 }
             };
 
-            $scope.$watch(function () {
+            $scope.$watch(function() {
                 return vm.originalConcept;
-            }, function (newVal) {
-                if(newVal !== null){
+            }, function(newVal) {
+                if (newVal !== null) {
                     vm.filterRelationshipType(vm.request.characteristicType);
                     vm.reFilterRelationship = true;
                     vm.isShowFilter = true;
                 }
             });
 
-            var initView = function () {
+            var initView = function() {
                 var isValid = isValidViewParams();
                 var originConcept;
 
                 // check permission
-                accountService.checkUserPermission().then(function (rs) {
+                accountService.checkUserPermission().then(function(rs) {
                     vm.permissionChecked = true;
                     vm.isAdmin = (rs.isAdmin === true);
                     vm.isViewer = (rs.isViewer === true);
@@ -255,6 +287,9 @@ angular
 
                 // load authors
                 loadAuthors();
+
+                //load staffs
+                loadStaff();
 
                 // load projects
                 loadProjects();
@@ -278,7 +313,7 @@ angular
                             vm.request = {
                                 id: requestId,
                                 additionalFields: {},
-                                characteristicType: null, 
+                                characteristicType: null,
                                 requestHeader: {
                                     status: REQUEST_STATUS.DRAFT.value,
                                     requestDate: new Date().getTime()
@@ -298,11 +333,11 @@ angular
 
                             if (requestType === REQUEST_TYPE.OTHER) {
                                 vm.request.definitionOfChanges = buildOtherRequestDefinitionOfChanges();
-                                vm.disableDirectMode=true;
+                                vm.disableDirectMode = true;
                             }
 
 
-                            accountService.getAccountInfo().then(function (accountDetails) {
+                            accountService.getAccountInfo().then(function(accountDetails) {
                                 vm.request.requestHeader.ogirinatorId = accountDetails.login;
                             });
 
@@ -319,11 +354,11 @@ angular
                             initBreadcrumb(requestId);
 
                             vm.disableSimpleMode = true;
-                            loadRequest().then(function (requestData) {
+                            loadRequest().then(function(requestData) {
                                 var requestType = requestService.identifyRequestType(vm.request.requestType);
                                 var inputMode = identifyInputMode(vm.request.inputMode);
 
-                                accountService.getAccountInfo().then(function (accountDetails) {
+                                accountService.getAccountInfo().then(function(accountDetails) {
                                     if (requestData.requestHeader.ogirinatorId === accountDetails.login &&
                                         (vm.pageMode === REQUEST_MODE.VIEW ||
                                             (vm.pageMode === REQUEST_MODE.PREVIEW &&
@@ -356,14 +391,14 @@ angular
                 }
             };
 
-            var initBreadcrumb = function (requestId) {
+            var initBreadcrumb = function(requestId) {
                 var tmpUrl;
                 if (kbMode === true) {
-                    $rootScope.pageTitles.push({url: '#' + $location.path(), label: requestId});
+                    $rootScope.pageTitles.push({ url: '#' + $location.path(), label: requestId });
                 } else {
                     $rootScope.pageTitles = [
-                        {url: '#/requests', label: 'crs.request.list.title.requests'},
-                        {url: '#' + $location.path(), label: requestId}
+                        { url: '#/requests', label: 'crs.request.list.title.requests' },
+                        { url: '#' + $location.path(), label: requestId }
                     ];
                 }
 
@@ -371,21 +406,21 @@ angular
                     for (var i = $rootScope.pageTitles.length - 2; i >= 0; i--) {
                         tmpUrl = $rootScope.pageTitles[i].url;
                         if (tmpUrl) {
-                            prevPage = tmpUrl.substring(tmpUrl.indexOf('#')+1);
+                            prevPage = tmpUrl.substring(tmpUrl.indexOf('#') + 1);
                             break;
                         }
                     }
                 }
             };
 
-            var loadRequest = function () {
+            var loadRequest = function() {
                 var originConcept;
 
                 notificationService.sendMessage('crs.request.message.requestLoading', 0);
 
                 vm.request = null;
 
-                return requestService.getRequest(requestId).then(function (requestData) {
+                return requestService.getRequest(requestId).then(function(requestData) {
                     // build request
                     vm.request = buildRequestFromRequestData(requestData);
                     vm.requestItems = requestData.requestItems;
@@ -399,9 +434,8 @@ angular
                         //return null;
                     } else if (requestData.requestType === REQUEST_TYPE.OTHER.value) {
                         vm.originalConcept = null;
-                        vm.request.definitionOfChanges=buildOtherRequestDefinitionOfChanges();
-                    }
-                    else {
+                        vm.request.definitionOfChanges = buildOtherRequestDefinitionOfChanges();
+                    } else {
                         vm.originalConcept = {
                             conceptId: requestData.concept.conceptId,
                             fsn: requestData.concept.fsn
@@ -416,7 +450,7 @@ angular
                     vm.concept = requestData.concept;
 
                     return requestData;
-                },function(reason){
+                }, function(reason) {
                     notificationService.sendError(reason.message, 5000, null, true);
                     if ($location.path() !== '/dashboard') {
                         $location.path('/dashboard').search({});
@@ -424,18 +458,18 @@ angular
                 });
             };
 
-            var loadRequestMetadata = function () {
+            var loadRequestMetadata = function() {
                 requestMetadataService.getMetadata([
-                    REQUEST_METADATA_KEY.RELATIONSHIP_TYPE,
-                    REQUEST_METADATA_KEY.CHARACTERISTIC_TYPE,
-                    REQUEST_METADATA_KEY.REFINABILITY,
-                    REQUEST_METADATA_KEY.NEW_CONCEPT_STATUS,
-                    REQUEST_METADATA_KEY.CASE_SIGNIFICANCE,
-                    REQUEST_METADATA_KEY.CONCEPT_HISTORY_ATTRIBUTE,
-                    REQUEST_METADATA_KEY.NEW_DESCRIPTION_STATUS,
-                    REQUEST_METADATA_KEY.NEW_RELATIONSHIP_STATUS
-                ])
-                    .then(function (metadata) {
+                        REQUEST_METADATA_KEY.RELATIONSHIP_TYPE,
+                        REQUEST_METADATA_KEY.CHARACTERISTIC_TYPE,
+                        REQUEST_METADATA_KEY.REFINABILITY,
+                        REQUEST_METADATA_KEY.NEW_CONCEPT_STATUS,
+                        REQUEST_METADATA_KEY.CASE_SIGNIFICANCE,
+                        REQUEST_METADATA_KEY.CONCEPT_HISTORY_ATTRIBUTE,
+                        REQUEST_METADATA_KEY.NEW_DESCRIPTION_STATUS,
+                        REQUEST_METADATA_KEY.NEW_RELATIONSHIP_STATUS
+                    ])
+                    .then(function(metadata) {
                         vm.relationshipTypes = metadata[REQUEST_METADATA_KEY.RELATIONSHIP_TYPE];
                         vm.characteristicTypes = metadata[REQUEST_METADATA_KEY.CHARACTERISTIC_TYPE];
                         vm.refinabilities = metadata[REQUEST_METADATA_KEY.REFINABILITY];
@@ -447,11 +481,11 @@ angular
                     });
             };
 
-            var cancelEditing = function () {
+            var cancelEditing = function() {
                 $location.path(prevPage).search({});
             };
 
-            var identifyParentConcept = function (concept) {
+            var identifyParentConcept = function(concept) {
                 var relationship, parentConcept = null;
 
                 if (concept &&
@@ -476,7 +510,7 @@ angular
                 return parentConcept;
             };
 
-            var injectParentConcept = function (concept, parentConcept) {
+            var injectParentConcept = function(concept, parentConcept) {
                 var isaRelationship = objectService.getNewIsaRelationship(concept.conceptId);
 
                 if (!angular.isArray(concept.relationships)) {
@@ -487,7 +521,7 @@ angular
                 concept.relationships.push(isaRelationship);
             };
 
-            var injectRelationship = function (concept, relationshipType, destinationConcept, characteristicType, refinability, applyChanges) {
+            var injectRelationship = function(concept, relationshipType, destinationConcept, characteristicType, refinability, applyChanges) {
                 var relationship = objectService.getNewAttributeRelationship(concept.conceptId);
 
                 if (!angular.isArray(concept.relationships)) {
@@ -517,7 +551,7 @@ angular
                 concept.relationships.push(relationship);
             };
 
-            var extractConceptDescriptions = function (concept, descriptionType, extractAll) {
+            var extractConceptDescriptions = function(concept, descriptionType, extractAll) {
                 var description, descriptions = [];
 
                 if (concept &&
@@ -537,7 +571,7 @@ angular
                 return descriptions;
             };
 
-            var injectConceptDescription = function (concept, descriptionTerm, applyChanges) {
+            var injectConceptDescription = function(concept, descriptionTerm, applyChanges) {
                 var desc = objectService.getNewDescription(concept.conceptId);
                 desc.term = descriptionTerm;
 
@@ -556,7 +590,7 @@ angular
                 concept.descriptions.push(desc);
             };
 
-            var cloneConceptDescription = function (concept, sourceDescriptionId, proposedTerm, proposedCaseSignificance, applyChanges, descriptionStatus) {
+            var cloneConceptDescription = function(concept, sourceDescriptionId, proposedTerm, proposedCaseSignificance, applyChanges, descriptionStatus) {
                 var sourceDescription, newDesc, sourceDesc;
 
                 for (var i = 0; i < concept.descriptions.length; i++) {
@@ -576,7 +610,7 @@ angular
 
                     if (proposedTerm !== undefined &&
                         proposedTerm !== null &&
-                        proposedTerm.trim() !== '' ) {
+                        proposedTerm.trim() !== '') {
                         newDesc.term = proposedTerm;
                     }
 
@@ -610,7 +644,7 @@ angular
                 }
             };
 
-            var extractConceptFSN = function (concept) {
+            var extractConceptFSN = function(concept) {
                 var fsns = extractConceptDescriptions(concept, DESCRIPTION_TYPE.FSN, true);
 
                 if (fsns.length > 0) {
@@ -620,7 +654,7 @@ angular
                 return null;
             };
 
-            var injectConceptFSN = function (concept, fsn, applyChanges) {
+            var injectConceptFSN = function(concept, fsn, applyChanges) {
                 var fsnDesc = objectService.getNewFsn(concept.conceptId);
                 var currentFsns, currentFsn;
 
@@ -656,7 +690,7 @@ angular
                 return null;
             };
 
-            var extractConceptPT = function (concept) {
+            var extractConceptPT = function(concept) {
                 var syns = extractConceptDescriptions(concept, DESCRIPTION_TYPE.SYN, true);
 
                 for (var i = 0; i < syns.length; i++) {
@@ -670,7 +704,7 @@ angular
                 return null;
             };
 
-            var injectConceptPT = function (concept, conceptPT, applyChanges) {
+            var injectConceptPT = function(concept, conceptPT, applyChanges) {
                 var preferredTerm = objectService.getNewPt(concept.conceptId);
 
                 if (!angular.isArray(concept.descriptions)) {
@@ -692,7 +726,7 @@ angular
                 return null;
             };
 
-            var extractConceptSynonyms = function (concept, excludePT, extractAll) {
+            var extractConceptSynonyms = function(concept, excludePT, extractAll) {
                 var syns = extractConceptDescriptions(concept, DESCRIPTION_TYPE.SYN, extractAll);
                 var sysnTerms = [];
                 var excludedPT;
@@ -713,7 +747,7 @@ angular
                 return sysnTerms;
             };
 
-            var injectConceptSynonyms = function (concept, synonyms, applyChanges) {
+            var injectConceptSynonyms = function(concept, synonyms, applyChanges) {
                 var synTerm, synDesc;
 
                 if (!angular.isArray(concept.descriptions)) {
@@ -740,8 +774,8 @@ angular
                 }
             };
 
-            var extractItemByRequestType = function (requestItems, type) {
-                for (var i = 0 ; i < requestItems.length; i++){
+            var extractItemByRequestType = function(requestItems, type) {
+                for (var i = 0; i < requestItems.length; i++) {
                     if (requestItems[i].requestType === type.value) {
                         return requestItems[i];
                     }
@@ -750,7 +784,7 @@ angular
                 return null;
             };
 
-            var extractConceptDefinitions = function (concept, extractAll) {
+            var extractConceptDefinitions = function(concept, extractAll) {
                 var defs = extractConceptDescriptions(concept, DESCRIPTION_TYPE.DEF, extractAll);
                 var defTerms = [];
 
@@ -761,7 +795,7 @@ angular
                 return defTerms;
             };
 
-            var injectConceptDefinitions = function (concept, definitions, applyChanges) {
+            var injectConceptDefinitions = function(concept, definitions, applyChanges) {
                 var defTerm, defDesc;
 
                 if (!angular.isArray(concept.descriptions)) {
@@ -788,7 +822,7 @@ angular
                 }
             };
 
-            var buildRequestWorkItem = function (concept, definitionOfChanges, changedTarget) {
+            var buildRequestWorkItem = function(concept, definitionOfChanges, changedTarget) {
                 var item = {};
                 var parentConcept, isDescriptionPT = false;
 
@@ -867,18 +901,18 @@ angular
 
             };
 
-            var buildRequestFromRequestData = function (requestData) {
+            var buildRequestFromRequestData = function(requestData) {
                 var request = {
-                    id:                     requestData.id,
-                    requestorInternalId:    requestData.requestorInternalId,
-                    fsn:                    requestData.fsn,
-                    batchRequest:           requestData.batchRequest,
-                    rfcNumber:              requestData.rfcNumber,
-                    additionalFields:       requestData.additionalFields || {},
-                    jiraTicketId:           requestData.jiraTicketId,
-                    requestType:            requestData.requestType,
-                    inputMode:              requestData.inputMode,
-                    requestHeader:          requestData.requestHeader
+                    id: requestData.id,
+                    requestorInternalId: requestData.requestorInternalId,
+                    fsn: requestData.fsn,
+                    batchRequest: requestData.batchRequest,
+                    rfcNumber: requestData.rfcNumber,
+                    additionalFields: requestData.additionalFields || {},
+                    jiraTicketId: requestData.jiraTicketId,
+                    requestType: requestData.requestType,
+                    inputMode: requestData.inputMode,
+                    requestHeader: requestData.requestHeader
                 };
                 var requestItems = requestData.requestItems;
                 var mainItem = extractItemByRequestType(requestItems, requestService.identifyRequestType(request.requestType));
@@ -936,7 +970,7 @@ angular
                         };
 
                         // load relationship type
-                        snowowlService.getFullConcept(null, null, mainItem.relationshipType).then(function (response) {
+                        snowowlService.getFullConcept(null, null, mainItem.relationshipType).then(function(response) {
                             request.relationshipType = {
                                 conceptId: mainItem.relationshipType,
                                 fsn: response.fsn
@@ -953,7 +987,7 @@ angular
                         request.refinability = mainItem.refinability;
                         request.characteristicType = mainItem.characteristicType;
 
-                        break;                    
+                        break;
 
                     case REQUEST_TYPE.OTHER.value:
                         //mainItem = extractItemByRequestType(requestItems, REQUEST_TYPE.CHANGE_RETIRE_RELATIONSHIP);
@@ -966,10 +1000,10 @@ angular
 
             };
 
-            var buildOtherRequestWorkItem = function(request){
+            var buildOtherRequestWorkItem = function(request) {
                 var item = {};
-                if(request.definitionOfChanges){
-                    item.requestDescription = request.requestDescription;                
+                if (request.definitionOfChanges) {
+                    item.requestDescription = request.requestDescription;
                     item.requestType = request.definitionOfChanges.changeType;
                     item.id = request.definitionOfChanges.changeId;
                     item.topic = request.additionalFields.topic;
@@ -980,7 +1014,7 @@ angular
                 return item;
             };
 
-            var buildRequestData = function (request, concept) {
+            var buildRequestData = function(request, concept) {
                 var requestDetails = {};
 
 
@@ -995,9 +1029,9 @@ angular
                 //buildRequestAdditionalFields(requestDetails, concept);
                 requestDetails.additionalFields = request.additionalFields;
 
-                if(vm.requestType === REQUEST_TYPE.OTHER){
-                   requestDetails.requestItems.push(buildOtherRequestWorkItem(request));
-                   return requestDetails;
+                if (vm.requestType === REQUEST_TYPE.OTHER) {
+                    requestDetails.requestItems.push(buildOtherRequestWorkItem(request));
+                    return requestDetails;
                 }
 
                 requestDetails.fsn = concept.fsn;
@@ -1008,14 +1042,14 @@ angular
                 }
 
                 if (concept.definitionOfChanges.changeType === REQUEST_TYPE.CHANGE_RETIRE_CONCEPT.value) {
-                    angular.forEach(concept.descriptions, function (description) {
+                    angular.forEach(concept.descriptions, function(description) {
 
                         if (description.definitionOfChanges && description.definitionOfChanges.changed) {
                             requestDetails.requestItems.push(buildRequestWorkItem(concept, description.definitionOfChanges, description));
                         }
                     });
 
-                    angular.forEach(concept.relationships, function (relationship) {
+                    angular.forEach(concept.relationships, function(relationship) {
                         if (relationship.definitionOfChanges && relationship.definitionOfChanges.changed) {
                             requestDetails.requestItems.push(buildRequestWorkItem(concept, relationship.definitionOfChanges, relationship));
                         }
@@ -1025,7 +1059,7 @@ angular
                 return requestDetails;
             };
 
-            var buildConceptDefinitionOfChange = function (concept, request) {
+            var buildConceptDefinitionOfChange = function(concept, request) {
                 if (!concept.definitionOfChanges) {
                     concept.definitionOfChanges = buildChangeConceptDefinitionOfChanges();
                 }
@@ -1042,8 +1076,9 @@ angular
                 concept.definitionOfChanges.currentFsn = concept.fsn;
             };
 
-            var buildConceptFromRequest = function (request) {
-                var concept = null, parentConcept;
+            var buildConceptFromRequest = function(request) {
+                var concept = null,
+                    parentConcept;
                 if (vm.originalConcept) {
                     concept = angular.copy(vm.originalConcept);
 
@@ -1109,7 +1144,7 @@ angular
                             //vm.request.relationshipId = selectedRelationshipsOutput();
 
                             for (var i = 0; i < concept.relationships.length; i++) {
-                                for(var j = 0; j < request.relationshipId.length; j++){
+                                for (var j = 0; j < request.relationshipId.length; j++) {
                                     if (concept.relationships[i].relationshipId === request.relationshipId[j]) {
                                         concept.relationships[i].active = true;
                                         concept.relationships[i].definitionOfChanges = {
@@ -1130,7 +1165,7 @@ angular
                 return concept;
             };
 
-            var validateRequest = function (ignoreGeneralFields) {
+            var validateRequest = function(ignoreGeneralFields) {
                 //vm.request.relationshipId = selectedRelationshipsOutput();
                 var field, fieldValue, error = {};
                 var fieldRequiredLangKey = 'crs.request.message.error.fieldRequired',
@@ -1139,7 +1174,7 @@ angular
                 notificationService.clear();
 
                 // validate concept
-                if(vm.requestType !== REQUEST_TYPE.OTHER){
+                if (vm.requestType !== REQUEST_TYPE.OTHER) {
                     if (vm.originalConcept === undefined || vm.originalConcept === null ||
                         (vm.originalConcept && !vm.originalConcept.moduleId && !vm.originalConcept.conceptId && !vm.originalConcept.fsn)) {
                         error.concept = fieldRequiredLangKey;
@@ -1156,17 +1191,17 @@ angular
                     }
                 }
 
-                var isNotValidObj = function(){
-                    if(angular.isObject(fieldValue)){
-                        if(angular.isArray(fieldValue)){
-                            if(fieldValue.length === 0){
+                var isNotValidObj = function() {
+                    if (angular.isObject(fieldValue)) {
+                        if (angular.isArray(fieldValue)) {
+                            if (fieldValue.length === 0) {
                                 return true;
                             }
-                        }else if(!fieldValue.conceptId){
+                        } else if (!fieldValue.conceptId) {
                             return true;
                         }
                     }
-                    return  false;
+                    return false;
                 };
 
                 // validate require fields
@@ -1177,9 +1212,9 @@ angular
 
                         if (field.required === true &&
                             (fieldValue === undefined ||
-                            fieldValue === null ||
-                            (angular.isFunction(fieldValue.trim) && fieldValue.trim() === '' ) ||
-                            isNotValidObj(fieldValue))) {
+                                fieldValue === null ||
+                                (angular.isFunction(fieldValue.trim) && fieldValue.trim() === '') ||
+                                isNotValidObj(fieldValue))) {
                             error[field.name] = fieldRequiredLangKey;
                         }
                     }
@@ -1194,16 +1229,16 @@ angular
                 return true;
             };
 
-            var selectedRelationshipsOutput = function(){
+            var selectedRelationshipsOutput = function() {
                 var relIdArr = [];
-                for(var key in vm.selectedRelationships){
+                for (var key in vm.selectedRelationships) {
                     relIdArr.push(vm.selectedRelationships[key].relationshipId);
                 }
                 return relIdArr;
             };
 
 
-            var saveRequest = function () {
+            var saveRequest = function() {
                 // vm.request.relationshipId = selectedRelationshipsOutput();
                 // requestData
                 var requestData;
@@ -1226,18 +1261,18 @@ angular
                 requestData = buildRequestData(vm.request, vm.concept);
 
                 requestService.saveRequest(requestData)
-                    .then(function () {
+                    .then(function() {
                         notificationService.sendMessage('crs.request.message.requestSaved', 5000);
                         $location.path(prevPage).search({});
-                    }, function (e) {
+                    }, function(e) {
                         showErrorMessage(e.message);
                     })
-                    .finally(function () {
+                    .finally(function() {
                         $rootScope.showAppLoading = false;
                     });
             };
 
-            var saveAndSubmitRequest = function () {
+            var saveAndSubmitRequest = function() {
                 vm.request.relationshipId = selectedRelationshipsOutput();
                 // requestData
                 var requestData;
@@ -1260,166 +1295,196 @@ angular
                 requestData = buildRequestData(vm.request, vm.concept);
 
                 requestService.saveRequest(requestData)
-                    .then(function (response) {
+                    .then(function(response) {
                         var requestId = response.id;
 
                         return requestService.submitRequest(requestId);
                     })
-                    .then(function () {
+                    .then(function() {
                         notificationService.sendMessage('crs.request.message.requestSubmitted', 5000);
                         $location.path(prevPage).search({});
-                    }, function (e) {
+                    }, function(e) {
                         console.log(e);
                         showErrorMessage(e.message);
                     })
-                    .finally(function () {
+                    .finally(function() {
                         $rootScope.showAppLoading = false;
                     });
             };
 
-            var changeRequestStatus = function (requestId, requestStatus, data) {
+            var changeRequestStatus = function(requestId, requestStatus, data) {
                 // show loading mask
                 $rootScope.showAppLoading = true;
 
                 notificationService.sendMessage('crs.request.message.requestProcessing');
                 return requestService.changeRequestStatus(requestId, requestStatus, data)
-                    .finally(function () {
+                    .finally(function() {
                         $rootScope.showAppLoading = false;
                     });
             };
 
-            var acceptRequest = function () {
+            var acceptRequest = function() {
                 changeRequestStatus(vm.request.id, REQUEST_STATUS.ACCEPTED)
-                    .then(function () {
+                    .then(function() {
                         notificationService.sendMessage('crs.request.message.requestAccepted', 5000);
                         $location.path(prevPage).search({});
-                    }, function (e) {
+                    }, function(e) {
                         showErrorMessage(e.message);
                     });
             };
 
-            var openAssignRequestModal = function () {
+            var openAssignRequestModal = function() {
                 return $uibModal.open({
                     templateUrl: 'components/request/modal-assign-request.html',
                     controller: 'ModalAssignRequestCtrl as modal',
                     resolve: {
-                        authors: function () {
+                        authors: function() {
                             return vm.authors;
                         },
-                        projects: function () {
+                        projects: function() {
                             return vm.projects;
                         },
-                        defaultSummary: function () {
+                        defaultSummary: function() {
                             return '';
                         }
                     }
                 });
             };
 
-            var assignRequest = function () {
+            var openAssignRequestToStaffModal = function() {
+                return $uibModal.open({
+                    templateUrl: 'components/request/modal-assign-request-to-staff.html',
+                    controller: 'ModalAssignRequestToStaffCtrl as modal',
+                    resolve: {
+                        staffs: function() {
+                            return vm.staffs;
+                        }
+                    }
+                });
+            };
+
+            var assignRequest = function() {
                 var modalInstance = openAssignRequestModal();
 
-                modalInstance.result.then(function (rs) {
+                modalInstance.result.then(function(rs) {
                     notificationService.sendMessage('Assigning requests');
-                    requestService.assignRequests([vm.request.id], rs.project.key, ((rs.assignee)?rs.assignee.key:null), rs.summary).then(function () {
+                    requestService.assignRequests([vm.request.id], rs.project.key, ((rs.assignee) ? rs.assignee.key : null), rs.summary).then(function() {
                         notificationService.sendMessage('Request assigned successfully', 5000);
                         $location.path(prevPage).search({});
                     });
                 });
             };
 
-            var acceptAndAssignRequest = function () {
+            var acceptAndAssignRequest = function() {
                 var modalInstance = openAssignRequestModal();
 
-                modalInstance.result.then(function (rs) {
+                modalInstance.result.then(function(rs) {
                     changeRequestStatus(vm.request.id, REQUEST_STATUS.ACCEPTED)
-                        .then(function () {
-                            return requestService.assignRequests([vm.request.id], rs.project.key, ((rs.assignee)?rs.assignee.key:null), rs.summary);
-                        }, function (e) {
+                        .then(function() {
+                            return requestService.assignRequests([vm.request.id], rs.project.key, ((rs.assignee) ? rs.assignee.key : null), rs.summary);
+                        }, function(e) {
                             showErrorMessage(e.message);
                             $q.reject(e);
                         })
-                        .then(function () {
+                        .then(function() {
                             notificationService.sendMessage('Request accepted and assigned successfully', 5000);
                             $location.path(prevPage).search({});
                         });
                 });
             };
 
-            var rejectRequest = function () {
+            var assignRequestToStaff = function() {
+                var modalInstance = openAssignRequestToStaffModal();
+
+                modalInstance.result.then(function(rs) {
+                    // changeRequestStatus(vm.request.id, REQUEST_STATUS.ACCEPTED)
+                    //     .then(function() {
+                            requestService.assignRequests([vm.request.id], null, ((rs.assignee) ? rs.assignee.key : null));
+                        // }, function(e) {
+                        //     showErrorMessage(e.message);
+                        //     $q.reject(e);
+                        // })
+                        // .then(function() {
+                        //     notificationService.sendMessage('Request accepted and assigned successfully', 5000);
+                        //     $location.path(prevPage).search({});
+                        // });
+                });
+            };
+
+            var rejectRequest = function() {
                 var modalInstance = openStatusCommentModal('reject');
 
-                modalInstance.result.then(function (rejectComment) {
-                    changeRequestStatus(vm.request.id, REQUEST_STATUS.REJECTED, {reason:rejectComment})
-                        .then(function () {
+                modalInstance.result.then(function(rejectComment) {
+                    changeRequestStatus(vm.request.id, REQUEST_STATUS.REJECTED, { reason: rejectComment })
+                        .then(function() {
                             notificationService.sendMessage('crs.request.message.requestRejected', 5000);
                             $location.path(prevPage).search({});
-                        }, function (e) {
+                        }, function(e) {
                             showErrorMessage(e.message);
                         });
                 });
             };
 
-            var rejectAppeal = function () {
+            var rejectAppeal = function() {
                 var modalInstance = openStatusCommentModal('reject');
 
-                modalInstance.result.then(function (rejectComment) {
-                    changeRequestStatus(vm.request.id, REQUEST_STATUS.APPEAL_REJECTED, {reason:rejectComment})
-                        .then(function () {
+                modalInstance.result.then(function(rejectComment) {
+                    changeRequestStatus(vm.request.id, REQUEST_STATUS.APPEAL_REJECTED, { reason: rejectComment })
+                        .then(function() {
                             notificationService.sendMessage('crs.request.message.requestRejected', 5000);
                             $location.path(prevPage).search({});
-                        }, function (e) {
+                        }, function(e) {
                             showErrorMessage(e.message);
                         });
                 });
             };
 
-            var requestClarification = function () {
+            var requestClarification = function() {
 
                 var modalInstance = openStatusCommentModal('needClarify');
 
-                modalInstance.result.then(function (rejectComment) {
-                    changeRequestStatus(vm.request.id, REQUEST_STATUS.CLARIFICATION_NEEDED, {reason:rejectComment})
-                        .then(function () {
+                modalInstance.result.then(function(rejectComment) {
+                    changeRequestStatus(vm.request.id, REQUEST_STATUS.CLARIFICATION_NEEDED, { reason: rejectComment })
+                        .then(function() {
                             notificationService.sendMessage('crs.request.message.requestClarification', 5000);
                             $location.path(prevPage).search({});
-                        }, function (e) {
+                        }, function(e) {
                             showErrorMessage(e.message);
                         });
                 });
             };
 
-            var appealRequest = function () {
+            var appealRequest = function() {
                 var modalInstance = openStatusCommentModal('appeal');
 
-                modalInstance.result.then(function (appealComment) {
-                    changeRequestStatus(vm.request.id, REQUEST_STATUS.APPEAL, {reason:appealComment})
-                        .then(function () {
+                modalInstance.result.then(function(appealComment) {
+                    changeRequestStatus(vm.request.id, REQUEST_STATUS.APPEAL, { reason: appealComment })
+                        .then(function() {
                             notificationService.sendMessage('crs.request.message.requestAppealed', 5000);
                             $location.path(prevPage).search({});
-                        }, function (e) {
+                        }, function(e) {
                             showErrorMessage(e.message);
                         });
                 });
             };
 
-            var withdrawRequest = function () {
+            var withdrawRequest = function() {
                 var modalInstance = openStatusCommentModal('withdraw');
 
-                modalInstance.result.then(function (withdrawComment) {
-                    changeRequestStatus(vm.request.id, REQUEST_STATUS.WITHDRAWN, {reason:withdrawComment})
-                        .then(function () {
+                modalInstance.result.then(function(withdrawComment) {
+                    changeRequestStatus(vm.request.id, REQUEST_STATUS.WITHDRAWN, { reason: withdrawComment })
+                        .then(function() {
                             notificationService.sendMessage('crs.request.message.requestWithdrawn', 5000);
                             $location.path(prevPage).search({});
-                        }, function (e) {
+                        }, function(e) {
                             showErrorMessage(e.message);
                         });
                 });
             };
 
-            var startEditingConcept = function (conceptObj) {
+            var startEditingConcept = function(conceptObj) {
                 notificationService.sendMessage('Loading concept ' + (conceptObj.name ? conceptObj.name : conceptObj.id) + ' to edit panel', 10000, null);
-                snowowlService.getFullConcept(null, null, conceptObj.id).then(function (response) {
+                snowowlService.getFullConcept(null, null, conceptObj.id).then(function(response) {
                     notificationService.sendMessage('Concept ' + response.fsn + ' successfully added to edit list', 5000, null);
                     response.definitionOfChanges = buildChangeConceptDefinitionOfChanges();
                     response.definitionOfChanges.currentFsn = response.fsn;
@@ -1428,7 +1493,7 @@ angular
                 });
             };
 
-            var setInputMode = function (im) {
+            var setInputMode = function(im) {
                 var imObj = identifyInputMode(im);
 
                 if (imObj !== null && imObj !== vm.inputMode) {
@@ -1446,7 +1511,7 @@ angular
                 }
             };
 
-            var onConceptChangedDirectly = function (historyCount) {
+            var onConceptChangedDirectly = function(historyCount) {
                 if (!permanentlyDisableSimpleMode) {
                     if (historyCount === 0) {
                         vm.disableSimpleMode = false;
@@ -1456,12 +1521,12 @@ angular
                 }
             };
 
-            var openStatusCommentModal = function (requestStatus) {
+            var openStatusCommentModal = function(requestStatus) {
                 return $uibModal.open({
                     templateUrl: 'components/request/modal-change-request-status.html',
                     controller: 'ModalChangeRequestStatusCtrl as modal',
                     resolve: {
-                        requestStatus: function () {
+                        requestStatus: function() {
                             return requestStatus;
                         }
                     }
@@ -1469,7 +1534,7 @@ angular
             };
 
 
-            $scope.$on(CONCEPT_EDIT_EVENT.STOP_EDIT_CONCEPT, function (event, data) {
+            $scope.$on(CONCEPT_EDIT_EVENT.STOP_EDIT_CONCEPT, function(event, data) {
                 if (!data || !data.concept) {
                     console.error('Cannot remove concept: concept must be supplied');
                     return;
@@ -1482,9 +1547,9 @@ angular
             });
 
 
-            $scope.$watch(function () {
+            $scope.$watch(function() {
                 return vm.inputMode;
-            }, function (newVal) {
+            }, function(newVal) {
                 if (newVal === REQUEST_INPUT_MODE.DIRECT) {
                     vm.inputModePage = 'components/request/request-details-edit-panel.html';
                     vm.reFilterRelationship = false;
@@ -1495,9 +1560,9 @@ angular
                 }
             });
 
-            $scope.$watch(function () {
+            $scope.$watch(function() {
                 return vm.selectedRelationships;
-            }, function (newVal) {
+            }, function(newVal) {
                 if (angular.isArray(newVal)) {
                     vm.request.relationshipId = selectedRelationshipsOutput();
                 }
@@ -1508,6 +1573,7 @@ angular
             vm.acceptRequest = acceptRequest;
             vm.assignRequest = assignRequest;
             vm.acceptAndAssignRequest = acceptAndAssignRequest;
+            vm.assignRequestToStaff = assignRequestToStaff;
             vm.rejectRequest = rejectRequest;
             vm.rejectAppeal = rejectAppeal;
             vm.requestClarification = requestClarification;
