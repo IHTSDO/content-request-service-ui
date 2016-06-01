@@ -117,13 +117,13 @@
                 <span class="md md-done blue darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.accept"></span>
             </button>
+            <button ng-if="requestVM.pageMode.value === 'preview' && requestVM.request.requestHeader.status === 'NEW'" class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.assignRequestToStaff()">
+                <span class="md md-assignment-ind blue darken-2 iconbase"></span>
+                <span class="button-link" translate="crs.request.details.info.button.assignToStaff"></span>
+            </button>
             <button ng-if="requestVM.pageMode.value === 'preview' && requestVM.request.requestHeader.status === 'NEW'" class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.acceptAndAssignRequest()">
                 <span class="md md-content-paste blue darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.acceptAndAssign"></span>
-            </button>
-            <button ng-if="requestVM.pageMode.value === 'preview' && requestVM.request.requestHeader.status === 'NEW'" class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.assignRequestToStaff()">
-                <span class="md md-content-paste blue darken-2 iconbase"></span>
-                <span class="button-link" translate="crs.request.details.info.button.assignToStaff"></span>
             </button>
             <button ng-if="requestVM.pageMode.value === 'preview' && requestVM.request.requestHeader.status === 'ACCEPTED'" ng-disabled="requestVM.request.requestHeader.assignedProject" class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.assignRequest()">
                 <span class="md md-content-paste blue darken-2 iconbase"></span>

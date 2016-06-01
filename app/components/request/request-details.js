@@ -188,7 +188,6 @@ angular
             };
 
             var getStaffName = function(staffKey) {
-                console.log(staffKey);
                 if (!vm.staffs || vm.staffs.length === 0) {
                     return staffKey;
                 } else {
