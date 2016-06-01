@@ -34,6 +34,20 @@
                     </div>
                     <div class="timeline-panel">
                         <div class="timeline-heading">
+                            <label class="control-label" translate="crs.request.details.info.label.manager"></label>
+                            <h4 class="timeline-title">
+                                <span ng-show="requestVM.loadingAuthors" class="md md-autorenew" ng-class="{'md-spin':requestVM.loadingAuthors}"></span>
+                                <span ng-bind-html="requestVM.getStaffName(requestVM.request.requestHeader.manager)"></span>
+                            </h4>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="timeline-badge">
+                        <i class="icon-circle theme-border"></i>
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
                             <label class="control-label" translate="crs.request.details.info.label.createdDate"></label>
                             <h4 class="timeline-title">{{requestVM.request.requestHeader.requestDate | date:'MM-dd-yyyy'}}</h4>
                         </div>

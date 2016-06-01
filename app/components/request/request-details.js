@@ -187,12 +187,13 @@ angular
                 }
             };
 
-            var getStaffName = function(authorKey) {
+            var getStaffName = function(staffKey) {
+                console.log(staffKey);
                 if (!vm.staffs || vm.staffs.length === 0) {
-                    return authorKey;
+                    return staffKey;
                 } else {
                     for (var i = 0; i < vm.staffs.length; i++) {
-                        if (vm.staffs[i].key === authorKey) {
+                        if (vm.staffs[i].key === staffKey) {
                             //return vm.authors[i].displayName;
                             return $sce.trustAsHtml([
                                 '<img style="padding-bottom:2px" src="' + vm.staffs[i].avatarUrls['16x16'] + '"/>',
@@ -1397,7 +1398,9 @@ angular
                 var modalInstance = openAssignRequestToStaffModal();
 
                 modalInstance.result.then(function(rs) {
-                    requestService.assignRequestsToStaff([vm.request.id], ((rs.assignee) ? rs.assignee.key : null));
+                    requestService.assignRequestsToStaff([vm.request.id], ((rs.assignee) ? rs.assignee.key : null)).then(function(){
+                        notificationService.sendMessage('Request assigned successfully', 5000);
+                    });
                 });
             };
 
@@ -1575,6 +1578,7 @@ angular
             vm.appealRequest = appealRequest;
             vm.withdrawRequest = withdrawRequest;
             vm.getAuthorName = getAuthorName;
+            vm.getStaffName = getStaffName;
             vm.isAdmin = false;
             vm.isViewer = false;
             vm.permissionChecked = false;

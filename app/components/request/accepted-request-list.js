@@ -85,12 +85,12 @@ angular
                 }
             };
 
-            var getStaffName = function(authorKey) {
+            var getStaffName = function(staffKey) {
                 if (!vm.staffs || vm.staffs.length === 0) {
-                    return authorKey;
+                    return staffKey;
                 } else {
                     for (var i = 0; i < vm.staffs.length; i++) {
-                        if (vm.staffs[i].key === authorKey) {
+                        if (vm.staffs[i].key === staffKey) {
                             //return vm.authors[i].displayName;
                             return $sce.trustAsHtml([
                                 '<img style="padding-bottom:2px" src="' + vm.staffs[i].avatarUrls['16x16'] + '"/>',
@@ -128,7 +128,7 @@ angular
                 });
             };
 
-            var openAssignRequestToStaffModal = function (selectedRequestIds, defaultSummary) {
+            var openAssignRequestToStaffModal = function (selectedRequestIds) {
                 var modalInstance = $uibModal.open({
                     templateUrl: 'components/request/modal-assign-request-to-staff.html',
                     controller: 'ModalAssignRequestToStaffCtrl as modal',
@@ -141,7 +141,7 @@ angular
 
                 modalInstance.result.then(function (rs) {
                     notificationService.sendMessage('Assigning requests');
-                    requestService.assignSelectedRequestsToStaff(selectedRequestIds, ((rs.assignee)?rs.assignee.key:null)).then(function () {
+                    requestService.assignRequestsToStaff(selectedRequestIds, ((rs.assignee)?rs.assignee.key:null)).then(function () {
                         notificationService.sendMessage('Request assigned successfully', 5000);
                         vm.selectedRequests = {checked: false, items: {}, requests: {}};
                         requestTableParams.reload();
@@ -237,6 +237,7 @@ angular
             vm.assignSelectedRequestsToStaff = assignSelectedRequestsToStaff;
             vm.pushSelectedRequest = pushSelectedRequest;
             vm.getAuthorName = getAuthorName;
+            vm.getStaffName = getStaffName;
             vm.toggleShowUnassignedRequests = toggleShowUnassignedRequests;
             vm.isAdmin = false;
             vm.isViewer = false;

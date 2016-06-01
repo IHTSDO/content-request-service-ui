@@ -22,7 +22,6 @@ angular
                 };
 
                 var buildParams = function (ind, size) {
-                    var jiraConfig = jiraService.getJiraConfig();
                     var params = {
                         groupname: groupName,
                         expand: 'users'

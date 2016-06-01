@@ -80,7 +80,8 @@
                     "validationResult": "Validation Result",
                     "originator": "Created By",
                     "createdDate": "Created On",
-                    "requestDescription": "Descripion of Request"
+                    "requestDescription": "Descripion of Request",
+                    "manager": "Manager"
                 }
             },
             "details": {
@@ -128,7 +129,8 @@
                     "descriptionStatus": "New Description Status",
                     "relationshipStatus": "Relationship Status",
                     "isPt": "Description is PT",
-                    "requestDescription": "Description Of Request"
+                    "requestDescription": "Description Of Request",
+                    "manager": "Manager"
 
                 },
                 "tip": {
@@ -153,7 +155,7 @@
                         "appeal": "Appeal Rejection",
                         "withdraw": "Withdraw Request",
                         "pendingForClarification": "Pending Clarification",
-                        "acceptAndAssign": "Accept and Assign",
+                        "acceptAndAssign": "Accept and Assign To Author",
                         "assign": "Assign Request",
                         "assignToStaff": "Assign To Staff"
                     },
@@ -163,7 +165,8 @@
                         "status": "Status",
                         "lastModified": "Last Modified Date",
                         "createdDate": "Created Date",
-                        "originator": "Created By"
+                        "originator": "Created By",
+                        "manager": "Manager"
                     }
                 }
             },

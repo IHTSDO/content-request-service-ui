@@ -64,6 +64,22 @@ angular
                 }
             };
 
+            var getStaffName = function (staffKey) {
+                if (!vm.staffs || vm.staffs.length === 0) {
+                    return staffKey;
+                } else {
+                    for (var i = 0; i < vm.staffs.length; i++) {
+                        if (vm.staffs[i].key === staffKey) {
+                            //return vm.authors[i].displayName;
+                            return $sce.trustAsHtml([
+                                    '<img src="' + vm.staffs[i].avatarUrls['16x16'] + '"/>',
+                                    '<span style="vertical-align:middle">&nbsp;' + vm.staffs[i].displayName + '</span>'
+                            ].join(''));
+                        }
+                    }
+                }
+            };
+
             var removeSelectedRequests = function () {
                 var selectedRequests = vm.selectedRequests,
                     removingRequestIds = [];
@@ -167,6 +183,7 @@ angular
             vm.loadingAuthors = true;
             vm.removeSelectedRequests = removeSelectedRequests;
             vm.getAuthorName = getAuthorName;
+            vm.getStaffName = getStaffName;
 
             initView();
         }
