@@ -55,6 +55,7 @@
                     "remove": "Remove Selected Requests",
                     "requestorInternalId": "Click to open request editing view",
                     "assign": "Assign requests to author",
+                    "assignToStaff": "Assign requests to staff",
                     "batchId": "Click to open batch details view",
                     "conceptFSN": "Click to open request editing view"
                 },
@@ -79,7 +80,8 @@
                     "validationResult": "Validation Result",
                     "originator": "Created By",
                     "createdDate": "Created On",
-                    "requestDescription": "Descripion of Request"
+                    "requestDescription": "Descripion of Request",
+                    "manager": "Manager"
                 }
             },
             "details": {
@@ -127,7 +129,8 @@
                     "descriptionStatus": "New Description Status",
                     "relationshipStatus": "Relationship Status",
                     "isPt": "Description is PT",
-                    "requestDescription": "Description Of Request"
+                    "requestDescription": "Description Of Request",
+                    "manager": "Manager"
 
                 },
                 "tip": {
@@ -152,8 +155,9 @@
                         "appeal": "Appeal Rejection",
                         "withdraw": "Withdraw Request",
                         "pendingForClarification": "Pending Clarification",
-                        "acceptAndAssign": "Accept and Assign",
-                        "assign": "Assign Request"
+                        "acceptAndAssign": "Accept and Assign To Author",
+                        "assign": "Assign Request",
+                        "assignToStaff": "Assign To Staff"
                     },
                     "label": {
                         "batchId": "Batch ID",
@@ -161,7 +165,8 @@
                         "status": "Status",
                         "lastModified": "Last Modified Date",
                         "createdDate": "Created Date",
-                        "originator": "Created By"
+                        "originator": "Created By",
+                        "manager": "Manager"
                     }
                 }
             },
@@ -180,6 +185,7 @@
             },
             "assignModal": {
                 "title": "Assign Requests to Authoring Task",
+                "assignToStaffTitle": "Assign Requests to Staff",
                 "project": {
                     "label": "Project"
                 },

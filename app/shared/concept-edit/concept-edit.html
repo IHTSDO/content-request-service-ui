@@ -313,13 +313,13 @@
                 <!-- relationship group -->
                 <div class="pull-left rolegroup">
                     <textarea type="text"
-                              pattern="![0-9]"
-                              style="" class="msd-elastic"
+                              style="" 
+                              class="msd-elastic number-only"
                               ng-disabled="relationship.effectiveTime || isStatic"
                               ng-model="relationship.groupId"
                               ng-model-options="{updateOn: 'blur'}"
                               ng-change="updateRelationship(relationship)"
-                              class="form-control color_{{relationship.groupId}}" type="text" placeholder="#"
+                              class="form-control color_{{relationship.groupId}}" placeholder="#"
                               ui-on-drop="dropNullOp()"
                               id="numberOnly"
                               name="numberOnly">
@@ -402,14 +402,14 @@
                           placeholder="{{field}}">
                 </textarea>
             </div>
+
         </div>
 
     </div>
-
- <script>
+    <script>
     $(document).ready(function () {
       //called when key is pressed in textbox
-      $("#numberOnly").keypress(function (e) {
+      $(".number-only").keypress(function (e) {
          //if the letter is not digit then display error and don't type anything
          if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
             return false;
@@ -418,7 +418,6 @@
     });
 </script>
 </div>
-
 <div class="clearfix"></div>
 
 

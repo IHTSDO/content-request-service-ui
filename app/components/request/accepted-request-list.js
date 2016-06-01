@@ -13,7 +13,8 @@ angular
         'accountService',
         'scaService',
         'crsJiraService',
-        function ($filter, $sce, $uibModal, ngTableParams, requestService, notificationService, accountService, scaService, crsJiraService) {
+        'jiraService',
+        function ($filter, $sce, $uibModal, ngTableParams, requestService, notificationService, accountService, scaService, crsJiraService, jiraService) {
             var vm = this;
 
             var initView = function () {
@@ -30,6 +31,7 @@ angular
 
                 // load authors
                 loadAuthors();
+                loadStaff();
             };
 
             var loadProjects = function () {
@@ -42,12 +44,27 @@ angular
             };
 
             var loadAuthors = function () {
+                var jiraConfig = jiraService.getJiraConfig();
+                var groupName = jiraConfig['author-group'];
                 vm.loadingAuthors = true;
-                return crsJiraService.getAuthorUsers(0, 50, true, []).then(function (users) {
+                return crsJiraService.getAuthorUsers(0, 50, true, [], groupName).then(function (users) {
                     vm.authors = users;
 
                     return users;
                 }).finally(function () {
+                    vm.loadingAuthors = false;
+                });
+            };
+
+            var loadStaff = function() {
+                var jiraConfig = jiraService.getJiraConfig();
+                var groupName = jiraConfig['staff-group'];
+                vm.loadingAuthors = true;
+                return crsJiraService.getAuthorUsers(0, 50, true, [], groupName).then(function(users) {
+                    vm.staffs = users;
+
+                    return users;
+                }).finally(function() {
                     vm.loadingAuthors = false;
                 });
             };
@@ -62,6 +79,22 @@ angular
                             return $sce.trustAsHtml([
                                 '<img src="' + vm.authors[i].avatarUrls['16x16'] + '"/>',
                                 '<span style="vertical-align:middle">&nbsp;' + vm.authors[i].displayName + '</span>'
+                            ].join(''));
+                        }
+                    }
+                }
+            };
+
+            var getStaffName = function(staffKey) {
+                if (!vm.staffs || vm.staffs.length === 0) {
+                    return staffKey;
+                } else {
+                    for (var i = 0; i < vm.staffs.length; i++) {
+                        if (vm.staffs[i].key === staffKey) {
+                            //return vm.authors[i].displayName;
+                            return $sce.trustAsHtml([
+                                '<img style="padding-bottom:2px" src="' + vm.staffs[i].avatarUrls['16x16'] + '"/>',
+                                '<span style="vertical-align:middle">&nbsp;' + vm.staffs[i].displayName + '</span>'
                             ].join(''));
                         }
                     }
@@ -95,6 +128,27 @@ angular
                 });
             };
 
+            var openAssignRequestToStaffModal = function (selectedRequestIds) {
+                var modalInstance = $uibModal.open({
+                    templateUrl: 'components/request/modal-assign-request-to-staff.html',
+                    controller: 'ModalAssignRequestToStaffCtrl as modal',
+                    resolve: {
+                        staffs: function () {
+                            return vm.staffs;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function (rs) {
+                    notificationService.sendMessage('Assigning requests');
+                    requestService.assignRequestsToStaff(selectedRequestIds, ((rs.assignee)?rs.assignee.key:null)).then(function () {
+                        notificationService.sendMessage('Request assigned successfully', 5000);
+                        vm.selectedRequests = {checked: false, items: {}, requests: {}};
+                        requestTableParams.reload();
+                    });
+                });
+            };
+
             var assignSelectedRequests = function () {
                 var selectedRequests = vm.selectedRequests,
                     selectedRequestIds = [],
@@ -113,6 +167,22 @@ angular
                             defaultSummary = selectedRequests.requests[selectedRequestIds[0]].additionalFields.topic;
                         }
                         openAssignRequestModal(selectedRequestIds, defaultSummary);
+                    }
+                }
+            };
+
+            var assignSelectedRequestsToStaff = function () {
+                var selectedRequests = vm.selectedRequests,
+                    selectedRequestIds = [];
+                if(selectedRequests && selectedRequests.items) {
+                    angular.forEach(selectedRequests.items, function (isSelected, requestId) {
+                        if (isSelected) {
+                            selectedRequestIds.push(requestId);
+                        }
+                    });
+
+                    if (selectedRequestIds.length > 0) {
+                        openAssignRequestToStaffModal(selectedRequestIds);
                     }
                 }
             };
@@ -164,8 +234,10 @@ angular
 
             vm.tableParams = requestTableParams;
             vm.assignSelectedRequests = assignSelectedRequests;
+            vm.assignSelectedRequestsToStaff = assignSelectedRequestsToStaff;
             vm.pushSelectedRequest = pushSelectedRequest;
             vm.getAuthorName = getAuthorName;
+            vm.getStaffName = getStaffName;
             vm.toggleShowUnassignedRequests = toggleShowUnassignedRequests;
             vm.isAdmin = false;
             vm.isViewer = false;
@@ -174,6 +246,7 @@ angular
             vm.showUnassignedRequests = false;
             vm.projects = [];
             vm.authors = [];
+            vm.staffs = [];
 
             initView();
         }
