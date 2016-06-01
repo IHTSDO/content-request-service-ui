@@ -13,10 +13,11 @@ angular
                 return crsService.sendGet(requestEndpoint + '/' + requestId + '/comments', null);
             };
 
-            var postComments = function (requestId, comment) {
+            var postComments = function (requestId, comment, isInternal) {
                 var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
                 var data = {
-                    comment: comment
+                    comment: comment,
+                    internal:isInternal
                 };
 
                 return crsService.sendPost(requestEndpoint + '/' + requestId + '/comments', null, data);

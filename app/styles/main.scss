@@ -296,7 +296,7 @@ footer {
 
 .batch-preview-tabs {
   li {
-    width: 16.66666667% !important;
+    /*width: 16.66666667% !important;*/
 
     a {
       border-radius: 0;
@@ -604,7 +604,24 @@ ul.batch-statistic.timeline {
 .filter-relationship:hover{
   background: #ddd;
 }
+
 .dropdown{
-  margin-left: 57%;
+  margin-left: 55%;
   margin-top: -55px;
+  #single-button{
+    min-width: 197px;
+  }
+}
+.modal-body{
+  textarea{
+    resize: vertical !important;
+    max-height: none;
+  }
+}
+.other-type{
+  textarea{
+    resize: vertical !important;
+    min-height: 185px !important;
+    max-height: 100%;
+  }
 }

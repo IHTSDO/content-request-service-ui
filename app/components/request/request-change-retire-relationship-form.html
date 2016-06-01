@@ -33,7 +33,7 @@
           >
           </div>
 
-          <div class="" uib-dropdown is-open="status.isopen" style="width: 50%">
+          <div ng-if="requestVM.isShowFilter" uib-dropdown is-open="status.isopen" style="width: 50%">
             <button id="single-button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled"> <span style="margin" translate= "{{(requestVM.request.characteristicType === 'STATED_RELATIONSHIP'?'crs.request.details.label.statedRel':'crs.request.details.label.inferredRel')}}" ></span><span style="margin-left:10px" class="caret"></span>
             </button>
             <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
