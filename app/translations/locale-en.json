@@ -157,7 +157,7 @@
                         "pendingForClarification": "Pending Clarification",
                         "acceptAndAssign": "Accept and Assign To Author",
                         "assign": "Assign Request",
-                        "assignToStaff": "Assign To Staff"
+                        "assignToStaff": "Accept and Assign To Staff"
                     },
                     "label": {
                         "batchId": "Batch ID",
