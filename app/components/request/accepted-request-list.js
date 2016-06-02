@@ -160,7 +160,13 @@ angular
                             selectedRequestIds.push(requestId);
                         }
                     });
-
+                   
+                    for(var i in selectedRequests.requests){
+                        if(selectedRequests.requests[i].requestHeader.assignee !== null){
+                            notificationService.sendMessage("One or more requests are assigned. Let's remove them out of list and retry.", 5000);
+                            return;
+                        }
+                    }
                     if (selectedRequestIds.length > 0) {
                         if (selectedRequestIds.length === 1 &&
                             selectedRequests.requests) {
@@ -196,6 +202,7 @@ angular
             };
 
             var toggleShowUnassignedRequests = function () {
+                vm.selectedRequests = {checked: false, items: {}, requests: {}};
                 vm.showUnassignedRequests = !vm.showUnassignedRequests;
                 vm.tableParams.reload();
             };
