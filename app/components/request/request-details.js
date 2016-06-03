@@ -1364,51 +1364,55 @@ angular
             };
 
             var assignRequest = function() {
-                var modalInstance = openAssignRequestModal();
+                if (vm.authors.length > 0) {
+                    var modalInstance = openAssignRequestModal();
 
-                modalInstance.result.then(function(rs) {
-                    notificationService.sendMessage('Assigning requests');
-                    requestService.assignRequests([vm.request.id], rs.project.key, ((rs.assignee) ? rs.assignee.key : null), rs.summary).then(function() {
-                        notificationService.sendMessage('Request assigned successfully', 5000);
-                        $location.path(prevPage).search({});
+                    modalInstance.result.then(function(rs) {
+                        notificationService.sendMessage('Assigning requests');
+                        requestService.assignRequests([vm.request.id], rs.project.key, ((rs.assignee) ? rs.assignee.key : null), rs.summary).then(function() {
+                            notificationService.sendMessage('Request assigned successfully', 5000);
+                            $location.path(prevPage).search({});
+                        });
                     });
-                });
+                }
             };
 
             var acceptAndAssignRequest = function() {
-                var modalInstance = openAssignRequestModal();
-
-                modalInstance.result.then(function(rs) {
-                    changeRequestStatus(vm.request.id, REQUEST_STATUS.ACCEPTED)
-                        .then(function() {
-                            return requestService.assignRequests([vm.request.id], rs.project.key, ((rs.assignee) ? rs.assignee.key : null), rs.summary);
-                        }, function(e) {
-                            showErrorMessage(e.message);
-                            $q.reject(e);
-                        })
-                        .then(function() {
-                            notificationService.sendMessage('Request accepted and assigned successfully', 5000);
-                            $location.path(prevPage).search({});
-                        });
-                });
+                if (vm.authors.length > 0) {
+                    var modalInstance = openAssignRequestModal();
+                    modalInstance.result.then(function(rs) {
+                        changeRequestStatus(vm.request.id, REQUEST_STATUS.ACCEPTED)
+                            .then(function() {
+                                return requestService.assignRequests([vm.request.id], rs.project.key, ((rs.assignee) ? rs.assignee.key : null), rs.summary);
+                            }, function(e) {
+                                showErrorMessage(e.message);
+                                $q.reject(e);
+                            })
+                            .then(function() {
+                                notificationService.sendMessage('Request accepted and assigned successfully', 5000);
+                                $location.path(prevPage).search({});
+                            });
+                    });
+                }
             };
 
             var assignRequestToStaff = function() {
-                var modalInstance = openAssignRequestToStaffModal();
-
-                modalInstance.result.then(function(rs) {
-                    changeRequestStatus(vm.request.id, REQUEST_STATUS.ACCEPTED)
-                        .then(function() {
-                            return requestService.assignRequestsToStaff([vm.request.id], ((rs.assignee) ? rs.assignee.key : null));
-                        }, function(e) {
-                            showErrorMessage(e.message);
-                            $q.reject(e);
-                        })
-                        .then(function() {
-                            notificationService.sendMessage('Request accepted and assigned successfully', 5000);
-                            $location.path(prevPage).search({});
-                        });
-                });
+                if (vm.staffs.length > 0) {
+                    var modalInstance = openAssignRequestToStaffModal();
+                    modalInstance.result.then(function(rs) {
+                        changeRequestStatus(vm.request.id, REQUEST_STATUS.ACCEPTED)
+                            .then(function() {
+                                return requestService.assignRequestsToStaff([vm.request.id], ((rs.assignee) ? rs.assignee.key : null));
+                            }, function(e) {
+                                showErrorMessage(e.message);
+                                $q.reject(e);
+                            })
+                            .then(function() {
+                                notificationService.sendMessage('Request accepted and assigned successfully', 5000);
+                                $location.path(prevPage).search({});
+                            });
+                    });
+                }
             };
 
             var rejectRequest = function() {

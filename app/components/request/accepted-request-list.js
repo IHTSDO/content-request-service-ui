@@ -14,14 +14,14 @@ angular
         'scaService',
         'crsJiraService',
         'jiraService',
-        function ($filter, $sce, $uibModal, ngTableParams, requestService, notificationService, accountService, scaService, crsJiraService, jiraService) {
+        function($filter, $sce, $uibModal, ngTableParams, requestService, notificationService, accountService, scaService, crsJiraService, jiraService) {
             var vm = this;
 
-            var initView = function () {
-                vm.selectedRequests = {checked: false, items: {}, requests: {}};
+            var initView = function() {
+                vm.selectedRequests = { checked: false, items: {}, requests: {} };
 
                 // check admin role
-                accountService.checkUserPermission().then(function (rs) {
+                accountService.checkUserPermission().then(function(rs) {
                     vm.isAdmin = (rs.isAdmin === true);
                     vm.isViewer = (rs.isViewer === true);
                 });
@@ -31,27 +31,29 @@ angular
 
                 // load authors
                 loadAuthors();
+
+                //load staffs
                 loadStaff();
             };
 
-            var loadProjects = function () {
+            var loadProjects = function() {
                 vm.loadingProjects = true;
-                scaService.getProjects().then(function (response) {
+                scaService.getProjects().then(function(response) {
                     vm.projects = response;
-                }).finally(function () {
+                }).finally(function() {
                     vm.loadingProjects = false;
                 });
             };
 
-            var loadAuthors = function () {
+            var loadAuthors = function() {
                 var jiraConfig = jiraService.getJiraConfig();
                 var groupName = jiraConfig['author-group'];
                 vm.loadingAuthors = true;
-                return crsJiraService.getAuthorUsers(0, 50, true, [], groupName).then(function (users) {
+                return crsJiraService.getAuthorUsers(0, 50, true, [], groupName).then(function(users) {
                     vm.authors = users;
 
                     return users;
-                }).finally(function () {
+                }).finally(function() {
                     vm.loadingAuthors = false;
                 });
             };
@@ -69,7 +71,7 @@ angular
                 });
             };
 
-            var getAuthorName = function (authorKey) {
+            var getAuthorName = function(authorKey) {
                 if (!vm.authors || vm.authors.length === 0) {
                     return authorKey;
                 } else {
@@ -101,99 +103,103 @@ angular
                 }
             };
 
-            var openAssignRequestModal = function (selectedRequestIds, defaultSummary) {
+            var openAssignRequestModal = function(selectedRequestIds, defaultSummary) {
                 var modalInstance = $uibModal.open({
                     templateUrl: 'components/request/modal-assign-request.html',
                     controller: 'ModalAssignRequestCtrl as modal',
                     resolve: {
-                        authors: function () {
+                        authors: function() {
                             return vm.authors;
                         },
-                        projects: function () {
+                        projects: function() {
                             return vm.projects;
                         },
-                        defaultSummary: function () {
+                        defaultSummary: function() {
                             return defaultSummary;
                         }
                     }
                 });
 
-                modalInstance.result.then(function (rs) {
+                modalInstance.result.then(function(rs) {
                     notificationService.sendMessage('Assigning requests');
-                    requestService.assignRequests(selectedRequestIds, rs.project.key, ((rs.assignee)?rs.assignee.key:null), rs.summary).then(function () {
+                    requestService.assignRequests(selectedRequestIds, rs.project.key, ((rs.assignee) ? rs.assignee.key : null), rs.summary).then(function() {
                         notificationService.sendMessage('Request assigned successfully', 5000);
-                        vm.selectedRequests = {checked: false, items: {}, requests: {}};
+                        vm.selectedRequests = { checked: false, items: {}, requests: {} };
                         requestTableParams.reload();
                     });
                 });
             };
 
-            var openAssignRequestToStaffModal = function (selectedRequestIds) {
+            var openAssignRequestToStaffModal = function(selectedRequestIds) {
                 var modalInstance = $uibModal.open({
                     templateUrl: 'components/request/modal-assign-request-to-staff.html',
                     controller: 'ModalAssignRequestToStaffCtrl as modal',
                     resolve: {
-                        staffs: function () {
+                        staffs: function() {
                             return vm.staffs;
                         }
                     }
                 });
 
-                modalInstance.result.then(function (rs) {
+                modalInstance.result.then(function(rs) {
                     notificationService.sendMessage('Assigning requests');
-                    requestService.assignRequestsToStaff(selectedRequestIds, ((rs.assignee)?rs.assignee.key:null)).then(function () {
+                    requestService.assignRequestsToStaff(selectedRequestIds, ((rs.assignee) ? rs.assignee.key : null)).then(function() {
                         notificationService.sendMessage('Request assigned successfully', 5000);
-                        vm.selectedRequests = {checked: false, items: {}, requests: {}};
+                        vm.selectedRequests = { checked: false, items: {}, requests: {} };
                         requestTableParams.reload();
                     });
                 });
             };
 
-            var assignSelectedRequests = function () {
-                var selectedRequests = vm.selectedRequests,
-                    selectedRequestIds = [],
-                    defaultSummary;
-                if (selectedRequests &&
-                    selectedRequests.items) {
-                    angular.forEach(selectedRequests.items, function (isSelected, requestId) {
-                        if (isSelected) {
-                            selectedRequestIds.push(requestId);
-                        }
-                    });
-                   
-                    for(var i in selectedRequests.requests){
-                        if(selectedRequests.requests[i].requestHeader.assignee !== null){
-                            notificationService.sendMessage("One or more requests are assigned. Let's remove them out of list and retry.", 5000);
-                            return;
-                        }
-                    }
-                    if (selectedRequestIds.length > 0) {
-                        if (selectedRequestIds.length === 1 &&
-                            selectedRequests.requests) {
-                            defaultSummary = selectedRequests.requests[selectedRequestIds[0]].additionalFields.topic;
-                        }
-                        openAssignRequestModal(selectedRequestIds, defaultSummary);
-                    }
-                }
-            };
+            var assignSelectedRequests = function() {
+                if (vm.authors.length > 0) {
+                    var selectedRequests = vm.selectedRequests,
+                        selectedRequestIds = [],
+                        defaultSummary;
+                    if (selectedRequests &&
+                        selectedRequests.items) {
+                        angular.forEach(selectedRequests.items, function(isSelected, requestId) {
+                            if (isSelected) {
+                                selectedRequestIds.push(requestId);
+                            }
+                        });
 
-            var assignSelectedRequestsToStaff = function () {
-                var selectedRequests = vm.selectedRequests,
-                    selectedRequestIds = [];
-                if(selectedRequests && selectedRequests.items) {
-                    angular.forEach(selectedRequests.items, function (isSelected, requestId) {
-                        if (isSelected) {
-                            selectedRequestIds.push(requestId);
+                        for (var i in selectedRequests.requests) {
+                            if (selectedRequests.requests[i].requestHeader.assignee !== null) {
+                                notificationService.sendMessage("One or more requests are assigned. Let's remove them out of list and retry.", 5000);
+                                return;
+                            }
                         }
-                    });
-
-                    if (selectedRequestIds.length > 0) {
-                        openAssignRequestToStaffModal(selectedRequestIds);
+                        if (selectedRequestIds.length > 0) {
+                            if (selectedRequestIds.length === 1 &&
+                                selectedRequests.requests) {
+                                defaultSummary = selectedRequests.requests[selectedRequestIds[0]].additionalFields.topic;
+                            }
+                            openAssignRequestModal(selectedRequestIds, defaultSummary);
+                        }
                     }
                 }
             };
 
-            var pushSelectedRequest = function (event, request) {
+            var assignSelectedRequestsToStaff = function() {
+                if (vm.staffs.length > 0) {
+                    var selectedRequests = vm.selectedRequests,
+                        selectedRequestIds = [];
+                    if (selectedRequests && selectedRequests.items) {
+                        angular.forEach(selectedRequests.items, function(isSelected, requestId) {
+                            if (isSelected) {
+                                selectedRequestIds.push(requestId);
+                            }
+                        });
+
+                        if (selectedRequestIds.length > 0) {
+                            openAssignRequestToStaffModal(selectedRequestIds);
+                        }
+                    }
+                }
+            };
+
+            var pushSelectedRequest = function(event, request) {
                 if (event.target.checked) {
                     vm.selectedRequests.requests[request.id] = request;
                 } else {
@@ -201,43 +207,42 @@ angular
                 }
             };
 
-            var toggleShowUnassignedRequests = function () {
-                vm.selectedRequests = {checked: false, items: {}, requests: {}};
+            var toggleShowUnassignedRequests = function() {
+                vm.selectedRequests = { checked: false, items: {}, requests: {} };
                 vm.showUnassignedRequests = !vm.showUnassignedRequests;
                 vm.tableParams.reload();
             };
 
             var requestTableParams = new ngTableParams({
-                    page: 1,
-                    count: 10,
-                    sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'asc', id: 'asc'}
-                },
-                {
-                    filterDelay: 700,
-                    getData: function (params) {
-                        var sortingObj = params.sorting();
-                        var sortFields = [], sortDirs = [];
+                page: 1,
+                count: 10,
+                sorting: { 'requestHeader.requestDate': 'desc', batchRequest: 'asc', id: 'asc' }
+            }, {
+                filterDelay: 700,
+                getData: function(params) {
+                    var sortingObj = params.sorting();
+                    var sortFields = [],
+                        sortDirs = [];
 
-                        if (sortingObj) {
-                            angular.forEach(sortingObj, function (dir, field) {
-                                sortFields.push(field);
-                                sortDirs.push(dir);
-                            });
-                        }
-
-                        return requestService.getAcceptedRequests(params.page() - 1, params.count(), params.filter().search, sortFields, sortDirs, vm.showUnassignedRequests).then(function (requests) {
-                            params.total(requests.total);
-                            if (requests.items && requests.items.length > 0) {
-                                return requests.items;
-                            } else {
-                                return [];
-                            }
-                        }, function () {
-                            return [];
+                    if (sortingObj) {
+                        angular.forEach(sortingObj, function(dir, field) {
+                            sortFields.push(field);
+                            sortDirs.push(dir);
                         });
                     }
+
+                    return requestService.getAcceptedRequests(params.page() - 1, params.count(), params.filter().search, sortFields, sortDirs, vm.showUnassignedRequests).then(function(requests) {
+                        params.total(requests.total);
+                        if (requests.items && requests.items.length > 0) {
+                            return requests.items;
+                        } else {
+                            return [];
+                        }
+                    }, function() {
+                        return [];
+                    });
                 }
-            );
+            });
 
             vm.tableParams = requestTableParams;
             vm.assignSelectedRequests = assignSelectedRequests;
