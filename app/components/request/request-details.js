@@ -301,11 +301,6 @@ angular
 
                     switch (vm.pageMode) {
                         case REQUEST_MODE.NEW:
-                            // $scope.$watch(function () {
-                            //     return vm.originalConcept;
-                            // }, function () {
-                            //     vm.filterRelationshipType('STATED_RELATIONSHIP');
-                            // });
                             requestId = null;
                             requestType = requestService.identifyRequestType(param);
                             $rootScope.pageTitles = ['crs.request.details.title.new', requestType.langKey];
@@ -386,7 +381,6 @@ angular
                             });
                             break;
                     }
-
                     loadRequestMetadata();
                 }
             };
@@ -680,13 +674,11 @@ angular
                 if (applyChanges) {
                     fsnDesc.definitionOfChanges = {
                         changeId: null,
-                        changeType: REQUEST_TYPE.NEW_DESCRIPTION.value,
                         changed: true
                     };
                 }
 
                 concept.descriptions.push(fsnDesc);
-
                 return null;
             };
 
@@ -833,6 +825,7 @@ angular
                 item.reasonForChange = concept.definitionOfChanges.reasonForChange;
                 item.notes = concept.definitionOfChanges.notes;
                 item.reference = concept.definitionOfChanges.reference;
+                item.namespace = concept.definitionOfChanges.namespace;
 
                 switch (item.requestType) {
                     case REQUEST_TYPE.NEW_CONCEPT.value:
@@ -1010,6 +1003,7 @@ angular
                     item.notes = request.additionalFields.notes;
                     item.reference = request.additionalFields.reference;
                     item.reasonForChange = request.additionalFields.reasonForChange;
+                    item.namespace = request.additionalFields.namespace;
                 }
                 return item;
             };
@@ -1073,6 +1067,7 @@ angular
                 concept.definitionOfChanges.notes = request.additionalFields.notes;
                 concept.definitionOfChanges.reference = request.additionalFields.reference;
                 concept.definitionOfChanges.reasonForChange = request.additionalFields.reasonForChange;
+                concept.definitionOfChanges.namespace = request.additionalFields.namespace;
                 concept.definitionOfChanges.currentFsn = concept.fsn;
             };
 
