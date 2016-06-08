@@ -674,6 +674,7 @@ angular
                 if (applyChanges) {
                     fsnDesc.definitionOfChanges = {
                         changeId: null,
+                        changeType: REQUEST_TYPE.NEW_DESCRIPTION.value,
                         changed: true
                     };
                 }
