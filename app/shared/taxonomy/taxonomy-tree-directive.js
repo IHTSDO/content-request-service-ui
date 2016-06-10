@@ -4,9 +4,10 @@ angular
     .directive('taxonomyTree', [
         '$rootScope',
         '$q',
+        '$uibModal',
         'snowowlService',
         'TAXONOMY_ROOT_NODE',
-        function ($rootScope, $q, snowowlService, TAXONOMY_ROOT_NODE) {
+        function ($rootScope, $q, $uibModal, snowowlService, TAXONOMY_ROOT_NODE) {
             return {
                 restrict: 'A',
                 transclude: false,
@@ -71,6 +72,32 @@ angular
 
                     scope.getProgress = function () {
                         return parseInt(treesDone / treesStarted * 100);
+                    };
+
+                    scope.openConceptInformationModal = function (result) {
+                        $uibModal.open({
+                            templateUrl: 'shared/concept-information/concept-info-modal.html',
+                            controller: 'conceptInfoModalCtrl',
+                            resolve: {
+                                conceptId: function () {
+                                    return result.conceptId;
+                                },
+                                branch: function () {
+                                    return scope.branch;
+                                }
+                            }
+                        });
+
+                        /*modalInstance.result.then(function (response) {
+                            // do nothing
+                        }, function () {
+                            // do nothing
+                        });*/
+                    };
+
+                    scope.getConceptPropertiesObj = function (concept) {
+                        console.debug('Getting concept properties obj', concept);
+                        return {id: concept.conceptId, name: concept.fsn};
                     };
 
                     function mergeTrees() {
