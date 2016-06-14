@@ -46,10 +46,12 @@ angular
             };
 
             var loadAuthors = function() {
+                notificationService.sendMessage('crs.request.message.listLoading');
                 var jiraConfig = jiraService.getJiraConfig();
                 var groupName = jiraConfig['author-group'];
                 vm.loadingAuthors = true;
                 return crsJiraService.getAuthorUsers(0, 50, true, [], groupName).then(function(users) {
+                    notificationService.sendMessage('crs.request.message.listLoaded', 5000);
                     vm.authors = users;
 
                     return users;

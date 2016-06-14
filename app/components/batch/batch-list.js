@@ -7,7 +7,8 @@ angular
         '$filter',
         'ngTableParams',
         'batchService',
-        function ($filter, ngTableParams, batchService) {
+        'notificationService',
+        function ($filter, ngTableParams, batchService, notificationService) {
             var vm = this;
 
             var batchTableParams = new ngTableParams({
@@ -27,9 +28,10 @@ angular
                                 sortDirs.push(dir);
                             });
                         }
-
+                        notificationService.sendMessage('crs.batch.message.listLoading');
                         return batchService.getBatches(params.page() - 1, params.count(), params.filter().search, sortFields, sortDirs).then(function (requests) {
                             params.total(requests.total);
+                            notificationService.sendMessage('crs.batch.message.listLoaded', 5000);
                             if (requests.items && requests.items.length > 0) {
                                 return requests.items;
                             } else {
