@@ -384,6 +384,8 @@
                         "references": "References",
                         "parentId": "Parent ID",
                         "parentFSN": "Parent FSN",
+                        "proposedParentId1": "Parent Id (1)",
+                        "proposedParentId2": "Parent Id (2)",
                         "FSN": "FSN",
                         "semanticTag": "Semantic Tag",
                         "synonym": "Synonym",
