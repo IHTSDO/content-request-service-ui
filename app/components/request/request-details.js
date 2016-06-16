@@ -860,7 +860,7 @@ angular
 
                 switch (item.requestType) {
                     case REQUEST_TYPE.NEW_CONCEPT.value:
-                        // parentConcept = identifyParentConcept(concept);
+                        parentConcept = identifyParentConcept(concept);
                         // item.parentId = (parentConcept) ? parentConcept.id : null;
                         // item.parentFSN = (parentConcept) ? parentConcept.fsn : null;
                         item.proposedFSN = concept.fsn;
