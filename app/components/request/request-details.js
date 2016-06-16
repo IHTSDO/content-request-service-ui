@@ -1321,6 +1321,13 @@ angular
                 }
 
                 requestData = buildRequestData(vm.request, vm.concept);
+                if(vm.requestType === REQUEST_TYPE.NEW_CONCEPT){
+                    for(var i in requestData.requestItems[0].proposedParents){
+                        if(requestData.requestItems[0].proposedParents[i].conceptId === undefined && requestData.requestItems[0].proposedParents[i].fsn === undefined){
+                            requestData.requestItems[0].proposedParents.splice(i, requestData.requestItems[0].proposedParents.length);
+                        }
+                    }
+                }
                 
                 requestService.saveRequest(requestData)
                     .then(function() {
