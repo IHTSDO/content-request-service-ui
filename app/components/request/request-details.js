@@ -424,7 +424,8 @@ angular
                         for(var i in vm.requestItems){
                             for(var j in vm.requestItems[i].proposedParents){
                                 if(vm.requestItems[i].proposedParents[j].fsn === null){
-                                    vm.requestItems[i].proposedParents[j].fsn = vm.requestItems[i].proposedParents[j].conceptId;
+                                    var tmp = vm.requestItems[i].proposedParents[j].conceptId;
+                                    vm.requestItems[i].proposedParents[j].fsn = tmp;
                                 }
                             }
                         }
@@ -1447,7 +1448,7 @@ angular
             };
 
             var acceptAndAssignRequest = function() {
-                if (vm.authors.length > 0) {
+                if (vm.authors.length > 0 && vm.projects.length > 0) {
                     var modalInstance = openAssignRequestModal();
                     modalInstance.result.then(function(rs) {
                         changeRequestStatus(vm.request.id, REQUEST_STATUS.ACCEPTED)
