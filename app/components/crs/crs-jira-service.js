@@ -41,7 +41,7 @@ angular
                         users = users.concat(data.users.items);
 
                         if (getAll === true && data.users['end-index'] !== 0 && data.users['end-index'] < (data.users.size - 1) ) {
-                            return getAuthorUsers(startIndex + count, count, getAll, users);
+                            return getAuthorUsers(startIndex + count, count, getAll, users, groupname);
                         } else {
                             return users;
                         }
