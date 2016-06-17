@@ -154,7 +154,7 @@ angular
             };
 
             var assignSelectedRequests = function() {
-                if (vm.authors.length > 0) {
+                if (vm.authors.length > 0 && vm.projects.length > 0) {
                     var selectedRequests = vm.selectedRequests,
                         selectedRequestIds = [],
                         defaultSummary;
