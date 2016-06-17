@@ -1,5 +1,5 @@
 <div class="table-responsive white">
-    <table ng-table="batchPreviewVM.previewTableParams" template-pagination="layout/template/data-table-pager.html"
+    <table ng-table="batchPreviewVM.previewTableParams" template-pagination="layout/template/review-table-pager.html"
            class="table table-full table-full-small">
         <tr ng-repeat="request in $data" ng-class="{'importing-request-error': request.currentValidationStatus !== null}">
 
@@ -22,11 +22,17 @@
             <td data-title="'crs.batch.preview.requestList.tableHeader.requestorInternalId' | translate" >
                 {{request.requestorInternalId}}
             </td>
-            <td data-title="'crs.batch.preview.requestList.tableHeader.parentId' | translate" >
+            <!-- <td data-title="'crs.batch.preview.requestList.tableHeader.parentId' | translate" >
                 {{request.parentId}}
             </td>
             <td data-title="'crs.batch.preview.requestList.tableHeader.parentFSN' | translate" >
                 {{request.parentFSN}}
+            </td> -->
+            <td data-title="'crs.batch.preview.requestList.tableHeader.proposedParentId1' | translate" >
+                {{request.proposedParentId1}}
+            </td>
+            <td data-title="'crs.batch.preview.requestList.tableHeader.proposedParentId2' | translate" >
+                {{request.proposedParentId2}}
             </td>
             <td data-title="'crs.batch.preview.requestList.tableHeader.FSN' | translate" >
                 {{request.proposedFSN}}

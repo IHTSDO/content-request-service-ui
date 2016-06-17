@@ -54,8 +54,8 @@
                     "create": "Create New Request",
                     "remove": "Remove Selected Requests",
                     "requestorInternalId": "Click to open request editing view",
-                    "assign": "Assign requests to author",
-                    "assignToStaff": "Assign requests to staff",
+                    "assign": "Assign requests to Authoring",
+                    "assignToStaff": "Assign requests to Staff",
                     "batchId": "Click to open batch details view",
                     "conceptFSN": "Click to open request editing view"
                 },
@@ -130,8 +130,8 @@
                     "relationshipStatus": "Relationship Status",
                     "isPt": "Description is PT",
                     "requestDescription": "Description Of Request",
-                    "manager": "Manager"
-
+                    "manager": "Manager",
+                    "namespace": "Namespace"
                 },
                 "tip": {
                     "editConceptHint": "Edit a concept from Saved List or drag and drop concept here"
@@ -384,6 +384,8 @@
                         "references": "References",
                         "parentId": "Parent ID",
                         "parentFSN": "Parent FSN",
+                        "proposedParentId1": "Parent Id (1)",
+                        "proposedParentId2": "Parent Id (2)",
                         "FSN": "FSN",
                         "semanticTag": "Semantic Tag",
                         "synonym": "Synonym",

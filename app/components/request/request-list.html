@@ -29,7 +29,7 @@
                 </div>
             </div>
             <div class="table-responsive white">
-                <table ng-table="vm.tableParams" template-pagination="layout/template/data-table-pager.html"
+                <table ng-table="vm.tableParams" template-pagination="layout/template/review-table-pager.html"
                        class="table table-full table-full-small table-requests">
                     <tr ng-repeat="request in $data" ng-click="dashboard.editRequest(request.id)" class="clickable-row" ng-class="{'row-selected': vm.selectedRequests.items[request.id] === true}">
 
@@ -107,7 +107,7 @@
                 </div>
             </div>
             <div class="table-responsive white">
-                <table ng-table="vm.submittedTableParams" template-pagination="layout/template/data-table-pager.html"
+                <table ng-table="vm.submittedTableParams" template-pagination="layout/template/review-table-pager.html"
                        class="table table-full table-full-small table-requests">
                     <tr ng-repeat="request in $data" ng-click="dashboard.previewRequest(request.id)" class="clickable-row">
                         <!--<td class="col-checkbox" header="'ng-table/headers/checkbox.html'" ng-click="$event.stopPropagation()">

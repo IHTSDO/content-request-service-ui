@@ -3319,10 +3319,17 @@ fieldset[disabled] .navbar-inverse .btn-link:hover {
   font-size: 12px;
 }
 .pager {
-  padding-left: 0;
-  margin: 23px 0;
-  list-style: none;
-  text-align: center;
+  padding: 0;
+  margin: 0;
+  /*margin: 23px 0;*/
+  /*list-style: none;
+  text-align: center;*/
+}
+.pager{
+  .btn{
+    padding: 1px 8px;
+    font-weight: 500;
+  }
 }
 .pager:after,
 .pager:before {

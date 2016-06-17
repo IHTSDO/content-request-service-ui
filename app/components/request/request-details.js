@@ -271,6 +271,7 @@ angular
                     vm.filterRelationshipType(vm.request.characteristicType);
                     vm.reFilterRelationship = true;
                     vm.isShowFilter = true;
+
                 }
             });
 
@@ -301,11 +302,6 @@ angular
 
                     switch (vm.pageMode) {
                         case REQUEST_MODE.NEW:
-                            // $scope.$watch(function () {
-                            //     return vm.originalConcept;
-                            // }, function () {
-                            //     vm.filterRelationshipType('STATED_RELATIONSHIP');
-                            // });
                             requestId = null;
                             requestType = requestService.identifyRequestType(param);
                             $rootScope.pageTitles = ['crs.request.details.title.new', requestType.langKey];
@@ -386,7 +382,6 @@ angular
                             });
                             break;
                     }
-
                     loadRequestMetadata();
                 }
             };
@@ -423,8 +418,17 @@ angular
                 return requestService.getRequest(requestId).then(function(requestData) {
                     // build request
                     vm.request = buildRequestFromRequestData(requestData);
+                   
                     vm.requestItems = requestData.requestItems;
-
+                    if(requestData.requestType === REQUEST_TYPE.NEW_CONCEPT.value){
+                        for(var i in vm.requestItems){
+                            for(var j in vm.requestItems[i].proposedParents){
+                                if(vm.requestItems[i].proposedParents[j].fsn === null){
+                                    vm.requestItems[i].proposedParents[j].fsn = vm.requestItems[i].proposedParents[j].conceptId;
+                                }
+                            }
+                        }
+                    }
                     // get original concept
                     if (requestData.requestType === REQUEST_TYPE.NEW_CONCEPT.value) {
                         originConcept = objectService.getNewConcept();
@@ -502,6 +506,14 @@ angular
                                 fsn: (relationship.target && relationship.target.fsn) ? relationship.target.fsn : null
                             };
 
+                            // request.parentConcept = [];
+                            // for(var i in requestData.requestItems[0].proposedParents){
+                            //     var obj = {};
+                            //     obj = requestData.requestItems[0].proposedParents[i];
+                            //     request.parentConcept.push(obj);
+                            // }
+                            // concept.relationships = concept.relationships.concat(arr);
+
                             break;
                         }
                     }
@@ -517,8 +529,19 @@ angular
                     concept.relationships = [];
                 }
 
-                isaRelationship.target = parentConcept;
-                concept.relationships.push(isaRelationship);
+                if(vm.requestType === REQUEST_TYPE.NEW_CONCEPT){
+                    var arr = [];
+                    for(var i=0;i<parentConcept.length;i++){
+                        var obj = angular.copy(isaRelationship);
+                        obj.target.conceptId = parentConcept[i].conceptId;
+                        obj.target.fsn = parentConcept[i].fsn;
+                        arr.push(obj);
+                    }
+                    concept.relationships = concept.relationships.concat(arr);
+                }else{
+                    isaRelationship.target = parentConcept;
+                    concept.relationships.push(isaRelationship);
+                }
             };
 
             var injectRelationship = function(concept, relationshipType, destinationConcept, characteristicType, refinability, applyChanges) {
@@ -686,7 +709,6 @@ angular
                 }
 
                 concept.descriptions.push(fsnDesc);
-
                 return null;
             };
 
@@ -823,6 +845,7 @@ angular
             };
 
             var buildRequestWorkItem = function(concept, definitionOfChanges, changedTarget) {
+
                 var item = {};
                 var parentConcept, isDescriptionPT = false;
 
@@ -833,16 +856,25 @@ angular
                 item.reasonForChange = concept.definitionOfChanges.reasonForChange;
                 item.notes = concept.definitionOfChanges.notes;
                 item.reference = concept.definitionOfChanges.reference;
+                item.namespace = concept.definitionOfChanges.namespace;
 
                 switch (item.requestType) {
                     case REQUEST_TYPE.NEW_CONCEPT.value:
                         parentConcept = identifyParentConcept(concept);
-                        item.parentId = (parentConcept) ? parentConcept.id : null;
-                        item.parentFSN = (parentConcept) ? parentConcept.fsn : null;
+                        // item.parentId = (parentConcept) ? parentConcept.id : null;
+                        // item.parentFSN = (parentConcept) ? parentConcept.fsn : null;
                         item.proposedFSN = concept.fsn;
                         item.conceptPT = extractConceptPT(concept);
                         item.proposedSynonyms = extractConceptSynonyms(concept, item.conceptPT, true);
                         item.proposedDefinitions = extractConceptDefinitions(concept, true);
+                        item.proposedParents = [];
+                        for(var i=0;i<changedTarget.parentConcept.length;i++){
+                            var obj = {};
+                            obj.conceptId = changedTarget.parentConcept[i].conceptId;
+                            obj.fsn = changedTarget.parentConcept[i].fsn;
+                            obj.refType = 'EXISTING';
+                            item.proposedParents.push(obj);
+                        }
                         break;
 
                     case REQUEST_TYPE.CHANGE_RETIRE_CONCEPT.value:
@@ -922,10 +954,16 @@ angular
                         //mainItem = requestItems[0];
 
                         //parentConcept = identifyParentConcept(concept);
-                        request.parentConcept = {
-                            conceptId: mainItem.parentId,
-                            fsn: mainItem.parentFSN
-                        };
+                        // request.parentConcept = {
+                        //     conceptId: mainItem.parentId,
+                        //     fsn: mainItem.parentFSN
+                        // };
+                        request.parentConcept = [];
+                        for(var i in requestData.requestItems[0].proposedParents){
+                            var obj = {};
+                            obj = requestData.requestItems[0].proposedParents[i];
+                            request.parentConcept.push(obj);
+                        }
 
                         request.proposedFSN = mainItem.proposedFSN;
                         request.conceptPT = mainItem.conceptPT;
@@ -1010,6 +1048,7 @@ angular
                     item.notes = request.additionalFields.notes;
                     item.reference = request.additionalFields.reference;
                     item.reasonForChange = request.additionalFields.reasonForChange;
+                    item.namespace = request.additionalFields.namespace;
                 }
                 return item;
             };
@@ -1038,7 +1077,7 @@ angular
 
                 // check concept changes
                 if (concept.definitionOfChanges && concept.definitionOfChanges.changed === true) {
-                    requestDetails.requestItems.push(buildRequestWorkItem(concept, concept.definitionOfChanges));
+                    requestDetails.requestItems.push(buildRequestWorkItem(concept, concept.definitionOfChanges, request));
                 }
 
                 if (concept.definitionOfChanges.changeType === REQUEST_TYPE.CHANGE_RETIRE_CONCEPT.value) {
@@ -1055,6 +1094,23 @@ angular
                         }
                     });
                 }
+
+                // if(requestDetails.requestItems.length > 1){
+                //     var arr = [];
+                //     for(var i=1;i<requestDetails.requestItems.length;i++){
+                //         var obj = angular.copy(requestDetails.requestItems[i]);
+                //         obj.requestType = REQUEST_TYPE.NEW_RELATIONSHIP.value;
+                //         for(var j=0; j<concept.relationships.length; j++){
+                //             if(requestDetails.requestItems[i].relationshipId === concept.relationships[j].relationshipId){
+                //                 obj.destConceptId = concept.relationships[j].target.conceptId;
+                //                 obj.relationshipType = concept.relationships[j].type.conceptId;
+                //             }
+                //         }
+                //         arr.push(obj);
+                //     }
+                //     requestDetails.requestItems = requestDetails.requestItems.concat(arr);
+                // }
+
 
                 return requestDetails;
             };
@@ -1073,6 +1129,7 @@ angular
                 concept.definitionOfChanges.notes = request.additionalFields.notes;
                 concept.definitionOfChanges.reference = request.additionalFields.reference;
                 concept.definitionOfChanges.reasonForChange = request.additionalFields.reasonForChange;
+                concept.definitionOfChanges.namespace = request.additionalFields.namespace;
                 concept.definitionOfChanges.currentFsn = concept.fsn;
             };
 
@@ -1081,6 +1138,9 @@ angular
                     parentConcept;
                 if (vm.originalConcept) {
                     concept = angular.copy(vm.originalConcept);
+                    if(requestType === REQUEST_TYPE.CHANGE_RETIRE_CONCEPT){
+                        concept.fsn = '';
+                    }
 
                     // build definition of changes
                     buildConceptDefinitionOfChange(concept, request);
@@ -1121,6 +1181,8 @@ angular
                                 concept.fsn = request.proposedFSN;
                                 injectConceptFSN(concept, request.proposedFSN, true);
                             }
+
+
                             break;
 
                         case REQUEST_TYPE.NEW_DESCRIPTION:
@@ -1146,7 +1208,7 @@ angular
                             for (var i = 0; i < concept.relationships.length; i++) {
                                 for (var j = 0; j < request.relationshipId.length; j++) {
                                     if (concept.relationships[i].relationshipId === request.relationshipId[j]) {
-                                        concept.relationships[i].active = true;
+                                        concept.relationships[i].active = false;
                                         concept.relationships[i].definitionOfChanges = {
                                             changeId: null,
                                             changeType: REQUEST_TYPE.CHANGE_RETIRE_RELATIONSHIP.value,
@@ -1259,7 +1321,14 @@ angular
                 }
 
                 requestData = buildRequestData(vm.request, vm.concept);
-
+                if(vm.requestType === REQUEST_TYPE.NEW_CONCEPT){
+                    for(var i in requestData.requestItems[0].proposedParents){
+                        if(requestData.requestItems[0].proposedParents[i].conceptId === undefined && requestData.requestItems[0].proposedParents[i].fsn === undefined){
+                            requestData.requestItems[0].proposedParents.splice(i, requestData.requestItems[0].proposedParents.length);
+                        }
+                    }
+                }
+                
                 requestService.saveRequest(requestData)
                     .then(function() {
                         notificationService.sendMessage('crs.request.message.requestSaved', 5000);
@@ -1364,51 +1433,55 @@ angular
             };
 
             var assignRequest = function() {
-                var modalInstance = openAssignRequestModal();
+                if (vm.authors.length > 0) {
+                    var modalInstance = openAssignRequestModal();
 
-                modalInstance.result.then(function(rs) {
-                    notificationService.sendMessage('Assigning requests');
-                    requestService.assignRequests([vm.request.id], rs.project.key, ((rs.assignee) ? rs.assignee.key : null), rs.summary).then(function() {
-                        notificationService.sendMessage('Request assigned successfully', 5000);
-                        $location.path(prevPage).search({});
+                    modalInstance.result.then(function(rs) {
+                        notificationService.sendMessage('Assigning requests');
+                        requestService.assignRequests([vm.request.id], rs.project.key, ((rs.assignee) ? rs.assignee.key : null), rs.summary).then(function() {
+                            notificationService.sendMessage('Request assigned successfully', 5000);
+                            $location.path(prevPage).search({});
+                        });
                     });
-                });
+                }
             };
 
             var acceptAndAssignRequest = function() {
-                var modalInstance = openAssignRequestModal();
-
-                modalInstance.result.then(function(rs) {
-                    changeRequestStatus(vm.request.id, REQUEST_STATUS.ACCEPTED)
-                        .then(function() {
-                            return requestService.assignRequests([vm.request.id], rs.project.key, ((rs.assignee) ? rs.assignee.key : null), rs.summary);
-                        }, function(e) {
-                            showErrorMessage(e.message);
-                            $q.reject(e);
-                        })
-                        .then(function() {
-                            notificationService.sendMessage('Request accepted and assigned successfully', 5000);
-                            $location.path(prevPage).search({});
-                        });
-                });
+                if (vm.authors.length > 0) {
+                    var modalInstance = openAssignRequestModal();
+                    modalInstance.result.then(function(rs) {
+                        changeRequestStatus(vm.request.id, REQUEST_STATUS.ACCEPTED)
+                            .then(function() {
+                                return requestService.assignRequests([vm.request.id], rs.project.key, ((rs.assignee) ? rs.assignee.key : null), rs.summary);
+                            }, function(e) {
+                                showErrorMessage(e.message);
+                                $q.reject(e);
+                            })
+                            .then(function() {
+                                notificationService.sendMessage('Request accepted and assigned successfully', 5000);
+                                $location.path(prevPage).search({});
+                            });
+                    });
+                }
             };
 
             var assignRequestToStaff = function() {
-                var modalInstance = openAssignRequestToStaffModal();
-
-                modalInstance.result.then(function(rs) {
-                    changeRequestStatus(vm.request.id, REQUEST_STATUS.ACCEPTED)
-                        .then(function() {
-                            return requestService.assignRequestsToStaff([vm.request.id], ((rs.assignee) ? rs.assignee.key : null));
-                        }, function(e) {
-                            showErrorMessage(e.message);
-                            $q.reject(e);
-                        })
-                        .then(function() {
-                            notificationService.sendMessage('Request accepted and assigned successfully', 5000);
-                            $location.path(prevPage).search({});
-                        });
-                });
+                if (vm.staffs.length > 0) {
+                    var modalInstance = openAssignRequestToStaffModal();
+                    modalInstance.result.then(function(rs) {
+                        changeRequestStatus(vm.request.id, REQUEST_STATUS.ACCEPTED)
+                            .then(function() {
+                                return requestService.assignRequestsToStaff([vm.request.id], ((rs.assignee) ? rs.assignee.key : null));
+                            }, function(e) {
+                                showErrorMessage(e.message);
+                                $q.reject(e);
+                            })
+                            .then(function() {
+                                notificationService.sendMessage('Request accepted and assigned successfully', 5000);
+                                $location.path(prevPage).search({});
+                            });
+                    });
+                }
             };
 
             var rejectRequest = function() {

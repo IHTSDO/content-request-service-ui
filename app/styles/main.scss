@@ -625,3 +625,41 @@ ul.batch-statistic.timeline {
     max-height: 100%;
   }
 }
+
+/*overwrite taxonomy tree*/
+.angular-ui-tree-node {
+  span{
+    display: inline-block;
+    max-width: 83%;
+    vertical-align: top;
+    line-height: 13px;
+  }
+}
+
+.primitive-buttons, .primitive-buttons:active, .primitive-buttons:focus, .primitive-buttons:hover, .primitive-buttons[disabled]{
+      padding: 0!important;
+    background-color: transparent!important;
+}
+
+.badge.alert-warning{
+  font-weight: 400;
+    font-size: 15px!important;
+    text-align: center;
+    padding: 0 0 7px 3px;
+    width: 17px;
+    height: 17px;
+    line-height: 19px;
+    border-radius: 50%;
+    margin: 0;
+    color: #fff;
+}
+
+.alert-warning {
+    background-color: #ffab40;
+    background-image: none;
+}
+
+.m-t-7{
+  margin-top: 7px;
+}
+/*end overwrite taxonomy tree*/

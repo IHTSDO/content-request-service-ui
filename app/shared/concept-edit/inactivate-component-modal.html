@@ -105,7 +105,7 @@
 
       <!-- children -->
       <div role="tabpanel" class="tab-pane" ng-class="{active: actionTab==2}">
-        <table ng-table="tableParamsChildren" template-pagination="layout/template/data-table-pager.html"
+        <table ng-table="tableParamsChildren" template-pagination="layout/template/review-table-pager.html"
                class="table table-full table-full-small">
           <tr ng-repeat="item in $data">
             <td data-title="'FSN'" sortable="'sourceFsn'">
@@ -118,7 +118,7 @@
       <div role="tabpanel" class="tab-pane" ng-class="{active: actionTab==3}">
         <div ng-show="descendants.total > 200" class="alert alert-warning">Limiting displayed results to {{200}} items
         </div>
-        <table ng-table="tableParamsDescendants" template-pagination="layout/template/data-table-pager.html"
+        <table ng-table="tableParamsDescendants" template-pagination="layout/template/review-table-pager.html"
                class="table table-full table-full-small">
           <tr ng-repeat="item in $data">
             <td data-title="'FSN'" sortable="'fsn'">
@@ -130,7 +130,7 @@
 
       <!-- all inbound relationships -->
       <div role="tabpanel" class="tab-pane" ng-class="{active: actionTab==4}">
-        <table ng-table="tableParamsInboundRelationships" template-pagination="layout/template/data-table-pager.html"
+        <table ng-table="tableParamsInboundRelationships" template-pagination="layout/template/review-table-pager.html"
                class="table table-full table-full-small">
           <tr ng-repeat="item in $data">
             <td data-title="'characteristicType'" sortable="'characteristicType'">
