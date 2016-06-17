@@ -9,6 +9,7 @@
 <!-- Edit View:  No sidebar -- Task View Only -->
 <button type="button" ng-class="{'lighten-2' : requestVM.inputMode.value === 'DIRECT', 'darken-3': requestVM.inputMode.value !== 'DIRECT'}"
         class="btn btn-default widget-toolbar blue tooltips-right tooltips-light normal-case"
-        ng-click="requestVM.setInputMode('DIRECT')">
+        ng-click="requestVM.setInputMode('DIRECT')"
+        ng-disabled="requestVM.disableDirectMode">
     <div class="md md-web "></div>
     <span translate="crs.request.inputMode.direct"></span></button>

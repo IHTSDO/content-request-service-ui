@@ -1,5 +1,5 @@
 {
-    "version": "0.1.5",
+    "version": "0.1.10-SNAPSHOT",
     "endpoint": {
         "crs": "https://uat-request.ihtsdotools.org/ihtsdo-crs/",
         "ims": "https://uat-ims.ihtsdotools.org/",
@@ -23,7 +23,8 @@
             "path": "rest/api/",
             "version": "2"
         },
-        "author-group": "ihtsdo-sca-author"
+        "author-group": "ihtsdo-sca-author",
+        "staff-group": "crs-staff"
     },
     "userRole": {
         "ADMINISTRATOR": "ROLE_crs-administrator",

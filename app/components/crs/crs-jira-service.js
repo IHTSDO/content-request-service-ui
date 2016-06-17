@@ -7,7 +7,7 @@ angular
         'jiraService',
         'CRS_API_ENDPOINT',
         function (crsService, jiraService, CRS_API_ENDPOINT) {
-            var getAuthorUsers = function (startIndex, count, getAll, users) {
+            var getAuthorUsers = function (startIndex, count, getAll, users, groupName) {
                 var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
 
                 if (!users) {
@@ -22,9 +22,8 @@ angular
                 };
 
                 var buildParams = function (ind, size) {
-                    var jiraConfig = jiraService.getJiraConfig();
                     var params = {
-                        groupname: jiraConfig['author-group'],
+                        groupname: groupName,
                         expand: 'users'
                     };
 

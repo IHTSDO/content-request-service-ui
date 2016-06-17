@@ -11,7 +11,8 @@ angular
         'requestService',
         'notificationService',
         'accountService',
-        function ($filter, $sce, crsJiraService, ngTableParams, requestService, notificationService, accountService) {
+        'jiraService',
+        function ($filter, $sce, crsJiraService, ngTableParams, requestService, notificationService, accountService, jiraService) {
             var vm = this;
 
             var initView = function () {
@@ -35,8 +36,10 @@ angular
             };
 
             var loadAuthors = function () {
+                var jiraConfig = jiraService.getJiraConfig();
+                var groupName = jiraConfig['author-group'];
                 vm.loadingAuthors = true;
-                return crsJiraService.getAuthorUsers(0, 50, true, []).then(function (users) {
+                return crsJiraService.getAuthorUsers(0, 50, true, [], groupName).then(function (users) {
                     vm.authors = users;
 
                     return users;
@@ -55,6 +58,22 @@ angular
                             return $sce.trustAsHtml([
                                     '<img src="' + vm.authors[i].avatarUrls['16x16'] + '"/>',
                                     '<span style="vertical-align:middle">&nbsp;' + vm.authors[i].displayName + '</span>'
+                            ].join(''));
+                        }
+                    }
+                }
+            };
+
+            var getStaffName = function (staffKey) {
+                if (!vm.staffs || vm.staffs.length === 0) {
+                    return staffKey;
+                } else {
+                    for (var i = 0; i < vm.staffs.length; i++) {
+                        if (vm.staffs[i].key === staffKey) {
+                            //return vm.authors[i].displayName;
+                            return $sce.trustAsHtml([
+                                    '<img src="' + vm.staffs[i].avatarUrls['16x16'] + '"/>',
+                                    '<span style="vertical-align:middle">&nbsp;' + vm.staffs[i].displayName + '</span>'
                             ].join(''));
                         }
                     }
@@ -164,6 +183,7 @@ angular
             vm.loadingAuthors = true;
             vm.removeSelectedRequests = removeSelectedRequests;
             vm.getAuthorName = getAuthorName;
+            vm.getStaffName = getStaffName;
 
             initView();
         }

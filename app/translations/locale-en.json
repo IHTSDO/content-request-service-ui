@@ -54,7 +54,8 @@
                     "create": "Create New Request",
                     "remove": "Remove Selected Requests",
                     "requestorInternalId": "Click to open request editing view",
-                    "assign": "Assign requests to author",
+                    "assign": "Assign requests to Authoring",
+                    "assignToStaff": "Assign requests to Staff",
                     "batchId": "Click to open batch details view",
                     "conceptFSN": "Click to open request editing view"
                 },
@@ -78,7 +79,9 @@
                     "project": "Project",
                     "validationResult": "Validation Result",
                     "originator": "Created By",
-                    "createdDate": "Created On"
+                    "createdDate": "Created On",
+                    "requestDescription": "Descripion of Request",
+                    "manager": "Manager"
                 }
             },
             "details": {
@@ -125,8 +128,10 @@
                     "proposedCaseSignificance": "New Case Significance",
                     "descriptionStatus": "New Description Status",
                     "relationshipStatus": "Relationship Status",
-                    "isPt": "Description is PT"
-
+                    "isPt": "Description is PT",
+                    "requestDescription": "Description Of Request",
+                    "manager": "Manager",
+                    "namespace": "Namespace"
                 },
                 "tip": {
                     "editConceptHint": "Edit a concept from Saved List or drag and drop concept here"
@@ -150,8 +155,9 @@
                         "appeal": "Appeal Rejection",
                         "withdraw": "Withdraw Request",
                         "pendingForClarification": "Pending Clarification",
-                        "acceptAndAssign": "Accept and Assign",
-                        "assign": "Assign Request"
+                        "acceptAndAssign": "Accept and Assign To Author",
+                        "assign": "Assign Request",
+                        "assignToStaff": "Accept and Assign To Staff"
                     },
                     "label": {
                         "batchId": "Batch ID",
@@ -159,7 +165,8 @@
                         "status": "Status",
                         "lastModified": "Last Modified Date",
                         "createdDate": "Created Date",
-                        "originator": "Created By"
+                        "originator": "Created By",
+                        "manager": "Manager"
                     }
                 }
             },
@@ -178,6 +185,7 @@
             },
             "assignModal": {
                 "title": "Assign Requests to Authoring Task",
+                "assignToStaffTitle": "Assign Requests to Staff",
                 "project": {
                     "label": "Project"
                 },
@@ -244,7 +252,8 @@
                 "newRelationship": "New Relationship",
                 "changeRetireConcept": "Change or Retire Concept",
                 "changeRetireDescription": "Change or Retire Description",
-                "changeRetireRelationship": "Change or Retire Relationship"
+                "changeRetireRelationship": "Change or Retire Relationship",
+                "other": "Other"
             },
             "inputMode": {
                 "simple": "Simple",
@@ -375,6 +384,8 @@
                         "references": "References",
                         "parentId": "Parent ID",
                         "parentFSN": "Parent FSN",
+                        "proposedParentId1": "Parent Id (1)",
+                        "proposedParentId2": "Parent Id (2)",
                         "FSN": "FSN",
                         "semanticTag": "Semantic Tag",
                         "synonym": "Synonym",
@@ -404,7 +415,8 @@
                         "newRelationshipStatus": "Proposed New Relationship Status",
                         "validationResult": "Validation Result",
                         "originator": "Created By",
-                        "createdDate": "Created On"
+                        "createdDate": "Created On",
+                        "requestDescription": "Description of Request"
                     }
                 }
             }

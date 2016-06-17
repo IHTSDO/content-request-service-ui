@@ -141,6 +141,20 @@ angular.module('conceptRequestServiceApp.request')
                 }
             };
 
+            var assignRequestsToStaff = function (requestList, assigneeKey) {
+                var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
+                var params;
+
+                if (requestList !== undefined &&
+                    requestList !== null) {
+                    params = {
+                        requests: requestList,
+                        assignee: assigneeKey
+                    };
+
+                    return crsService.sendPut(requestEndpoint + '/assign/staff', params, null);
+                }
+            };
 
             return {
                 identifyRequestType: identifyRequestType,
@@ -153,6 +167,7 @@ angular.module('conceptRequestServiceApp.request')
                 submitRequest: submitRequest,
                 removeRequests: removeRequests,
                 assignRequests: assignRequests,
+                assignRequestsToStaff: assignRequestsToStaff,
                 changeRequestStatus: changeRequestStatus
             };
 

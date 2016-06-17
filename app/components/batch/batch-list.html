@@ -17,16 +17,18 @@
                         <button type="button" class="btn btn-round btn-info ng-scope " title="{{'crs.batch.list.tip.count' | translate}}" title="Total Batch Count">
                             {{vm.tableParams.total()}} <div class="ripple-wrapper"></div>
                         </button>
-                        <button type="button" class="btn btn-round btn-default " title="{{'crs.batch.list.tip.create' | translate}}" ng-click="dashboard.openBatchImportModal()">
-                            <span class="md md-add"></span>
-                            <div class="ripple-wrapper"></div>
-                        </button>
+                        <a href="#/batches/preview">
+                            <button type="button" class="btn btn-round btn-default " title="{{'crs.batch.list.tip.create' | translate}}" ng-click="dashboard.openBatchImportModal()">
+                                <span class="md md-add"></span>
+                                <div class="ripple-wrapper"></div>
+                            </button>
+                            </a>
                     </div>
                 </div>
             </div>
 
             <div class="table-responsive white">
-                <table ng-table="vm.tableParams" template-pagination="layout/template/data-table-pager.html"
+                <table ng-table="vm.tableParams" template-pagination="layout/template/review-table-pager.html"
                        class="table table-full table-full-small">
                     <tr ng-repeat="batch in $data" ng-click="dashboard.showBatchDetails(batch.id)" class="clickable-row">
 

@@ -856,7 +856,6 @@ angular
 
                     // Three possible values, cycle through them on toggle
                     scope.toggleCaseSignificance = function (description) {
-
                         if (description.caseSignificance === 'CASE_INSENSITIVE') {
                             description.caseSignificance = 'INITIAL_CHARACTER_CASE_INSENSITIVE';
                         } else if (description.caseSignificance === 'INITIAL_CHARACTER_CASE_INSENSITIVE') {
@@ -1272,6 +1271,7 @@ angular
 
                             modalInstance.result.then(function (results) {
                                 changeTarget.definitionOfChanges = results;
+                                scope.conceptHistoryPtr++;
                                 deferred.resolve(results);
                             }, function () {
                                 deferred.reject();
@@ -2020,10 +2020,14 @@ angular
                         }
                     }, true);
 
-                    scope.$watch('conceptHistoryPtr', function (newVal) {
-                        if (scope.onConceptChanged) {
-                            scope.onConceptChanged({historyCount: newVal});
-                        }
+                    scope.$on('ngRepeatFinished', function () {
+                        $timeout(function () {
+                            scope.$watch('conceptHistoryPtr', function (newVal, oldValue ) {
+                                if (scope.onConceptChanged && newVal !== oldValue) {
+                                    scope.onConceptChanged({historyCount: newVal});
+                                }
+                            });
+                        }, 500);
                     });
 
                     scope.getConceptsForAttributeTypeahead = function (searchStr) {

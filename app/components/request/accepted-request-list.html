@@ -24,6 +24,11 @@
                         <button type="button" class="btn btn-round btn-info ng-scope " title="{{'crs.request.list.tip.count' | translate}}" >
                             {{vm.tableParams.total()}} <div class="ripple-wrapper"></div>
                         </button>
+                        <button ng-disabled="vm.loadingProjects || vm.loadingAuthors" type="button" class="btn btn-round btn-default " title="{{'crs.request.list.tip.assignToStaff' | translate}}" ng-click="vm.assignSelectedRequestsToStaff()">
+                            <span class="md md-assignment-ind"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
+
                         <button ng-disabled="vm.loadingProjects || vm.loadingAuthors" type="button" class="btn btn-round btn-default " title="{{'crs.request.list.tip.assign' | translate}}" ng-click="vm.assignSelectedRequests()">
                             <span class="md md-content-paste"></span>
                             <div class="ripple-wrapper"></div>
@@ -32,7 +37,7 @@
                 </div>
             </div>
             <div class="table-responsive white">
-                <table ng-table="vm.tableParams" template-pagination="layout/template/data-table-pager.html"
+                <table ng-table="vm.tableParams" template-pagination="layout/template/review-table-pager.html"
                        class="table table-full table-full-small table-requests">
                     <tr ng-repeat="request in $data" ng-click="dashboard.previewRequest(request.id)" class="clickable-row" ng-class="{'row-selected': vm.selectedRequests.items[request.id] === true}">
 
@@ -57,6 +62,11 @@
                         </td>-->
                         <td data-title="'crs.request.list.tableHeader.topic' | translate" sortable="'additionalFields.topic'" >
                             {{(request.additionalFields)?request.additionalFields.topic:''}}
+                        </td>
+            
+                        <td data-title="'crs.request.list.tableHeader.manager' | translate" sortable="'requestHeader.manager'" style="min-width: 150px">
+                            <span ng-show="vm.loadingAuthors" class="md md-autorenew" ng-class="{'md-spin':vm.loadingAuthors}"></span>
+                            <div ng-bind-html="vm.getStaffName(request.requestHeader.manager)"></div>
                         </td>
 
                         <td data-title="'crs.request.list.tableHeader.originator' | translate" sortable="'requestHeader.ogirinatorId'" style="min-width: 150px">

@@ -5,12 +5,24 @@ angular
     ])
     .directive('formControl', [
         function () {
-            var buildConceptInputControl = function (name, model, onConceptChanged, readonlyExp, conceptStatusExp) {
-                return '<concept-input concept="' + model + '"' +
+            var buildConceptInputControl = function (name, model, onConceptChanged, isMulti, readonlyExp, conceptStatusExp) {
+                var elementHtml = '';
+                if (isMulti) {
+                    // elementHtml += '<multi-concept-input models="' + model + '" ' + ((readonlyExp)?'readonly="' + readonlyExp +'"':'') + ' readonly=""></multi-concept-input>';
+                    elementHtml += '<multi-concept-input models="' + model + '"' +
+                    (onConceptChanged?' on-concept-changed="'+ onConceptChanged + '"': '') +
+                    ((readonlyExp)?' readonly="' + readonlyExp +'" ':'') +
+                    ((conceptStatusExp)?' concept-status="' + conceptStatusExp +'"':'') +
+                    ' ></multi-concept-input>';
+                } else {
+                    elementHtml += '<concept-input concept="' + model + '"' +
                     (onConceptChanged?' on-concept-changed="'+ onConceptChanged + '"': '') +
                     ((readonlyExp)?' readonly="' + readonlyExp +'" ':'') +
                     ((conceptStatusExp)?' concept-status="' + conceptStatusExp +'"':'') +
                     ' ></concept-input>';
+                }
+                 
+                    return elementHtml;
             };
 
             var buildAttributeValueInputControl = function (name, domainAttribute, model, onConceptChanged, readonlyExp, conceptStatusExp) {
@@ -154,6 +166,7 @@ angular
                                 $attrs.name,
                                 $attrs.model,
                                 $attrs.onConceptChanged,
+                                (multi === 'true'),
                                 $attrs.readonly,
                                 $attrs.conceptStatus);
                             break;

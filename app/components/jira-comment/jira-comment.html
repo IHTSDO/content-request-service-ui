@@ -4,12 +4,20 @@
     <div class="comment-container" >
         <div ng-repeat="comment in ctrl.comments track by comment.id" class="comment-item">
             <div class="comment-head">
-                <div class="comment-details">
+                <div class="comment-details" ng-if="comment.internal === false">
                     <a class="user-avatar" >
                         <img ng-src="{{comment.user.avatarUrls['16x16']}}" alt="comment.user.name" />
                         <span class="user-name">{{comment.user.displayName}}</span>
                     </a>
                     <span>added a comment on</span>
+                    <span class="comment-date">{{comment.createDate | date:'MM-dd-yyyy H:mm:ss'}}</span>
+                </div>
+                <div class="comment-details" ng-if="comment.internal === true">
+                    <a class="user-avatar" >
+                        <img ng-src="{{comment.user.avatarUrls['16x16']}}" alt="comment.user.name" />
+                        <span class="user-name">{{comment.user.displayName}}</span>
+                    </a>
+                    <span>added an<span style="color: #5cb85c"> internal comment </span>on</span>
                     <span class="comment-date">{{comment.createDate | date:'MM-dd-yyyy H:mm:ss'}}</span>
                 </div>
             </div>
@@ -30,6 +38,14 @@
                 </button>
                 </a>
             </div>
+        </div>
+        <div class="row">
+            <div class="form-control-element">
+            <input type="checkbox"
+                   ng-model="ctrl.internalComment"
+                   name="chkIsPT">
+            <label>Internal Comment</label>
+        </div>
         </div>
     </form>
 </div>
