@@ -1,5 +1,5 @@
 {
-    "version": "0.1.9-SNAPSHOT",
+    "version": "0.1.10-SNAPSHOT",
     "endpoint": {
         "crs": "http://local.ihtsdotools.org/crs/",
         "ims": "https://dev-ims.ihtsdotools.org/",
