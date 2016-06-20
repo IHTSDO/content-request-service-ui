@@ -869,13 +869,16 @@ angular
                         item.proposedSynonyms = extractConceptSynonyms(concept, item.conceptPT, true);
                         item.proposedDefinitions = extractConceptDefinitions(concept, true);
                         item.proposedParents = [];
-                        for(var i=0;i<changedTarget.parentConcept.length;i++){
-                            var obj = {};
-                            obj.conceptId = changedTarget.parentConcept[i].conceptId;
-                            obj.fsn = changedTarget.parentConcept[i].fsn;
-                            obj.refType = 'EXISTING';
-                            item.proposedParents.push(obj);
+                        if(changedTarget.parentConcept){
+                            for(var i=0;i<changedTarget.parentConcept.length;i++){
+                                var obj = {};
+                                obj.conceptId = changedTarget.parentConcept[i].conceptId;
+                                obj.fsn = changedTarget.parentConcept[i].fsn;
+                                obj.refType = 'EXISTING';
+                                item.proposedParents.push(obj);
+                            }
                         }
+                        
                         break;
 
                     case REQUEST_TYPE.CHANGE_RETIRE_CONCEPT.value:
