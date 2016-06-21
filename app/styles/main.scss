@@ -627,13 +627,11 @@ ul.batch-statistic.timeline {
 }
 
 /*overwrite taxonomy tree*/
-.angular-ui-tree-node {
-  span{
+.angular-ui-tree-node .fsn-node{
     display: inline-block;
     max-width: 83%;
     vertical-align: top;
     line-height: 13px;
-  }
 }
 
 .primitive-buttons, .primitive-buttons:active, .primitive-buttons:focus, .primitive-buttons:hover, .primitive-buttons[disabled]{

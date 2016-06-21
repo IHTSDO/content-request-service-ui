@@ -27,7 +27,8 @@ angular
         'REQUEST_STATUS',
         'REQUEST_INPUT_MODE',
         'jiraService',
-        function($scope, $rootScope, $routeParams, $location, $anchorScroll, $uibModal, $sce, $q, requestService, notificationService, requestMetadataService, objectService, snowowlService, snowowlMetadataService, crsJiraService, scaService, accountService, REQUEST_METADATA_KEY, REQUEST_TYPE, CONCEPT_EDIT_EVENT, REQUEST_STATUS, REQUEST_INPUT_MODE, jiraService) {
+        '$timeout',
+        function($scope, $rootScope, $routeParams, $location, $anchorScroll, $uibModal, $sce, $q, requestService, notificationService, requestMetadataService, objectService, snowowlService, snowowlMetadataService, crsJiraService, scaService, accountService, REQUEST_METADATA_KEY, REQUEST_TYPE, CONCEPT_EDIT_EVENT, REQUEST_STATUS, REQUEST_INPUT_MODE, jiraService, $timeout) {
             var vm = this;
             var REQUEST_MODE = {
                 NEW: { value: 'new', langKey: 'crs.request.requestMode.newRequest' },
@@ -273,6 +274,13 @@ angular
                     vm.isShowFilter = true;
 
                 }
+            });
+
+            $scope.$on('viewTaxonomy', function() {
+                vm.actionTab = 1;
+                $timeout(function(){
+                    angular.element('.sidebar-tabs>li>a').eq(0).click();
+                });
             });
 
             var initView = function() {
