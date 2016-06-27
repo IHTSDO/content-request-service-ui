@@ -48,6 +48,7 @@ angular
                      * Gets and sets the children for a tree node
                      * @param node The parent node
                      */
+
                     scope.getAndSetChildren = function (node) {
                         snowowlService.getConceptChildren(null, null, node.conceptId).then(function (children) {
                                 if (!children) {
@@ -73,6 +74,10 @@ angular
                     scope.getProgress = function () {
                         return parseInt(treesDone / treesStarted * 100);
                     };
+
+                    scope.$on('viewTaxonomy', function(event, data) {
+                        scope.rootConcept = data.concept;
+                    });
 
                     scope.openConceptInformationModal = function (result) {
                         $uibModal.open({

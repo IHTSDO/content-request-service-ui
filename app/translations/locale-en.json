@@ -66,7 +66,7 @@
                 },
                 "tableHeader": {
                     "batchId": "Batch ID",
-                    "requestorInternalId": "Requestor Interal ID",
+                    "requestorInternalId": "Local Code",
                     "ticketId": "Request ID",
                     "description": "Description",
                     "lastModified": "Last Modified",
@@ -97,7 +97,7 @@
                 },
                 "label": {
                     "topic": "Topic",
-                    "requestorInternalId": "Requestor Internal ID",
+                    "requestorInternalId": "Local Code",
                     "proposedFSN": "New Concept FSN",
                     "parentConcept": "Parent Concept",
                     "concept": "Concept",
@@ -106,7 +106,7 @@
                     "conceptPT": "Preferred Term",
                     "proposedSynonym": "Synonym(s)",
                     "proposedDefinition": "Definition",
-                    "reasonForChange": "Reason for Request",
+                    "reasonForChange": "Justification",
                     "reference": "Reference",
                     "description": "Description",
                     "descriptionId": "Description ID",
@@ -131,7 +131,16 @@
                     "isPt": "Description is PT",
                     "requestDescription": "Description Of Request",
                     "manager": "Manager",
-                    "namespace": "Namespace"
+                    "namespace": "Namespace",
+                    "proposedRefinability": "Proposed Refinability",
+                    "proposedCharacteristicType": "Proposed CharacteristicType",
+                    "proposedRelationshipType": "Proposed RelationshipType",
+                    "proposedDestinationConcept": "Proposed Destination Concept",
+                    "groupId": "Proposed Relationship Group",
+                    "localTerm": "Local Term",
+                    "proposedUse": "Proposed Use",
+                    "semanticTag": "Semantic Tag",
+                    "summary": "Summary"
                 },
                 "tip": {
                     "editConceptHint": "Edit a concept from Saved List or drag and drop concept here"
@@ -251,8 +260,10 @@
                 "newDescription": "New Description",
                 "newRelationship": "New Relationship",
                 "changeRetireConcept": "Change or Retire Concept",
-                "changeRetireDescription": "Change or Retire Description",
-                "changeRetireRelationship": "Change or Retire Relationship",
+                "changeRetireDescription": "Change Description",
+                "retireDescription": "Retire Description",
+                "changeRetireRelationship": "Retire Relationship",
+                "changeRelationship": "Change Relationship",
                 "other": "Other"
             },
             "inputMode": {
@@ -416,7 +427,10 @@
                         "validationResult": "Validation Result",
                         "originator": "Created By",
                         "createdDate": "Created On",
-                        "requestDescription": "Description of Request"
+                        "requestDescription": "Description of Request",
+                        "proposedDestinationConcept": "Proposed Destination Concept ID",
+                        "proposedRelationshipType": "Proposed Relationship Type",
+                        "proposedCharacteristicType": "Proposed Characteristic Type"
                     }
                 }
             }

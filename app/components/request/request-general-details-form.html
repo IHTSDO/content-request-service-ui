@@ -18,7 +18,9 @@
         <form-control type="text"
                       model="requestVM.request.additionalFields.reasonForChange"
                       label="crs.request.details.label.reasonForChange"
-                      name="txtReasonForChange"></form-control>
+                      name="txtReasonForChange"
+                      required
+                      error-model="requestVM.error.reasonForChange"></form-control>
 
         <form-control type="textarea"
                       model="requestVM.request.additionalFields.notes"
@@ -33,5 +35,11 @@
                       model="requestVM.request.additionalFields.namespace"
                       label="crs.request.details.label.namespace"
                       name="txtReference"></form-control>
+        <form-control type="text"
+                      model="requestVM.request.additionalFields.summary"
+                      label="crs.request.details.label.summary"
+                      name="txtReference"></form-control>
+         
     </div>
+
 </form>

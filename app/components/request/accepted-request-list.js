@@ -78,7 +78,10 @@ angular
                     return authorKey;
                 } else {
                     for (var i = 0; i < vm.authors.length; i++) {
-                        if (vm.authors[i].key === authorKey) {
+                        if (vm.authors[i].key !== authorKey) {
+                            return authorKey;
+                        }
+                        else if (vm.authors[i].key === authorKey) {
                             //return vm.authors[i].displayName;
                             return $sce.trustAsHtml([
                                 '<img src="' + vm.authors[i].avatarUrls['16x16'] + '"/>',
@@ -94,6 +97,9 @@ angular
                     return staffKey;
                 } else {
                     for (var i = 0; i < vm.staffs.length; i++) {
+                        if (vm.staffs[i].key !== staffKey) {
+                            return staffKey;
+                        }
                         if (vm.staffs[i].key === staffKey) {
                             //return vm.authors[i].displayName;
                             return $sce.trustAsHtml([
