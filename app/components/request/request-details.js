@@ -196,10 +196,7 @@ angular
                     return staffKey;
                 } else {
                     for (var i = 0; i < vm.staffs.length; i++) {
-                        if (vm.staffs[i].key !== staffKey) {
-                            return staffKey;
-                        }
-                        else if (vm.staffs[i].key === staffKey) {
+                        if (vm.staffs[i].key === staffKey) {
                             //return vm.authors[i].displayName;
                             return $sce.trustAsHtml([
                                 '<img style="padding-bottom:2px" src="' + vm.staffs[i].avatarUrls['16x16'] + '"/>',
@@ -340,7 +337,7 @@ angular
                             }
 
                             if (requestType === REQUEST_TYPE.RETIRE_RELATIONSHIP) {
-                                vm.request.characteristicType = RELATIONSHIP_CHARACTERISTIC_TYPE.STATED;
+                                vm.request.relationshipCharacteristicType = RELATIONSHIP_CHARACTERISTIC_TYPE.STATED;
                             }
 
                             if (requestType === REQUEST_TYPE.OTHER) {
@@ -1818,7 +1815,6 @@ angular
                     }
                 });
             };
-
 
             $scope.$on(CONCEPT_EDIT_EVENT.STOP_EDIT_CONCEPT, function(event, data) {
                 if (!data || !data.concept) {

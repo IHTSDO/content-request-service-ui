@@ -197,6 +197,10 @@ angular
         FORWARDED: {
             value: 'FORWARDED',
             langKey: 'crs.request.requestStatus.forwarded'
+        },
+        IN_INCEPTION_ELABORATION: {
+            value: 'IN_INCEPTION_ELABORATION',
+            langKey: 'crs.request.requestStatus.inInceptionElaboration'
         }
     })
     .value('REQUEST_METADATA_KEY', {

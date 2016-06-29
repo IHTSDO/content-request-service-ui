@@ -286,10 +286,11 @@
                 "appealRejected": "Appeal Rejected",
                 "withdraw": "Withdrawn",
                 "underAuthoring": "Under Authoring",
-                "released": "Released",
+                "released": "Completed",
                 "onHold": "On Hold",
                 "forwarded": "Forwarded",
-                "approved": "Approved"
+                "approved": "Approved",
+                "inInceptionElaboration": "In Inception/Elaboration"
             }
         },
         "batch": {
