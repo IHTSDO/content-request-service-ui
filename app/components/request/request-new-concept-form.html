@@ -27,6 +27,21 @@
         <form-control type="text"
                       model="requestVM.request.proposedDefinitions"
                       label="crs.request.details.label.proposedDefinition"
-                      multi="true"></form-control>
+                      multi="true"
+                      required
+                      error-model="requestVM.error.proposedDefinitions"></form-control>
+        <form-control type="text"
+                      model="requestVM.request.localTerm"
+                      label="crs.request.details.label.localTerm"
+                      name="txtReference"></form-control>
+        <form-control type="text"
+                      model="requestVM.request.proposedUse"
+                      label="crs.request.details.label.proposedUse"
+                      name="txtReference"></form-control>
+        <form-control type="text"
+                      model="requestVM.request.semanticTag"
+                      label="crs.request.details.label.semanticTag"
+                      name="txtReference"
+                      error-model="requestVM.error.semanticTag"></form-control>
     </div>
 </form>

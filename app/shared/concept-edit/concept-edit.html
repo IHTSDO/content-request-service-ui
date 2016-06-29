@@ -168,7 +168,7 @@
             </div>
             <button ng-if="conceptChangeType !== 'NEW_CONCEPT' && description.definitionOfChanges.changed"
                     class="btn-default darken-3 md morebuttons fa fa-pencil more-button-width tooltips-right tooltips-light normal-case"
-                    ng-class="{red:(description.definitionOfChanges.changeType === 'CHANGE_RETIRE_DESCRIPTION'), green:(description.definitionOfChanges.changeType === 'NEW_DESCRIPTION'), static: isStatic}"
+                    ng-class="{red:(description.definitionOfChanges.changeType === 'CHANGE_DESCRIPTION') || (description.definitionOfChanges.changeType === 'RETIRE_DESCRIPTION'), green:(description.definitionOfChanges.changeType === 'NEW_DESCRIPTION'), static: isStatic}"
                     ng-click="showDefinitionOfChange(description)"><span>Change details</span></button>
 
             <button
@@ -292,7 +292,7 @@
                 </div>
                 <button ng-if="conceptChangeType !== 'NEW_CONCEPT' && relationship.definitionOfChanges.changed"
                         class="btn-default darken-3 md morebuttons more-button-width fa fa-pencil button-width tooltips-right tooltips-light normal-case"
-                        ng-class="{red:(relationship.definitionOfChanges.changeType === 'CHANGE_RETIRE_RELATIONSHIP'), green:(relationship.definitionOfChanges.changeType === 'NEW_RELATIONSHIP'), static: isStatic}"
+                        ng-class="{red:(relationship.definitionOfChanges.changeType === 'RETIRE_RELATIONSHIP') || (relationship.definitionOfChanges.changeType === 'CHANGE_RELATIONSHIP'), green:(relationship.definitionOfChanges.changeType === 'NEW_RELATIONSHIP'), static: isStatic}"
                         ng-click="showDefinitionOfChange(relationship)"
                   ><span>Change details</span></button>
 

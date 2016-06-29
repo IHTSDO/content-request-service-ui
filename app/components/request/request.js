@@ -7,7 +7,7 @@ angular
         SIMPLE: {
             value: 'SIMPLE',
             langKey: 'crs.request.inputMode.simple',
-            requestTypes: ['NEW_CONCEPT', 'NEW_DESCRIPTION', 'NEW_RELATIONSHIP', 'CHANGE_RETIRE_CONCEPT', 'CHANGE_RETIRE_DESCRIPTION', 'CHANGE_RETIRE_RELATIONSHIP','OTHER']
+            requestTypes: ['NEW_CONCEPT', 'NEW_DESCRIPTION', 'NEW_RELATIONSHIP', 'CHANGE_DESCRIPTION', 'RETIRE_DESCRIPTION', 'CHANGE_RETIRE_CONCEPT','RETIRE_RELATIONSHIP', 'CHANGE_RELATIONSHIP','OTHER']
         },
         DIRECT: {
             value: 'DIRECT',
@@ -26,7 +26,7 @@ angular
                     { name: 'proposedFSN', required: true},
                     { name: 'conceptPT', required: true},
                     { name: 'proposedSynonyms'},
-                    { name: 'proposedDefinitions'}
+                    { name: 'proposedDefinitions', required: true},
                 ]
             }
         },
@@ -38,7 +38,7 @@ angular
                 "fields": [
                     {"name": "requestorInternalId"},
                     {"name": "proposedDescription", "required": true},
-                    {"name": "descriptionIsPT"}
+                    {"name": "descriptionIsPT"},
                 ]
 
             }
@@ -54,7 +54,7 @@ angular
                     {"name": "relationshipType", "required": true},
                     {"name": "destinationConcept", "required": true},
                     {"name": "characteristicType"},
-                    {"name": "refinability"}
+                    {"name": "refinability"},
                 ]
             }
         },
@@ -69,13 +69,13 @@ angular
                     {"name": "proposedFSN"},
                     {"name": "proposedStatus"},
                     {"name": "historyAttribute"},
-                    {"name": "historyAttributeValue"}
+                    {"name": "historyAttributeValue"},
                 ]
 
             }
         },
-        CHANGE_RETIRE_DESCRIPTION: {
-            value: 'CHANGE_RETIRE_DESCRIPTION',
+        CHANGE_DESCRIPTION: {
+            value: 'CHANGE_DESCRIPTION',
             langKey: 'crs.request.requestType.changeRetireDescription',
             form: {
                 template: 'components/request/request-change-retire-description-form.html',
@@ -85,12 +85,27 @@ angular
                     {"name": "descriptionId", "required": true},
                     {"name": "proposedDescription"},
                     {"name": "proposedCaseSignificance"},
-                    {"name": "proposedDescriptionStatus"}
+                    {"name": "proposedDescriptionStatus"},
                 ]
             }
         },
-        CHANGE_RETIRE_RELATIONSHIP: {
-            value: 'CHANGE_RETIRE_RELATIONSHIP',
+        RETIRE_DESCRIPTION: {
+            value: 'RETIRE_DESCRIPTION',
+            langKey: 'crs.request.requestType.retireDescription',
+            form: {
+                template: 'components/request/request-retire-description-form.html',
+                modal: 'components/request/request-retire-description-modal.html',
+                "fields": [
+                    {"name": "requestorInternalId"},
+                    {"name": "descriptionId", "required": true},
+                    {"name": "proposedDescription"},
+                    {"name": "proposedCaseSignificance"},
+                    {"name": "proposedDescriptionStatus"},
+                ]
+            }
+        },
+        RETIRE_RELATIONSHIP: {
+            value: 'RETIRE_RELATIONSHIP',
             langKey: 'crs.request.requestType.changeRetireRelationship',
             form: {
                 template: 'components/request/request-change-retire-relationship-form.html',
@@ -99,7 +114,21 @@ angular
                     {"name": "requestorInternalId"},
                     {"name": "relationshipId", "required": true},
                     {"name": "refinability"},
-                    {"name": "relationshipStatus"}
+                    {"name": "relationshipStatus", required: true},
+                ]
+            }
+        },
+        CHANGE_RELATIONSHIP: {
+            value: 'CHANGE_RELATIONSHIP',
+            langKey: 'crs.request.requestType.changeRelationship',
+            form: {
+                template: 'components/request/request-change-relationship-form.html',
+                modal: 'components/request/request-change-relationship-modal.html',
+                "fields": [
+                    {"name": "requestorInternalId"},
+                    {"name": "relationshipId", "required": true},
+                    {"name": "refinability"},
+                    {"name": "relationshipStatus"},
                 ]
             }
         },
@@ -110,7 +139,7 @@ angular
                 template: 'components/request/request-other-form.html',
                 "fields": [
                     {"name": "requestorInternalId"},
-                    {"name": "requestDescription", "required": true}
+                    {"name": "requestDescription", "required": true},
                 ]
             }
         }

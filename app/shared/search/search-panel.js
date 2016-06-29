@@ -217,7 +217,6 @@ angular.module('conceptRequestServiceApp.search')
             };
 
             $scope.viewConceptInTaxonomy = function(item) {
-                console.debug('broadcasting viewTaxonomy event to taxonomy.js', item);
                 $rootScope.$broadcast('viewTaxonomy', {
                     concept: {
                         conceptId: item.concept.conceptId,
