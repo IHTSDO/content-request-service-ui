@@ -26,11 +26,11 @@
           </div>
 
           <div ng-if="requestVM.isShowFilter" uib-dropdown is-open="status.isopen" style="width: 50%">
-            <button id="single-button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled"> <span style="margin" translate= "{{(requestVM.request.characteristicType === 'STATED_RELATIONSHIP'?'crs.request.details.label.statedRel':'crs.request.details.label.inferredRel')}}" ></span><span style="margin-left:10px" class="caret"></span>
+            <button id="single-button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled"> <span style="margin" translate= "{{(requestVM.request.relationshipCharacteristicType === 'STATED_RELATIONSHIP'?'crs.request.details.label.statedRel':'crs.request.details.label.inferredRel')}}" ></span><span style="margin-left:10px" class="caret"></span>
             </button>
             <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-              <li role="menuitem" ng-click="requestVM.filterRelationshipType(requestVM.request.characteristicType, 'menuitem')" translate='crs.request.details.label.statedRel' ng-model="requestVM.request.characteristicType" uib-btn-radio="'STATED_RELATIONSHIP'" class="filter-relationship"></li>
-              <li role="menuitem" ng-click="requestVM.filterRelationshipType(requestVM.request.characteristicType, 'menuitem')" translate='crs.request.details.label.inferredRel' ng-model="requestVM.request.characteristicType" uib-btn-radio="'INFERRED_RELATIONSHIP'" class="filter-relationship"></li>
+              <li role="menuitem" ng-click="requestVM.filterRelationshipType(requestVM.request.relationshipCharacteristicType, 'menuitem')" translate='crs.request.details.label.statedRel' ng-model="requestVM.request.relationshipCharacteristicType" uib-btn-radio="'STATED_RELATIONSHIP'" class="filter-relationship"></li>
+              <li role="menuitem" ng-click="requestVM.filterRelationshipType(requestVM.request.relationshipCharacteristicType, 'menuitem')" translate='crs.request.details.label.inferredRel' ng-model="requestVM.request.relationshipCharacteristicType" uib-btn-radio="'INFERRED_RELATIONSHIP'" class="filter-relationship"></li>
             </ul>
           </div>
         </div>

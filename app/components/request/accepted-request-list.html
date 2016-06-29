@@ -66,12 +66,12 @@
             
                         <td data-title="'crs.request.list.tableHeader.manager' | translate" sortable="'requestHeader.manager'" style="min-width: 150px">
                             <span ng-show="vm.loadingAuthors" class="md md-autorenew" ng-class="{'md-spin':vm.loadingAuthors}"></span>
-                            <div ng-bind-html="vm.getStaffName(request.requestHeader.manager)"></div>
+                            <div ng-bind-html="(vm.getStaffName(request.requestHeader.manager))?vm.getStaffName(request.requestHeader.manager):request.requestHeader.manager"></div>
                         </td>
 
                         <td data-title="'crs.request.list.tableHeader.originator' | translate" sortable="'requestHeader.ogirinatorId'" style="min-width: 150px">
                             <span ng-show="vm.loadingAuthors" class="md md-autorenew" ng-class="{'md-spin':vm.loadingAuthors}"></span>
-                            <div ng-if="!vm.loadingAuthors" ng-bind-html="vm.getAuthorName(request.requestHeader.ogirinatorId)"></div>
+                            <div ng-if="!vm.loadingAuthors" ng-bind-html="(vm.getAuthorName(request.requestHeader.ogirinatorId))?vm.getAuthorName(request.requestHeader.ogirinatorId):request.requestHeader.ogirinatorId"></div>
                         </td>
 
                         <td data-title="'crs.request.list.tableHeader.project' | translate" sortable="'requestHeader.assignedProject'" style="min-width: 150px" >
@@ -80,7 +80,7 @@
 
                         <td data-title="'crs.request.list.tableHeader.assignee' | translate" sortable="'requestHeader.assignee'" style="min-width: 150px">
                             <span ng-show="vm.loadingAuthors" class="md md-autorenew" ng-class="{'md-spin':vm.loadingAuthors}"></span>
-                            <div ng-if="!vm.loadingAuthors" ng-bind-html="vm.getAuthorName(request.requestHeader.assignee)"></div>
+                            <div ng-if="!vm.loadingAuthors" ng-bind-html="(vm.getAuthorName(request.requestHeader.assignee))?vm.getAuthorName(request.requestHeader.assignee):request.requestHeader.assignee"></div>
                         </td>
 
                         <!--<td data-title="'crs.request.list.tableHeader.validationResult' | translate" sortable="'currentValidationStatus'" style="text-align: center">
