@@ -177,9 +177,9 @@ angular
                     return authorKey;
                 } else {
                     for (var i = 0; i < vm.authors.length; i++) {
-                        if (vm.authors[i].key !== authorKey) {
-                            return authorKey;
-                        }
+                        // if (vm.authors[i].key !== authorKey) {
+                        //     return authorKey;
+                        // }
                         if (vm.authors[i].key === authorKey) {
                             //return vm.authors[i].displayName;
                             return $sce.trustAsHtml([
@@ -981,8 +981,8 @@ angular
 
                 item.requestType = definitionOfChanges.changeType;
                 item.id = definitionOfChanges.changeId;
-
                 item.topic = concept.definitionOfChanges.topic;
+                item.summary = concept.definitionOfChanges.summary;
                 item.reasonForChange = concept.definitionOfChanges.reasonForChange;
                 item.notes = concept.definitionOfChanges.notes;
                 item.reference = concept.definitionOfChanges.reference;
@@ -998,6 +998,8 @@ angular
                         item.proposedSynonyms = extractConceptSynonyms(concept, item.conceptPT, true);
                         item.proposedDefinitions = extractConceptDefinitions(concept, true);
                         item.proposedParents = [];
+                        item.localTerm = changedTarget.localTerm;
+                        item.proposedUse = changedTarget.proposedUse;
                         if (changedTarget.parentConcept) {
                             for (var i = 0; i < changedTarget.parentConcept.length; i++) {
                                 var obj = {};
@@ -1126,6 +1128,8 @@ angular
                         request.conceptPT = mainItem.conceptPT;
                         request.proposedSynonyms = mainItem.proposedSynonyms;
                         request.proposedDefinitions = mainItem.proposedDefinitions;
+                        request.proposedUse = mainItem.proposedUse;
+                        request.localTerm = mainItem.localTerm;
                         break;
 
                     case REQUEST_TYPE.CHANGE_RETIRE_CONCEPT.value:
@@ -1237,6 +1241,7 @@ angular
                     item.requestType = request.definitionOfChanges.changeType;
                     item.id = request.definitionOfChanges.changeId;
                     item.topic = request.additionalFields.topic;
+                    item.summary = request.definitionOfChanges.summary;
                     item.notes = request.additionalFields.notes;
                     item.reference = request.additionalFields.reference;
                     item.reasonForChange = request.additionalFields.reasonForChange;
@@ -1301,6 +1306,9 @@ angular
 
                 // build concept additional fields
                 concept.definitionOfChanges.topic = request.additionalFields.topic;
+                concept.definitionOfChanges.summary = request.additionalFields.summary;
+                // concept.definitionOfChanges.localTerm = request.localTerm;
+                // concept.definitionOfChanges.proposedUse = request.proposedUse;
                 concept.definitionOfChanges.notes = request.additionalFields.notes;
                 concept.definitionOfChanges.reference = request.additionalFields.reference;
                 concept.definitionOfChanges.reasonForChange = request.additionalFields.reasonForChange;
@@ -1434,12 +1442,15 @@ angular
                         !vm.request.additionalFields.topic.trim()) {
                         error.topic = fieldRequiredLangKey;
                     }
-                }
 
-                if (!ignoreGeneralFields) {
                     if (!vm.request.additionalFields.reasonForChange ||
                         !vm.request.additionalFields.reasonForChange.trim()) {
                         error.reasonForChange = fieldRequiredLangKey;
+                    }
+
+                    if (!vm.request.additionalFields.summary ||
+                        !vm.request.additionalFields.summary.trim()) {
+                        error.summary = fieldRequiredLangKey;
                     }
                 }
 

@@ -31,18 +31,17 @@
                       required
                       error-model="requestVM.error.proposedDefinitions"></form-control>
         <form-control type="text"
-                      model="requestVM.request.additionalFields.localTerm"
+                      model="requestVM.request.localTerm"
                       label="crs.request.details.label.localTerm"
                       name="txtReference"></form-control>
         <form-control type="text"
-                      model="requestVM.request.additionalFields.proposedUse"
+                      model="requestVM.request.proposedUse"
                       label="crs.request.details.label.proposedUse"
                       name="txtReference"></form-control>
-        <form-control type="select"
-                      model="requestVM.request.additionalFields.semanticTag"
+        <form-control type="text"
+                      model="requestVM.request.semanticTag"
                       label="crs.request.details.label.semanticTag"
                       name="txtReference"
-                      required
                       error-model="requestVM.error.semanticTag"></form-control>
     </div>
 </form>
