@@ -49,8 +49,20 @@ angular
                 });
             };
 
+            var getSemanticTags = function(){
+                var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
+                return crsService.sendGet(requestEndpoint + '/semanticTagOptions').then(function(semanticTags){
+                    if(semanticTags.error){
+                        return [];
+                    }else if(semanticTags){
+                        return semanticTags;
+                    }
+                });
+            };
+
             return {
-                getAuthorUsers: getAuthorUsers
+                getAuthorUsers: getAuthorUsers,
+                getSemanticTags: getSemanticTags
             };
         }
     ]);

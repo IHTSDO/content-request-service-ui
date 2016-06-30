@@ -30,6 +30,13 @@
                       multi="true"
                       required
                       error-model="requestVM.error.proposedDefinitions"></form-control>
+        <form-control type="select"
+                      model="requestVM.request.value"
+                      label="crs.request.details.label.semanticTag"
+                      options="suggestion.value as suggestion.value for suggestion in requestVM.semanticTags"
+                      required
+                      error-model="requestVM.error.value"></form-control>
+
         <form-control type="text"
                       model="requestVM.request.localTerm"
                       label="crs.request.details.label.localTerm"
@@ -38,11 +45,5 @@
                       model="requestVM.request.proposedUse"
                       label="crs.request.details.label.proposedUse"
                       name="txtReference"></form-control>
-        <form-control type="text"
-                      model="requestVM.request.semanticTag"
-                      label="crs.request.details.label.semanticTag"
-                      name="txtReference"
-                      required
-                      error-model="requestVM.error.semanticTag"></form-control>
     </div>
 </form>

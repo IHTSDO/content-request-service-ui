@@ -172,6 +172,13 @@ angular
                 });
             };
 
+            var loadSemanticTags = function(){
+                return crsJiraService.getSemanticTags().then(function(semanticTags){
+                    vm.semanticTags = semanticTags;
+                    return semanticTags;
+                });
+            };
+
             var getAuthorName = function(authorKey) {
                 if (!vm.authors || vm.authors.length === 0) {
                     return authorKey;
@@ -305,6 +312,9 @@ angular
 
                 // load projects
                 loadProjects();
+
+                //load semantic tag
+                loadSemanticTags();
 
                 if (!isValid) {
                     showErrorMessage('crs.request.message.error.invalidPage');
@@ -997,7 +1007,7 @@ angular
                         item.proposedParents = [];
                         item.localTerm = changedTarget.localTerm;
                         item.proposedUse = changedTarget.proposedUse;
-                        item.semanticTag = changedTarget.semanticTag;
+                        item.semanticTag = changedTarget.value;
                         if (changedTarget.parentConcept) {
                             for (var i = 0; i < changedTarget.parentConcept.length; i++) {
                                 var obj = {};
@@ -1128,7 +1138,7 @@ angular
                         request.proposedDefinitions = mainItem.proposedDefinitions;
                         request.proposedUse = mainItem.proposedUse;
                         request.localTerm = mainItem.localTerm;
-                        request.semanticTag = mainItem.semanticTag;
+                        request.value = mainItem.semanticTag;
                         break;
 
                     case REQUEST_TYPE.CHANGE_RETIRE_CONCEPT.value:
@@ -1902,6 +1912,7 @@ angular
             vm.loadingAuthors = true;
             vm.projects = [];
             vm.authors = [];
+            vm.loadSemanticTags = loadSemanticTags;
 
             $scope.panelId = 'REQUEST_DETAILS';
 
