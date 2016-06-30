@@ -7,7 +7,7 @@ angular
         SIMPLE: {
             value: 'SIMPLE',
             langKey: 'crs.request.inputMode.simple',
-            requestTypes: ['NEW_CONCEPT', 'NEW_DESCRIPTION', 'NEW_RELATIONSHIP', 'CHANGE_DESCRIPTION', 'RETIRE_DESCRIPTION', 'CHANGE_RETIRE_CONCEPT','RETIRE_RELATIONSHIP', 'CHANGE_RELATIONSHIP','OTHER']
+            requestTypes: ['NEW_CONCEPT', 'NEW_DESCRIPTION', 'NEW_RELATIONSHIP', 'CHANGE_DESCRIPTION', 'CHANGE_RELATIONSHIP', 'RETIRE_DESCRIPTION', 'RETIRE_RELATIONSHIP', 'CHANGE_RETIRE_CONCEPT', 'OTHER']
         },
         DIRECT: {
             value: 'DIRECT',
@@ -94,7 +94,7 @@ angular
             langKey: 'crs.request.requestType.retireDescription',
             form: {
                 template: 'components/request/request-retire-description-form.html',
-                modal: 'components/request/request-retire-description-modal.html',
+                modal: 'components/request/request-change-retire-description-modal.html',
                 "fields": [
                     {"name": "requestorInternalId"},
                     {"name": "descriptionId", "required": true},
@@ -123,7 +123,7 @@ angular
             langKey: 'crs.request.requestType.changeRelationship',
             form: {
                 template: 'components/request/request-change-relationship-form.html',
-                modal: 'components/request/request-change-relationship-modal.html',
+                modal: 'components/request/request-change-retire-relationship-modal.html',
                 "fields": [
                     {"name": "requestorInternalId"},
                     {"name": "relationshipId", "required": true},

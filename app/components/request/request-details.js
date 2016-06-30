@@ -670,16 +670,16 @@ angular
                 if (sourceRelationship) {
                     newRelaionship = angular.copy(sourceRelationship);
 
-                    if (destinationConcept) {
+                    // if (destinationConcept) {
                         newRelaionship.target = {
-                            active: destinationConcept.active,
-                            conceptId: destinationConcept.conceptId,
-                            definitionStatus: destinationConcept.definitionStatus,
-                            effectiveTime: destinationConcept.effectiveTime,
-                            fsn: destinationConcept.fsn,
-                            moduleId: destinationConcept.moduleId
+                            active: destinationConcept? destinationConcept.active: concept.active,
+                            conceptId: destinationConcept? destinationConcept.conceptId: concept.conceptId ,
+                            definitionStatus: destinationConcept? destinationConcept.definitionStatus: concept.definitionStatus,
+                            effectiveTime: destinationConcept? destinationConcept.effectiveTime: concept.effectiveTime,
+                            fsn: destinationConcept? destinationConcept.fsn: concept.fsn,
+                            moduleId: destinationConcept? destinationConcept.moduleId: concept.moduleId
                         };
-                    }
+                    // }
 
                     if (relationshipType) {
                         newRelaionship.type = relationshipType;
@@ -1075,7 +1075,7 @@ angular
                         item.conceptId = concept.conceptId;
                         item.conceptFSN = concept.fsn;
                         item.relationshipType = changedTarget.type.conceptId;
-                        item.destConceptId = (request.destinationConcept) ? request.destinationConcept.conceptId : null;
+                        item.destConceptId = (request.destinationConcept) ? request.destinationConcept.conceptId : concept.conceptId;
                         item.relationshipId = changedTarget.relationshipId;
                         item.refinability = definitionOfChanges.refinability;
                         item.relationshipStatus = 'Retired';
@@ -1552,7 +1552,7 @@ angular
             };
 
             var saveAndSubmitRequest = function() {
-                vm.request.relationshipId = selectedRelationshipsOutput();
+                // vm.request.relationshipId = selectedRelationshipsOutput();
                 // requestData
                 var requestData;
 
@@ -1572,6 +1572,25 @@ angular
                 }
 
                 requestData = buildRequestData(vm.request, vm.concept);
+                if (vm.requestType === REQUEST_TYPE.NEW_CONCEPT) {
+                    for (var i in requestData.requestItems[0].proposedParents) {
+                        if (requestData.requestItems[0].proposedParents[i].conceptId === undefined && requestData.requestItems[0].proposedParents[i].fsn === undefined) {
+                            requestData.requestItems[0].proposedParents.splice(i, requestData.requestItems[0].proposedParents.length);
+                        }
+                    }
+                }
+                if (vm.inputMode !== REQUEST_INPUT_MODE.DIRECT) {
+                    if (vm.requestType === REQUEST_TYPE.RETIRE_DESCRIPTION || vm.requestType === REQUEST_TYPE.RETIRE_RELATIONSHIP || vm.requestType === REQUEST_TYPE.CHANGE_DESCRIPTION || vm.requestType === REQUEST_TYPE.CHANGE_RELATIONSHIP) {
+                        for (var j in requestData.requestItems) {
+                            if (requestData.requestItems[j].requestType === REQUEST_TYPE.CHANGE_RETIRE_CONCEPT.value) {
+                                requestData.requestItems.splice(j, 1);
+                            }
+                            if (requestData.requestItems[j].requestType === REQUEST_TYPE.NEW_RELATIONSHIP.value) {
+                                requestData.requestItems.splice(j, 1);
+                            }
+                        }
+                    }
+                }
 
                 requestService.saveRequest(requestData)
                     .then(function(response) {
