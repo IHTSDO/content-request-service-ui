@@ -81,8 +81,6 @@ angular
                             $scope.concept = response;
                             for(var name in $scope.concept.relationships){
                                 $scope.concept.relationships[name].viewName = $scope.concept.relationships[name].type.fsn + " " + $scope.concept.relationships[name].target.fsn;
-                                // filterRelType = $filter('filter')($scope.concept.relationships, characteristicTypes[0].id);
-                                // console.log(filterRelType);
                             }
                             $scope.showError = false;
                             $scope.conceptStatus.valid = true;
@@ -143,6 +141,9 @@ angular
                         // load concept details
                         snowowlService.getFullConcept(null, null, conceptItem.concept.conceptId).then(function (response) {
                             $scope.concept = response;
+                            for(var name in $scope.concept.relationships){
+                                $scope.concept.relationships[name].viewName = $scope.concept.relationships[name].type.fsn + " " + $scope.concept.relationships[name].target.fsn;
+                            }
                             $scope.showError = false;
                             $scope.conceptStatus.valid = true;
                         }, function (error) {
