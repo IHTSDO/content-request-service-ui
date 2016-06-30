@@ -27,6 +27,7 @@ angular
         'ngFileUpload',
         'textAngular',
         'isteven-multi-select',
+        'monospaced.elastic',
 
         // layouts
 

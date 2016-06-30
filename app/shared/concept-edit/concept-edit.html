@@ -142,7 +142,7 @@
                 ng-click="removeConcept(concept)"
                 ng-if="!isStatic"><span>Remove concept from edit panel</span></button>
         <div ng-repeat="field in concept.additionalFields">
-            <textarea class="msd-elastic resizable-text form-control"
+            <textarea class="animate msd-elastic: \n; resizable-text form-control"
                       ng-model-options="{updateOn: 'blur'}"
                       ng-model="field.value" type="text"
                       placeholder="{{field}}">
@@ -201,7 +201,7 @@
 
 
                 <textarea ng-change="updateDescription(description)"
-                          class=" msd-elastic resizable-text form-control color_{{relationship.groupId}}"
+                          class="animate msd-elastic: \n; resizable-text form-control color_{{relationship.groupId}}"
                           ng-model-options="{updateOn: 'blur'}"
                           ng-disabled="description.effectiveTime || isStatic"
                           maxlength="{{(description.type !== 'TEXT_DEFINITION')?'255':'4096'}}"
@@ -264,7 +264,7 @@
 
             </div>
             <div ng-if="description.additionalFields" ng-repeat="field in description.additionalFields">
-                <textarea class="msd-elastic resizable-text form-control"
+                <textarea class="animate msd-elastic: \n; resizable-text form-control"
                           ng-model-options="{updateOn: 'blur'}"
                           ng-model="field.value" type="text"
                           placeholder="{{field}}">
@@ -314,7 +314,7 @@
                 <div class="pull-left rolegroup">
                     <textarea type="text"
                               style="" 
-                              class="msd-elastic number-only"
+                              class="animate msd-elastic: \n; number-only"
                               ng-disabled="relationship.effectiveTime || isStatic"
                               ng-model="relationship.groupId"
                               ng-model-options="{updateOn: 'blur'}"
@@ -338,7 +338,7 @@
                               ng-model="relationship.type.fsn"
                               ng-disabled="relationship.effectiveTime || isStatic"
                               typeahead-focus
-                              class="sca-top"
+                              class="sca-top animate msd-elastic: \n;"
                               uib-typeahead="suggestion as suggestion.fsn.term for suggestion in allowedAttributes | filter:$viewValue:emptyOrMatch"
                               typeahead-focus-first="false"
                               typeahead-loading="typeTypeaheadLoading"
@@ -367,7 +367,7 @@
                     <textarea type="text"
                               ng-model="relationship.target.fsn"
                               ng-disabled="relationship.effectiveTime || isStatic"
-                              class="sca-top"
+                              class="sca-top animate msd-elastic: \n;"
                               uib-typeahead="suggestion as suggestion.fsn.term for suggestion in getConceptsForValueTypeahead(relationship.type.conceptId, $viewValue)"
                               typeahead-loading="targetTypeaheadLoading"
                               typeahead-focus-first="false"
@@ -396,7 +396,7 @@
                 </div>
             </div>
             <div ng-if="relationship.additionalFields" ng-repeat="field in relationship.additionalFields">
-                <textarea class="msd-elastic resizable-text form-control"
+                <textarea class="animate msd-elastic: \n; resizable-text form-control"
                           ng-model-options="{updateOn: 'blur'}"
                           ng-model="field.value" type="text"
                           placeholder="{{field}}">
