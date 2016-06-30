@@ -997,6 +997,7 @@ angular
                         item.proposedParents = [];
                         item.localTerm = changedTarget.localTerm;
                         item.proposedUse = changedTarget.proposedUse;
+                        item.semanticTag = changedTarget.semanticTag;
                         if (changedTarget.parentConcept) {
                             for (var i = 0; i < changedTarget.parentConcept.length; i++) {
                                 var obj = {};
@@ -1127,6 +1128,7 @@ angular
                         request.proposedDefinitions = mainItem.proposedDefinitions;
                         request.proposedUse = mainItem.proposedUse;
                         request.localTerm = mainItem.localTerm;
+                        request.semanticTag = mainItem.semanticTag;
                         break;
 
                     case REQUEST_TYPE.CHANGE_RETIRE_CONCEPT.value:

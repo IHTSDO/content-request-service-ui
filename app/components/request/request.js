@@ -27,6 +27,7 @@ angular
                     { name: 'conceptPT', required: true},
                     { name: 'proposedSynonyms'},
                     { name: 'proposedDefinitions', required: true},
+                    { name: 'semanticTag', required: true}
                 ]
             }
         },
