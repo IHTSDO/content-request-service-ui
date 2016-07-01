@@ -290,7 +290,8 @@
                 "onHold": "On Hold",
                 "forwarded": "Forwarded",
                 "approved": "Approved",
-                "inInceptionElaboration": "In Inception/Elaboration"
+                "inInceptionElaboration": "In Inception/Elaboration",
+                "readyForRelease": "Ready For Release"
             }
         },
         "batch": {

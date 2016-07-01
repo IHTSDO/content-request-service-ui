@@ -1005,7 +1005,7 @@ angular
                         item.proposedSynonyms = extractConceptSynonyms(concept, item.conceptPT, true);
                         item.proposedDefinitions = extractConceptDefinitions(concept, true);
                         item.proposedParents = [];
-                        item.localTerm = changedTarget.localTerm;
+                        item.requestorInternalTerm = changedTarget.requestorInternalTerm;
                         item.proposedUse = changedTarget.proposedUse;
                         item.semanticTag = changedTarget.value;
                         if (changedTarget.parentConcept) {
@@ -1137,7 +1137,7 @@ angular
                         request.proposedSynonyms = mainItem.proposedSynonyms;
                         request.proposedDefinitions = mainItem.proposedDefinitions;
                         request.proposedUse = mainItem.proposedUse;
-                        request.localTerm = mainItem.localTerm;
+                        request.requestorInternalTerm = mainItem.requestorInternalTerm;
                         request.value = mainItem.semanticTag;
                         break;
 

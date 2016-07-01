@@ -202,6 +202,10 @@ angular
         IN_INCEPTION_ELABORATION: {
             value: 'IN_INCEPTION_ELABORATION',
             langKey: 'crs.request.requestStatus.inInceptionElaboration'
+        },
+        READY_FOR_RELEASE: {
+            value: 'READY_FOR_RELEASE',
+            langKey: 'crs.request.requestStatus.readyForRelease'
         }
     })
     .value('REQUEST_METADATA_KEY', {
