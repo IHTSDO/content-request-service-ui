@@ -39,9 +39,9 @@ angular
                         return [];
                     } else if (data.users) {
                         users = users.concat(data.users.items);
-
+                        var groupname = groupName;
                         if (getAll === true && data.users['end-index'] !== 0 && data.users['end-index'] < (data.users.size - 1) ) {
-                            return getAuthorUsers(startIndex + count, count, getAll, users);
+                            return getAuthorUsers(startIndex + count, count, getAll, users, groupname);
                         } else {
                             return users;
                         }
@@ -49,8 +49,20 @@ angular
                 });
             };
 
+            var getSemanticTags = function(){
+                var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
+                return crsService.sendGet(requestEndpoint + '/semanticTagOptions').then(function(semanticTags){
+                    if(semanticTags.error){
+                        return [];
+                    }else if(semanticTags){
+                        return semanticTags;
+                    }
+                });
+            };
+
             return {
-                getAuthorUsers: getAuthorUsers
+                getAuthorUsers: getAuthorUsers,
+                getSemanticTags: getSemanticTags
             };
         }
     ]);

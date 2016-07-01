@@ -197,6 +197,14 @@ footer {
     background-color: #43A047;
     color: white;
   }
+  &.IN_INCEPTION_ELABORATION{
+    background-color: blue;
+    color: white;
+  }
+  &.READY_FOR_RELEASE{
+    background-color: #ab47bc;
+    color: white;
+  }
 }
 
 .batchStatus {
@@ -627,13 +635,11 @@ ul.batch-statistic.timeline {
 }
 
 /*overwrite taxonomy tree*/
-.angular-ui-tree-node {
-  span{
+.angular-ui-tree-node .fsn-node{
     display: inline-block;
     max-width: 83%;
     vertical-align: top;
     line-height: 13px;
-  }
 }
 
 .primitive-buttons, .primitive-buttons:active, .primitive-buttons:focus, .primitive-buttons:hover, .primitive-buttons[disabled]{
@@ -663,3 +669,7 @@ ul.batch-statistic.timeline {
   margin-top: 7px;
 }
 /*end overwrite taxonomy tree*/
+
+.comment-body{
+  white-space: pre-line;
+}
