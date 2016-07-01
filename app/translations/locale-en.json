@@ -390,8 +390,8 @@
                     "tableHeader": {
                         "sourceTerminology": "Source Terminology",
                         "sourceTerminologyVersion": "Source Terminology Version",
-                        "requestorInternalId": "Requestor Internal ID",
-                        "reasonForChange": "Reason for Change",
+                        "requestorInternalId": "Local Code",
+                        "reasonForChange": "Justification",
                         "topic": "Topic",
                         "notes": "Notes",
                         "references": "References",
@@ -432,7 +432,10 @@
                         "requestDescription": "Description of Request",
                         "proposedDestinationConcept": "Proposed Destination Concept ID",
                         "proposedRelationshipType": "Proposed Relationship Type",
-                        "proposedCharacteristicType": "Proposed Characteristic Type"
+                        "proposedCharacteristicType": "Proposed Characteristic Type",
+                        "summary": "Summary",
+                        "requestorInternalTerm": "Local Term",
+                        "proposedUse": "Proposed Use"
                     }
                 }
             }

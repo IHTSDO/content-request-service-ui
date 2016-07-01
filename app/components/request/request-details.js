@@ -175,6 +175,20 @@ angular
             var loadSemanticTags = function(){
                 return crsJiraService.getSemanticTags().then(function(semanticTags){
                     vm.semanticTags = semanticTags;
+                    if(vm.pageMode !== REQUEST_MODE.NEW){
+                        for(var i in semanticTags){
+                            if(semanticTags[i].value !== vm.request.value){
+                                var isNotInArr = true;
+                            }
+                        }
+                        if(isNotInArr){
+                            var obj = {};
+                            obj.value = vm.request.value;
+                            vm.semanticTags.push(obj);
+                            console.log(vm.semanticTags);
+                        }
+                    }
+                    
                     return semanticTags;
                 });
             };
@@ -490,6 +504,7 @@ angular
                             }
                         });
                     }
+
                     // }else{
                     //     vm.originalConcept = {
                     //         conceptId: requestData.concept.conceptId,
