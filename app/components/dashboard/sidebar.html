@@ -8,6 +8,12 @@
             </button>
         </a></li>
 
+        <li><a class="dashboard-links" ng-href="#/submitted-requests">
+            <button type="button" class="btn grey darken-3 dashboard-links">
+                <i class="md md-format-list-numbered"></i> {{'crs.dashboard.sidebar.submittedRequest' | translate}}
+            </button>
+        </a></li>
+
         <li ng-if="dashboard.permissionChecked && dashboard.isAdmin"><a class="dashboard-links" ng-href="#/accepted-requests">
             <button type="button" class="btn grey darken-3 dashboard-links">
                 <i class="md md-format-list-numbered"></i> {{'crs.dashboard.sidebar.acceptedRequest' | translate}}

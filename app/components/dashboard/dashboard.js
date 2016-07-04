@@ -18,6 +18,9 @@ angular
             })
             .when('/accepted-requests', {
                 redirectTo: '/dashboard/accepted-requests'
+            })
+            .when('/submitted-requests',{
+                redirectTo: '/dashboard/submitted-requests'
             });
     })
     .controller('DashboardCtrl', [
@@ -45,6 +48,12 @@ angular
                             {url: '#/accepted-requests', label: 'crs.request.list.title.acceptedRequests'}
                         ];
                         vm.listView = 'components/request/accepted-request-list.html';
+                        break;
+                    case 'submitted-requests':
+                        $rootScope.pageTitles = [
+                            {url: '#/submitted-requests', label: 'crs.request.list.title.acceptedRequests'}
+                        ];
+                        vm.listView = 'components/request/submitted-request-list.html';
                         break;
                     case 'requests':
                     /* falls through */

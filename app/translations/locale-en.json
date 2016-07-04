@@ -34,11 +34,12 @@
         "dashboard": {
             "title": "Dashboard",
             "sidebar": {
-                "myRequest": "Submitted Requests",
+                "myRequest": "My Requests",
                 "myBatch": "My Batch Requests",
                 "createRequest": "Create New Request",
                 "importBatch": "New Batch Import",
-                "acceptedRequest": "Accepted Requests"
+                "acceptedRequest": "Accepted Requests",
+                "submittedRequest": "Submitted Requests"
             }
         },
         "request": {
