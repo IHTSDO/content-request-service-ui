@@ -32,17 +32,27 @@ angular.module('conceptRequestServiceApp.request')
                 return null;
             };
 
-            var getRequests = function (page, pageCount, searchStr, sortFields, sortDirections) {
-                var listEndpoint = CRS_API_ENDPOINT.REQUEST_LIST;
-                var params = {
-                    offset: page,
-                    limit: pageCount,
-                    search: searchStr,
-                    sortFields: sortFields,
-                    sortDirections: sortDirections
-                };
+            // var getRequests = function (page, pageCount, searchStr, sortFields, sortDirections, batchRequest, fsn, jiraTicketId) {
+            //     var listEndpoint = CRS_API_ENDPOINT.REQUEST_LIST;
+            //     var params = {
+            //         offset: page,
+            //         limit: pageCount,
+            //         search: searchStr,
+            //         sortFields: sortFields,
+            //         sortDirections: sortDirections,
+            //         batchRequest: batchRequest,
+            //         concept: fsn,
+            //         jiraTicketId: jiraTicketId
+            //     };
 
-                return crsService.sendGet(listEndpoint, params, null);
+            //     return crsService.sendGet(listEndpoint, params, null);
+            // };
+
+            var getRequests = function (requestList) {
+                var listEndpoint = CRS_API_ENDPOINT.REQUEST_LIST;
+                
+
+                return crsService.sendPost(listEndpoint, null, requestList);
             };
 
             var getSubmittedRequests = function (page, pageCount, searchStr, sortFields, sortDirections) {

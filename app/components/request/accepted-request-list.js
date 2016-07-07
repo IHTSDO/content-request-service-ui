@@ -7,15 +7,166 @@ angular
         '$filter',
         '$sce',
         '$uibModal',
-        'ngTableParams',
+        'NgTableParams',
         'requestService',
         'notificationService',
         'accountService',
         'scaService',
         'crsJiraService',
         'jiraService',
-        function($filter, $sce, $uibModal, ngTableParams, requestService, notificationService, accountService, scaService, crsJiraService, jiraService) {
+        function($filter, $sce, $uibModal, NgTableParams, requestService, notificationService, accountService, scaService, crsJiraService, jiraService) {
             var vm = this;
+
+            vm.filterRequests = {
+                batchRequest: {
+                    batchRequest: {
+                        id: "number",
+                        placeholder: "Filter Ids..."
+                    }
+                },    
+                fsn: {
+                    fsn: {
+                        id: "text",
+                        placeholder: "Filter concepts..."
+                    }
+                },
+                jiraTicketId: {
+                    jiraTicketId: {
+                        id: "text",
+                        placeholder: "Filter Ids..."
+                    }
+                },
+                topic: {
+                    topic: {
+                        id: "text",
+                        placeholder: "Filter topics..."
+                    }
+                },
+                manager: {
+                    manager: {
+                        id: "select"
+                    }
+                },
+                status: {
+                    status: {
+                        id: "select"
+                    }
+                },
+                summary: {
+                    summary: {
+                        id: "text",
+                        placeholder: "Filter summaries..."
+                    }
+                },
+                requestId: {
+                    requestId: {
+                        id: "number",
+                        placeholder: "Filter Ids..."
+                    }
+                }
+            };
+
+            vm.requestStatus = [
+                {
+                    id: "DRAFT",
+                    title: "Draft"
+                },
+                {
+                    id: "NEW",
+                    title: "New"
+                },
+                {
+                    id: "ACCEPTED",
+                    title: "Accepted"
+                },
+                {
+                    id: "UNDER_AUTHORING",
+                    title: "Under Authoring"
+                },
+                {
+                    id: "REJECTED",
+                    title: "Rejected"
+                },
+                {
+                    id: "CLARIFICATION_NEEDED",
+                    title: "Pending Clarification"
+                },
+                {
+                    id: "APPEAL",
+                    title: "In Appeal"
+                },
+                {
+                    id: "ON_HOLD",
+                    title: "On Hold"
+                },
+                {
+                    id: "WITHDRAWN",
+                    title: "Withdrawn"
+                },
+                {
+                    id: "APPEAL_REJECTED",
+                    title: "Appeal Rejected"
+                },
+                {
+                    id: "APPROVED",
+                    title: "Approved"
+                },
+                {
+                    id: "RELEASED",
+                    title: "Completed"
+                },
+                {
+                    id: "FORWARDED",
+                    title: "Forwarded"
+                },
+                {
+                    id: "IN_INCEPTION_ELABORATION",
+                    title: "In Inception/Elaboration"
+                },
+                {
+                    id: "READY_FOR_RELEASE",
+                    title: "Ready For Release"
+                }
+            ];
+
+            vm.requestTypes = [
+                {
+                    id: "NEW_CONCEPT",
+                    title: "New Concept"
+                },
+                {
+                    id: "NEW_DESCRIPTION",
+                    title: "New Description"
+                },
+                {
+                    id: "NEW_RELATIONSHIP",
+                    title: "New Relationship"
+                },
+                {
+                    id: "CHANGE_RETIRE_CONCEPT",
+                    title: "Change Retire Concept"
+                },
+                {
+                    id: "CHANGE_DESCRIPTION",
+                    title: "Change Description"
+                },
+                {
+                    id: "RETIRE_DESCRIPTION",
+                    title: "Retire Description"
+                },
+                {
+                    id: "RETIRE_RELATIONSHIP",
+                    title: "Retire Relationship"
+                },
+                {
+                    id: "CHANGE_RELATIONSHIP",
+                    title: "Change Relationship"
+                },
+                {
+                    id: "OTHER",
+                    title: "Other"
+                },
+            ];
 
             var initView = function() {
                 vm.selectedRequests = { checked: false, items: {}, requests: {} };
@@ -40,6 +191,9 @@ angular
                 vm.loadingProjects = true;
                 scaService.getProjects().then(function(response) {
                     vm.projects = response;
+                    for(var i in vm.projects){
+                        vm.projects[i].id = vm.projects[i].key;
+                    }
                 }).finally(function() {
                     vm.loadingProjects = false;
                 });
@@ -53,7 +207,10 @@ angular
                 return crsJiraService.getAuthorUsers(0, 50, true, [], groupName).then(function(users) {
                     notificationService.sendMessage('crs.request.message.listLoaded', 5000);
                     vm.authors = users;
-
+                    for(var i in vm.authors){
+                        vm.authors[i].title = vm.authors[i].displayName;
+                        vm.authors[i].id = vm.authors[i].key;
+                    }
                     return users;
                 }).finally(function() {
                     vm.loadingAuthors = false;
@@ -66,7 +223,10 @@ angular
                 vm.loadingAuthors = true;
                 return crsJiraService.getAuthorUsers(0, 50, true, [], groupName).then(function(users) {
                     vm.staffs = users;
-
+                    for(var i in vm.staffs){
+                        vm.staffs[i].title = vm.staffs[i].displayName;
+                        vm.staffs[i].id = vm.staffs[i].key;
+                    }
                     return users;
                 }).finally(function() {
                     vm.loadingAuthors = false;
@@ -81,7 +241,7 @@ angular
                         if (vm.authors[i].key === authorKey) {
                             //return vm.authors[i].displayName;
                             return $sce.trustAsHtml([
-                                '<img src="' + vm.authors[i].avatarUrls['16x16'] + '"/>',
+                                // '<img src="' + vm.authors[i].avatarUrls['16x16'] + '"/>',
                                 '<span style="vertical-align:middle">&nbsp;' + vm.authors[i].displayName + '</span>'
                             ].join(''));
                         }
@@ -97,7 +257,7 @@ angular
                         if (vm.staffs[i].key === staffKey) {
                             //return vm.authors[i].displayName;
                             return $sce.trustAsHtml([
-                                '<img style="padding-bottom:2px" src="' + vm.staffs[i].avatarUrls['16x16'] + '"/>',
+                                // '<img style="padding-bottom:2px" src="' + vm.staffs[i].avatarUrls['16x16'] + '"/>',
                                 '<span style="vertical-align:middle">&nbsp;' + vm.staffs[i].displayName + '</span>'
                             ].join(''));
                         }
@@ -215,7 +375,36 @@ angular
                 vm.tableParams.reload();
             };
 
-            var requestTableParams = new ngTableParams({
+            var convertDateToMilliseconds = function(date){
+                var milliseconds = new Date(date);
+                return milliseconds.getTime();
+            };
+
+            var buildRequestList = function(typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, manager, status, author,
+                project, assignee, requestId, requestType){
+                var requestList = {};
+                requestList.batchRequest = batchRequest? batchRequest: 0;
+                requestList.concept = fsn;
+                requestList.jiraTicketId = jiraTicketId;
+                requestList.offset = page;
+                requestList.limit = pageCount;
+                requestList.sortFields = sortFields;
+                requestList.sortDirections = sortDirs;
+                requestList.requestDateFrom = convertDateToMilliseconds(requestDateFrom);
+                requestList.requestDateTo = convertDateToMilliseconds(requestDateTo);
+                requestList.topic = topic;
+                requestList.manager = manager;
+                requestList.status = status;
+                requestList.type = typeList;
+                requestList.ogirinatorId = author;
+                requestList.assignedProject = project;
+                requestList.assignee = assignee;
+                requestList.requestId = requestId? requestId: 0;
+                requestList.requestType = requestType;
+                return requestList;
+            };
+
+            var requestTableParams = new NgTableParams({
                 page: 1,
                 count: 10,
                 sorting: { 'requestHeader.requestDate': 'desc', batchRequest: 'asc', id: 'asc' }
@@ -232,8 +421,30 @@ angular
                             sortDirs.push(dir);
                         });
                     }
-
-                    return requestService.getAcceptedRequests(params.page() - 1, params.count(), params.filter().search, sortFields, sortDirs, vm.showUnassignedRequests).then(function(requests) {
+                    var acceptedRequests;
+                        acceptedRequests = buildRequestList(
+                            'ACCEPTED',
+                            params.page() - 1, 
+                            params.count(), 
+                            params.filter().search, 
+                            sortFields, 
+                            sortDirs, 
+                            params.filter().batchRequest, 
+                            params.filter().fsn, 
+                            params.filter().jiraTicketId,
+                            params.filter().requestDateFrom,
+                            params.filter().requestDateTo,
+                            params.filter().topic,
+                            // params.filter().summary,
+                            params.filter().manager,
+                            params.filter().status,
+                            params.filter().author,
+                            params.filter().project,
+                            params.filter().assignee,
+                            params.filter().requestId,
+                            params.filter().requestType
+                        );
+                    return requestService.getRequests(acceptedRequests).then(function(requests) {
                         params.total(requests.total);
                         if (requests.items && requests.items.length > 0) {
                             return requests.items;

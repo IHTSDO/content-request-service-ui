@@ -541,13 +541,13 @@ ul.batch-statistic.timeline {
 .dashboard-sidebar {
   min-height: 100%;
   position: fixed;
-  width: 25%;
+  width: 15%;
   z-index: 1;
 }
 
 .dashboard-content {
   min-height: 100%;
-  margin-left:25%;
+  margin-left:15%;
 }
 
 .promoted-check-box {
@@ -672,4 +672,18 @@ ul.batch-statistic.timeline {
 
 .comment-body{
   white-space: pre-line;
+}
+
+.select-filter{
+  input{
+    margin-top: 6px;
+  }
+  span, button{
+    font-size: 14px;
+  }
+}
+.table-requests {
+  .form-control-element{
+    margin-bottom: 0;
+  }
 }

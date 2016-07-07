@@ -39,7 +39,25 @@
                 "createRequest": "Create New Request",
                 "importBatch": "New Batch Import",
                 "acceptedRequest": "Accepted Requests",
-                "submittedRequest": "Submitted Requests"
+                "submittedRequest": "Submitted Requests",
+                "submitted": "Submitted",
+                "accepted": "Accepted",
+                "approved": "Approved",
+                "draft": "Draft",
+                "allRequests": "All Requests",
+                "all": "All",
+                "assignedToMe": "Assigned to me",
+                "unassigned": "Unassigned",
+                "acceptedInScope": "Accepted - in scope",
+                "appealNotAccepted": "Appeal not accepted",
+                "inProgress": "In Progress",
+                "clarificationRequested": "Clarification Requested",
+                "completed": "Completed",
+                "forwarded": "Forwarded",
+                "new": "New",
+                "notAccepted": "Not accepted",
+                "withdrawn": "Withdrawn",
+                "underAppeal": "Under appeal"
             }
         },
         "request": {
@@ -68,7 +86,8 @@
                 "tableHeader": {
                     "batchId": "Batch ID",
                     "requestorInternalId": "Local Code",
-                    "ticketId": "Request ID",
+                    "ticketId": "Jira ID",
+                    "requestId": "Request ID",
                     "description": "Description",
                     "lastModified": "Last Modified",
                     "requestType": "Request Type",
@@ -82,7 +101,8 @@
                     "originator": "Created By",
                     "createdDate": "Created On",
                     "requestDescription": "Descripion of Request",
-                    "manager": "Manager"
+                    "manager": "Manager",
+                    "summary": "Summary"
                 }
             },
             "details": {
@@ -292,7 +312,8 @@
                 "forwarded": "Forwarded",
                 "approved": "Approved",
                 "inInceptionElaboration": "In Inception/Elaboration",
-                "readyForRelease": "Ready For Release"
+                "readyForRelease": "Ready For Release",
+                "submitted": "Submitted"
             }
         },
         "batch": {

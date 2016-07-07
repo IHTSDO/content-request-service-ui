@@ -5,13 +5,13 @@ angular
     .module('conceptRequestServiceApp.batch')
     .controller('BatchListCtrl', [
         '$filter',
-        'ngTableParams',
+        'NgTableParams',
         'batchService',
         'notificationService',
-        function ($filter, ngTableParams, batchService, notificationService) {
+        function ($filter, NgTableParams, batchService, notificationService) {
             var vm = this;
 
-            var batchTableParams = new ngTableParams({
+            var batchTableParams = new NgTableParams({
                     page: 1,
                     count: 10,
                     sorting: {'requestHeader.statusDate': 'desc', 'requestHeader.requestDate': 'desc', id: 'asc'}

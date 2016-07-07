@@ -51,7 +51,7 @@ angular
                         break;
                     case 'submitted-requests':
                         $rootScope.pageTitles = [
-                            {url: '#/submitted-requests', label: 'crs.request.list.title.acceptedRequests'}
+                            {url: '#/submitted-requests', label: 'crs.request.list.title.submittedRequests'}
                         ];
                         vm.listView = 'components/request/submitted-request-list.html';
                         break;

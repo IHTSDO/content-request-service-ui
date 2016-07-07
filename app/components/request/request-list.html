@@ -28,40 +28,48 @@
                     </div>
                 </div>
             </div>
-            <div class="table-responsive white">
+            
+           
+            <div class="table-responsive white" style="min-height: 416px;">
                 <table ng-table="vm.tableParams" template-pagination="layout/template/review-table-pager.html"
-                       class="table table-full table-full-small table-requests">
+                       class="table table-full table-full-small table-requests" show-filter="true">
                     <tr ng-repeat="request in $data" ng-click="dashboard.editRequest(request.id)" class="clickable-row" ng-class="{'row-selected': vm.selectedRequests.items[request.id] === true}">
-
                         <td class="col-checkbox" header="'ng-table/headers/checkbox.html'" ng-click="$event.stopPropagation()">
                             <input type="checkbox" class="small-checkbox" ng-model="vm.selectedRequests.items[request.id]">
                         </td>
 
-                        <td data-title="'crs.request.list.tableHeader.batchId' | translate" sortable="'batchRequest'" >
+                        <td data-title="'crs.request.list.tableHeader.requestId' | translate" sortable="'id'" filter="vm.filterRequests.requestId">
+                            {{request.id}}
+                        </td>
+
+                        <td data-title="'crs.request.list.tableHeader.batchId' | translate" sortable="'batchRequest'" filter="vm.filterRequests.batchRequest">
                             <!--<a class="tooltips-right" ng-href="#/batches/view/{{request.batchRequest}}">{{request.batchRequest}} <span translate="crs.request.list.tip.batchId"></span></a>-->
                             {{request.batchRequest}}
                         </td>
-                        <td data-title="'crs.request.list.tableHeader.conceptFSN' | translate" sortable="'fsn'" >
+                        <td data-title="'crs.request.list.tableHeader.conceptFSN' | translate" sortable="'fsn'" filter="vm.filterRequests.fsn">
                             <!--<a class="tooltips-right" ng-href="#/requests/edit/{{request.id}}">{{request.fsn}} <span translate="crs.request.list.tip.conceptFSN"></span></a>-->
                             {{request.fsn}}
                         </td>
-                        <td data-title="'crs.request.list.tableHeader.ticketId' | translate" sortable="'jiraTicketId'" jira-link="request.jiraTicketId"></td>
-                        <td data-title="'crs.request.list.tableHeader.createdDate' | translate" sortable="'requestHeader.requestDate'" >
+                        <td data-title="'crs.request.list.tableHeader.ticketId' | translate" sortable="'jiraTicketId'" filter="vm.filterRequests.jiraTicketId" jira-link="request.jiraTicketId"></td>
+                        <td data-title="'crs.request.list.tableHeader.createdDate' | translate" sortable="'requestHeader.requestDate'" filter="{requestDateFrom: 'ng-table/datetime-picker-startdate.html', requestDateTo: 'ng-table/datetime-picker-enddate.html'}" >
                             {{request.requestHeader.requestDate | date:'MM-dd-yyyy'}}
                         </td>
-                        <!--<td data-title="'crs.request.list.tableHeader.requestType' | translate" sortable="'requestType'" >
-                            {{request.requestHeader.requestType | requestType | translate}}
-                        </td>-->
-                        <td data-title="'crs.request.list.tableHeader.topic' | translate" sortable="'additionalFields.topic'" >
+                        <td data-title="'crs.request.list.tableHeader.requestType' | translate" sortable="'requestType'" filter="{requestType: 'ng-table/request-type-select.html'}">
+                            {{request.requestType | requestType | translate}}
+                        </td>
+                        <td data-title="'crs.request.list.tableHeader.topic' | translate" sortable="'additionalFields.topic'" filter="vm.filterRequests.topic">
                             {{(request.additionalFields)?request.additionalFields.topic:''}}
                         </td>
+                        <td data-title="'crs.request.list.tableHeader.summary' | translate" sortable="'additionalFields.summary'" >
+                            {{(request.additionalFields)?request.additionalFields.summary:''}}
+                        </td>
 
-                        <td data-title="'crs.request.list.tableHeader.manager' | translate" sortable="'requestHeader.manager'" style="min-width: 150px">
+                        <td data-title="'crs.request.list.tableHeader.manager' | translate" sortable="'requestHeader.manager'" filter="{manager: 'ng-table/manager-select.html'}" style="min-width: 150px">
                             <span ng-show="vm.loadingAuthors" class="md md-autorenew" ng-class="{'md-spin':vm.loadingAuthors}"></span>
                             <div  ng-bind-html="(vm.getAuthorName(request.requestHeader.manager))?vm.getAuthorName(request.requestHeader.manager):request.requestHeader.manager"></div>
                         </td>
 
-                        <td data-title="'crs.request.list.tableHeader.validationResult' | translate" sortable="'currentValidationStatus'" style="text-align: center">
+                        <td data-title="'crs.request.list.tableHeader.validationResult' | translate" sortable="'currentValidationStatus'"  style="text-align: center">
                             <a class="tooltips-left" >
                                 <button ng-show="request.currentValidationStatus"
                                         type="button"
@@ -72,7 +80,7 @@
                             </a>
                         </td>
 
-                        <td data-title="'crs.request.list.tableHeader.status' | translate" sortable="'requestHeader.status'">
+                        <td data-title="'crs.request.list.tableHeader.status' | translate" sortable="'requestHeader.status'" filter="{status: 'ng-table/status-select.html'}">
                             <span class="badge requestStatus {{request.requestHeader.status}}">{{request.requestHeader.status | requestStatus | translate}}</span>
                         </td>
                     </tr>
@@ -83,4 +91,66 @@
     </section>
 </div>
 <script type="text/ng-template" id="ng-table/headers/checkbox.html">
+</script>
+<script type="text/ng-template" id="ng-table/datetime-picker-startdate.html">
+    <div class="input-group select-filter">
+        <input type="text"
+               ng-disabled="$filterRow.disabled"
+               class="form-control"
+               uib-datepicker-popup="MM/dd/yyyy"
+               ng-model="params.filter()[name]"
+               on-open-focus="false"
+               ng-model-options="{allowInvalid:false}"
+               is-open="vm.startDateOpened"
+               datepicker-options="{showWeeks: false}"
+               ng-focus="vm.startDateOpened=true"
+               placeholder="Start Date" 
+               name="{{name}}"
+               />
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="vm.startDateOpened=true">
+                <i class="glyphicon glyphicon-calendar"></i>
+            </button>
+          </span>
+    </div>
+</script>
+<script type="text/ng-template" id="ng-table/datetime-picker-enddate.html">
+    <div class="input-group select-filter">
+        <input type="text"
+               ng-disabled="$filterRow.disabled"
+               class="form-control"
+               uib-datepicker-popup="MM/dd/yyyy"
+               ng-model="params.filter()[name]"
+               on-open-focus="false"
+               ng-model-options="{allowInvalid:false}"
+               is-open="vm.endDateOpened"
+               datepicker-options="{showWeeks: false}"
+               ng-focus="vm.endDateOpened=true"
+               placeholder="End Date" 
+               name="{{name}}"
+               />
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="vm.endDateOpened=true">
+                <i class="glyphicon glyphicon-calendar"></i>
+            </button>
+          </span>
+    </div>
+</script>
+<script type="text/ng-template" id="ng-table/manager-select.html">
+    <form-control type="select"
+                  model="params.filter()[name]"
+                  options="suggestion.id as suggestion.title for suggestion in vm.staffs"
+                  ></form-control>
+</script>
+<script type="text/ng-template" id="ng-table/status-select.html">
+    <form-control type="select"
+                  model="params.filter()[name]"
+                  options="suggestion.id as suggestion.title for suggestion in vm.requestStatus"
+                  ></form-control>
+</script>
+<script type="text/ng-template" id="ng-table/request-type-select.html">
+    <form-control type="select"
+                  model="params.filter()[name]"
+                  options="suggestion.id as suggestion.title for suggestion in vm.requestTypes"
+                  ></form-control>
 </script>
