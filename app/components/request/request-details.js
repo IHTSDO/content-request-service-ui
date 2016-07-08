@@ -176,16 +176,16 @@ angular
                 return crsJiraService.getSemanticTags().then(function(semanticTags){
                     vm.semanticTags = semanticTags;
                     if(vm.pageMode !== REQUEST_MODE.NEW){
+                        var isNotInArr;
                         for(var i in semanticTags){
                             if(semanticTags[i].value !== vm.request.value){
-                                var isNotInArr = true;
+                                isNotInArr = true;
                             }
                         }
                         if(isNotInArr){
                             var obj = {};
                             obj.value = vm.request.value;
                             vm.semanticTags.push(obj);
-                            console.log(vm.semanticTags);
                         }
                     }
                     
@@ -1622,6 +1622,7 @@ angular
                 requestService.saveRequest(requestData)
                     .then(function(response) {
                         var requestId = response.id;
+                        vm.request.id = requestId;
 
                         return requestService.submitRequest(requestId);
                     })
