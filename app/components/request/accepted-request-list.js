@@ -446,6 +446,7 @@ angular
                         );
                     return requestService.getRequests(acceptedRequests).then(function(requests) {
                         params.total(requests.total);
+                        vm.requests = requests;
                         if (requests.items && requests.items.length > 0) {
                             return requests.items;
                         } else {
@@ -472,6 +473,7 @@ angular
             vm.projects = [];
             vm.authors = [];
             vm.staffs = [];
+            vm.showFilter = false;
 
             initView();
         }

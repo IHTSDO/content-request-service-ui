@@ -31,7 +31,8 @@ angular
         '$route',
         'accountService',
         'notificationService',
-        function ($rootScope, $uibModal, $routeParams, $location, $route, accountService, notificationService) {
+        'requestService',
+        function ($rootScope, $uibModal, $routeParams, $location, $route, accountService, notificationService, requestService) {
             var vm = this;
 
             var initView = function () {
@@ -65,11 +66,15 @@ angular
                         break;
                 }
 
+                getStatisticsRequests();
+
                 // check admin role
                 accountService.checkUserPermission().then(function (rs) {
                     vm.permissionChecked = true;
                     vm.isAdmin = (rs.isAdmin === true);
                     vm.isViewer = (rs.isViewer === true);
+                    vm.isStaff = (rs.isStaff === true);
+                    vm.isRequester = (rs.isRequester === true);
                 });
             };
 
@@ -122,6 +127,12 @@ angular
                 });
             };
 
+            var getStatisticsRequests = function(){
+                return requestService.getStatisticsRequests().then(function(data){
+                    vm.statisticsRequests = data;
+                });
+            };
+
             vm.openCreateRequestModal = openCreateRequestModal;
             vm.openBatchImportModal = openBatchImportModal;
             vm.editRequest = editRequest;
@@ -130,6 +141,8 @@ angular
             vm.permissionChecked = false;
             vm.isAdmin = false;
             vm.isViewer = false;
+            vm.isStaff = false;
+            vm.isRequester = false;
 
             vm.testIMS = function () {
                 accountService.getTestUsers();

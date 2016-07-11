@@ -8,7 +8,8 @@ angular.module('conceptRequestServiceApp.request')
         'REQUEST_TYPE',
         'REQUEST_STATUS',
         'CRS_API_ENDPOINT',
-        function ($rootScope, $q, crsService, REQUEST_TYPE, REQUEST_STATUS, CRS_API_ENDPOINT) {
+        'STATISTICS_STATUS',
+        function ($rootScope, $q, crsService, REQUEST_TYPE, REQUEST_STATUS, CRS_API_ENDPOINT, STATISTICS_STATUS) {
 
             var identifyRequestType = function (value) {
                 for (var requestTypeKey in REQUEST_TYPE) {
@@ -26,6 +27,17 @@ angular.module('conceptRequestServiceApp.request')
                     if (REQUEST_STATUS.hasOwnProperty(requestStatusKey) &&
                         REQUEST_STATUS[requestStatusKey].value === value) {
                         return REQUEST_STATUS[requestStatusKey];
+                    }
+                }
+
+                return null;
+            };
+
+            var identifyStatisticsStatus = function (value) {
+                for (var statisticsStatusKey in STATISTICS_STATUS) {
+                    if (STATISTICS_STATUS.hasOwnProperty(statisticsStatusKey) &&
+                        STATISTICS_STATUS[statisticsStatusKey].value === value) {
+                        return STATISTICS_STATUS[statisticsStatusKey];
                     }
                 }
 
@@ -166,6 +178,11 @@ angular.module('conceptRequestServiceApp.request')
                 }
             };
 
+            var getStatisticsRequests = function(){
+                var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
+                return crsService.sendGet(requestEndpoint + '/statusStatistics');
+            };
+
             return {
                 identifyRequestType: identifyRequestType,
                 identifyRequestStatus: identifyRequestStatus,
@@ -178,7 +195,9 @@ angular.module('conceptRequestServiceApp.request')
                 removeRequests: removeRequests,
                 assignRequests: assignRequests,
                 assignRequestsToStaff: assignRequestsToStaff,
-                changeRequestStatus: changeRequestStatus
+                changeRequestStatus: changeRequestStatus,
+                getStatisticsRequests: getStatisticsRequests,
+                identifyStatisticsStatus: identifyStatisticsStatus
             };
 
         }]);

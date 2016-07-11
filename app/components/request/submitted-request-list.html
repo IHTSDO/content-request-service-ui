@@ -14,6 +14,10 @@
                 </div>
                 <div class="col-md-2">
                     <div class="pull-right p-t-20">
+                        <button ng-click="vm.showFilter = !vm.showFilter" class="btn btn-round btn-default" title="{{'crs.request.list.tip.filter' | translate}}">
+                            <span class="md md-search"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
                         <button type="button" class="btn btn-round btn-info ng-scope " title="{{'crs.request.list.tip.count' | translate}}" >
                             {{vm.submittedTableParams.total()}} <div class="ripple-wrapper"></div>
                         </button>
@@ -26,7 +30,7 @@
             </div>
             <div class="table-responsive white" style="min-height: 416px;">
                 <table ng-table="vm.submittedTableParams" template-pagination="layout/template/review-table-pager.html"
-                       class="table table-full table-full-small table-requests">
+                       class="table table-full table-full-small table-requests" show-filter="vm.showFilter">
                     <tr ng-repeat="request in $data" ng-click="dashboard.previewRequest(request.id)" class="clickable-row">
                         <!--<td class="col-checkbox" header="'ng-table/headers/checkbox.html'" ng-click="$event.stopPropagation()">
                             <input type="checkbox" class="small-checkbox" ng-model="vm.selectedSubmittedRequests.items[request.id]" >
@@ -69,6 +73,9 @@
                         </td>
                     </tr>
                 </table>
+                <div ng-if="vm.requests.total === 0" class="no-request-found">
+                    No request found!
+                </div>
             </div>
 
         </div>

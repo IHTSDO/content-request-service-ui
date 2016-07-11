@@ -1,4 +1,4 @@
-<div style="background-color:#474747; overflow:auto;">
+<div style="background-color:#474747;">
 
     <ul ng-cloak style="padding: 0px; list-style: none;">
 
@@ -45,62 +45,21 @@
         </li>-->
 
     </ul>
-    <ul ng-if="dashboard.permissionChecked && !dashboard.isAdmin" ng-cloak style="padding: 10px; list-style: none; color: white">
-        <li>
-            {{'crs.dashboard.sidebar.submitted' | translate}}
-        </li>
-        <li>
-            {{'crs.dashboard.sidebar.accepted' | translate}}
-        </li>
-        <li>
-            {{'crs.dashboard.sidebar.approved' | translate}}
-        </li>
-        <li>
-            {{'crs.dashboard.sidebar.draft' | translate}}
-        </li>
-    </ul>
-
-    <ul ng-cloak style="padding: 10px; list-style: none; color: white; height: 100%; overflow-y: auto; overflow-x: hidden;">
-        <li>
-            {{'crs.dashboard.sidebar.allRequests' | translate}}
-        </li>
-        <li>
-            {{'crs.dashboard.sidebar.assignedToMe' | translate}}
-        </li>
-        </hr>
-        <li>
-            {{'crs.dashboard.sidebar.unassigned' | translate}}
-        </li>
-        <li>
-            {{'crs.dashboard.sidebar.acceptedInScope' | translate}}
-        </li>
-        <li>
-            {{'crs.dashboard.sidebar.appealNotAccepted' | translate}}
-        </li>
-        <li>
-            {{'crs.dashboard.sidebar.inProgress' | translate}}
-        </li>
-        <li>
-            {{'crs.dashboard.sidebar.clarificationRequested' | translate}}
-        </li>
-        <li>
-            {{'crs.dashboard.sidebar.completed' | translate}}
-        </li>
-        <li>
-            {{'crs.dashboard.sidebar.forwarded' | translate}}
-        </li>
-        <li>
-            {{'crs.dashboard.sidebar.new' | translate}}
-        </li>
-        <li>
-            {{'crs.dashboard.sidebar.notAccepted' | translate}}
-        </li>
-        <li>
-            {{'crs.dashboard.sidebar.withdrawn' | translate}}
-        </li>
-        <li>
-            {{'crs.dashboard.sidebar.underAppeal' | translate}}
-        </li>
-
-    </ul>
-</div>-
+    <div class="statistics-requests">
+        <div ng-repeat="number in dashboard.statisticsRequests" class="statistics-request"  ng-cloak >
+            <div class="labelSb">    
+                <span>
+                    {{number.status | statisticsStatus | translate}}
+                </span>
+            </div>
+            <div class="numberSb">
+                <a>
+                    : {{number.count}}
+                </a>
+                <a>
+                    ({{number.countMyReq}})
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

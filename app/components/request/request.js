@@ -208,6 +208,60 @@ angular
             langKey: 'crs.request.requestStatus.readyForRelease'
         }
     })
+    .value('STATISTICS_STATUS',{
+        Assigned: {
+            value: 'Assigned',
+            langKey: 'crs.dashboard.sidebar.assigned'
+        },
+        ACCEPTED: {
+            value: 'ACCEPTED',
+            langKey: 'crs.dashboard.sidebar.accepted'
+        },
+        APPEAL_REJECTED: {
+            value: 'APPEAL_REJECTED',
+            langKey: 'crs.dashboard.sidebar.appealRejected'
+        },
+        UNDER_AUTHORING: {
+            value: 'UNDER_AUTHORING',
+            langKey: 'crs.dashboard.sidebar.underAuthoring'
+        },
+        CLARIFICATION_NEEDED: {
+            value: 'CLARIFICATION_NEEDED',
+            langKey: 'crs.dashboard.sidebar.clarificationNeeded'
+        },
+        RELEASED: {
+            value: 'RELEASED',
+            langKey: 'crs.dashboard.sidebar.released'
+        },
+        FORWARDED: {
+            value: 'FORWARDED',
+            langKey: 'crs.dashboard.sidebar.forwarded'
+        },
+        NEW: {
+            value: 'NEW',
+            langKey: 'crs.dashboard.sidebar.new'
+        },
+        REJECTED: {
+            value: 'REJECTED',
+            langKey: 'crs.dashboard.sidebar.rejected'
+        },
+        WITHDRAWN: {
+            value: 'WITHDRAWN',
+            langKey: 'crs.dashboard.sidebar.withdraw'
+        },
+        APPEAL: {
+            value: 'APPEAL',
+            langKey: 'crs.dashboard.sidebar.appeal'
+        },
+        DRAFT: {
+            value: 'DRAFT',
+            langKey: 'crs.dashboard.sidebar.draft'
+        },
+        SUBMITTED: {
+            value: 'SUBMITTED',
+            langKey: 'crs.dashboard.sidebar.submitted'
+        }
+    })
     .value('REQUEST_METADATA_KEY', {
         SOURCE_TERMINOLOGY: 'SOURCE_TERMINOLOGY',
         CASE_SIGNIFICANCE: 'CASE_SIGNIFICANCE',

@@ -6,7 +6,7 @@
                 <div class="col-md-2 no-padding">
                     <h3 class="table-title p-20" translate="crs.request.list.title.acceptedRequests"></h3>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="table-search">
                         <input type="text" ng-model="vm.tableParams.filter()['search']" class="form-control"
                                placeholder="{{'crs.request.list.searchPlaceHolder.acceptedRequests' | translate}}" autofocus/>
@@ -21,6 +21,10 @@
                 </div>
                 <div class="col-md-2">
                     <div class="p-t-20">
+                        <button ng-click="vm.showFilter = !vm.showFilter" class="btn btn-round btn-default" title="{{'crs.request.list.tip.filter' | translate}}">
+                            <span class="md md-search"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
                         <button type="button" class="btn btn-round btn-info ng-scope " title="{{'crs.request.list.tip.count' | translate}}" >
                             {{vm.tableParams.total()}} <div class="ripple-wrapper"></div>
                         </button>
@@ -38,7 +42,7 @@
             </div>
             <div class="table-responsive white" style="min-height: 416px;">
                 <table ng-table="vm.tableParams" template-pagination="layout/template/review-table-pager.html"
-                       class="table table-full table-full-small table-requests">
+                       class="table table-full table-full-small table-requests" show-filter="vm.showFilter">
                     <tr ng-repeat="request in $data" ng-click="dashboard.previewRequest(request.id)" class="clickable-row" ng-class="{'row-selected': vm.selectedRequests.items[request.id] === true}">
 
                         <td class="col-checkbox" header="'ng-table/headers/checkbox.html'" ng-click="$event.stopPropagation()">
@@ -91,13 +95,15 @@
                             <div ng-if="!vm.loadingAuthors" ng-bind-html="(vm.getAuthorName(request.requestHeader.assignee))?vm.getAuthorName(request.requestHeader.assignee):request.requestHeader.assignee"></div>
                         </td>
 
-                        <td data-title="'crs.request.list.tableHeader.status' | translate" sortable="'requestHeader.status'" filter="{status: 'ng-table/status-select.html'}">
+                        <td data-title="'crs.request.list.tableHeader.status' | translate" sortable="'requestHeader.status'">
                             <span class="badge requestStatus {{request.requestHeader.status}}">{{request.requestHeader.status | requestStatus | translate}}</span>
                         </td>
                     </tr>
                 </table>
+                <div ng-if="vm.requests.total === 0" class="no-request-found">
+                    No request found!
+                </div>
             </div>
-
         </div>
     </section>
 </div>

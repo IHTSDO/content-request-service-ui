@@ -229,7 +229,7 @@ angular
                         if (vm.authors[i].key === authorKey) {
                             //return vm.authors[i].displayName;
                             return $sce.trustAsHtml([
-                                    '<img src="' + vm.authors[i].avatarUrls['16x16'] + '"/>',
+                                    // '<img src="' + vm.authors[i].avatarUrls['16x16'] + '"/>',
                                     '<span style="vertical-align:middle">&nbsp;' + vm.authors[i].displayName + '</span>'
                             ].join(''));
                         }
@@ -245,7 +245,7 @@ angular
                         if (vm.staffs[i].key === staffKey) {
                             //return vm.authors[i].displayName;
                             return $sce.trustAsHtml([
-                                    '<img src="' + vm.staffs[i].avatarUrls['16x16'] + '"/>',
+                                    // '<img src="' + vm.staffs[i].avatarUrls['16x16'] + '"/>',
                                     '<span style="vertical-align:middle">&nbsp;' + vm.staffs[i].displayName + '</span>'
                             ].join(''));
                         }
@@ -331,6 +331,7 @@ angular
                             });
                         }
                         notificationService.sendMessage('crs.request.message.listLoading');
+
                         var myRequests;
                         myRequests = buildRequestList(
                             'REQUEST',
@@ -355,6 +356,7 @@ angular
                         return requestService.getRequests(myRequests).then(function (requests) {
                             notificationService.sendMessage('crs.request.message.listLoaded', 5000);
                             params.total(requests.total);
+                            vm.requests = requests;
                             if (requests.items && requests.items.length > 0) {
                                 return requests.items;
                             } else {
@@ -408,6 +410,7 @@ angular
                         );
                         return requestService.getRequests(subbmitedRequests).then(function (requests) {
                             params.total(requests.total);
+                            vm.requests = requests;
                             if (requests.items && requests.items.length > 0) {
                                 return requests.items;
                             } else {
@@ -420,6 +423,7 @@ angular
                 }
             );
 
+            vm.showFilter = false;
             vm.isAdmin = false;
             vm.isViewer = false;
             vm.loadingAuthors = true;
