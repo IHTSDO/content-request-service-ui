@@ -48,7 +48,7 @@
                 "all": "All",
                 "assigned": "Assigned",
                 "assignedMe": "Assigned to me",
-                "UnAssignedMe": "Unassigned",
+                "unassigned": "Unassigned",
                 "accepted": "Accepted",
                 "appealNotAccepted": "Appeal not accepted",
                 "inProgress": "In Progress",

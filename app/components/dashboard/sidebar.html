@@ -57,11 +57,13 @@
                 <a class="pointer" ng-click="dashboard.filterStatus(number.status)">
                     {{number.count}}
                 </a>
-                (
-                <a class="pointer" ng-click="dashboard.filterAssignedRequests(number.status)">
-                    {{number.countAssignedReq}}
-                </a>
-                )
+                <div style="display: inline-flex;" ng-show="number.status !== 'ALL_REQUEST' && number.status !== 'ALL' && number.status !== 'Assigned' && number.status !== 'Unassigned'">
+                    (
+                    <a class="pointer" ng-click="dashboard.filterAssignedRequests(number.status)">
+                        {{number.countAssignedReq}}
+                    </a>
+                    )
+                </div>
             </div>
         </div>
     </div>

@@ -268,6 +268,10 @@ angular
         ALL: {
             value: 'ALL',
             langKey: 'crs.dashboard.sidebar.all'
+        },
+        Unassigned: {
+            value:'Unassigned',
+            langKey: 'crs.dashboard.sidebar.unassigned'
         }
     })
     .value('REQUEST_METADATA_KEY', {

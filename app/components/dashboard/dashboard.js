@@ -139,18 +139,27 @@ angular
             var getStatisticsRequests = function(){
                 return requestService.getStatisticsRequests().then(function(data){
                     vm.statisticsRequests = data;
+                    for(var i in data){
+                        if(data[i].status === 'Assigned'){
+                            var obj = {};
+                            obj.status = 'Unassigned';
+                            obj.count = data[i].countAssignedReq;
+                            vm.statisticsRequests.splice(3, 0, obj);
+                            break;
+                        }
+                    }
                 });
             };
 
             var filterStatus = function(status){
-                if(status === 'ALL_REQUEST' || status === 'Assigned' || status === 'ALL'){
+                if(status === 'ALL_REQUEST' || status === 'Assigned' || status === 'ALL' || status === 'Unassigned'){
                     return;
                 }
                 $location.path('dashboard/submitted-requests').search({status:status});
 
             };
             var filterAssignedRequests = function(status){
-                if(status === 'ALL_REQUEST' || status === 'Assigned' || status === 'ALL'){
+                if(status === 'ALL_REQUEST' || status === 'Assigned' || status === 'ALL' || status === 'Unassigned'){
                     return;
                 }
                 accountService.getAccountInfo().then(function (accountDetails) {
