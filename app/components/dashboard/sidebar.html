@@ -45,19 +45,37 @@
         </li>-->
 
     </ul>
-    <div class="statistics-requests">
+    <div ng-if="dashboard.permissionChecked && dashboard.isAdmin" class="statistics-requests">
         <div ng-repeat="number in dashboard.statisticsRequests" class="statistics-request"  ng-cloak >
             <div class="labelSb">    
                 <span>
                     {{number.status | statisticsStatus | translate}}
                 </span>
             </div>
+            :   &nbsp;
             <div class="numberSb">
-                <a>
-                    : {{number.count}}
+                <a class="pointer" ng-click="dashboard.filterStatus(number.status)">
+                    {{number.count}}
                 </a>
-                <a>
-                    ({{number.countMyReq}})
+                (
+                <a class="pointer" ng-click="dashboard.filterAssignedRequests(number.status)">
+                    {{number.countAssignedReq}}
+                </a>
+                )
+            </div>
+        </div>
+    </div>
+    <div ng-if="dashboard.permissionChecked && dashboard.isRequester" class="statistics-requests">
+        <div ng-repeat="number in dashboard.statisticsRequests" class="statistics-request"  ng-cloak >
+            <div class="labelSb">    
+                <span>
+                    {{number.status | statisticsStatus | translate}}
+                </span>
+            </div>
+            :   &nbsp;
+            <div class="numberSb">
+                <a class="pointer" ng-click="dashboard.filterMyRequest(number.status)">
+                    {{number.count}}
                 </a>
             </div>
         </div>

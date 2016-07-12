@@ -21,6 +21,9 @@ angular
             })
             .when('/submitted-requests',{
                 redirectTo: '/dashboard/submitted-requests'
+            })
+            .when('/filter-requests',{
+                redirectTo: '/dashboard/filter-requests'
             });
     })
     .controller('DashboardCtrl', [
@@ -55,6 +58,12 @@ angular
                             {url: '#/submitted-requests', label: 'crs.request.list.title.submittedRequests'}
                         ];
                         vm.listView = 'components/request/submitted-request-list.html';
+                        break;
+                    case 'filter-requests':
+                        $rootScope.pageTitles = [
+                            {url: '#/submitted-requests', label: 'crs.request.list.title.submittedRequests'}
+                        ];
+                        vm.listView = 'components/request/filter-requests.html';
                         break;
                     case 'requests':
                     /* falls through */
@@ -133,11 +142,37 @@ angular
                 });
             };
 
+            var filterStatus = function(status){
+                if(status === 'ALL_REQUEST' || status === 'Assigned' || status === 'ALL'){
+                    return;
+                }
+                $location.path('dashboard/submitted-requests').search({status:status});
+
+            };
+            var filterAssignedRequests = function(status){
+                if(status === 'ALL_REQUEST' || status === 'Assigned' || status === 'ALL'){
+                    return;
+                }
+                accountService.getAccountInfo().then(function (accountDetails) {
+                    $location.path('dashboard/submitted-requests').search({status:status, assignee: accountDetails.login});                   
+                });
+            };
+
+            var filterMyRequest = function(status){
+                if(status === 'SUBMITTED'){
+                    return;
+                }
+                $location.path('dashboard/requests').search({status:status});
+            };
+
             vm.openCreateRequestModal = openCreateRequestModal;
             vm.openBatchImportModal = openBatchImportModal;
             vm.editRequest = editRequest;
             vm.previewRequest = previewRequest;
             vm.showBatchDetails = showBatchDetails;
+            vm.filterStatus = filterStatus;
+            vm.filterMyRequest = filterMyRequest;
+            vm.filterAssignedRequests = filterAssignedRequests;
             vm.permissionChecked = false;
             vm.isAdmin = false;
             vm.isViewer = false;

@@ -12,7 +12,8 @@ angular
         'notificationService',
         'accountService',
         'jiraService',
-        function ($filter, $sce, crsJiraService, NgTableParams, requestService, notificationService, accountService, jiraService) {
+        '$routeParams',
+        function ($filter, $sce, crsJiraService, NgTableParams, requestService, notificationService, accountService, jiraService, $routeParams) {
             var vm = this;
 
             vm.filterRequests = {
@@ -316,7 +317,10 @@ angular
             var requestTableParams = new NgTableParams({
                     page: 1,
                     count: 10,
-                    sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'asc', id: 'asc'}
+                    sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'asc', id: 'asc'},
+                    filter: {
+                        status: $routeParams.status
+                    }
                 },
                 {
                     filterDelay: 700,
@@ -372,7 +376,11 @@ angular
             var submittedTableParams = new NgTableParams({
                     page: 1,
                     count: 10,
-                    sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'asc', id: 'asc'}
+                    sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'asc', id: 'asc'},
+                    filter: {
+                        status: $routeParams.status,
+                        manager: $routeParams.assignee
+                    }
                 },
                 
                 {
@@ -387,6 +395,7 @@ angular
                                 sortDirs.push(dir);
                             });
                         }
+                        
                         var subbmitedRequests;
                         subbmitedRequests = buildRequestList(
                             'SUBMITTED',

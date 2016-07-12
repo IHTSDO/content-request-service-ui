@@ -260,6 +260,14 @@ angular
         SUBMITTED: {
             value: 'SUBMITTED',
             langKey: 'crs.dashboard.sidebar.submitted'
+        },
+        ALL_REQUEST: {
+            value: 'ALL_REQUEST',
+            langKey: 'crs.dashboard.sidebar.allRequests'
+        },
+        ALL: {
+            value: 'ALL',
+            langKey: 'crs.dashboard.sidebar.all'
         }
     })
     .value('REQUEST_METADATA_KEY', {
