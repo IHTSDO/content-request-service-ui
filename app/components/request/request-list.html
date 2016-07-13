@@ -56,7 +56,7 @@
                         </td>
                         <td data-title="'crs.request.list.tableHeader.ticketId' | translate" sortable="'jiraTicketId'" filter="vm.filterRequests.jiraTicketId" jira-link="request.jiraTicketId"></td>
                         <td data-title="'crs.request.list.tableHeader.createdDate' | translate" sortable="'requestHeader.requestDate'" filter="{requestDate: 'ng-table/datetime-picker-startdate.html'}" >
-                            {{request.requestHeader.requestDate | date:'MM-dd-yyyy'}}
+                            {{request.requestHeader.requestDate | date:'dd-MM-yyyy'}}
                         </td>
                         <td data-title="'crs.request.list.tableHeader.requestType' | translate" sortable="'requestType'" filter="{requestType: 'ng-table/request-type-select.html'}">
                             {{request.requestType | requestType | translate}}
