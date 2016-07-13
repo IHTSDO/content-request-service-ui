@@ -383,7 +383,7 @@ angular
             var isDateRangeFilteredFirstTime = false;
 
             var buildRequestList = function(typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, manager, status, author,
-                project, assignee, requestId, requestType){
+                project, assignee, requestId, requestType, showUnassignedRequests){
                 var requestList = {};
                 requestList.batchRequest = batchRequest? batchRequest: 0;
                 requestList.concept = fsn;
@@ -403,6 +403,7 @@ angular
                 requestList.assignee = assignee;
                 requestList.requestId = requestId? requestId: 0;
                 requestList.requestType = requestType;
+                requestList.showUnassignedOnly = showUnassignedRequests;
                 return requestList;
             };
 
@@ -460,7 +461,8 @@ angular
                         params.filter().project,
                         params.filter().assignee,
                         params.filter().requestId,
-                        params.filter().requestType
+                        params.filter().requestType,
+                        vm.showUnassignedRequests
                     );
                     return requestService.getRequests(acceptedRequests).then(function(requests) {
                         isDateRangeFilteredFirstTime = true;
