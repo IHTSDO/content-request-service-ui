@@ -541,13 +541,13 @@ ul.batch-statistic.timeline {
 .dashboard-sidebar {
   min-height: 100%;
   position: fixed;
-  width: 15%;
+  width: 16%;
   z-index: 1;
 }
 
 .dashboard-content {
   min-height: 100%;
-  margin-left:15%;
+  margin-left:16%;
 }
 
 .promoted-check-box {
@@ -695,6 +695,7 @@ ul.batch-statistic.timeline {
   font-size: 16px;
 }
 .statistics-request {
+  font-size: 12px;
   width: 100%;
   .labelSb {
     width: 60%;
@@ -714,7 +715,7 @@ ul.batch-statistic.timeline {
 @media (max-width: 1500px) {
   .statistics-requests{
     height: 265px;
-    width: 15%;
+    width: 16%;
     position: fixed;
     overflow: auto;
   }
