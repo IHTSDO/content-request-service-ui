@@ -34,11 +34,37 @@
         "dashboard": {
             "title": "Dashboard",
             "sidebar": {
-                "myRequest": "Submitted Requests",
+                "myRequest": "My Requests",
                 "myBatch": "My Batch Requests",
                 "createRequest": "Create New Request",
                 "importBatch": "New Batch Import",
-                "acceptedRequest": "Accepted Requests"
+                "acceptedRequest": "Accepted Requests",
+                "submittedRequest": "Submitted Requests",
+                "submitted": "Submitted",
+                "ACCEPTED": "Accepted",
+                "approved": "Approved",
+                "draft": "Draft",
+                "allRequests": "All Requests",
+                "all": "All",
+                "assigned": "Assigned",
+                "assignedMe": "Assigned to me",
+                "unassigned": "Unassigned",
+                "accepted": "Accepted",
+                "appealNotAccepted": "Appeal not accepted",
+                "inProgress": "In Progress",
+                "clarificationRequested": "Clarification Requested",
+                "completed": "Completed",
+                "forwarded": "Forwarded",
+                "new": "New",
+                "notAccepted": "Not accepted",
+                "withdraw": "Withdrawn",
+                "underAppeal": "Under appeal",
+                "released": "Released",
+                "rejected": "Rejected",
+                "underAuthoring": "Under Authoring",
+                "appealRejected": "Appeal Rejected",
+                "appeal": "Appeal",
+                "clarificationNeeded": "Clarification Needed"
             }
         },
         "request": {
@@ -57,7 +83,8 @@
                     "assign": "Assign requests to Authoring",
                     "assignToStaff": "Assign requests to Staff",
                     "batchId": "Click to open batch details view",
-                    "conceptFSN": "Click to open request editing view"
+                    "conceptFSN": "Click to open request editing view",
+                    "filter": "Filter requests"
                 },
                 "searchPlaceHolder": {
                     "myRequests": "Search My Requests",
@@ -67,7 +94,8 @@
                 "tableHeader": {
                     "batchId": "Batch ID",
                     "requestorInternalId": "Local Code",
-                    "ticketId": "Request ID",
+                    "ticketId": "Jira ID",
+                    "requestId": "Request ID",
                     "description": "Description",
                     "lastModified": "Last Modified",
                     "requestType": "Request Type",
@@ -81,7 +109,8 @@
                     "originator": "Created By",
                     "createdDate": "Created On",
                     "requestDescription": "Descripion of Request",
-                    "manager": "Manager"
+                    "manager": "Manager",
+                    "summary": "Summary"
                 }
             },
             "details": {
@@ -291,7 +320,8 @@
                 "forwarded": "Forwarded",
                 "approved": "Approved",
                 "inInceptionElaboration": "In Inception/Elaboration",
-                "readyForRelease": "Ready For Release"
+                "readyForRelease": "Ready For Release",
+                "submitted": "Submitted"
             }
         },
         "batch": {

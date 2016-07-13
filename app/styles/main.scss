@@ -541,13 +541,13 @@ ul.batch-statistic.timeline {
 .dashboard-sidebar {
   min-height: 100%;
   position: fixed;
-  width: 25%;
+  width: 16%;
   z-index: 1;
 }
 
 .dashboard-content {
   min-height: 100%;
-  margin-left:25%;
+  margin-left:16%;
 }
 
 .promoted-check-box {
@@ -672,4 +672,59 @@ ul.batch-statistic.timeline {
 
 .comment-body{
   white-space: pre-line;
+}
+
+.select-filter{
+  input{
+    margin-top: 6px;
+  }
+  span, button{
+    font-size: 14px;
+  }
+}
+.table-requests {
+  .form-control-element{
+    margin-bottom: 0;
+  }
+}
+
+.no-request-found {
+  margin-left: 45%;
+  margin-top: 10%;
+  color: red;
+  font-size: 16px;
+}
+.statistics-request {
+  font-size: 12px;
+  width: 100%;
+  .labelSb {
+    width: 60%;
+    display: inline-block;
+  }
+  .numberSb {
+    width: 40%;
+    display: inline;
+  }
+}
+
+.statistics-requests{
+  padding: 10px; 
+  list-style: none; 
+  color: white; 
+}
+@media (max-width: 1500px) {
+  .statistics-requests{
+    height: 265px;
+    width: 16%;
+    position: fixed;
+    overflow: auto;
+  }
+}
+
+/*overwrite date range picker*/
+.range_inputs{
+  button {
+    font-size: 13px;
+    border: 1px solid #ccc !important;
+  }
 }

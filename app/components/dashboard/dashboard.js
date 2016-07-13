@@ -18,6 +18,12 @@ angular
             })
             .when('/accepted-requests', {
                 redirectTo: '/dashboard/accepted-requests'
+            })
+            .when('/submitted-requests',{
+                redirectTo: '/dashboard/submitted-requests'
+            })
+            .when('/filter-requests',{
+                redirectTo: '/dashboard/filter-requests'
             });
     })
     .controller('DashboardCtrl', [
@@ -28,7 +34,8 @@ angular
         '$route',
         'accountService',
         'notificationService',
-        function ($rootScope, $uibModal, $routeParams, $location, $route, accountService, notificationService) {
+        'requestService',
+        function ($rootScope, $uibModal, $routeParams, $location, $route, accountService, notificationService, requestService) {
             var vm = this;
 
             var initView = function () {
@@ -46,6 +53,18 @@ angular
                         ];
                         vm.listView = 'components/request/accepted-request-list.html';
                         break;
+                    case 'submitted-requests':
+                        $rootScope.pageTitles = [
+                            {url: '#/submitted-requests', label: 'crs.request.list.title.submittedRequests'}
+                        ];
+                        vm.listView = 'components/request/submitted-request-list.html';
+                        break;
+                    case 'filter-requests':
+                        $rootScope.pageTitles = [
+                            {url: '#/submitted-requests', label: 'crs.request.list.title.submittedRequests'}
+                        ];
+                        vm.listView = 'components/request/filter-requests.html';
+                        break;
                     case 'requests':
                     /* falls through */
                     default:
@@ -56,11 +75,15 @@ angular
                         break;
                 }
 
+                getStatisticsRequests();
+
                 // check admin role
                 accountService.checkUserPermission().then(function (rs) {
                     vm.permissionChecked = true;
                     vm.isAdmin = (rs.isAdmin === true);
                     vm.isViewer = (rs.isViewer === true);
+                    vm.isStaff = (rs.isStaff === true);
+                    vm.isRequester = (rs.isRequester === true);
                 });
             };
 
@@ -113,14 +136,57 @@ angular
                 });
             };
 
+            var getStatisticsRequests = function(){
+                return requestService.getStatisticsRequests().then(function(data){
+                    vm.statisticsRequests = data;
+                    for(var i in data){
+                        if(data[i].status === 'Assigned'){
+                            var obj = {};
+                            obj.status = 'Unassigned';
+                            obj.count = data[i].countAssignedReq;
+                            vm.statisticsRequests.splice(3, 0, obj);
+                            break;
+                        }
+                    }
+                });
+            };
+
+            var filterStatus = function(status){
+                if(status === 'ALL_REQUEST' || status === 'Assigned' || status === 'ALL' || status === 'Unassigned'){
+                    return;
+                }
+                $location.path('dashboard/submitted-requests').search({status:status});
+
+            };
+            var filterAssignedRequests = function(status){
+                if(status === 'ALL_REQUEST' || status === 'Assigned' || status === 'ALL' || status === 'Unassigned'){
+                    return;
+                }
+                accountService.getAccountInfo().then(function (accountDetails) {
+                    $location.path('dashboard/submitted-requests').search({status:status, assignee: accountDetails.login});                   
+                });
+            };
+
+            var filterMyRequest = function(status){
+                if(status === 'SUBMITTED'){
+                    return;
+                }
+                $location.path('dashboard/requests').search({status:status});
+            };
+
             vm.openCreateRequestModal = openCreateRequestModal;
             vm.openBatchImportModal = openBatchImportModal;
             vm.editRequest = editRequest;
             vm.previewRequest = previewRequest;
             vm.showBatchDetails = showBatchDetails;
+            vm.filterStatus = filterStatus;
+            vm.filterMyRequest = filterMyRequest;
+            vm.filterAssignedRequests = filterAssignedRequests;
             vm.permissionChecked = false;
             vm.isAdmin = false;
             vm.isViewer = false;
+            vm.isStaff = false;
+            vm.isRequester = false;
 
             vm.testIMS = function () {
                 accountService.getTestUsers();

@@ -6,7 +6,7 @@ angular.module('conceptRequestServiceApp.conceptEdit')
         '$scope',
         '$uibModalInstance',
         '$filter',
-        'ngTableParams',
+        'NgTableParams',
         'snowowlService',
         'componentType',
         'reasons',
@@ -14,7 +14,7 @@ angular.module('conceptRequestServiceApp.conceptEdit')
         'conceptId',
         'branch',
         '$routeParams',
-        function ($scope, $uibModalInstance, $filter, ngTableParams, snowowlService, componentType, reasons, associationTargets, conceptId, branch) {
+        function ($scope, $uibModalInstance, $filter, NgTableParams, snowowlService, componentType, reasons, associationTargets, conceptId, branch) {
 
             // required arguments
             $scope.componentType = componentType;
@@ -168,7 +168,7 @@ angular.module('conceptRequestServiceApp.conceptEdit')
             });
 
 
-            $scope.tableParamsChildren = new ngTableParams({
+            $scope.tableParamsChildren = new NgTableParams({
                     page: 1,
                     count: 10,
                     sorting: {sourceFsn: 'asc'},
@@ -192,7 +192,7 @@ angular.module('conceptRequestServiceApp.conceptEdit')
                 }
             );
 
-            $scope.tableParamsDescendants = new ngTableParams({
+            $scope.tableParamsDescendants = new NgTableParams({
                     page: 1,
                     count: 10,
                     sorting: {fsn: 'asc'},
@@ -218,7 +218,7 @@ angular.module('conceptRequestServiceApp.conceptEdit')
                 }
             );
 
-            $scope.tableParamsInboundRelationships = new ngTableParams({
+            $scope.tableParamsInboundRelationships = new NgTableParams({
                     page: 1,
                     count: 10,
                     sorting: {sourceFsn: 'asc'},
