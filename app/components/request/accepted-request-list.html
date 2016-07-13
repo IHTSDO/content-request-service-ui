@@ -62,8 +62,8 @@
                             {{request.fsn}}
                         </td>
                         <td data-title="'crs.request.list.tableHeader.ticketId' | translate" sortable="'jiraTicketId'" jira-link="request.jiraTicketId" filter="vm.filterRequests.jiraTicketId"></td>
-                        <td data-title="'crs.request.list.tableHeader.lastModified' | translate" sortable="'requestHeader.requestDate'" filter="{requestDateFrom: 'ng-table/datetime-picker-startdate.html', requestDateTo: 'ng-table/datetime-picker-enddate.html'}">
-                            {{request.requestHeader.requestDate | date:'MM-dd-yyyy'}}
+                        <td data-title="'crs.request.list.tableHeader.lastModified' | translate" sortable="'requestHeader.requestDate'" filter="{requestDate: 'ng-table/datetime-picker-startdate.html'}">
+                            {{request.requestHeader.requestDate | date:'dd-MM-yyyy'}}
                         </td>
                         <td data-title="'crs.request.list.tableHeader.requestType' | translate" sortable="'requestType'" filter="{requestType: 'ng-table/request-type-select.html'}">
                             {{request.requestType | requestType | translate}}
@@ -111,46 +111,7 @@
 </script>
 <script type="text/ng-template" id="ng-table/datetime-picker-startdate.html">
     <div class="input-group select-filter">
-        <input type="text"
-               ng-disabled="$filterRow.disabled"
-               class="form-control"
-               uib-datepicker-popup="MM/dd/yyyy"
-               ng-model="params.filter()[name]"
-               on-open-focus="false"
-               ng-model-options="{allowInvalid:false}"
-               is-open="vm.startDateOpened"
-               datepicker-options="{showWeeks: false}"
-               ng-focus="vm.startDateOpened=true"
-               placeholder="Start Date" 
-               name="{{name}}"
-               />
-          <span class="input-group-btn">
-            <button type="button" class="btn btn-default" ng-click="vm.startDateOpened=true">
-                <i class="glyphicon glyphicon-calendar"></i>
-            </button>
-          </span>
-    </div>
-</script>
-<script type="text/ng-template" id="ng-table/datetime-picker-enddate.html">
-    <div class="input-group select-filter">
-        <input type="text"
-               ng-disabled="$filterRow.disabled"
-               class="form-control"
-               uib-datepicker-popup="MM/dd/yyyy"
-               ng-model="params.filter()[name]"
-               on-open-focus="false"
-               ng-model-options="{allowInvalid:false}"
-               is-open="vm.endDateOpened"
-               datepicker-options="{showWeeks: false}"
-               ng-focus="vm.endDateOpened=true"
-               placeholder="End Date" 
-               name="{{name}}"
-               />
-          <span class="input-group-btn">
-            <button type="button" class="btn btn-default" ng-click="vm.endDateOpened=true">
-                <i class="glyphicon glyphicon-calendar"></i>
-            </button>
-          </span>
+          <input type="daterange" ng-change="vm.onDateRangeChange()" ng-model="vm.daterange" style="background: transparent; border: none; box-shadow: inset 0 -1px 0 #ddd; font-size: 13px;" format="DD/MM" placeholder="Dates" readonly="" />
     </div>
 </script>
 <script type="text/ng-template" id="ng-table/manager-select.html">

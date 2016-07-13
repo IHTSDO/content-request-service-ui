@@ -720,3 +720,11 @@ ul.batch-statistic.timeline {
     overflow: auto;
   }
 }
+
+/*overwrite date range picker*/
+.range_inputs{
+  button {
+    font-size: 13px;
+    border: 1px solid #ccc !important;
+  }
+}

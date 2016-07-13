@@ -21,25 +21,25 @@ angular
                 batchRequest: {
                     batchRequest: {
                         id: "number",
-                        placeholder: "Filter Ids..."
+                        placeholder: "Ids..."
                     }
                 },    
                 fsn: {
                     fsn: {
                         id: "text",
-                        placeholder: "Filter concepts..."
+                        placeholder: "Concepts..."
                     }
                 },
                 jiraTicketId: {
                     jiraTicketId: {
                         id: "text",
-                        placeholder: "Filter Ids..."
+                        placeholder: "Ids..."
                     }
                 },
                 topic: {
                     topic: {
                         id: "text",
-                        placeholder: "Filter topics..."
+                        placeholder: "Topics..."
                     }
                 },
                 manager: {
@@ -61,7 +61,7 @@ angular
                 requestId: {
                     requestId: {
                         id: "number",
-                        placeholder: "Filter Ids..."
+                        placeholder: "Ids..."
                     }
                 }
             };
@@ -380,6 +380,8 @@ angular
                 return milliseconds.getTime();
             };
 
+            var isDateRangeFilteredFirstTime = false;
+
             var buildRequestList = function(typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, manager, status, author,
                 project, assignee, requestId, requestType){
                 var requestList = {};
@@ -407,7 +409,18 @@ angular
             var requestTableParams = new NgTableParams({
                 page: 1,
                 count: 10,
-                sorting: { 'requestHeader.requestDate': 'desc', batchRequest: 'asc', id: 'asc' }
+                sorting: { 'requestHeader.requestDate': 'desc', batchRequest: 'asc', id: 'asc' },
+                filter: {
+                    requestDate: {
+                        startDate: {
+                            _d: null
+                        },
+                        endDate: {
+                            _d: null
+                        }
+                    }
+                }
+                
             }, {
                 filterDelay: 700,
                 getData: function(params) {
@@ -422,29 +435,35 @@ angular
                         });
                     }
                     var acceptedRequests;
-                        acceptedRequests = buildRequestList(
-                            'ACCEPTED',
-                            params.page() - 1, 
-                            params.count(), 
-                            params.filter().search, 
-                            sortFields, 
-                            sortDirs, 
-                            params.filter().batchRequest, 
-                            params.filter().fsn, 
-                            params.filter().jiraTicketId,
-                            params.filter().requestDateFrom,
-                            params.filter().requestDateTo,
-                            params.filter().topic,
-                            // params.filter().summary,
-                            params.filter().manager,
-                            params.filter().status,
-                            params.filter().author,
-                            params.filter().project,
-                            params.filter().assignee,
-                            params.filter().requestId,
-                            params.filter().requestType
-                        );
+                    vm.onDateRangeChange = function(){
+                        if(isDateRangeFilteredFirstTime){
+                            params.filter().requestDate = vm.daterange;
+                        }
+                    };
+                    acceptedRequests = buildRequestList(
+                        'ACCEPTED',
+                        params.page() - 1, 
+                        params.count(), 
+                        params.filter().search, 
+                        sortFields, 
+                        sortDirs, 
+                        params.filter().batchRequest, 
+                        params.filter().fsn, 
+                        params.filter().jiraTicketId,
+                        params.filter().requestDate.startDate._d,
+                        params.filter().requestDate.endDate._d,
+                        params.filter().topic,
+                        // params.filter().summary,
+                        params.filter().manager,
+                        params.filter().status,
+                        params.filter().author,
+                        params.filter().project,
+                        params.filter().assignee,
+                        params.filter().requestId,
+                        params.filter().requestType
+                    );
                     return requestService.getRequests(acceptedRequests).then(function(requests) {
+                        isDateRangeFilteredFirstTime = true;
                         params.total(requests.total);
                         vm.requests = requests;
                         if (requests.items && requests.items.length > 0) {

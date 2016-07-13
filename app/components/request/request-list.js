@@ -20,25 +20,25 @@ angular
                 batchRequest: {
                     batchRequest: {
                         id: "number",
-                        placeholder: "Filter Ids..."
+                        placeholder: "Ids..."
                     }
                 },    
                 fsn: {
                     fsn: {
                         id: "text",
-                        placeholder: "Filter concepts..."
+                        placeholder: "Concepts..."
                     }
                 },
                 jiraTicketId: {
                     jiraTicketId: {
                         id: "text",
-                        placeholder: "Filter Ids..."
+                        placeholder: "Ids..."
                     }
                 },
                 topic: {
                     topic: {
                         id: "text",
-                        placeholder: "Filter topics..."
+                        placeholder: "Topics..."
                     }
                 },
                 manager: {
@@ -54,18 +54,22 @@ angular
                 summary: {
                     summary: {
                         id: "text",
-                        placeholder: "Filter summaries..."
+                        placeholder: "Summaries..."
                     }
                 },
                 requestId: {
                     requestId: {
                         id: "number",
-                        placeholder: "Filter Ids..."
+                        placeholder: "Ids..."
                     }
                 }
             };
 
             vm.requestStatus = [
+                {
+                    id: null,
+                    title: "Select None"
+                },
                 {
                     id: "DRAFT",
                     title: "Draft"
@@ -314,12 +318,27 @@ angular
 
             };
 
+            vm.daterange = {
+                startDate: 'aa',
+                endDate: 'aa'
+            };
+            var isDateRangeFilteredFirstTime = false;
+
+
             var requestTableParams = new NgTableParams({
                     page: 1,
                     count: 10,
                     sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'asc', id: 'asc'},
                     filter: {
-                        status: $routeParams.status
+                        status: $routeParams.status,
+                        requestDate: {
+                            startDate: {
+                                _d: null
+                            },
+                            endDate: {
+                                _d: null
+                            }
+                        }
                     }
                 },
                 {
@@ -335,8 +354,12 @@ angular
                             });
                         }
                         notificationService.sendMessage('crs.request.message.listLoading');
-
                         var myRequests;
+                        vm.onDateRangeChange = function(){
+                            if(isDateRangeFilteredFirstTime){
+                                params.filter().requestDate = vm.daterange;
+                            }
+                        };
                         myRequests = buildRequestList(
                             'REQUEST',
                             params.page() - 1, 
@@ -347,8 +370,8 @@ angular
                             params.filter().batchRequest, 
                             params.filter().fsn, 
                             params.filter().jiraTicketId,
-                            params.filter().requestDateFrom,
-                            params.filter().requestDateTo,
+                            params.filter().requestDate.startDate._d? params.filter().requestDate.startDate._d: null ,
+                            params.filter().requestDate.endDate._d? params.filter().requestDate.endDate._d: null,
                             params.filter().topic,
                             // params.filter().summary,
                             params.filter().manager,
@@ -358,6 +381,7 @@ angular
                             params.filter().requestType
                         );
                         return requestService.getRequests(myRequests).then(function (requests) {
+                            isDateRangeFilteredFirstTime = true;
                             notificationService.sendMessage('crs.request.message.listLoaded', 5000);
                             params.total(requests.total);
                             vm.requests = requests;
@@ -379,7 +403,15 @@ angular
                     sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'asc', id: 'asc'},
                     filter: {
                         status: $routeParams.status,
-                        manager: $routeParams.assignee
+                        manager: $routeParams.assignee,
+                        requestDate: {
+                            startDate: {
+                                _d: null
+                            },
+                            endDate: {
+                                _d: null
+                            }
+                        }
                     }
                 },
                 
@@ -397,6 +429,11 @@ angular
                         }
                         
                         var subbmitedRequests;
+                        vm.onDateRangeChangeSQ = function(){
+                            if(isDateRangeFilteredFirstTime){
+                                params.filter().requestDate = vm.daterange;
+                            }
+                        };
                         subbmitedRequests = buildRequestList(
                             'SUBMITTED',
                             params.page() - 1, 
@@ -407,8 +444,8 @@ angular
                             params.filter().batchRequest, 
                             params.filter().fsn, 
                             params.filter().jiraTicketId,
-                            params.filter().requestDateFrom,
-                            params.filter().requestDateTo,
+                            params.filter().requestDate.startDate._d,
+                            params.filter().requestDate.endDate._d,
                             params.filter().topic,
                             // params.filter().summary,
                             params.filter().manager,
@@ -418,6 +455,7 @@ angular
                             params.filter().requestType
                         );
                         return requestService.getRequests(subbmitedRequests).then(function (requests) {
+                            isDateRangeFilteredFirstTime = true;
                             params.total(requests.total);
                             vm.requests = requests;
                             if (requests.items && requests.items.length > 0) {
