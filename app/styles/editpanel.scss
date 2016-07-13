@@ -18,6 +18,12 @@ form {
   }
 }
 
+.md-playlist-add.btn-round[disabled] {
+    color: #7c7c7c!important;
+    cursor: not-allowed!important;
+    pointer-events: none!important;
+    background-color: #494949!important;
+}
 .table {
   width: 100%;
   margin-bottom: 0px;
@@ -26,11 +32,12 @@ form {
   color: #737373 !important;
 }
 .addButton.btn-round {
-  width: 25px;
-  height: 25px;
-  font-size: 16px!important;
-  line-height: 25px;
+  width: 20px;
+  height: 20px;
+  font-size: 14px!important;
+  line-height: 20px;
   position: relative;
+  padding: 0 !important;
 }
 .saved-list {font-size:12px;}
 .editpanel a {
@@ -357,7 +364,7 @@ select {
 
   resize:none!important;
   min-height:30px!important;
-  max-height:60px;
+  max-height:150px;
   line-height: 12px!important;
   font-weight:400!important;
   -webkit-font-smoothing: antialiased;
@@ -612,7 +619,7 @@ select {
 }
 @media (min-width: 1794px) {
   .editing-form .acceptability {
-    width: 15%;
+    width: 16%;
     padding-left: .5%;
   }
   .editing-form .col-md-3 {

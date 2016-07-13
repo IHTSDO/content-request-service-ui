@@ -111,7 +111,7 @@ angular
             };
 
             var buildTextAreaControl = function (name, model, readonlyExp) {
-                return '<textarea  class="form-control" name="' + name +
+                return '<textarea  class="form-control animate msd-elastic: \n;" name="' + name +
                     '" ng-model="' + model + '" maxlength="4000" ' + ((readonlyExp)?'ng-readonly="' + readonlyExp +'"':'') + ' ></textarea>';
             };
 

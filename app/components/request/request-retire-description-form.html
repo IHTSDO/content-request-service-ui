@@ -1,4 +1,4 @@
-<h4 translate="crs.request.requestType.changeRetireDescription"></h4>
+<h4 translate="crs.request.requestType.retireDescription"></h4>
 <form class="form-floating" form-control-readonly="requestVM.request.requestHeader.status !== 'DRAFT'">
 
     <div class="form-group">
@@ -19,21 +19,14 @@
                       error-model="requestVM.error.descriptionId"
                       loading-mask="requestVM.conceptStatus.loading || requestVM.conceptStatus.searching"></form-control>
 
-        <form-control type="text"
-                      model="requestVM.request.proposedDescription"
-                      label="crs.request.details.label.proposedDescription"
-                      name="txtProposedDescription"></form-control>
-
+        
         <form-control type="select"
-                      model="requestVM.request.proposedCaseSignificance"
-                      options="caseSignificance.value as caseSignificance.text for caseSignificance in requestVM.caseSignificances"
-                      label="crs.request.details.label.proposedCaseSignificance"
-                      name="slCaseSignificance"></form-control>
-        <!-- <form-control type="select"
                       model="requestVM.request.descriptionStatus"
                       options="descriptionStatus for descriptionStatus in requestVM.descriptionStatuses"
                       label="crs.request.details.label.descriptionStatus"
-                      name="slDescriptionStatus"></form-control> -->
+                      name="slDescriptionStatus"
+                      required
+                      error-model="requestVM.error.descriptionId"></form-control>
 
     </div>
 </form>

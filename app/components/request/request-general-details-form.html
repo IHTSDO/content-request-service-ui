@@ -14,18 +14,26 @@
                       name="txtTopic"
                       required
                       error-model="requestVM.error.topic"></form-control>
-
         <form-control type="text"
+                      model="requestVM.request.additionalFields.summary"
+                      label="crs.request.details.label.summary"
+                      name="txtReference"
+                      required
+                      error-model="requestVM.error.summary"></form-control>
+
+        <form-control type="textarea"
                       model="requestVM.request.additionalFields.reasonForChange"
                       label="crs.request.details.label.reasonForChange"
-                      name="txtReasonForChange"></form-control>
+                      name="txtReasonForChange"
+                      required
+                      error-model="requestVM.error.reasonForChange"></form-control>
 
         <form-control type="textarea"
                       model="requestVM.request.additionalFields.notes"
                       label="crs.request.details.label.notes"
                       name="txtNotes"></form-control>
 
-        <form-control type="text"
+        <form-control type="textarea"
                       model="requestVM.request.additionalFields.reference"
                       label="crs.request.details.label.reference"
                       name="txtReference"></form-control>
@@ -33,5 +41,8 @@
                       model="requestVM.request.additionalFields.namespace"
                       label="crs.request.details.label.namespace"
                       name="txtReference"></form-control>
+        
+         
     </div>
+
 </form>
