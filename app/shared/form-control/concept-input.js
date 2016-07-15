@@ -4,7 +4,9 @@ angular
     .module('conceptRequestServiceApp.formControl')
     .directive('conceptInput', [
         'snowowlService',
-        function (snowowlService) {
+        '$routeParams',
+        'requestService',
+        function (snowowlService, $routeParams, requestService) {
             return {
                 restrict: 'E',
                 require: ['?^formControlReadonly', '^form'],
@@ -35,6 +37,7 @@ angular
                         'class="md" ' +
                         'ng-class="{\'md-spin md-autorenew\':showLoading, \'md-error\':showError}"></span>',
                     '</div>',
+                    
                     '</div>'
                 ].join(''),
                 link: function ($scope, $element, $attrs, reqiredControllers) {
@@ -62,7 +65,9 @@ angular
 
                         if ($scope.concept &&
                             ($scope.concept.conceptId || $scope.concept.fsn)) {
-                            dropConcept({id:$scope.concept.conceptId, fsn:$scope.concept.fsn});
+                            if($scope.concept.sourceTerminology === 'SNOMEDCT'){
+                                dropConcept({id:$scope.concept.conceptId, fsn:$scope.concept.fsn, sourceTerminology: $scope.concept.sourceTerminology});
+                            }
                         }
 
                         if (formControlReadonlyCtrl) {
@@ -79,6 +84,11 @@ angular
                         // load concept details
                         snowowlService.getFullConcept(null, null, conceptData.id).then(function (response) {
                             $scope.concept = response;
+                            if(!conceptData.sourceTerminology){
+                                $scope.concept.sourceTerminology = 'SNOMEDCT';
+                            }else{
+                                $scope.concept.sourceTerminology = conceptData.sourceTerminology;
+                            }
                             for(var name in $scope.concept.relationships){
                                 $scope.concept.relationships[name].viewName = $scope.concept.relationships[name].type.fsn + " " + $scope.concept.relationships[name].target.fsn;
                             }
@@ -101,9 +111,37 @@ angular
                         $scope.showLoading = true;
                         $scope.conceptStatus.loading = false;
                         $scope.conceptStatus.searching = true;
+                        var requestId = $routeParams.param;
 
                         if ($scope.concept) {
                             $scope.concept.conceptId = null;
+                        }
+
+                        if($scope.concept.sourceTerminology === 'CURRENTBATCH'){
+                            return requestService.getBatchConcept(requestId, viewValue).then(function(response){
+                                // if (!isFocused) {
+                                //     validateConceptInput(viewValue);
+                                // }
+
+                                // remove duplicates
+                                // for (var i = 0; i < response.length; i++) {
+                                //     for (var j = response.length - 1; j > i; j--) {
+                                //         if (response[j].concept.conceptId === response[i].concept.conceptId) {
+                                //             // console.debug(' duplicate ', j, response[j]);
+                                //             response.splice(j, 1);
+                                //             j--;
+                                //         }
+                                //     }
+                                // }
+                                for(var i in response){
+                                    response[i].sourceTerminology = $scope.concept.sourceTerminology;
+                                }
+                                return response;
+                            }).finally(function () {
+                                $scope.showLoading = false;
+                                $scope.conceptStatus.loading = false;
+                                $scope.conceptStatus.searching = false;
+                            });
                         }
 
                         // search concepts
@@ -123,7 +161,6 @@ angular
                                     }
                                 }
                             }
-
                             return response;
                         }).finally(function () {
                             $scope.showLoading = false;
@@ -133,29 +170,38 @@ angular
                     };
 
                     var selectConcept = function (conceptItem) {
-                        // enable loading
-                        $scope.showLoading = true;
-                        $scope.showError = false;
-                        $scope.conceptStatus.loading = true;
-                        $scope.conceptStatus.searching = false;
-                        // load concept details
-                        snowowlService.getFullConcept(null, null, conceptItem.concept.conceptId).then(function (response) {
-                            $scope.concept = response;
-                            for(var name in $scope.concept.relationships){
-                                $scope.concept.relationships[name].viewName = $scope.concept.relationships[name].type.fsn + " " + $scope.concept.relationships[name].target.fsn;
-                            }
+                       
+                        
+                        if(conceptItem.sourceTerminology !== 'CURRENTBATCH'){
+                             // enable loading
+                            $scope.showLoading = true;
                             $scope.showError = false;
-                            $scope.conceptStatus.valid = true;
-                        }, function (error) {
-                            $scope.errorMsg = error.msg;
-                            $scope.showError = true;
-                            $scope.concept = buildInvalidConcept(conceptItem.concept.fsn);
-                            $scope.conceptStatus.valid = false;
-                        }).finally(function () {
-                            $scope.showLoading = false;
-                            $scope.conceptStatus.loading = false;
+                            $scope.conceptStatus.loading = true;
                             $scope.conceptStatus.searching = false;
-                        });
+
+                            // load concept details.
+                            snowowlService.getFullConcept(null, null, conceptItem.concept.conceptId).then(function (response) {
+                                $scope.concept = response;
+                                for(var name in $scope.concept.relationships){
+                                    $scope.concept.relationships[name].viewName = $scope.concept.relationships[name].type.fsn + " " + $scope.concept.relationships[name].target.fsn;
+                                }
+                                $scope.showError = false;
+                                $scope.conceptStatus.valid = true;
+                            }, function (error) {
+                                $scope.errorMsg = error.msg;
+                                $scope.showError = true;
+                                $scope.concept = buildInvalidConcept(conceptItem.concept.fsn);
+                                $scope.conceptStatus.valid = false;
+                            }).finally(function () {
+                                $scope.showLoading = false;
+                                $scope.conceptStatus.loading = false;
+                                $scope.conceptStatus.searching = false;
+                            });
+                        }else if(conceptItem.sourceTerminology === 'CURRENTBATCH'){
+                            $scope.concept.sourceTerminology = conceptItem.sourceTerminology;
+                            $scope.concept.conceptId = conceptItem.concept.conceptId;
+                            $scope.concept.fsn = conceptItem.concept.fsn;
+                        }
                     };
 
                     var validateConceptInput = function (viewValue) {
@@ -172,9 +218,11 @@ angular
                     };
 
                     var conceptInputOnBlur = function (event) {
-                        var viewValue = event.target.value;
-                        isFocused = false;
-                        validateConceptInput(viewValue);
+                        if($scope.concept.sourceTerminology !== 'CURRENTBATCH'){
+                            var viewValue = event.target.value;
+                            isFocused = false;
+                            validateConceptInput(viewValue);
+                        }
                     };
 
                     var conceptInputOnFocus = function () {
