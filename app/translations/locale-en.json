@@ -16,7 +16,7 @@
         },
         "app": {
             "name": "Content Request Service",
-            "copyright": "Copyright IHTSDO 2015"
+            "copyright": "Copyright IHTSDO 2016"
         },
         "notification": {
             "title": "Notifications",
@@ -59,7 +59,7 @@
                 "notAccepted": "Not accepted",
                 "withdraw": "Withdrawn",
                 "underAppeal": "Under appeal",
-                "released": "Released",
+                "released": "Completed",
                 "rejected": "Rejected",
                 "underAuthoring": "Under Authoring",
                 "appealRejected": "Appeal Rejected",

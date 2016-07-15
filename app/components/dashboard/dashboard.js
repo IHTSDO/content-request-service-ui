@@ -139,15 +139,15 @@ angular
             var getStatisticsRequests = function(){
                 return requestService.getStatisticsRequests().then(function(data){
                     vm.statisticsRequests = data;
-                    for(var i in data){
-                        if(data[i].status === 'Assigned'){
-                            var obj = {};
-                            obj.status = 'Unassigned';
-                            obj.count = data[i].countAssignedReq;
-                            vm.statisticsRequests.splice(3, 0, obj);
-                            break;
-                        }
-                    }
+                    // for(var i in data){
+                    //     if(data[i].status === 'Assigned'){
+                    //         var obj = {};
+                    //         obj.status = 'Unassigned';
+                    //         obj.count = data[i].countAssignedReq;
+                    //         vm.statisticsRequests.splice(3, 0, obj);
+                    //         break;
+                    //     }
+                    // }
                 });
             };
 

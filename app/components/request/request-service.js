@@ -183,6 +183,15 @@ angular.module('conceptRequestServiceApp.request')
                 return crsService.sendGet(requestEndpoint + '/statusStatistics');
             };
 
+            function getBatchConcept(requestId, conceptId) {
+                var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
+                var params;
+                params = {
+                    searchId: conceptId
+                };
+                return crsService.sendGet(requestEndpoint + '/batchNewConcept/' + requestId, params);
+            }
+
             return {
                 identifyRequestType: identifyRequestType,
                 identifyRequestStatus: identifyRequestStatus,
@@ -197,7 +206,8 @@ angular.module('conceptRequestServiceApp.request')
                 assignRequestsToStaff: assignRequestsToStaff,
                 changeRequestStatus: changeRequestStatus,
                 getStatisticsRequests: getStatisticsRequests,
-                identifyStatisticsStatus: identifyStatisticsStatus
+                identifyStatisticsStatus: identifyStatisticsStatus,
+                getBatchConcept: getBatchConcept
             };
 
         }]);
