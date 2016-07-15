@@ -573,14 +573,6 @@ angular
                                 fsn: (relationship.target && relationship.target.fsn) ? relationship.target.fsn : null
                             };
 
-                            // request.parentConcept = [];
-                            // for(var i in requestData.requestItems[0].proposedParents){
-                            //     var obj = {};
-                            //     obj = requestData.requestItems[0].proposedParents[i];
-                            //     request.parentConcept.push(obj);
-                            // }
-                            // concept.relationships = concept.relationships.concat(arr);
-
                             break;
                         }
                     }
@@ -1028,6 +1020,7 @@ angular
                                 var obj = {};
                                 obj.conceptId = changedTarget.parentConcept[i].conceptId;
                                 obj.fsn = changedTarget.parentConcept[i].fsn;
+                                obj.sourceTerminology = changedTarget.parentConcept[i].sourceTerminology;
                                 obj.refType = 'EXISTING';
                                 item.proposedParents.push(obj);
                             }
