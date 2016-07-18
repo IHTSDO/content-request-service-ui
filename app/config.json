@@ -1,5 +1,5 @@
 {
-    "version": "0.1.13",
+    "version": "0.1.14",
     "endpoint": {
         "crs": "https://uat-request.ihtsdotools.org/ihtsdo-crs/",
         "ims": "https://uat-ims.ihtsdotools.org/",

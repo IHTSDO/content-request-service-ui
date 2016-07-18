@@ -9,7 +9,7 @@
                       required
                       error-model="requestVM.error.concept"></form-control>
 
-        <div style="width: 50%;" ng-if="requestVM.request.relationshipCharacteristicType">
+        <div style="width: 50%;" ng-if="requestVM.request.relationshipCharacteristicType || requestVM.pageMode.value === 'new' ">
         <form-control type="select"
                       model="requestVM.request.relationshipId"
                       options="suggestion.relationshipId as (suggestion.type.fsn + ' - ' + suggestion.target.fsn) for suggestion in requestVM.originalConcept.relationships |filter:{active:true , characteristicType:requestVM.request.showRel}"
@@ -20,7 +20,7 @@
                       loading-mask="requestVM.loadingRelationship"
                       ></form-control>
         </div>
-        <div ng-if="requestVM.request.relationshipCharacteristicType" class="form-control-element" uib-dropdown is-open="status.isopen">
+        <div ng-if="requestVM.request.relationshipCharacteristicType || requestVM.pageMode.value === 'new'" class="form-control-element" uib-dropdown is-open="status.isopen">
           <button id="single-button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled"> <span style="margin" translate= "{{(requestVM.request.showRel === 'STATED_RELATIONSHIP'?'crs.request.details.label.statedRel':'crs.request.details.label.inferredRel')}}" ></span><span style="margin-left:10px" class="caret"></span>
           </button>
           <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button" style="width: 110%">
@@ -29,7 +29,7 @@
           </ul>
         </div>
 
-        <div ng-if="!requestVM.request.relationshipCharacteristicType">
+        <div ng-if="!requestVM.request.relationshipCharacteristicType && requestVM.pageMode.value !== 'new'">
           <form-control type="text"
                       model="requestVM.requestItems[0].relationshipId"
                       label="crs.request.details.label.relationship"

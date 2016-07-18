@@ -9,7 +9,7 @@
                       required
                       error-model="requestVM.error.concept"></form-control>
 
-        <div ng-if="requestVM.request.relationshipCharacteristicType" class="multi-select-element" ng-class="{required:true, 'form-control-error': requestVM.error.relationshipId}">
+        <div ng-if="requestVM.request.relationshipCharacteristicType || requestVM.pageMode.value === 'new'" class="multi-select-element" ng-class="{required:true, 'form-control-error': requestVM.error.relationshipId}">
           <label translate="crs.request.details.label.relationship" style="color: red"></label>
           <span ng-if="requestVM.error.relationshipId" translate="crs.request.message.error.fieldRequired" style="color: rgb(169, 68, 66); padding-left: 5px;" class="ng-scope">required</span>
           <div
@@ -34,7 +34,7 @@
             </ul>
           </div>
         </div>
-        <div ng-if="!requestVM.request.relationshipCharacteristicType">
+        <div ng-if="!requestVM.request.relationshipCharacteristicType && requestVM.pageMode.value !== 'new'">
           <form-control type="text"
                       model="requestVM.requestItems[0].relationshipId"
                       label="crs.request.details.label.relationship"

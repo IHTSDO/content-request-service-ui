@@ -2,7 +2,7 @@
 <form class="form-floating" form-control-readonly="requestVM.request.requestHeader.status !== 'DRAFT'">
 
     <div class="form-group">
-        <div ng-if="requestVM.originalConcept">
+        <div ng-if="requestVM.originalConcept || requestVM.pageMode.value === 'new'">
             <form-control type="concept"
                       model="requestVM.originalConcept"
                       label="crs.request.details.label.concept"
@@ -11,14 +11,14 @@
                       concept-status="requestVM.conceptStatus"></form-control>
         </div>
 
-        <div ng-if="!requestVM.originalConcept">
+        <div ng-if="!requestVM.originalConcept && requestVM.pageMode.value !== 'new'">
           <form-control type="text"
                         model="requestVM.requestItems[0].conceptId"
                         label="crs.request.details.label.concept"
                         readonly></form-control>
         </div>
 
-        <div ng-if="requestVM.originalConcept.descriptions">
+        <div ng-if="requestVM.originalConcept.descriptions || requestVM.pageMode.value === 'new'">
           <form-control type="select"
                       model="requestVM.request.descriptionId"
                       options="suggestion.descriptionId as suggestion.term for suggestion in requestVM.originalConcept.descriptions"
@@ -29,7 +29,7 @@
                       loading-mask="requestVM.conceptStatus.loading || requestVM.conceptStatus.searching"></form-control>
         </div>
         
-        <div ng-if="!requestVM.originalConcept.descriptions">
+        <div ng-if="!requestVM.originalConcept.descriptions && requestVM.pageMode.value !== 'new'">
           <form-control type="text"
                       model="requestVM.request.descriptionId"
                       label="crs.request.details.label.currentDescription"
