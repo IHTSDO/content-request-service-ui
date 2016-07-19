@@ -185,6 +185,42 @@ angular
                     }
 
                     vm.submittedTableParams = submittedTableParams;
+                    var subbmitedRequests;
+                    if(!isDateRangeFilteredFirstTime ){
+                        //get filter values
+                        subbmitedRequests = requestService.getSubmittedFilterValues();
+                        if(subbmitedRequests !== undefined){
+                            changeSubmittedFilter('search', subbmitedRequests.search);
+                            changeSubmittedFilter('requestType', subbmitedRequests.requestType);
+                            changeSubmittedFilter('batchRequest', subbmitedRequests.batchRequest);
+                            changeSubmittedFilter('fsn', subbmitedRequests.concept);
+                            changeSubmittedFilter('jiraTicketId', subbmitedRequests.jiraTicketId);
+                            changeSubmittedFilter('topic', subbmitedRequests.topic);
+                            changeSubmittedFilter('manager', subbmitedRequests.manager);
+                            changeSubmittedFilter('status', subbmitedRequests.status);
+                            changeSubmittedFilter('author', subbmitedRequests.ogirinatorId);
+                            changeSubmittedFilter('requestId', subbmitedRequests.requestId);
+                        }
+                    }
+
+                    vm.requestTableParams = requestTableParams;
+                    var myRequests;
+                    if(!isDateRangeFilteredFirstTime ){
+                        //get filter values
+                        myRequests = requestService.getFilterValues();
+                        if(myRequests !== undefined){
+                            changeMyRequestFilter('search', myRequests.search);
+                            changeMyRequestFilter('requestType', myRequests.requestType);
+                            changeMyRequestFilter('batchRequest', myRequests.batchRequest);
+                            changeMyRequestFilter('fsn', myRequests.concept);
+                            changeMyRequestFilter('jiraTicketId', myRequests.jiraTicketId);
+                            changeMyRequestFilter('topic', myRequests.topic);
+                            changeMyRequestFilter('manager', myRequests.manager);
+                            changeMyRequestFilter('status', myRequests.status);
+                            changeMyRequestFilter('author', myRequests.ogirinatorId);
+                            changeMyRequestFilter('requestId', myRequests.requestId);
+                        }
+                    }
                 });
 
                 // load authors
@@ -346,6 +382,8 @@ angular
                     getData: function (params) {
                         var sortingObj = params.sorting();
                         var sortFields = [], sortDirs = [];
+                        var myRequests;
+                        var filterValues;
 
                         if (sortingObj) {
                             angular.forEach(sortingObj, function (dir, field) {
@@ -354,13 +392,12 @@ angular
                             });
                         }
                         notificationService.sendMessage('crs.request.message.listLoading');
-                        var myRequests;
                         vm.onDateRangeChange = function(){
                             if(isDateRangeFilteredFirstTime){
                                 params.filter().requestDate = vm.daterange;
                             }
                         };
-                        myRequests = buildRequestList(
+                        filterValues = buildRequestList(
                             'REQUEST',
                             params.page() - 1, 
                             params.count(), 
@@ -380,6 +417,14 @@ angular
                             params.filter().requestId,
                             params.filter().requestType
                         );
+
+                        if(myRequests === undefined){
+                            myRequests = filterValues;
+                        }
+
+                        //set filter values
+                        requestService.setFilterValues(filterValues);
+
                         return requestService.getRequests(myRequests).then(function (requests) {
                             isDateRangeFilteredFirstTime = true;
                             notificationService.sendMessage('crs.request.message.listLoaded', 5000);
@@ -396,6 +441,18 @@ angular
                     }
                 }
             );
+
+            function changeSubmittedFilter(field, value){
+                var filter = {};
+                filter[field] = value;
+                angular.extend(submittedTableParams.filter(), filter);
+            }
+
+            function changeMyRequestFilter(field, value){
+                var filter = {};
+                filter[field] = value;
+                angular.extend(requestTableParams.filter(), filter);
+            }
 
             var submittedTableParams = new NgTableParams({
                     page: 1,
@@ -420,6 +477,8 @@ angular
                     getData: function (params) {
                         var sortingObj = params.sorting();
                         var sortFields = [], sortDirs = [];
+                        var filterValues;
+                        var subbmitedRequests;
 
                         if (sortingObj) {
                             angular.forEach(sortingObj, function (dir, field) {
@@ -428,13 +487,13 @@ angular
                             });
                         }
                         
-                        var subbmitedRequests;
                         vm.onDateRangeChangeSQ = function(){
                             if(isDateRangeFilteredFirstTime){
                                 params.filter().requestDate = vm.daterange;
                             }
                         };
-                        subbmitedRequests = buildRequestList(
+
+                        filterValues = buildRequestList(
                             'SUBMITTED',
                             params.page() - 1, 
                             params.count(), 
@@ -454,6 +513,12 @@ angular
                             params.filter().requestId,
                             params.filter().requestType
                         );
+                        if(subbmitedRequests === undefined){
+                            subbmitedRequests = filterValues;
+                        }
+                        //set filter values
+                        requestService.setSubmittedFilterValues(filterValues);
+                        
                         return requestService.getRequests(subbmitedRequests).then(function (requests) {
                             isDateRangeFilteredFirstTime = true;
                             params.total(requests.total);

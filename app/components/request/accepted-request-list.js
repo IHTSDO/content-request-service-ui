@@ -185,8 +185,29 @@ angular
 
                 //load staffs
                 loadStaff();
-            };
 
+                vm.requestTableParams = requestTableParams;
+                var acceptedRequests;
+                if(!isDateRangeFilteredFirstTime ){
+                    //get filter values
+                    acceptedRequests = requestService.getAcceptedFilterValues();
+                    if(acceptedRequests !== undefined){
+                        changeAcceptedFilter('search', acceptedRequests.search);
+                        changeAcceptedFilter('requestType', acceptedRequests.requestType);
+                        changeAcceptedFilter('batchRequest', acceptedRequests.batchRequest);
+                        changeAcceptedFilter('fsn', acceptedRequests.concept);
+                        changeAcceptedFilter('jiraTicketId', acceptedRequests.jiraTicketId);
+                        changeAcceptedFilter('topic', acceptedRequests.topic);
+                        changeAcceptedFilter('manager', acceptedRequests.manager);
+                        changeAcceptedFilter('status', acceptedRequests.status);
+                        changeAcceptedFilter('author', acceptedRequests.ogirinatorId);
+                        changeAcceptedFilter('requestId', acceptedRequests.requestId);
+                        changeAcceptedFilter('project', acceptedRequests.assignedProject);
+                        changeAcceptedFilter('assignee', acceptedRequests.assignee);
+                    }
+                }
+            };
+                        
             var loadProjects = function() {
                 vm.loadingProjects = true;
                 scaService.getProjects().then(function(response) {
@@ -407,6 +428,12 @@ angular
                 return requestList;
             };
 
+            function changeAcceptedFilter(field, value){
+                var filter = {};
+                filter[field] = value;
+                angular.extend(requestTableParams.filter(), filter);
+            }
+
             var requestTableParams = new NgTableParams({
                 page: 1,
                 count: 10,
@@ -428,6 +455,8 @@ angular
                     var sortingObj = params.sorting();
                     var sortFields = [],
                         sortDirs = [];
+                    var acceptedRequests;
+                    var filterValues;
 
                     if (sortingObj) {
                         angular.forEach(sortingObj, function(dir, field) {
@@ -435,13 +464,12 @@ angular
                             sortDirs.push(dir);
                         });
                     }
-                    var acceptedRequests;
                     vm.onDateRangeChange = function(){
                         if(isDateRangeFilteredFirstTime){
                             params.filter().requestDate = vm.daterange;
                         }
                     };
-                    acceptedRequests = buildRequestList(
+                    filterValues = buildRequestList(
                         'ACCEPTED',
                         params.page() - 1, 
                         params.count(), 
@@ -464,6 +492,14 @@ angular
                         params.filter().requestType,
                         vm.showUnassignedRequests
                     );
+
+                    if(acceptedRequests === undefined){
+                            acceptedRequests = filterValues;
+                        }
+
+                    //set filter values
+                    requestService.setAcceptedFilterValues(filterValues);
+
                     return requestService.getRequests(acceptedRequests).then(function(requests) {
                         isDateRangeFilteredFirstTime = true;
                         params.total(requests.total);
