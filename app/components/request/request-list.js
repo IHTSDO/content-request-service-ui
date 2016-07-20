@@ -67,10 +67,6 @@ angular
 
             vm.requestStatus = [
                 {
-                    id: null,
-                    title: "Select None"
-                },
-                {
                     id: "DRAFT",
                     title: "Draft"
                 },
@@ -200,6 +196,16 @@ angular
                             changeSubmittedFilter('status', subbmitedRequests.status);
                             changeSubmittedFilter('author', subbmitedRequests.ogirinatorId);
                             changeSubmittedFilter('requestId', subbmitedRequests.requestId);
+                            changeSubmittedFilter('requestDate', {
+                                startDate: subbmitedRequests.requestDateFrom,
+                                endDate: subbmitedRequests.requestDateTo
+                            });
+                            if(subbmitedRequests.requestDateFrom !== 0 && subbmitedRequests.requestDateTo !== 0){
+                                vm.daterangeSQ = {
+                                    startDate: new Date(subbmitedRequests.requestDateFrom),
+                                    endDate: new Date(subbmitedRequests.requestDateTo)
+                                };
+                            }
                         }
                     }
 
@@ -219,6 +225,16 @@ angular
                             changeMyRequestFilter('status', myRequests.status);
                             changeMyRequestFilter('author', myRequests.ogirinatorId);
                             changeMyRequestFilter('requestId', myRequests.requestId);
+                            changeMyRequestFilter('requestDate', {
+                                startDate: myRequests.requestDateFrom,
+                                endDate: myRequests.requestDateTo
+                            });
+                            if(myRequests.requestDateFrom !== 0 && myRequests.requestDateTo !== 0){
+                                vm.daterange = {
+                                    startDate: new Date(myRequests.requestDateFrom),
+                                    endDate: new Date(myRequests.requestDateTo)
+                                };
+                            }
                         }
                     }
                 });
@@ -347,7 +363,7 @@ angular
                 requestList.status = status;
                 requestList.type = typeList;
                 requestList.ogirinatorId = author;
-                requestList.requestId = requestId? requestId: 0;
+                requestList.requestId = requestId;
                 requestList.requestType = requestType;
                 requestList.search = search;
                 return requestList;
@@ -368,12 +384,8 @@ angular
                     filter: {
                         status: $routeParams.status,
                         requestDate: {
-                            startDate: {
-                                _d: null
-                            },
-                            endDate: {
-                                _d: null
-                            }
+                            startDate: null,
+                            endDate: null
                         }
                     }
                 },
@@ -392,11 +404,7 @@ angular
                             });
                         }
                         notificationService.sendMessage('crs.request.message.listLoading');
-                        vm.onDateRangeChange = function(){
-                            if(isDateRangeFilteredFirstTime){
-                                params.filter().requestDate = vm.daterange;
-                            }
-                        };
+                        
                         filterValues = buildRequestList(
                             'REQUEST',
                             params.page() - 1, 
@@ -407,8 +415,8 @@ angular
                             params.filter().batchRequest, 
                             params.filter().fsn, 
                             params.filter().jiraTicketId,
-                            params.filter().requestDate.startDate._d? params.filter().requestDate.startDate._d: null ,
-                            params.filter().requestDate.endDate._d? params.filter().requestDate.endDate._d: null,
+                            params.filter().requestDate.startDate,
+                            params.filter().requestDate.endDate,
                             params.filter().topic,
                             // params.filter().summary,
                             params.filter().manager,
@@ -462,12 +470,8 @@ angular
                         status: $routeParams.status,
                         manager: $routeParams.assignee,
                         requestDate: {
-                            startDate: {
-                                _d: null
-                            },
-                            endDate: {
-                                _d: null
-                            }
+                            startDate: null,
+                            endDate: null
                         }
                     }
                 },
@@ -486,12 +490,6 @@ angular
                                 sortDirs.push(dir);
                             });
                         }
-                        
-                        vm.onDateRangeChangeSQ = function(){
-                            if(isDateRangeFilteredFirstTime){
-                                params.filter().requestDate = vm.daterange;
-                            }
-                        };
 
                         filterValues = buildRequestList(
                             'SUBMITTED',
@@ -503,8 +501,8 @@ angular
                             params.filter().batchRequest, 
                             params.filter().fsn, 
                             params.filter().jiraTicketId,
-                            params.filter().requestDate.startDate._d,
-                            params.filter().requestDate.endDate._d,
+                            params.filter().requestDate.startDate,
+                            params.filter().requestDate.endDate,
                             params.filter().topic,
                             // params.filter().summary,
                             params.filter().manager,
@@ -535,6 +533,28 @@ angular
                 }
             );
 
+            var onDateRangeChangeSQ = function(action){
+                if(action){
+                    vm.daterangeSQ = {
+                        startDate: null,
+                        endDate: null
+                    };
+                }
+                submittedTableParams.reload();
+                submittedTableParams.filter().requestDate = vm.daterangeSQ;
+            };
+
+            var onDateRangeChange = function(action){
+                if(action){
+                    vm.daterange = {
+                        startDate: null,
+                        endDate: null
+                    };
+                }
+                requestTableParams.reload();
+                requestTableParams.filter().requestDate = vm.daterange;
+            };
+
             vm.showFilter = false;
             vm.isAdmin = false;
             vm.isViewer = false;
@@ -542,6 +562,21 @@ angular
             vm.removeSelectedRequests = removeSelectedRequests;
             vm.getAuthorName = getAuthorName;
             vm.getStaffName = getStaffName;
+            vm.onDateRangeChange = onDateRangeChange;
+            vm.onDateRangeChangeSQ = onDateRangeChangeSQ;
+            vm.daterange = {
+                startDate: null,
+                endDate: null
+            };
+            vm.daterangeSQ = {
+                startDate: null,
+                endDate: null
+            };
+            vm.options = {
+              format: 'DD/MM',
+              showDropdowns: true,
+              type: 'moment'
+            };
             
             initView();
         }
