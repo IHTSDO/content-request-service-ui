@@ -213,6 +213,16 @@ angular.module('conceptRequestServiceApp.request')
                return savedAcceptedFilterValues;
             };
 
+            var savedAssignedFilterValues;
+
+            var setAssignedFilterValues = function(filterValues){
+               savedAssignedFilterValues = filterValues;
+            };
+
+            var getAssignedFilterValues = function(){
+               return savedAssignedFilterValues;
+            };
+
             function getBatchConcept(requestId, conceptId) {
                 var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
                 var params;
@@ -243,7 +253,9 @@ angular.module('conceptRequestServiceApp.request')
                 setSubmittedFilterValues: setSubmittedFilterValues,
                 getSubmittedFilterValues: getSubmittedFilterValues,
                 setAcceptedFilterValues: setAcceptedFilterValues,
-                getAcceptedFilterValues: getAcceptedFilterValues
+                getAcceptedFilterValues: getAcceptedFilterValues,
+                setAssignedFilterValues: setAssignedFilterValues,
+                getAssignedFilterValues: getAssignedFilterValues
             };
 
         }]);

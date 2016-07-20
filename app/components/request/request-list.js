@@ -171,6 +171,10 @@ angular
                 vm.selectedRequests = {checked: false, items: {}};
                 vm.selectedSubmittedRequests = {checked: false, items: {}};
 
+                accountService.getAccountInfo().then(function (accountDetails) {
+                    vm.assignee = accountDetails.login;                   
+                });
+
                 // check admin role
                 accountService.checkUserPermission().then(function (rs) {
                     vm.isAdmin = (rs.isAdmin === true);
@@ -233,6 +237,35 @@ angular
                                 vm.daterange = {
                                     startDate: new Date(myRequests.requestDateFrom),
                                     endDate: new Date(myRequests.requestDateTo)
+                                };
+                            }
+                        }
+                    }
+
+                    vm.assignedRequestTableParams = assignedRequestTableParams;
+                    var myAssignedRequests;
+                    if(!isDateRangeFilteredFirstTime ){
+                        //get filter values
+                        myAssignedRequests = requestService.getAssignedFilterValues();
+                        if(myAssignedRequests !== undefined){
+                            changeAssignedFilter('search', myAssignedRequests.search);
+                            changeAssignedFilter('requestType', myAssignedRequests.requestType);
+                            changeAssignedFilter('batchRequest', myAssignedRequests.batchRequest);
+                            changeAssignedFilter('fsn', myAssignedRequests.concept);
+                            changeAssignedFilter('jiraTicketId', myAssignedRequests.jiraTicketId);
+                            changeAssignedFilter('topic', myAssignedRequests.topic);
+                            changeAssignedFilter('manager', myAssignedRequests.manager);
+                            changeAssignedFilter('status', myAssignedRequests.status);
+                            changeAssignedFilter('author', myAssignedRequests.ogirinatorId);
+                            changeAssignedFilter('requestId', myAssignedRequests.requestId);
+                            changeAssignedFilter('requestDate', {
+                                startDate: myAssignedRequests.requestDateFrom,
+                                endDate: myAssignedRequests.requestDateTo
+                            });
+                            if(myAssignedRequests.requestDateFrom !== 0 && myAssignedRequests.requestDateTo !== 0){
+                                vm.daterangeMAR = {
+                                    startDate: new Date(myAssignedRequests.requestDateFrom),
+                                    endDate: new Date(myAssignedRequests.requestDateTo)
                                 };
                             }
                         }
@@ -376,13 +409,13 @@ angular
             };
             var isDateRangeFilteredFirstTime = false;
 
-
             var requestTableParams = new NgTableParams({
                     page: 1,
                     count: 10,
                     sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'asc', id: 'asc'},
                     filter: {
                         status: $routeParams.status,
+                        manager: $routeParams.assignee,
                         requestDate: {
                             startDate: null,
                             endDate: null
@@ -450,17 +483,79 @@ angular
                 }
             );
 
-            function changeSubmittedFilter(field, value){
-                var filter = {};
-                filter[field] = value;
-                angular.extend(submittedTableParams.filter(), filter);
-            }
+            var assignedRequestTableParams = new NgTableParams({
+                    page: 1,
+                    count: 10,
+                    sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'asc', id: 'asc'},
+                    filter: {
+                        status: $routeParams.status,
+                        manager: $routeParams.assignee,
+                        requestDate: {
+                            startDate: null,
+                            endDate: null
+                        }
+                    }
+                },
+                {
+                    filterDelay: 700,
+                    getData: function (params) {
+                        var sortingObj = params.sorting();
+                        var sortFields = [], sortDirs = [];
+                        var myAssignedRequests;
+                        var filterValues;
 
-            function changeMyRequestFilter(field, value){
-                var filter = {};
-                filter[field] = value;
-                angular.extend(requestTableParams.filter(), filter);
-            }
+                        if (sortingObj) {
+                            angular.forEach(sortingObj, function (dir, field) {
+                                sortFields.push(field);
+                                sortDirs.push(dir);
+                            });
+                        }
+                        notificationService.sendMessage('crs.request.message.listLoading');
+                        
+                        filterValues = buildRequestList(
+                            'REQUEST',
+                            params.page() - 1, 
+                            params.count(), 
+                            params.filter().search, 
+                            sortFields, 
+                            sortDirs, 
+                            params.filter().batchRequest, 
+                            params.filter().fsn, 
+                            params.filter().jiraTicketId,
+                            params.filter().requestDate.startDate,
+                            params.filter().requestDate.endDate,
+                            params.filter().topic,
+                            // params.filter().summary,
+                            vm.assignee,
+                            params.filter().status,
+                            params.filter().author,
+                            params.filter().requestId,
+                            params.filter().requestType
+                        );
+
+                        if(myAssignedRequests === undefined){
+                            myAssignedRequests = filterValues;
+                        }
+
+                        //set filter values
+                        requestService.setAssignedFilterValues(filterValues);
+                        console.log(myAssignedRequests);
+                        return requestService.getRequests(myAssignedRequests).then(function (requests) {
+                            isDateRangeFilteredFirstTime = true;
+                            notificationService.sendMessage('crs.request.message.listLoaded', 5000);
+                            params.total(requests.total);
+                            vm.requests = requests;
+                            if (requests.items && requests.items.length > 0) {
+                                return requests.items;
+                            } else {
+                                return [];
+                            }
+                        }, function () {
+                            return [];
+                        });
+                    }
+                }
+            );
 
             var submittedTableParams = new NgTableParams({
                     page: 1,
@@ -533,6 +628,35 @@ angular
                 }
             );
 
+            function changeAssignedFilter(field, value){
+                var filter = {};
+                filter[field] = value;
+                angular.extend(assignedRequestTableParams.filter(), filter);
+            }
+
+            function changeSubmittedFilter(field, value){
+                var filter = {};
+                filter[field] = value;
+                angular.extend(submittedTableParams.filter(), filter);
+            }
+
+            function changeMyRequestFilter(field, value){
+                var filter = {};
+                filter[field] = value;
+                angular.extend(requestTableParams.filter(), filter);
+            }
+
+            var onDateRangeChangeMAR = function(action){
+                if(action){
+                    vm.daterangeMAR = {
+                        startDate: null,
+                        endDate: null
+                    };
+                }
+                assignedRequestTableParams.reload();
+                assignedRequestTableParams.filter().requestDate = vm.daterangeMAR;
+            };
+
             var onDateRangeChangeSQ = function(action){
                 if(action){
                     vm.daterangeSQ = {
@@ -564,11 +688,16 @@ angular
             vm.getStaffName = getStaffName;
             vm.onDateRangeChange = onDateRangeChange;
             vm.onDateRangeChangeSQ = onDateRangeChangeSQ;
+            vm.onDateRangeChangeMAR = onDateRangeChangeMAR;
             vm.daterange = {
                 startDate: null,
                 endDate: null
             };
             vm.daterangeSQ = {
+                startDate: null,
+                endDate: null
+            };
+            vm.daterangeMAR = {
                 startDate: null,
                 endDate: null
             };

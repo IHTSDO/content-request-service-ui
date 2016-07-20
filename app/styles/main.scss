@@ -708,18 +708,18 @@ ul.batch-statistic.timeline {
 }
 
 .statistics-requests{
-  padding: 10px; 
+  padding: 0 0 0 10px; 
   list-style: none; 
   color: white; 
 }
-@media (max-width: 1500px) {
+/*@media (max-width: 1500px) {
   .statistics-requests{
     height: 265px;
     width: 16%;
     position: fixed;
     overflow: auto;
   }
-}
+}*/
 
 /*overwrite date range picker*/
 .range_inputs{

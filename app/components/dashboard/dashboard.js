@@ -13,6 +13,9 @@ angular
             .when('/requests', {
                 redirectTo: '/dashboard/requests'
             })
+            .when('/my-assigned-requests', {
+                redirectTo: '/dashboard/my-assigned-requests'
+            })
             .when('/batches', {
                 redirectTo: '/dashboard/batches'
             })
@@ -46,6 +49,12 @@ angular
                             {url: '#/batches', label: 'crs.batch.list.title'}
                         ];
                         vm.listView = 'components/batch/batch-list.html';
+                        break;
+                    case 'my-assigned-requests':
+                        $rootScope.pageTitles = [
+                            {url: '#/my-assigned-requests', label: 'crs.request.list.title.myAssignedRequests'}
+                        ];
+                        vm.listView = 'components/request/my-assigned-requests.html';
                         break;
                     case 'accepted-requests':
                         $rootScope.pageTitles = [
