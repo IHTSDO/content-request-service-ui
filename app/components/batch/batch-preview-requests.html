@@ -37,11 +37,6 @@
                             NEW SYNONYM ({{batchPreviewVM.selectedFile.requestTypeNumber.NEW_DESCRIPTION || 0}})
                         </a>
                     </li>
-                    <li role="presentation" ng-class="{active: batchPreviewVM.previewTab.value === 'ADD_PARENT'}">
-                        <a ng-click="batchPreviewVM.loadPreviewData('ADD_PARENT', true)" aria-controls="home" role="tab" data-toggle="tab">
-                            ADD PARENT ({{batchPreviewVM.selectedFile.requestTypeNumber.ADD_PARENT || 0}})
-                        </a>
-                    </li>
                     <li role="presentation" ng-class="{active: batchPreviewVM.previewTab.value === 'NEW_RELATIONSHIP'}">
                         <a ng-click="batchPreviewVM.loadPreviewData('NEW_RELATIONSHIP', true)" aria-controls="home" role="tab" data-toggle="tab">
                             NEW RELATIONSHIP ({{batchPreviewVM.selectedFile.requestTypeNumber.NEW_RELATIONSHIP || 0}})
