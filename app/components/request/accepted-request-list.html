@@ -115,7 +115,7 @@
     <form-control type="select" model="params.filter()[name]" options="suggestion.id as suggestion.title for suggestion in vm.authors"></form-control>
 </script>
 <script type="text/ng-template" id="ng-table/project-select.html">
-    <span ng-if="params.filter().project !== undefined && params.filter().project !== '' && params.filter().project !== null" class="md md-remove-circle" style="color: red; float: right; margin-bottom: -11px; font-size: 14px; cursor: pointer" ng-click="params.filter().project !== ''"></span>
+    <span ng-if="params.filter().project !== undefined && params.filter().project !== '' && params.filter().project !== null" class="md md-remove-circle" style="color: red; float: right; margin-bottom: -11px; font-size: 14px; cursor: pointer" ng-click="params.filter().project = ''"></span>
     <form-control type="select" model="params.filter()[name]" options="suggestion.id as suggestion.title for suggestion in vm.projects"></form-control>
 </script>
 <script type="text/ng-template" id="ng-table/status-select.html">
@@ -123,6 +123,6 @@
     <form-control type="select" model="params.filter()[name]" options="suggestion.id as suggestion.title for suggestion in vm.requestStatus"></form-control>
 </script>
 <script type="text/ng-template" id="ng-table/request-type-select.html">
-    <span ng-if="params.filter().requestType !== undefined && params.filter().requestType !== '' && params.filter().requestType !== null" class="md md-remove-circle" style="color: red; float: right; margin-bottom: -11px; font-size: 14px; cursor: pointer" ng-click="params.filter().requestType !== ''"></span>
+    <span ng-if="params.filter().requestType !== undefined && params.filter().requestType !== '' && params.filter().requestType !== null" class="md md-remove-circle" style="color: red; float: right; margin-bottom: -11px; font-size: 14px; cursor: pointer" ng-click="params.filter().requestType = ''"></span>
     <form-control type="select" model="params.filter()[name]" options="suggestion.id as suggestion.title for suggestion in vm.requestTypes"></form-control>
 </script>

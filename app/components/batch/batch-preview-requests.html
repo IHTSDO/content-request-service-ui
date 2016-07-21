@@ -34,7 +34,12 @@
                     </li>
                     <li role="presentation" ng-class="{active: batchPreviewVM.previewTab.value === 'NEW_DESCRIPTION'}">
                         <a ng-click="batchPreviewVM.loadPreviewData('NEW_DESCRIPTION', true)" aria-controls="home" role="tab" data-toggle="tab">
-                            NEW DESCRIPTION ({{batchPreviewVM.selectedFile.requestTypeNumber.NEW_DESCRIPTION || 0}})
+                            NEW SYNONYM ({{batchPreviewVM.selectedFile.requestTypeNumber.NEW_DESCRIPTION || 0}})
+                        </a>
+                    </li>
+                    <li role="presentation" ng-class="{active: batchPreviewVM.previewTab.value === 'ADD_PARENT'}">
+                        <a ng-click="batchPreviewVM.loadPreviewData('ADD_PARENT', true)" aria-controls="home" role="tab" data-toggle="tab">
+                            ADD PARENT ({{batchPreviewVM.selectedFile.requestTypeNumber.ADD_PARENT || 0}})
                         </a>
                     </li>
                     <li role="presentation" ng-class="{active: batchPreviewVM.previewTab.value === 'NEW_RELATIONSHIP'}">
@@ -44,7 +49,7 @@
                     </li>
                     <li role="presentation" ng-class="{active: batchPreviewVM.previewTab.value === 'CHANGE_RETIRE_CONCEPT'}">
                         <a ng-click="batchPreviewVM.loadPreviewData('CHANGE_RETIRE_CONCEPT', true)" aria-controls="home" role="tab" data-toggle="tab">
-                            CHANGE/RETIRE CONCEPT ({{batchPreviewVM.selectedFile.requestTypeNumber.CHANGE_RETIRE_CONCEPT || 0}})
+                            RETIRE CONCEPT ({{batchPreviewVM.selectedFile.requestTypeNumber.CHANGE_RETIRE_CONCEPT || 0}})
                         </a>
                     </li>
                     
