@@ -13,6 +13,9 @@ angular
             .when('/requests', {
                 redirectTo: '/dashboard/requests'
             })
+            .when('/my-assigned-requests', {
+                redirectTo: '/dashboard/my-assigned-requests'
+            })
             .when('/batches', {
                 redirectTo: '/dashboard/batches'
             })
@@ -46,6 +49,12 @@ angular
                             {url: '#/batches', label: 'crs.batch.list.title'}
                         ];
                         vm.listView = 'components/batch/batch-list.html';
+                        break;
+                    case 'my-assigned-requests':
+                        $rootScope.pageTitles = [
+                            {url: '#/my-assigned-requests', label: 'crs.request.list.title.myAssignedRequests'}
+                        ];
+                        vm.listView = 'components/request/my-assigned-requests.html';
                         break;
                     case 'accepted-requests':
                         $rootScope.pageTitles = [
@@ -157,6 +166,7 @@ angular
                 }
 				
 				var manager = null;
+				console.log("===== status : " + status);
 				switch(status) {
 					case 'ALL_REQUEST':
 						status = null;
@@ -165,17 +175,21 @@ angular
 						status = null;
 						manager = "{assigned}";
 						break;
-					case 'Unassigned':
-						status = null;
-						manager = "{unassigned}";
-						break;
 					case 'My_Assigned':
 						status = null;
 						manager = "{my_assigned}";
 						break;
+					case 'Unassigned':
+						status = null;
+						manager = "{unassigned}";
+						break;
+					
 					default:
 						break;
 				}
+				
+				console.log("===== manager : " + manager);
+				
                 $location.path('dashboard/submitted-requests').search({status:status, manager:manager});
             };
             var filterAssignedRequests = function(status){
@@ -183,7 +197,7 @@ angular
                     return;
                 }
                 accountService.getAccountInfo().then(function (accountDetails) {
-                    $location.path('dashboard/submitted-requests').search({status:status, assignee: accountDetails.login});                   
+                    $location.path('dashboard/submitted-requests').search({status:status, manager: accountDetails.login});                   
                 });
             };
 			

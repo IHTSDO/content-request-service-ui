@@ -39,6 +39,7 @@
                 "createRequest": "Create New Request",
                 "importBatch": "New Batch Import",
                 "acceptedRequest": "Accepted Requests",
+                "myAssignedRequests": "My Assigned Requests",
                 "submittedRequest": "Submitted Requests",
                 "submitted": "Submitted",
                 "ACCEPTED": "Accepted",
@@ -75,7 +76,8 @@
                     "requests": "Requests",
                     "myRequests": "My Requests",
                     "acceptedRequests": "Accepted Requests",
-                    "submittedRequests": "Submitted Requests"
+                    "submittedRequests": "Submitted Requests",
+                    "myAssignedRequests": "My Assigned Requests"
                 },
                 "tip": {
                     "count": "Number of requests",
