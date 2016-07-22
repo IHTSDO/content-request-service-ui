@@ -152,11 +152,31 @@ angular
             };
 
             var filterStatus = function(status){
-                if(status === 'ALL_REQUEST' || status === 'Assigned' || status === 'ALL' || status === 'Unassigned'){
+                if(status === 'ALL'){
                     return;
                 }
-                $location.path('dashboard/submitted-requests').search({status:status});
-
+				
+				var manager = null;
+				switch(status) {
+					case 'ALL_REQUEST':
+						status = null;
+						break;
+					case 'Assigned':
+						status = null;
+						manager = "{assigned}";
+						break;
+					case 'Unassigned':
+						status = null;
+						manager = "{unassigned}";
+						break;
+					case 'My_Assigned':
+						status = null;
+						manager = "{my_assigned}";
+						break;
+					default:
+						break;
+				}
+                $location.path('dashboard/submitted-requests').search({status:status, manager:manager});
             };
             var filterAssignedRequests = function(status){
                 if(status === 'ALL_REQUEST' || status === 'Assigned' || status === 'ALL' || status === 'Unassigned'){
@@ -166,6 +186,7 @@ angular
                     $location.path('dashboard/submitted-requests').search({status:status, assignee: accountDetails.login});                   
                 });
             };
+			
 
             var filterMyRequest = function(status){
                 if(status === 'SUBMITTED'){

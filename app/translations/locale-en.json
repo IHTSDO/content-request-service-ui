@@ -64,7 +64,9 @@
                 "underAuthoring": "Under Authoring",
                 "appealRejected": "Appeal Rejected",
                 "appeal": "Appeal",
-                "clarificationNeeded": "Clarification Needed"
+                "clarificationNeeded": "Clarification Needed",
+				"in_inception_elaboration": "In Inception Elaboration",
+				"my_assigned": "My Assigned"
             }
         },
         "request": {

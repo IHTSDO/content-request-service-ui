@@ -331,6 +331,7 @@ angular
                     sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'asc', id: 'asc'},
                     filter: {
                         status: $routeParams.status,
+						manager: $routeParams.manager,
                         requestDate: {
                             startDate: {
                                 _d: null
@@ -403,7 +404,7 @@ angular
                     sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'asc', id: 'asc'},
                     filter: {
                         status: $routeParams.status,
-                        manager: $routeParams.assignee,
+                        manager: $routeParams.manager,
                         requestDate: {
                             startDate: {
                                 _d: null

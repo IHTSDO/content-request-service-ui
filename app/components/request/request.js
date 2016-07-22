@@ -272,6 +272,14 @@ angular
         Unassigned: {
             value:'Unassigned',
             langKey: 'crs.dashboard.sidebar.unassigned'
+        },
+		IN_INCEPTION_ELABORATION: {
+            value:'IN_INCEPTION_ELABORATION',
+            langKey: 'crs.dashboard.sidebar.in_inception_elaboration'
+        },
+		My_Assigned: {
+            value:'My_Assigned',
+            langKey: 'crs.dashboard.sidebar.my_assigned'
         }
     })
     .value('REQUEST_METADATA_KEY', {
