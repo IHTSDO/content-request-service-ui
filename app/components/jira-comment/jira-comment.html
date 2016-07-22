@@ -2,7 +2,7 @@
     <h4 style="display: inline-block">Comments </h4> <span style="vertical-align: middle;margin-bottom: 5px;margin-left: 3px" ng-show="ctrl.loadingComment" class="md md-autorenew" ng-class="{'md-spin':ctrl.loadingComment}"></span>
 
     <div class="comment-container" >
-        <div ng-repeat="comment in ctrl.comments track by comment.id" class="comment-item">
+        <div ng-repeat="comment in ctrl.comments track by comment.id" repeat-end class="comment-item">
             <div class="comment-head">
                 <div class="comment-details" ng-if="comment.internal === false">
                     <a class="user-avatar" >

@@ -183,6 +183,46 @@ angular.module('conceptRequestServiceApp.request')
                 return crsService.sendGet(requestEndpoint + '/statusStatistics');
             };
 
+            var savedFilterValues;
+
+            var setFilterValues = function(filterValues){
+               savedFilterValues = filterValues;
+            };
+
+            var getFilterValues = function(){
+               return savedFilterValues;
+            };
+
+            var savedSubmittedFilterValues;
+
+            var setSubmittedFilterValues = function(filterValues){
+               savedSubmittedFilterValues = filterValues;
+            };
+
+            var getSubmittedFilterValues = function(){
+               return savedSubmittedFilterValues;
+            };
+
+            var savedAcceptedFilterValues;
+
+            var setAcceptedFilterValues = function(filterValues){
+               savedAcceptedFilterValues = filterValues;
+            };
+
+            var getAcceptedFilterValues = function(){
+               return savedAcceptedFilterValues;
+            };
+
+            var savedAssignedFilterValues;
+
+            var setAssignedFilterValues = function(filterValues){
+               savedAssignedFilterValues = filterValues;
+            };
+
+            var getAssignedFilterValues = function(){
+               return savedAssignedFilterValues;
+            };
+
             function getBatchConcept(requestId, conceptId) {
                 var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
                 var params;
@@ -207,7 +247,15 @@ angular.module('conceptRequestServiceApp.request')
                 changeRequestStatus: changeRequestStatus,
                 getStatisticsRequests: getStatisticsRequests,
                 identifyStatisticsStatus: identifyStatisticsStatus,
-                getBatchConcept: getBatchConcept
+                getBatchConcept: getBatchConcept,
+                setFilterValues: setFilterValues,
+                getFilterValues: getFilterValues,
+                setSubmittedFilterValues: setSubmittedFilterValues,
+                getSubmittedFilterValues: getSubmittedFilterValues,
+                setAcceptedFilterValues: setAcceptedFilterValues,
+                getAcceptedFilterValues: getAcceptedFilterValues,
+                setAssignedFilterValues: setAssignedFilterValues,
+                getAssignedFilterValues: getAssignedFilterValues
             };
 
         }]);

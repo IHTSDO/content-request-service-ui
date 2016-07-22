@@ -28,7 +28,7 @@ angular
         'textAngular',
         'isteven-multi-select',
         'monospaced.elastic',
-        'ngBootstrap',
+        'nDaterangepicker',
 
         // layouts
 

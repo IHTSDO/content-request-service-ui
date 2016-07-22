@@ -826,7 +826,7 @@ angular
                             if (!description.definitionOfChanges) {
                                 description.definitionOfChanges = {
                                     changeId: null,
-                                    changeType: REQUEST_TYPE.CHANGE_DESCRIPTION.value,
+                                    changeType: REQUEST_TYPE.RETIRE_DESCRIPTION.value,
                                     changed: false
                                 };
                             }
