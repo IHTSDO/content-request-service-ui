@@ -103,7 +103,7 @@
     </div>
 </script>
 <script type="text/ng-template" id="ng-table/manager-select.html">
-    <span ng-if="params.filter().manager !== undefined && params.filter().manager !== '' && params.filter().manager !== null" ng-click="params.filter().manager = ''" class="md md-remove-circle" style="color: red; float: right; margin-bottom: -11px; font-size: 14px; cursor: pointer"></span>
+    <span ng-if="params.filter().manager !== undefined && params.filter().manager !== '' && params.filter().manager !== null" ng-click="params.filter().manager = null" class="md md-remove-circle" style="color: red; float: right; margin-bottom: -11px; font-size: 14px; cursor: pointer"></span>
     <form-control type="select" model="params.filter()[name]" options="suggestion.id as suggestion.title for suggestion in vm.staffs"></form-control>
 </script>
 <script type="text/ng-template" id="ng-table/author-select.html">

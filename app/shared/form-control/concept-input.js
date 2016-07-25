@@ -94,13 +94,13 @@ angular
                         // load concept details
                         snowowlService.getFullConcept(null, null, conceptData.id).then(function (response) {
                             $scope.concept = response;
-                            if(requestType === REQUEST_TYPE.NEW_CONCEPT){
+                            // if(requestType === REQUEST_TYPE.NEW_CONCEPT){
                                 if(!conceptData.sourceTerminology){
                                     $scope.concept.sourceTerminology = 'SNOMEDCT';
                                 }else{
                                     $scope.concept.sourceTerminology = conceptData.sourceTerminology;
                                 }
-                            }
+                            // }
                             
                             for(var name in $scope.concept.relationships){
                                 $scope.concept.relationships[name].viewName = $scope.concept.relationships[name].type.fsn + " " + $scope.concept.relationships[name].target.fsn;

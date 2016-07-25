@@ -189,7 +189,7 @@ angular
                     if(!isDateRangeFilteredFirstTime ){
                         //get filter values
                         subbmitedRequests = requestService.getSubmittedFilterValues();
-                        if(subbmitedRequests !== undefined){
+                        if(subbmitedRequests !== undefined && $routeParams.cache !== false){
                             changeSubmittedFilter('search', subbmitedRequests.search);
                             changeSubmittedFilter('requestType', subbmitedRequests.requestType);
                             changeSubmittedFilter('batchRequest', subbmitedRequests.batchRequest);
@@ -218,7 +218,7 @@ angular
                     if(!isDateRangeFilteredFirstTime ){
                         //get filter values
                         myRequests = requestService.getFilterValues();
-                        if(myRequests !== undefined){
+                        if(myRequests !== undefined && $routeParams.cache !== false){
                             changeMyRequestFilter('search', myRequests.search);
                             changeMyRequestFilter('requestType', myRequests.requestType);
                             changeMyRequestFilter('batchRequest', myRequests.batchRequest);
@@ -513,7 +513,7 @@ angular
                         notificationService.sendMessage('crs.request.message.listLoading');
                         
                         filterValues = buildRequestList(
-                            'REQUEST',
+                            'SUBMITTED',
                             params.page() - 1, 
                             params.count(), 
                             params.filter().search, 
