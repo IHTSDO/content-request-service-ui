@@ -37,9 +37,9 @@
                             NEW SYNONYM ({{batchPreviewVM.selectedFile.requestTypeNumber.NEW_DESCRIPTION || 0}})
                         </a>
                     </li>
-                    <li role="presentation" ng-class="{active: batchPreviewVM.previewTab.value === 'ADD_PARENT'}">
-                        <a ng-click="batchPreviewVM.loadPreviewData('ADD_PARENT', true)" aria-controls="home" role="tab" data-toggle="tab">
-                            ADD PARENT ({{batchPreviewVM.selectedFile.requestTypeNumber.ADD_PARENT || 0}})
+                    <li role="presentation" ng-class="{active: batchPreviewVM.previewTab.value === 'SUB_TYPE_ADD_PARENT'}">
+                        <a ng-click="batchPreviewVM.loadPreviewData('SUB_TYPE_ADD_PARENT', true)" aria-controls="home" role="tab" data-toggle="tab">
+                            ADD PARENT ({{batchPreviewVM.selectedFile.requestTypeNumber.SUB_TYPE_ADD_PARENT || 0}})
                         </a>
                     </li>
                     <li role="presentation" ng-class="{active: batchPreviewVM.previewTab.value === 'NEW_RELATIONSHIP'}">
@@ -59,6 +59,11 @@
                     <li role="presentation" ng-class="{active: batchPreviewVM.previewTab.value === 'CHANGE_DESCRIPTION'}">
                         <a ng-click="batchPreviewVM.loadPreviewData('CHANGE_DESCRIPTION', true)" aria-controls="home" role="tab" data-toggle="tab">
                             CHANGE DESCRIPTION ({{batchPreviewVM.selectedFile.requestTypeNumber.CHANGE_DESCRIPTION || 0}})
+                        </a>
+                    </li>
+                    <li role="presentation" ng-class="{active: batchPreviewVM.previewTab.value === 'SUB_TYPE_CHANGE_PARENT'}">
+                        <a ng-click="batchPreviewVM.loadPreviewData('SUB_TYPE_CHANGE_PARENT', true)" aria-controls="home" role="tab" data-toggle="tab">
+                            CHANGE PARENT ({{batchPreviewVM.selectedFile.requestTypeNumber.SUB_TYPE_CHANGE_PARENT || 0}})
                         </a>
                     </li>
                     <li role="presentation" ng-class="{active: batchPreviewVM.previewTab.value === 'RETIRE_DESCRIPTION'}">
