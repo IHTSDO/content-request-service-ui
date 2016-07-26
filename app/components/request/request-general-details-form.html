@@ -41,8 +41,21 @@
                       model="requestVM.request.additionalFields.namespace"
                       label="crs.request.details.label.namespace"
                       name="txtReference"></form-control>
-        
-         
-    </div>
+         <div ng-if="requestVM.requestType.value === 'NEW_CONCEPT'">        
+        <form-control type="select"
+                      model="requestVM.request.value"
+                      label="crs.request.details.label.semanticTag"
+                      options="suggestion.value as suggestion.value for suggestion in requestVM.semanticTags"
+                      required
+                      error-model="requestVM.error.value"></form-control>
 
+        <form-control type="text"
+                      model="requestVM.request.requestorInternalTerm"
+                      label="crs.request.details.label.localTerm"
+                      name="txtReference"></form-control>
+        <form-control type="text"
+                      model="requestVM.request.proposedUse"
+                      label="crs.request.details.label.proposedUse"
+                      name="txtReference"></form-control></div>
+    </div>
 </form>
