@@ -464,7 +464,7 @@
                         "validationResult": "Validation Result",
                         "originator": "Created By",
                         "createdDate": "Created On",
-                        "requestDescription": "Description of Request",
+                        "requestDescription": "Description",
                         "proposedDestinationConcept": "Proposed Destination Concept ID",
                         "proposedRelationshipType": "Proposed Relationship Type",
                         "proposedCharacteristicType": "Characteristic Type",
