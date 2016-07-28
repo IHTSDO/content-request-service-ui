@@ -1684,6 +1684,16 @@ angular
                     });
             };
 
+            var moveToInInceptionElaboration = function() {
+                changeRequestStatus(vm.request.id, REQUEST_STATUS.IN_INCEPTION_ELABORATION)
+                    .then(function() {
+                        notificationService.sendMessage('crs.request.message.requestAccepted', 5000);
+                        $location.path(prevPage).search({});
+                    }, function(e) {
+                        showErrorMessage(e.message);
+                    });
+            };
+
             var openAssignRequestModal = function() {
                 return $uibModal.open({
                     templateUrl: 'components/request/modal-assign-request.html',
@@ -1930,6 +1940,7 @@ angular
             vm.assignRequestToStaff = assignRequestToStaff;
             vm.rejectRequest = rejectRequest;
             vm.rejectAppeal = rejectAppeal;
+            vm.moveToInInceptionElaboration = moveToInInceptionElaboration;
             vm.requestClarification = requestClarification;
             vm.saveAndSubmitRequest = saveAndSubmitRequest;
             vm.startEditingConcept = startEditingConcept;
