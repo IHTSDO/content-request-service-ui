@@ -702,7 +702,7 @@ angular
                 endDate: null
             };
             vm.options = {
-              format: 'DD/MM',
+              format: 'DD/MM/YY',
               showDropdowns: true,
               type: 'moment'
             };
