@@ -152,7 +152,7 @@ angular.module('conceptRequestServiceApp.request')
             // New Concept Statuses
             metadata[REQUEST_METADATA_KEY.NEW_CONCEPT_STATUS] = [
                 'Current',
-                'Retired without a stated reason',
+                'Inactivate without a stated reason',
                 'Duplicate',
                 'Outdated',
                 'Erroneous',
@@ -174,7 +174,7 @@ angular.module('conceptRequestServiceApp.request')
 
             // New Description Statuses
             metadata[REQUEST_METADATA_KEY.NEW_DESCRIPTION_STATUS] = [
-                'Retired',
+                'Inactivate',
                 'Duplicate',
                 'Outdated',
                 'Ambiguous',
@@ -186,7 +186,7 @@ angular.module('conceptRequestServiceApp.request')
 
             // New Relationship Statuses
             metadata[REQUEST_METADATA_KEY.NEW_RELATIONSHIP_STATUS] = [
-                'Retired',
+                'Inactivate',
                 'Duplicate',
                 'Outdated',
                 'Ambiguous',

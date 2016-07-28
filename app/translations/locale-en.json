@@ -65,7 +65,9 @@
                 "underAuthoring": "Under Authoring",
                 "appealRejected": "Appeal Rejected",
                 "appeal": "Appeal",
-                "clarificationNeeded": "Clarification Needed"
+                "clarificationNeeded": "Clarification Needed",
+		"in_inception_elaboration": "In Inception",
+		"my_assigned": "My Assigned"
             }
         },
         "request": {
@@ -141,7 +143,7 @@
                     "reference": "Reference",
                     "description": "Description",
                     "descriptionId": "Description ID",
-                    "currentDescription": "Current Description",
+                    "currentDescription": "Active Description",
                     "proposedDescription": "Proposed New Description",
                     "relationshipGroup": "Relationship Group",
                     "relationshipId": "Relationship ID",
@@ -171,7 +173,10 @@
                     "localTerm": "Local Term",
                     "proposedUse": "Proposed Use",
                     "semanticTag": "Semantic Tag",
-                    "summary": "Summary"
+                    "summary": "Summary",
+                    "umlsCui": "UMLS CUI",
+                    "sourceTerminology": "Terminology",
+                    "destinationTerminology": "Destination Terminology"
                 },
                 "tip": {
                     "editConceptHint": "Edit a concept from Saved List or drag and drop concept here"
@@ -454,7 +459,7 @@
                         "historyAttribute": "Concept History Attribute",
                         "historyAttributeValue": "Concept History Attribute Value",
                         "descriptionId": "Description ID",
-                        "currentDescription": "Current Description",
+                        "currentDescription": "Active Description",
                         "newDescription": "Term",
                         "newCaseSignature": "Case Significance",
                         "newDescriptionStatus": "Proposed New Description Status",
