@@ -208,6 +208,7 @@ angular
                             startDate: acceptedRequests.requestDateFrom,
                             endDate: acceptedRequests.requestDateTo
                         });
+
                         if(acceptedRequests.requestDateFrom !== 0 && acceptedRequests.requestDateTo !== 0){
                             vm.daterange = {
                                 startDate: new Date(acceptedRequests.requestDateFrom),
@@ -413,7 +414,7 @@ angular
 
             var isDateRangeFilteredFirstTime = false;
 
-            var buildRequestList = function(typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, manager, status, author,
+            var buildRequestFilterValues = function(typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, manager, status, author,
                 project, assignee, requestId, requestType, showUnassignedRequests){
                 var requestList = {};
                 requestList.batchRequest = batchRequest;
@@ -435,6 +436,7 @@ angular
                 requestList.requestId = requestId;
                 requestList.requestType = requestType;
                 requestList.showUnassignedOnly = showUnassignedRequests;
+                requestList.search = search;
                 return requestList;
             };
 
@@ -471,7 +473,7 @@ angular
                         });
                     }
                     
-                    filterValues = buildRequestList(
+                    filterValues = buildRequestFilterValues(
                         'ACCEPTED',
                         params.page() - 1, 
                         params.count(), 
