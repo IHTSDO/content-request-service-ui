@@ -151,7 +151,7 @@ angular.module('conceptRequestServiceApp.request')
 
             // New Concept Statuses
             metadata[REQUEST_METADATA_KEY.NEW_CONCEPT_STATUS] = [
-                'Current',
+                'Active',
                 'Inactivate without a stated reason',
                 'Duplicate',
                 'Outdated',
