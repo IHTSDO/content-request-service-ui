@@ -712,14 +712,14 @@ ul.batch-statistic.timeline {
   list-style: none; 
   color: white; 
 }
-/*@media (max-width: 1500px) {
+@media (max-height: 667px) {
   .statistics-requests{
-    height: 265px;
+    height: 350px;
     width: 16%;
     position: fixed;
     overflow: auto;
   }
-}*/
+}
 
 /*overwrite date range picker*/
 .range_inputs{
