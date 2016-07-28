@@ -1038,6 +1038,7 @@ angular
                         item.historyAttributeValue = definitionOfChanges.historyAttributeValue;
                         item.sourceTerminology = definitionOfChanges.sourceTerminology;
                         item.destinationTerminology = definitionOfChanges.destinationTerminology;
+                        item.duplicatedConceptId = vm.duplicateConcept.conceptId;
                         break;
 
                     case REQUEST_TYPE.NEW_DESCRIPTION.value:
@@ -1175,6 +1176,18 @@ angular
                         request.historyAttributeValue = mainItem.historyAttributeValue;
                         request.sourceTerminology = mainItem.sourceTerminology;
                         request.destinationTerminology = mainItem.destinationTerminology;
+
+                        // load duplicate concept
+                        snowowlService.getFullConcept(null, null, mainItem.duplicatedConceptId).then(function(response) {
+                            vm.duplicateConcept = response;
+                        });
+
+                        if(!vm.duplicateConcept.conceptId || !vm.duplicateConcept.fsn){
+                            vm.duplicateConcept = {
+                                conceptId: mainItem.duplicatedConceptId,
+                                fsn: mainItem.duplicatedConceptId
+                            };
+                        }
                         break;
 
                     case REQUEST_TYPE.NEW_DESCRIPTION.value:
@@ -1960,6 +1973,10 @@ angular
                 searching: false,
                 valid: true
             };
+            vm.duplicateConcept = {
+                conceptId: null,
+                fsn: null
+            };
             vm.sourceTerminologies = [
                 {
                     sourceTerminology: "SNOMEDCT",
@@ -1988,7 +2005,6 @@ angular
                     terminologyName: "Current Batch Requests"
                 }
             ];
-            console.log(vm.sourceTerminologies);
             vm.loadingProjects = true;
             vm.loadingAuthors = true;
             vm.projects = [];

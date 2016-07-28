@@ -1,15 +1,15 @@
 <div ng-controller="AcceptedRequestListCtrl as vm">
     <!-- My Requests -->
-    <section ng-if="vm.isAdmin" class="tables-data" style="width: 118%; margin-left: 0%;">
+    <section ng-if="vm.isAdmin" class="tables-data" style="width: 118%; margin-left: -2%;">
         <div class="card">
             <div class="row">
                 <div class="col-md-2 no-padding">
                     <h3 class="table-title p-20" translate="crs.request.list.title.acceptedRequests"></h3>
                 </div>
                 <div class="col-md-3">
-                    <div class="table-search">
+                    <!-- <div class="table-search">
                         <input type="text" ng-model="vm.tableParams.filter()['search']" class="form-control" placeholder="{{'crs.request.list.searchPlaceHolder.acceptedRequests' | translate}}" autofocus/>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="col-md-2 promoted-check-box">
                     <button class="btn btn-default" ng-class="[{'md-check-box' : vm.showUnassignedRequests}, {'md-check-box-outline-blank' : !vm.showUnassignedRequests}]" ng-click="vm.toggleShowUnassignedRequests()" style="background: transparent">

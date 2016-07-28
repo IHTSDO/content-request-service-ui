@@ -32,6 +32,9 @@
                         model="requestVM.request.sourceTerminology"
                         label="crs.request.details.label.sourceTerminology"
                         options="suggestion.sourceTerminology as suggestion.terminologyName for suggestion in requestVM.sourceTerminologies"></form-control>
+        </div>
+
+        <div ng-if="requestVM.requestType.value === 'NEW_RELATIONSHIP' || requestVM.requestType.value === 'RETIRE_RELATIONSHIP' || requestVM.requestType.value === 'CHANGE_RELATIONSHIP'">
           <form-control type="select"
                         model="requestVM.request.destinationTerminology"
                         label="crs.request.details.label.destinationTerminology"
