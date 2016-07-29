@@ -173,11 +173,11 @@ angular.module('conceptRequestServiceApp.request')
                 'Ambiguous',
                 'Duplicate',
                 'Erroneous',
-                'Inactivate',
                 'Limited',
                 'Moved elsewhere',
                 'Outdated',
-                'Pending move'
+                'Pending move',
+                'Retired'
             ];
 
             // New Description Statuses
@@ -185,11 +185,11 @@ angular.module('conceptRequestServiceApp.request')
                 'Ambiguous',
                 'Duplicate',
                 'Erroneous',
-                'Inactivate',
                 'Limited',
                 'Moved elsewhere',
                 'Outdated',
-                'Pending move'
+                'Pending move',
+                'Retired'
             ];
 
             // New Relationship Statuses
@@ -197,11 +197,11 @@ angular.module('conceptRequestServiceApp.request')
                 'Ambiguous',
                 'Duplicate',
                 'Erroneous',
-                'Inactivate',
                 'Limited',
                 'Moved elsewhere',
                 'Outdated',
-                'Pending move'
+                'Pending move',
+                'Retired'
             ];
 
             var getMetadata = function (metadataKeys) {
