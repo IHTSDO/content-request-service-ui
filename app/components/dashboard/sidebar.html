@@ -8,7 +8,7 @@
             </button>
         </a></li>
 
-        <li><a class="dashboard-links" ng-href="#/my-assigned-requests">
+        <li ng-if="dashboard.permissionChecked && dashboard.isAdmin"><a class="dashboard-links" ng-href="#/my-assigned-requests">
             <button type="button" class="btn grey darken-3 dashboard-links">
                 <i class="md md-format-list-numbered"></i> {{'crs.dashboard.sidebar.myAssignedRequests' | translate}}
             </button>
@@ -86,7 +86,12 @@
                 </span>
             </div>
             :   &nbsp;
-            <div class="numberSb">
+            <div class="numberSb" ng-show="number.status !== 'SUBMITTED' && number.status !== 'Assigned' && number.status !== 'Unassigned'"">
+                <a class="pointer" ng-click="dashboard.filterMyRequest(number.status)">
+                    {{number.countMyReq}}
+                </a>
+            </div>
+			<div class="numberSb" ng-show="number.status == 'SUBMITTED' || number.status == 'Assigned' || number.status == 'Unassigned'"">
                 <a class="pointer" ng-click="dashboard.filterMyRequest(number.status)">
                     {{number.count}}
                 </a>
