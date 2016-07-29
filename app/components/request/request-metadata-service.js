@@ -149,19 +149,6 @@ angular.module('conceptRequestServiceApp.request')
                 'Mandatory'
             ];
 
-            // New Concept Statuses
-            metadata[REQUEST_METADATA_KEY.NEW_CONCEPT_STATUS] = [
-                'Current',
-                'Retired without a stated reason',
-                'Duplicate',
-                'Outdated',
-                'Erroneous',
-                'Limited',
-                'Inappropriate',
-                'Concept inactive',
-                'Moved elsewhere'
-            ];
-
             // Concept History Attributes
             metadata[REQUEST_METADATA_KEY.CONCEPT_HISTORY_ATTRIBUTE] = [
                 'Maybe a',
@@ -172,28 +159,49 @@ angular.module('conceptRequestServiceApp.request')
                 'Was a'
             ];
 
-            // New Description Statuses
-            metadata[REQUEST_METADATA_KEY.NEW_DESCRIPTION_STATUS] = [
-                'Retired',
-                'Duplicate',
-                'Outdated',
+            // New Concept Statuses
+            metadata[REQUEST_METADATA_KEY.NEW_CONCEPT_STATUS] = [
+                // 'Active',
+                // 'Inactivate without a stated reason',
+                // 'Duplicate',
+                // 'Outdated',
+                // 'Erroneous',
+                // 'Limited',
+                // 'Inappropriate',
+                // 'Concept inactive',
+                // 'Moved elsewhere'
                 'Ambiguous',
+                'Duplicate',
                 'Erroneous',
                 'Limited',
                 'Moved elsewhere',
-                'Pending move'
+                'Outdated',
+                'Pending move',
+                'Retired'
+            ];
+
+            // New Description Statuses
+            metadata[REQUEST_METADATA_KEY.NEW_DESCRIPTION_STATUS] = [
+                'Ambiguous',
+                'Duplicate',
+                'Erroneous',
+                'Limited',
+                'Moved elsewhere',
+                'Outdated',
+                'Pending move',
+                'Retired'
             ];
 
             // New Relationship Statuses
             metadata[REQUEST_METADATA_KEY.NEW_RELATIONSHIP_STATUS] = [
-                'Retired',
-                'Duplicate',
-                'Outdated',
                 'Ambiguous',
+                'Duplicate',
                 'Erroneous',
                 'Limited',
                 'Moved elsewhere',
-                'Pending move'
+                'Outdated',
+                'Pending move',
+                'Retired'
             ];
 
             var getMetadata = function (metadataKeys) {

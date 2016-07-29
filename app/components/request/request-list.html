@@ -7,17 +7,17 @@
                     <h3 class="table-title p-20" translate="crs.request.list.title.myRequests"></h3>
                 </div>
                 <div class="col-md-5">
-                    <div class="table-search">
+                    <!-- <div class="table-search">
                         <input type="text" ng-model="vm.tableParams.filter()['search']" class="form-control"
                                placeholder="{{'crs.request.list.searchPlaceHolder.myRequests' | translate}}" autofocus/>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="col-md-3">
                     <div class="pull-right p-t-20">
-                        <button ng-click="vm.showFilter = !vm.showFilter" class="btn btn-round btn-default" title="{{'crs.request.list.tip.filter' | translate}}">
+                        <!-- <button ng-click="vm.showFilter = !vm.showFilter" class="btn btn-round btn-default" title="{{'crs.request.list.tip.filter' | translate}}">
                             <span class="md md-search"></span>
                             <div class="ripple-wrapper"></div>
-                        </button>
+                        </button> -->
                         <button type="button" class="btn btn-round btn-info ng-scope " title="{{'crs.request.list.tip.count' | translate}}" >
                             {{vm.tableParams.total()}} <div class="ripple-wrapper"></div>
                         </button>
@@ -36,7 +36,7 @@
            
             <div class="table-responsive white" style="min-height: 416px;">
                 <table ng-table="vm.tableParams" template-pagination="layout/template/review-table-pager.html"
-                       class="table table-full table-full-small table-requests" show-filter="vm.showFilter">
+                       class="table table-full table-full-small table-requests" show-filter="">
                     <tr ng-repeat="request in $data" ng-click="dashboard.editRequest(request.id)" class="clickable-row" ng-class="{'row-selected': vm.selectedRequests.items[request.id] === true}">
                         <td class="col-checkbox" header="'ng-table/headers/checkbox.html'" ng-click="$event.stopPropagation()">
                             <input type="checkbox" class="small-checkbox" ng-model="vm.selectedRequests.items[request.id]">

@@ -15,6 +15,11 @@
                       name="txtDescription"
                       required
                       error-model="requestVM.error.proposedDescription"></form-control>
+        <form-control type="select"
+                      model="requestVM.request.proposedCaseSignificance"
+                      options="caseSignificance.value as caseSignificance.text for caseSignificance in requestVM.caseSignificances"
+                      label="crs.request.details.label.proposedCaseSignificance"
+                      name="slCaseSignificance"></form-control>
 
         <div class="form-control-element">
             <input type="checkbox"
