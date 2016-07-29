@@ -76,6 +76,18 @@ angular
             value: 'CHANGE_RELATIONSHIP',
             previewTable: 'components/batch/batch-preview-change-relationship-table.html'
         },
+        SUB_TYPE_ADD_PARENT: {
+            value: 'SUB_TYPE_ADD_PARENT',
+            previewTable: 'components/batch/batch-preview-add-parent-table.html'
+        },
+        SUB_TYPE_CHANGE_PARENT: {
+            value: 'SUB_TYPE_CHANGE_PARENT',
+            previewTable: 'components/batch/batch-preview-change-parent-table.html'
+        },
+        CHANGE_PARENT: {
+            value: 'CHANGE_PARENT',
+            previewTable: 'components/batch/batch-preview-change-parent-table.html'
+        },
         OTHER: {
             value: 'OTHER',
             previewTable: 'components/batch/batch-preview-other-table.html'

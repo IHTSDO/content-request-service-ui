@@ -39,6 +39,7 @@
                 "createRequest": "Create New Request",
                 "importBatch": "New Batch Import",
                 "acceptedRequest": "Accepted Requests",
+                "myAssignedRequests": "My Assigned Requests",
                 "submittedRequest": "Submitted Requests",
                 "submitted": "Submitted",
                 "ACCEPTED": "Accepted",
@@ -64,7 +65,9 @@
                 "underAuthoring": "Under Authoring",
                 "appealRejected": "Appeal Rejected",
                 "appeal": "Appeal",
-                "clarificationNeeded": "Clarification Needed"
+                "clarificationNeeded": "Clarification Needed",
+		"in_inception_elaboration": "In Inception",
+		"my_assigned": "My Assigned"
             }
         },
         "request": {
@@ -73,7 +76,8 @@
                     "requests": "Requests",
                     "myRequests": "My Requests",
                     "acceptedRequests": "Accepted Requests",
-                    "submittedRequests": "Submitted Requests"
+                    "submittedRequests": "Submitted Requests",
+                    "myAssignedRequests": "My Assigned Requests"
                 },
                 "tip": {
                     "count": "Number of requests",
@@ -139,7 +143,7 @@
                     "reference": "Reference",
                     "description": "Description",
                     "descriptionId": "Description ID",
-                    "currentDescription": "Current Description",
+                    "currentDescription": "Active Description",
                     "proposedDescription": "Proposed New Description",
                     "relationshipGroup": "Relationship Group",
                     "relationshipId": "Relationship ID",
@@ -169,7 +173,11 @@
                     "localTerm": "Local Term",
                     "proposedUse": "Proposed Use",
                     "semanticTag": "Semantic Tag",
-                    "summary": "Summary"
+                    "summary": "Summary",
+                    "umlsCui": "UMLS CUI",
+                    "sourceTerminology": "Terminology",
+                    "destinationTerminology": "Destination Terminology",
+                    "duplicateConcept": "Duplicated Concept"
                 },
                 "tip": {
                     "editConceptHint": "Edit a concept from Saved List or drag and drop concept here"
@@ -195,7 +203,8 @@
                         "pendingForClarification": "Pending Clarification",
                         "acceptAndAssign": "Accept and Assign To Author",
                         "assign": "Assign Request",
-                        "assignToStaff": "Accept and Assign To Staff"
+                        "assignToStaff": "Accept and Assign To Staff",
+                        "moveToInInceptionElaboration": "Move to In Inception/Elaboration"
                     },
                     "label": {
                         "batchId": "Batch ID",
@@ -418,7 +427,7 @@
                 },
                 "requestList": {
                     "tableHeader": {
-                        "sourceTerminology": "Source Terminology",
+                        "sourceTerminology": "Terminology",
                         "sourceTerminologyVersion": "Source Terminology Version",
                         "requestorInternalId": "Local Code",
                         "reasonForChange": "Justification",
@@ -430,16 +439,16 @@
                         "localRequestId": "Request Id",
                         "parentTerminology1": "Terminology (1)",
                         "parentTerminology2": "Terminology (2)",
-                        "proposedParentId1": "Parent Id (1)",
-                        "proposedParentId2": "Parent Id (2)",
-                        "FSN": "FSN",
+                        "proposedParentId1": "Parent Concept Id(1)",
+                        "proposedParentId2": "Parent Concept Id(2)",
+                        "FSN": "Fully Specified Name",
                         "semanticTag": "Semantic Tag",
                         "synonym": "Synonym",
                         "definition": "Definition",
                         "conceptId": "Concept ID",
-                        "sourceConceptId": "Source Concept ID",
+                        "sourceConceptId": "Concept ID",
                         "conceptFSN": "Concept FSN",
-                        "description": "Description",
+                        "description": "Term",
                         "descriptionIsPT": "Description is PT",
                         "relationshipType": "Relationship Type",
                         "destinationTerminology": "Destination Terminology",
@@ -452,23 +461,32 @@
                         "historyAttribute": "Concept History Attribute",
                         "historyAttributeValue": "Concept History Attribute Value",
                         "descriptionId": "Description ID",
-                        "currentDescription": "Current Description",
-                        "newDescription": "Proposed New Description",
-                        "newCaseSignature": "Proposed New Case Signature",
+                        "currentDescription": "Active Description",
+                        "newDescription": "Term",
+                        "newCaseSignature": "Case Significance",
                         "newDescriptionStatus": "Proposed New Description Status",
                         "relationshipId": "Relationship ID",
-                        "newRefinability": "Proposed New Refinability",
+                        "newRefinability": "Refinability",
                         "newRelationshipStatus": "Proposed New Relationship Status",
                         "validationResult": "Validation Result",
                         "originator": "Created By",
                         "createdDate": "Created On",
-                        "requestDescription": "Description of Request",
+                        "requestDescription": "Description",
                         "proposedDestinationConcept": "Proposed Destination Concept ID",
                         "proposedRelationshipType": "Proposed Relationship Type",
-                        "proposedCharacteristicType": "Proposed Characteristic Type",
+                        "proposedCharacteristicType": "Characteristic Type",
                         "summary": "Summary",
                         "requestorInternalTerm": "Local Term",
-                        "proposedUse": "Proposed Use"
+                        "proposedUse": "Proposed Use",
+                        "preferedTerm": "Preferred Term",
+                        "umlsCui": "UMLS CUI",
+                        "proposedCaseSignificance": "Case Significance",
+                        "parentConceptId": "Parent Concept Id",
+                        "newParentTerminology": "New Parent Terminology",
+                        "newParentConceptId": "New Parent Concept Id",
+                        "changeConceptToStatus": "Change Concept To Status",
+                        "duplicateConceptId": "Duplicate Concept Id",
+                        "changeDescriptionStatusTo": "Change Description Status To"
                     }
                 }
             }

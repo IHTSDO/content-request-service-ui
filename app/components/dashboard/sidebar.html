@@ -8,6 +8,12 @@
             </button>
         </a></li>
 
+        <li ng-if="dashboard.permissionChecked && dashboard.isAdmin"><a class="dashboard-links" ng-href="#/my-assigned-requests">
+            <button type="button" class="btn grey darken-3 dashboard-links">
+                <i class="md md-format-list-numbered"></i> {{'crs.dashboard.sidebar.myAssignedRequests' | translate}}
+            </button>
+        </a></li>
+
         <li><a class="dashboard-links" ng-href="#/submitted-requests">
             <button type="button" class="btn grey darken-3 dashboard-links">
                 <i class="md md-format-list-numbered"></i> {{'crs.dashboard.sidebar.submittedRequest' | translate}}
@@ -53,12 +59,17 @@
                 </span>
             </div>
             :   &nbsp;
-            <div class="numberSb">
+            <div class="numberSb" style="font-size: 11px;">
                 <a class="pointer" ng-click="dashboard.filterStatus(number.status)">
                     {{number.count}}
                 </a>
-                <div style="display: inline-flex;" ng-show="number.status !== 'ALL_REQUEST' && number.status !== 'ALL' && number.status !== 'Assigned' && number.status !== 'Unassigned'">
+                <div style="display: inline-flex;" ng-show="number.status !== 'ALL_REQUEST' && number.status !== 'ALL' && number.status !== 'Assigned' && number.status !== 'Unassigned' && number.status !='My_Assigned'">
                     (
+                    <a class="pointer" ng-click="dashboard.filterMyRequest(number.status)">
+                        {{number.countMyReq}}
+                    </a>
+                    )
+					(
                     <a class="pointer" ng-click="dashboard.filterAssignedRequests(number.status)">
                         {{number.countAssignedReq}}
                     </a>
@@ -75,9 +86,14 @@
                 </span>
             </div>
             :   &nbsp;
-            <div class="numberSb">
+            <div class="numberSb" ng-show="number.status !== 'SUBMITTED' && number.status !== 'Assigned' && number.status !== 'Unassigned'"">
                 <a class="pointer" ng-click="dashboard.filterMyRequest(number.status)">
                     {{number.countMyReq}}
+                </a>
+            </div>
+			<div class="numberSb" ng-show="number.status == 'SUBMITTED' || number.status == 'Assigned' || number.status == 'Unassigned'"">
+                <a class="pointer" ng-click="dashboard.filterMyRequest(number.status)">
+                    {{number.count}}
                 </a>
             </div>
         </div>

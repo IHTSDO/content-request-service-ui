@@ -185,8 +185,40 @@ angular
 
                 //load staffs
                 loadStaff();
-            };
 
+                vm.requestTableParams = requestTableParams;
+                var acceptedRequests;
+                if(!isDateRangeFilteredFirstTime ){
+                    //get filter values
+                    acceptedRequests = requestService.getAcceptedFilterValues();
+                    if(acceptedRequests !== undefined){
+                        changeAcceptedFilter('search', acceptedRequests.search);
+                        changeAcceptedFilter('requestType', acceptedRequests.requestType);
+                        changeAcceptedFilter('batchRequest', acceptedRequests.batchRequest);
+                        changeAcceptedFilter('fsn', acceptedRequests.concept);
+                        changeAcceptedFilter('jiraTicketId', acceptedRequests.jiraTicketId);
+                        changeAcceptedFilter('topic', acceptedRequests.topic);
+                        changeAcceptedFilter('manager', acceptedRequests.manager);
+                        changeAcceptedFilter('status', acceptedRequests.status);
+                        changeAcceptedFilter('author', acceptedRequests.ogirinatorId);
+                        changeAcceptedFilter('requestId', acceptedRequests.requestId);
+                        changeAcceptedFilter('project', acceptedRequests.assignedProject);
+                        changeAcceptedFilter('assignee', acceptedRequests.assignee);
+                        changeAcceptedFilter('requestDate', {
+                            startDate: acceptedRequests.requestDateFrom,
+                            endDate: acceptedRequests.requestDateTo
+                        });
+
+                        if(acceptedRequests.requestDateFrom !== 0 && acceptedRequests.requestDateTo !== 0){
+                            vm.daterange = {
+                                startDate: new Date(acceptedRequests.requestDateFrom),
+                                endDate: new Date(acceptedRequests.requestDateTo)
+                            };
+                        }
+                    }
+                }
+            };
+                        
             var loadProjects = function() {
                 vm.loadingProjects = true;
                 scaService.getProjects().then(function(response) {
@@ -382,10 +414,10 @@ angular
 
             var isDateRangeFilteredFirstTime = false;
 
-            var buildRequestList = function(typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, manager, status, author,
+            var buildRequestFilterValues = function(typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, manager, status, author,
                 project, assignee, requestId, requestType, showUnassignedRequests){
                 var requestList = {};
-                requestList.batchRequest = batchRequest? batchRequest: 0;
+                requestList.batchRequest = batchRequest;
                 requestList.concept = fsn;
                 requestList.jiraTicketId = jiraTicketId;
                 requestList.offset = page;
@@ -401,11 +433,18 @@ angular
                 requestList.ogirinatorId = author;
                 requestList.assignedProject = project;
                 requestList.assignee = assignee;
-                requestList.requestId = requestId? requestId: 0;
+                requestList.requestId = requestId;
                 requestList.requestType = requestType;
                 requestList.showUnassignedOnly = showUnassignedRequests;
+                requestList.search = search;
                 return requestList;
             };
+
+            function changeAcceptedFilter(field, value){
+                var filter = {};
+                filter[field] = value;
+                angular.extend(requestTableParams.filter(), filter);
+            }
 
             var requestTableParams = new NgTableParams({
                 page: 1,
@@ -413,12 +452,8 @@ angular
                 sorting: { 'requestHeader.requestDate': 'desc', batchRequest: 'asc', id: 'asc' },
                 filter: {
                     requestDate: {
-                        startDate: {
-                            _d: null
-                        },
-                        endDate: {
-                            _d: null
-                        }
+                        startDate: null,
+                        endDate: null
                     }
                 }
                 
@@ -428,6 +463,8 @@ angular
                     var sortingObj = params.sorting();
                     var sortFields = [],
                         sortDirs = [];
+                    var acceptedRequests;
+                    var filterValues;
 
                     if (sortingObj) {
                         angular.forEach(sortingObj, function(dir, field) {
@@ -435,13 +472,8 @@ angular
                             sortDirs.push(dir);
                         });
                     }
-                    var acceptedRequests;
-                    vm.onDateRangeChange = function(){
-                        if(isDateRangeFilteredFirstTime){
-                            params.filter().requestDate = vm.daterange;
-                        }
-                    };
-                    acceptedRequests = buildRequestList(
+                    
+                    filterValues = buildRequestFilterValues(
                         'ACCEPTED',
                         params.page() - 1, 
                         params.count(), 
@@ -451,8 +483,8 @@ angular
                         params.filter().batchRequest, 
                         params.filter().fsn, 
                         params.filter().jiraTicketId,
-                        params.filter().requestDate.startDate._d,
-                        params.filter().requestDate.endDate._d,
+                        params.filter().requestDate.startDate,
+                        params.filter().requestDate.endDate,
                         params.filter().topic,
                         // params.filter().summary,
                         params.filter().manager,
@@ -464,6 +496,14 @@ angular
                         params.filter().requestType,
                         vm.showUnassignedRequests
                     );
+
+                    if(acceptedRequests === undefined){
+                            acceptedRequests = filterValues;
+                        }
+
+                    //set filter values
+                    requestService.setAcceptedFilterValues(filterValues);
+
                     return requestService.getRequests(acceptedRequests).then(function(requests) {
                         isDateRangeFilteredFirstTime = true;
                         params.total(requests.total);
@@ -478,6 +518,17 @@ angular
                     });
                 }
             });
+
+            vm.onDateRangeChange = function(action){
+                if(action){
+                    vm.daterange = {
+                        startDate: null,
+                        endDate: null
+                    };
+                }
+                requestTableParams.reload();
+                requestTableParams.filter().requestDate = vm.daterange;
+            };
 
             vm.tableParams = requestTableParams;
             vm.assignSelectedRequests = assignSelectedRequests;
@@ -495,6 +546,15 @@ angular
             vm.authors = [];
             vm.staffs = [];
             vm.showFilter = false;
+            vm.daterange = {
+                startDate: null,
+                endDate: null
+            };
+            vm.options = {
+              format: 'DD/MM/YY',
+              showDropdowns: true,
+              type: 'moment'
+            };
 
             initView();
         }

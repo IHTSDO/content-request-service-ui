@@ -112,8 +112,12 @@
                 <span class="md md-backspace grey darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.withdraw"></span>
             </button>
+            <button ng-if="requestVM.request.requestHeader.status === 'ACCEPTED'" class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.moveToInInceptionElaboration()">
+                <span class="md md-done blue darken-2 iconbase"></span>
+                <span class="button-link" translate="crs.request.details.info.button.moveToInInceptionElaboration"></span>
+            </button>
             <!-- Preview request -->
-            <button ng-if="requestVM.pageMode.value === 'preview'" ng-disabled="requestVM.request.requestHeader.status !== 'NEW' && requestVM.request.requestHeader.status !== 'APPEAL' && requestVM.request.requestHeader.status !== 'CLARIFICATION_NEEDED'" class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.acceptRequest()">
+            <button ng-if="requestVM.pageMode.value === 'preview'" ng-disabled="requestVM.request.requestHeader.status !== 'NEW' && requestVM.request.requestHeader.status !== 'APPEAL' && requestVM.request.requestHeader.status !== 'CLARIFICATION_NEEDED' && requestVM.request.requestHeader.status !== 'IN_INCEPTION_ELABORATION'" class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.acceptRequest()">
                 <span class="md md-done blue darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.accept"></span>
             </button>

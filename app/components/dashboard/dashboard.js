@@ -13,6 +13,9 @@ angular
             .when('/requests', {
                 redirectTo: '/dashboard/requests'
             })
+            .when('/my-assigned-requests', {
+                redirectTo: '/dashboard/my-assigned-requests'
+            })
             .when('/batches', {
                 redirectTo: '/dashboard/batches'
             })
@@ -46,6 +49,12 @@ angular
                             {url: '#/batches', label: 'crs.batch.list.title'}
                         ];
                         vm.listView = 'components/batch/batch-list.html';
+                        break;
+                    case 'my-assigned-requests':
+                        $rootScope.pageTitles = [
+                            {url: '#/my-assigned-requests', label: 'crs.request.list.title.myAssignedRequests'}
+                        ];
+                        vm.listView = 'components/request/my-assigned-requests.html';
                         break;
                     case 'accepted-requests':
                         $rootScope.pageTitles = [
@@ -152,26 +161,51 @@ angular
             };
 
             var filterStatus = function(status){
-                if(status === 'ALL_REQUEST' || status === 'Assigned' || status === 'ALL' || status === 'Unassigned'){
+                if(status === 'ALL'){
                     return;
                 }
-                $location.path('dashboard/submitted-requests').search({status:status});
-
+				var manager = null;
+				switch(status) {
+					case 'ALL_REQUEST':
+						status = null;
+						break;
+					case 'Assigned':
+						status = null;
+						manager = "{assigned}";
+						break;
+					// case 'My_Assigned':
+					// 	status = null;
+					// 	manager = currentUser;
+					// 	break;
+					case 'Unassigned':
+						status = null;
+						manager = "{unassigned}";
+						break;
+					
+					default:
+						break;
+				}
+				if(status !== 'My_Assigned'){
+                    $location.path('dashboard/submitted-requests').search({status:status, manager:manager, cache:false});
+                }else{
+                    $location.path('dashboard/my-assigned-requests').search({cache: false});
+                }
             };
             var filterAssignedRequests = function(status){
                 if(status === 'ALL_REQUEST' || status === 'Assigned' || status === 'ALL' || status === 'Unassigned'){
                     return;
                 }
                 accountService.getAccountInfo().then(function (accountDetails) {
-                    $location.path('dashboard/submitted-requests').search({status:status, assignee: accountDetails.login});                   
+                    $location.path('dashboard/submitted-requests').search({status:status, manager: accountDetails.login, cache: false});                   
                 });
             };
+			
 
             var filterMyRequest = function(status){
                 if(status === 'SUBMITTED'){
                     return;
                 }
-                $location.path('dashboard/requests').search({status:status});
+                $location.path('dashboard/requests').search({status:status, cache: false});
             };
 
             vm.openCreateRequestModal = openCreateRequestModal;

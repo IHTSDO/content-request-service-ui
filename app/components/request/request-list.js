@@ -67,10 +67,6 @@ angular
 
             vm.requestStatus = [
                 {
-                    id: null,
-                    title: "Select None"
-                },
-                {
                     id: "DRAFT",
                     title: "Draft"
                 },
@@ -175,6 +171,10 @@ angular
                 vm.selectedRequests = {checked: false, items: {}};
                 vm.selectedSubmittedRequests = {checked: false, items: {}};
 
+                accountService.getAccountInfo().then(function (accountDetails) {
+                    vm.assignee = accountDetails.login;                   
+                });
+
                 // check admin role
                 accountService.checkUserPermission().then(function (rs) {
                     vm.isAdmin = (rs.isAdmin === true);
@@ -185,6 +185,91 @@ angular
                     }
 
                     vm.submittedTableParams = submittedTableParams;
+                    var subbmitedRequests;
+                    if(!isDateRangeFilteredFirstTime ){
+                        //get filter values
+                        subbmitedRequests = requestService.getSubmittedFilterValues();
+                        if(subbmitedRequests !== undefined && $routeParams.cache !== false){
+                            changeSubmittedFilter('search', subbmitedRequests.search);
+                            changeSubmittedFilter('requestType', subbmitedRequests.requestType);
+                            changeSubmittedFilter('batchRequest', subbmitedRequests.batchRequest);
+                            changeSubmittedFilter('fsn', subbmitedRequests.concept);
+                            changeSubmittedFilter('jiraTicketId', subbmitedRequests.jiraTicketId);
+                            changeSubmittedFilter('topic', subbmitedRequests.topic);
+                            changeSubmittedFilter('manager', subbmitedRequests.manager);
+                            changeSubmittedFilter('status', subbmitedRequests.status);
+                            changeSubmittedFilter('author', subbmitedRequests.ogirinatorId);
+                            changeSubmittedFilter('requestId', subbmitedRequests.requestId);
+                            changeSubmittedFilter('requestDate', {
+                                startDate: subbmitedRequests.requestDateFrom,
+                                endDate: subbmitedRequests.requestDateTo
+                            });
+                            if(subbmitedRequests.requestDateFrom !== 0 && subbmitedRequests.requestDateTo !== 0){
+                                vm.daterangeSQ = {
+                                    startDate: new Date(subbmitedRequests.requestDateFrom),
+                                    endDate: new Date(subbmitedRequests.requestDateTo)
+                                };
+                            }
+                        }
+                    }
+
+                    vm.requestTableParams = requestTableParams;
+                    var myRequests;
+                    if(!isDateRangeFilteredFirstTime ){
+                        //get filter values
+                        myRequests = requestService.getFilterValues();
+                        if(myRequests !== undefined && $routeParams.cache !== false){
+                            changeMyRequestFilter('search', myRequests.search);
+                            changeMyRequestFilter('requestType', myRequests.requestType);
+                            changeMyRequestFilter('batchRequest', myRequests.batchRequest);
+                            changeMyRequestFilter('fsn', myRequests.concept);
+                            changeMyRequestFilter('jiraTicketId', myRequests.jiraTicketId);
+                            changeMyRequestFilter('topic', myRequests.topic);
+                            changeMyRequestFilter('manager', myRequests.manager);
+                            changeMyRequestFilter('status', myRequests.status);
+                            changeMyRequestFilter('author', myRequests.ogirinatorId);
+                            changeMyRequestFilter('requestId', myRequests.requestId);
+                            changeMyRequestFilter('requestDate', {
+                                startDate: myRequests.requestDateFrom,
+                                endDate: myRequests.requestDateTo
+                            });
+                            if(myRequests.requestDateFrom !== 0 && myRequests.requestDateTo !== 0){
+                                vm.daterange = {
+                                    startDate: new Date(myRequests.requestDateFrom),
+                                    endDate: new Date(myRequests.requestDateTo)
+                                };
+                            }
+                        }
+                    }
+
+                    vm.assignedRequestTableParams = assignedRequestTableParams;
+                    var myAssignedRequests;
+                    if(!isDateRangeFilteredFirstTime ){
+                        //get filter values
+                        myAssignedRequests = requestService.getAssignedFilterValues();
+                        if(myAssignedRequests !== undefined){
+                            changeAssignedFilter('search', myAssignedRequests.search);
+                            changeAssignedFilter('requestType', myAssignedRequests.requestType);
+                            changeAssignedFilter('batchRequest', myAssignedRequests.batchRequest);
+                            changeAssignedFilter('fsn', myAssignedRequests.concept);
+                            changeAssignedFilter('jiraTicketId', myAssignedRequests.jiraTicketId);
+                            changeAssignedFilter('topic', myAssignedRequests.topic);
+                            changeAssignedFilter('manager', myAssignedRequests.manager);
+                            changeAssignedFilter('status', myAssignedRequests.status);
+                            changeAssignedFilter('author', myAssignedRequests.ogirinatorId);
+                            changeAssignedFilter('requestId', myAssignedRequests.requestId);
+                            changeAssignedFilter('requestDate', {
+                                startDate: myAssignedRequests.requestDateFrom,
+                                endDate: myAssignedRequests.requestDateTo
+                            });
+                            if(myAssignedRequests.requestDateFrom !== 0 && myAssignedRequests.requestDateTo !== 0){
+                                vm.daterangeMAR = {
+                                    startDate: new Date(myAssignedRequests.requestDateFrom),
+                                    endDate: new Date(myAssignedRequests.requestDateTo)
+                                };
+                            }
+                        }
+                    }
                 });
 
                 // load authors
@@ -311,7 +396,7 @@ angular
                 requestList.status = status;
                 requestList.type = typeList;
                 requestList.ogirinatorId = author;
-                requestList.requestId = requestId? requestId: 0;
+                requestList.requestId = requestId;
                 requestList.requestType = requestType;
                 requestList.search = search;
                 return requestList;
@@ -324,20 +409,16 @@ angular
             };
             var isDateRangeFilteredFirstTime = false;
 
-
             var requestTableParams = new NgTableParams({
                     page: 1,
                     count: 10,
                     sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'asc', id: 'asc'},
                     filter: {
                         status: $routeParams.status,
+						manager: $routeParams.manager,
                         requestDate: {
-                            startDate: {
-                                _d: null
-                            },
-                            endDate: {
-                                _d: null
-                            }
+                            startDate: null,
+                            endDate: null
                         }
                     }
                 },
@@ -346,6 +427,8 @@ angular
                     getData: function (params) {
                         var sortingObj = params.sorting();
                         var sortFields = [], sortDirs = [];
+                        var myRequests;
+                        var filterValues;
 
                         if (sortingObj) {
                             angular.forEach(sortingObj, function (dir, field) {
@@ -354,13 +437,8 @@ angular
                             });
                         }
                         notificationService.sendMessage('crs.request.message.listLoading');
-                        var myRequests;
-                        vm.onDateRangeChange = function(){
-                            if(isDateRangeFilteredFirstTime){
-                                params.filter().requestDate = vm.daterange;
-                            }
-                        };
-                        myRequests = buildRequestList(
+                        
+                        filterValues = buildRequestList(
                             'REQUEST',
                             params.page() - 1, 
                             params.count(), 
@@ -370,8 +448,8 @@ angular
                             params.filter().batchRequest, 
                             params.filter().fsn, 
                             params.filter().jiraTicketId,
-                            params.filter().requestDate.startDate._d? params.filter().requestDate.startDate._d: null ,
-                            params.filter().requestDate.endDate._d? params.filter().requestDate.endDate._d: null,
+                            params.filter().requestDate.startDate,
+                            params.filter().requestDate.endDate,
                             params.filter().topic,
                             // params.filter().summary,
                             params.filter().manager,
@@ -380,7 +458,89 @@ angular
                             params.filter().requestId,
                             params.filter().requestType
                         );
+
+                        if(myRequests === undefined){
+                            myRequests = filterValues;
+                        }
+
+                        //set filter values
+                        requestService.setFilterValues(filterValues);
+
                         return requestService.getRequests(myRequests).then(function (requests) {
+                            isDateRangeFilteredFirstTime = true;
+                            notificationService.sendMessage('crs.request.message.listLoaded', 5000);
+                            params.total(requests.total);
+                            vm.requests = requests;
+                            if (requests.items && requests.items.length > 0) {
+                                return requests.items;
+                            } else {
+                                return [];
+                            }
+                        }, function () {
+                            return [];
+                        });
+                    }
+                }
+            );
+
+            var assignedRequestTableParams = new NgTableParams({
+                    page: 1,
+                    count: 10,
+                    sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'asc', id: 'asc'},
+                    filter: {
+                        status: $routeParams.status,
+                        manager: $routeParams.manager,
+                        requestDate: {
+                            startDate: null,
+                            endDate: null
+                        }
+                    }
+                },
+                {
+                    filterDelay: 700,
+                    getData: function (params) {
+                        var sortingObj = params.sorting();
+                        var sortFields = [], sortDirs = [];
+                        var myAssignedRequests;
+                        var filterValues;
+
+                        if (sortingObj) {
+                            angular.forEach(sortingObj, function (dir, field) {
+                                sortFields.push(field);
+                                sortDirs.push(dir);
+                            });
+                        }
+                        notificationService.sendMessage('crs.request.message.listLoading');
+                        
+                        filterValues = buildRequestList(
+                            'SUBMITTED',
+                            params.page() - 1, 
+                            params.count(), 
+                            params.filter().search, 
+                            sortFields, 
+                            sortDirs, 
+                            params.filter().batchRequest, 
+                            params.filter().fsn, 
+                            params.filter().jiraTicketId,
+                            params.filter().requestDate.startDate,
+                            params.filter().requestDate.endDate,
+                            params.filter().topic,
+                            // params.filter().summary,
+                            vm.assignee,
+                            params.filter().status,
+                            params.filter().author,
+                            params.filter().requestId,
+                            params.filter().requestType
+                        );
+
+                        if(myAssignedRequests === undefined){
+                            myAssignedRequests = filterValues;
+                        }
+
+                        //set filter values
+                        requestService.setAssignedFilterValues(filterValues);
+                        console.log(myAssignedRequests);
+                        return requestService.getRequests(myAssignedRequests).then(function (requests) {
                             isDateRangeFilteredFirstTime = true;
                             notificationService.sendMessage('crs.request.message.listLoaded', 5000);
                             params.total(requests.total);
@@ -403,14 +563,10 @@ angular
                     sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'asc', id: 'asc'},
                     filter: {
                         status: $routeParams.status,
-                        manager: $routeParams.assignee,
+                        manager: $routeParams.manager,
                         requestDate: {
-                            startDate: {
-                                _d: null
-                            },
-                            endDate: {
-                                _d: null
-                            }
+                            startDate: null,
+                            endDate: null
                         }
                     }
                 },
@@ -420,6 +576,8 @@ angular
                     getData: function (params) {
                         var sortingObj = params.sorting();
                         var sortFields = [], sortDirs = [];
+                        var filterValues;
+                        var subbmitedRequests;
 
                         if (sortingObj) {
                             angular.forEach(sortingObj, function (dir, field) {
@@ -427,14 +585,8 @@ angular
                                 sortDirs.push(dir);
                             });
                         }
-                        
-                        var subbmitedRequests;
-                        vm.onDateRangeChangeSQ = function(){
-                            if(isDateRangeFilteredFirstTime){
-                                params.filter().requestDate = vm.daterange;
-                            }
-                        };
-                        subbmitedRequests = buildRequestList(
+
+                        filterValues = buildRequestList(
                             'SUBMITTED',
                             params.page() - 1, 
                             params.count(), 
@@ -444,8 +596,8 @@ angular
                             params.filter().batchRequest, 
                             params.filter().fsn, 
                             params.filter().jiraTicketId,
-                            params.filter().requestDate.startDate._d,
-                            params.filter().requestDate.endDate._d,
+                            params.filter().requestDate.startDate,
+                            params.filter().requestDate.endDate,
                             params.filter().topic,
                             // params.filter().summary,
                             params.filter().manager,
@@ -454,6 +606,12 @@ angular
                             params.filter().requestId,
                             params.filter().requestType
                         );
+                        if(subbmitedRequests === undefined){
+                            subbmitedRequests = filterValues;
+                        }
+                        //set filter values
+                        requestService.setSubmittedFilterValues(filterValues);
+                        
                         return requestService.getRequests(subbmitedRequests).then(function (requests) {
                             isDateRangeFilteredFirstTime = true;
                             params.total(requests.total);
@@ -470,6 +628,57 @@ angular
                 }
             );
 
+            function changeAssignedFilter(field, value){
+                var filter = {};
+                filter[field] = value;
+                angular.extend(assignedRequestTableParams.filter(), filter);
+            }
+
+            function changeSubmittedFilter(field, value){
+                var filter = {};
+                filter[field] = value;
+                angular.extend(submittedTableParams.filter(), filter);
+            }
+
+            function changeMyRequestFilter(field, value){
+                var filter = {};
+                filter[field] = value;
+                angular.extend(requestTableParams.filter(), filter);
+            }
+
+            var onDateRangeChangeMAR = function(action){
+                if(action){
+                    vm.daterangeMAR = {
+                        startDate: null,
+                        endDate: null
+                    };
+                }
+                assignedRequestTableParams.reload();
+                assignedRequestTableParams.filter().requestDate = vm.daterangeMAR;
+            };
+
+            var onDateRangeChangeSQ = function(action){
+                if(action){
+                    vm.daterangeSQ = {
+                        startDate: null,
+                        endDate: null
+                    };
+                }
+                submittedTableParams.reload();
+                submittedTableParams.filter().requestDate = vm.daterangeSQ;
+            };
+
+            var onDateRangeChange = function(action){
+                if(action){
+                    vm.daterange = {
+                        startDate: null,
+                        endDate: null
+                    };
+                }
+                requestTableParams.reload();
+                requestTableParams.filter().requestDate = vm.daterange;
+            };
+
             vm.showFilter = false;
             vm.isAdmin = false;
             vm.isViewer = false;
@@ -477,6 +686,26 @@ angular
             vm.removeSelectedRequests = removeSelectedRequests;
             vm.getAuthorName = getAuthorName;
             vm.getStaffName = getStaffName;
+            vm.onDateRangeChange = onDateRangeChange;
+            vm.onDateRangeChangeSQ = onDateRangeChangeSQ;
+            vm.onDateRangeChangeMAR = onDateRangeChangeMAR;
+            vm.daterange = {
+                startDate: null,
+                endDate: null
+            };
+            vm.daterangeSQ = {
+                startDate: null,
+                endDate: null
+            };
+            vm.daterangeMAR = {
+                startDate: null,
+                endDate: null
+            };
+            vm.options = {
+              format: 'DD/MM/YY',
+              showDropdowns: true,
+              type: 'moment'
+            };
             
             initView();
         }

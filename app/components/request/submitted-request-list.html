@@ -7,17 +7,17 @@
                     <h3 class="table-title p-20" translate="crs.request.list.title.submittedRequests"></h3>
                 </div>
                 <div class="col-md-6">
-                    <div class="table-search">
+                    <!-- <div class="table-search">
                         <input type="text" ng-model="vm.submittedTableParams.filter()['search']" class="form-control"
                                placeholder="{{'crs.request.list.searchPlaceHolder.submittedRequests' | translate}}" autofocus/>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="col-md-2">
                     <div class="pull-right p-t-20">
-                        <button ng-click="vm.showFilter = !vm.showFilter" class="btn btn-round btn-default" title="{{'crs.request.list.tip.filter' | translate}}">
+                        <!-- <button ng-click="vm.showFilter = !vm.showFilter" class="btn btn-round btn-default" title="{{'crs.request.list.tip.filter' | translate}}">
                             <span class="md md-search"></span>
                             <div class="ripple-wrapper"></div>
-                        </button>
+                        </button> -->
                         <button type="button" class="btn btn-round btn-info ng-scope " title="{{'crs.request.list.tip.count' | translate}}" >
                             {{vm.submittedTableParams.total()}} <div class="ripple-wrapper"></div>
                         </button>
@@ -30,7 +30,7 @@
             </div>
             <div class="table-responsive white" style="min-height: 416px;">
                 <table ng-table="vm.submittedTableParams" template-pagination="layout/template/review-table-pager.html"
-                       class="table table-full table-full-small table-requests" show-filter="vm.showFilter">
+                       class="table table-full table-full-small table-requests" show-filter="">
                     <tr ng-repeat="request in $data" ng-click="dashboard.previewRequest(request.id)" class="clickable-row">
                         <!--<td class="col-checkbox" header="'ng-table/headers/checkbox.html'" ng-click="$event.stopPropagation()">
                             <input type="checkbox" class="small-checkbox" ng-model="vm.selectedSubmittedRequests.items[request.id]" >
@@ -85,28 +85,33 @@
 </script>
 <script type="text/ng-template" id="ng-table/datetime-picker-startdate.html">
     <div class="input-group select-filter">
-          <input type="daterange" ng-change="vm.onDateRangeChangeSQ()" ng-model="vm.daterange" style="background: transparent; border: none; box-shadow: inset 0 -1px 0 #ddd; font-size: 13px;" format="DD/MM" placeholder="Dates" readonly="" />
+          <span ng-if="(vm.daterangeSQ.startDate !== undefined && vm.daterangeSQ.endDate !== undefined) && (vm.daterangeSQ.startDate !== '' && vm.daterangeSQ.endDate !== '') && (vm.daterangeSQ.startDate !== null && vm.daterangeSQ.endDate !== null)" ng-click="vm.onDateRangeChangeSQ(true)" class="md md-remove-circle" style="color: red; float: right; margin-bottom: -16px; cursor: pointer"></span>
+        <input type="text" class="" ng-change="vm.onDateRangeChangeSQ()" placeholder="Dates..." readonly="" options="vm.options" name="some_name" ng-model="vm.daterangeSQ" style="background: transparent; border: none; box-shadow: inset 0 -1px 0 #ddd; font-size: 13px;" date-range-picker /> 
     </div>
 </script>
 <script type="text/ng-template" id="ng-table/manager-select.html">
+    <span ng-if="params.filter().manager !== undefined && params.filter().manager !== '' && params.filter().manager !== null" ng-click="params.filter().manager = null" class="md md-remove-circle" style="color: red; float: right; margin-bottom: -11px; font-size: 14px; cursor: pointer"></span>
     <form-control type="select"
                   model="params.filter()[name]"
                   options="suggestion.id as suggestion.title for suggestion in vm.staffs"
                   ></form-control>
 </script>
 <script type="text/ng-template" id="ng-table/author-select.html">
+    <span ng-if="params.filter().author !== undefined && params.filter().author !== '' && params.filter().author !== null" ng-click="params.filter().author = ''" class="md md-remove-circle" style="color: red; float: right; margin-bottom: -11px; font-size: 14px; cursor: pointer"></span>
     <form-control type="select"
                   model="params.filter()[name]"
                   options="suggestion.id as suggestion.title for suggestion in vm.authors"
                   ></form-control>
 </script>
 <script type="text/ng-template" id="ng-table/status-select.html">
+    <span ng-if="params.filter().status !== undefined && params.filter().status !== '' && params.filter().status !== null" ng-click="params.filter().status = ''" class="md md-remove-circle" style="color: red; float: right; margin-bottom: -11px; font-size: 14px; cursor: pointer"></span>
     <form-control type="select"
                   model="params.filter()[name]"
                   options="suggestion.id as suggestion.title for suggestion in vm.requestStatus"
                   ></form-control>
 </script>
 <script type="text/ng-template" id="ng-table/request-type-select.html">
+    <span ng-if="params.filter().requestType !== undefined && params.filter().requestType !== '' && params.filter().requestType !== null" ng-click="params.filter().requestType = ''" class="md md-remove-circle" style="color: red; float: right; margin-bottom: -11px; font-size: 14px; cursor: pointer"></span>
     <form-control type="select"
                   model="params.filter()[name]"
                   options="suggestion.id as suggestion.title for suggestion in vm.requestTypes"

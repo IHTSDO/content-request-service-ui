@@ -5,7 +5,8 @@ angular
     .controller('JiraCommentCtrl', [
         '$scope',
         'jiraCommentService',
-        function ($scope, jiraCommentService) {
+        '$timeout',
+        function ($scope, jiraCommentService, $timeout) {
             var vm = this;
             var isInternal = false;
 
@@ -20,6 +21,21 @@ angular
                     vm.comments = response;
                 });
             };
+
+            $scope.$on('ngRepeatFinished', function () {
+                $timeout(function () {
+                    $('.comment-body').each(function(){
+                        // Get the content
+                        var str = $(this).html();
+                        // Set the regex string
+                        var regex = /(https?:\/\/[^\s]+)/ig;
+                        // Replace plain text links by hyperlinks
+                        var replaced_text = str.replace(regex, "<a href='$1' target='_blank'>$1</a>");
+                        // Echo link
+                        $(this).html(replaced_text);
+                    });
+                }, 500);
+            });
 
             var postComment = function () {
                 if(vm.internalComment){
@@ -36,6 +52,8 @@ angular
                     });
                 }
             };
+
+
 
             vm.postComment = postComment;
             vm.comments = null;

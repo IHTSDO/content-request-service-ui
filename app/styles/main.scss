@@ -708,13 +708,13 @@ ul.batch-statistic.timeline {
 }
 
 .statistics-requests{
-  padding: 10px; 
+  padding: 0 0 0 10px; 
   list-style: none; 
   color: white; 
 }
-@media (max-width: 1500px) {
+@media (max-height: 667px) {
   .statistics-requests{
-    height: 265px;
+    height: 350px;
     width: 16%;
     position: fixed;
     overflow: auto;
@@ -726,5 +726,18 @@ ul.batch-statistic.timeline {
   button {
     font-size: 13px;
     border: 1px solid #ccc !important;
+  }
+}
+
+.comment-body {
+  a{
+    color: #5cbaff;
+  }
+}
+
+/*end*/
+@media screen and (max-width: 1366px){
+  .accepted-table{
+    margin-left: -2%;
   }
 }

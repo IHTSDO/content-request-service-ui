@@ -1015,6 +1015,7 @@ angular
                         item.requestorInternalTerm = changedTarget.requestorInternalTerm;
                         item.proposedUse = changedTarget.proposedUse;
                         item.semanticTag = changedTarget.value;
+                        item.umlsCui = changedTarget.umlsCui;
                         if (changedTarget.parentConcept) {
                             for (var i = 0; i < changedTarget.parentConcept.length; i++) {
                                 var obj = {};
@@ -1035,6 +1036,9 @@ angular
                         item.proposedStatus = definitionOfChanges.proposedStatus;
                         item.historyAttribute = definitionOfChanges.historyAttribute;
                         item.historyAttributeValue = definitionOfChanges.historyAttributeValue;
+                        item.sourceTerminology = definitionOfChanges.sourceTerminology;
+                        item.destinationTerminology = definitionOfChanges.destinationTerminology;
+                        item.duplicatedConceptId = vm.duplicateConcept.conceptId;
                         break;
 
                     case REQUEST_TYPE.NEW_DESCRIPTION.value:
@@ -1049,6 +1053,9 @@ angular
                         item.conceptFSN = concept.fsn;
                         item.proposedDescription = changedTarget.term;
                         item.descriptionIsPT = isDescriptionPT;
+                        item.proposedCaseSignificance = request.proposedCaseSignificance;
+                        item.sourceTerminology = request.sourceTerminology;
+                        item.destinationTerminology = request.destinationTerminology;
                         break;
 
                     case REQUEST_TYPE.CHANGE_DESCRIPTION.value:
@@ -1059,6 +1066,8 @@ angular
                         item.conceptDescription = changedTarget.term;
                         item.proposedDescription = definitionOfChanges.proposedDescription || changedTarget.term;
                         item.proposedCaseSignificance = definitionOfChanges.proposedCaseSignificance;
+                        item.sourceTerminology = request.sourceTerminology;
+                        item.destinationTerminology = request.destinationTerminology;
                         item.proposedDescriptionStatus = 'Retired';
                         break;
 
@@ -1071,6 +1080,8 @@ angular
                         item.proposedDescription = definitionOfChanges.proposedDescription || changedTarget.term;
                         item.proposedCaseSignificance = definitionOfChanges.proposedCaseSignificance;
                         item.proposedDescriptionStatus = definitionOfChanges.descriptionStatus;
+                        item.sourceTerminology = request.sourceTerminology;
+                        item.destinationTerminology = request.destinationTerminology;
                         break;
 
                     case REQUEST_TYPE.NEW_RELATIONSHIP.value:
@@ -1079,6 +1090,8 @@ angular
                         item.destConceptId = changedTarget.target.conceptId;
                         item.characteristicType = definitionOfChanges.characteristicType;
                         item.refinability = definitionOfChanges.refinability;
+                        item.sourceTerminology = request.sourceTerminology;
+                        item.destinationTerminology = request.destinationTerminology;
                         break;
 
                     case REQUEST_TYPE.RETIRE_RELATIONSHIP.value:
@@ -1088,6 +1101,8 @@ angular
                         item.refinability = definitionOfChanges.refinability;
                         item.relationshipStatus = definitionOfChanges.relationshipStatus;
                         item.relationshipCharacteristicType = changedTarget.characteristicType;
+                        item.sourceTerminology = request.sourceTerminology;
+                        item.destinationTerminology = request.destinationTerminology;
                         break;
 
                     case REQUEST_TYPE.CHANGE_RELATIONSHIP.value:
@@ -1101,6 +1116,8 @@ angular
                         item.characteristicType = definitionOfChanges.characteristicType;
                         item.relationshipGroup = definitionOfChanges.relationshipGroup;
                         item.relationshipCharacteristicType = changedTarget.characteristicType;
+                        item.sourceTerminology = request.sourceTerminology;
+                        item.destinationTerminology = request.destinationTerminology;
                         break;
                 }
 
@@ -1147,6 +1164,7 @@ angular
                         request.proposedUse = mainItem.proposedUse;
                         request.requestorInternalTerm = mainItem.requestorInternalTerm;
                         request.value = mainItem.semanticTag;
+                        request.umlsCui = mainItem.umlsCui;
                         break;
 
                     case REQUEST_TYPE.CHANGE_RETIRE_CONCEPT.value:
@@ -1156,6 +1174,20 @@ angular
                         request.proposedStatus = mainItem.proposedStatus;
                         request.historyAttribute = mainItem.historyAttribute;
                         request.historyAttributeValue = mainItem.historyAttributeValue;
+                        request.sourceTerminology = mainItem.sourceTerminology;
+                        request.destinationTerminology = mainItem.destinationTerminology;
+
+                        // load duplicate concept
+                        snowowlService.getFullConcept(null, null, mainItem.duplicatedConceptId).then(function(response) {
+                            vm.duplicateConcept = response;
+                        });
+
+                        if(!vm.duplicateConcept.conceptId || !vm.duplicateConcept.fsn){
+                            vm.duplicateConcept = {
+                                conceptId: mainItem.duplicatedConceptId,
+                                fsn: mainItem.duplicatedConceptId
+                            };
+                        }
                         break;
 
                     case REQUEST_TYPE.NEW_DESCRIPTION.value:
@@ -1163,6 +1195,9 @@ angular
 
                         request.proposedDescription = mainItem.proposedDescription;
                         request.descriptionIsPT = mainItem.descriptionIsPT;
+                        request.sourceTerminology = mainItem.sourceTerminology;
+                        request.destinationTerminology = mainItem.destinationTerminology;
+                        request.proposedCaseSignificance = mainItem.proposedCaseSignificance;
                         break;
 
                     case REQUEST_TYPE.CHANGE_DESCRIPTION.value:
@@ -1172,6 +1207,8 @@ angular
                         request.proposedDescription = mainItem.proposedDescription;
                         request.proposedCaseSignificance = mainItem.proposedCaseSignificance;
                         request.descriptionStatus = mainItem.proposedDescriptionStatus;
+                        request.sourceTerminology = mainItem.sourceTerminology;
+                        request.destinationTerminology = mainItem.destinationTerminology;
                         break;
 
                     case REQUEST_TYPE.RETIRE_DESCRIPTION.value:
@@ -1181,6 +1218,8 @@ angular
                         request.proposedDescription = mainItem.proposedDescription;
                         request.proposedCaseSignificance = mainItem.proposedCaseSignificance;
                         request.descriptionStatus = mainItem.proposedDescriptionStatus;
+                        request.sourceTerminology = mainItem.sourceTerminology;
+                        request.destinationTerminology = mainItem.destinationTerminology;
                         break;
 
                     case REQUEST_TYPE.NEW_RELATIONSHIP.value:
@@ -1188,6 +1227,8 @@ angular
 
                         request.characteristicType = mainItem.characteristicType;
                         request.refinability = mainItem.refinability;
+                        request.sourceTerminology = mainItem.sourceTerminology;
+                        request.destinationTerminology = mainItem.destinationTerminology;
 
                         // load destination concept
                         request.destinationConcept = {
@@ -1212,6 +1253,8 @@ angular
                         request.refinability = mainItem.refinability;
                         request.characteristicType = mainItem.characteristicType;
                         request.relationshipCharacteristicType = mainItem.relationshipCharacteristicType;
+                        request.sourceTerminology = mainItem.sourceTerminology;
+                        request.destinationTerminology = mainItem.destinationTerminology;
 
                         break;
 
@@ -1224,6 +1267,8 @@ angular
                         request.characteristicType = mainItem.characteristicType;
                         request.groupId = mainItem.relationshipGroup;
                         request.relationshipCharacteristicType = mainItem.relationshipCharacteristicType;
+                        request.sourceTerminology = mainItem.sourceTerminology;
+                        request.destinationTerminology = mainItem.destinationTerminology;
 
                         // load destination concept
                         request.destinationConcept = {
@@ -1298,7 +1343,7 @@ angular
                     angular.forEach(concept.descriptions, function(description) {
 
                         if (description.definitionOfChanges && description.definitionOfChanges.changed) {
-                            requestDetails.requestItems.push(buildRequestWorkItem(concept, description.definitionOfChanges, description));
+                            requestDetails.requestItems.push(buildRequestWorkItem(concept, description.definitionOfChanges, description, request));
                         }
                     });
 
@@ -1652,6 +1697,16 @@ angular
                     });
             };
 
+            var moveToInInceptionElaboration = function() {
+                changeRequestStatus(vm.request.id, REQUEST_STATUS.IN_INCEPTION_ELABORATION)
+                    .then(function() {
+                        notificationService.sendMessage('crs.request.message.requestAccepted', 5000);
+                        $location.path(prevPage).search({});
+                    }, function(e) {
+                        showErrorMessage(e.message);
+                    });
+            };
+
             var openAssignRequestModal = function() {
                 return $uibModal.open({
                     templateUrl: 'components/request/modal-assign-request.html',
@@ -1898,6 +1953,7 @@ angular
             vm.assignRequestToStaff = assignRequestToStaff;
             vm.rejectRequest = rejectRequest;
             vm.rejectAppeal = rejectAppeal;
+            vm.moveToInInceptionElaboration = moveToInInceptionElaboration;
             vm.requestClarification = requestClarification;
             vm.saveAndSubmitRequest = saveAndSubmitRequest;
             vm.startEditingConcept = startEditingConcept;
@@ -1917,6 +1973,38 @@ angular
                 searching: false,
                 valid: true
             };
+            vm.duplicateConcept = {
+                conceptId: null,
+                fsn: null
+            };
+            vm.sourceTerminologies = [
+                {
+                    sourceTerminology: "SNOMEDCT",
+                    terminologyName: "SNOMED CT International"
+                },
+                {
+                    sourceTerminology: "CURRENTBATCH",
+                    terminologyName: "New Concept Requests"
+                },
+                {
+                    sourceTerminology: "NEWCONCEPTREQUESTS",
+                    terminologyName: "Current Batch Requests"
+                }
+            ];
+            vm.destinationTerminologies = [
+                {
+                    destinationTerminology: "SNOMEDCT",
+                    terminologyName: "SNOMED CT International"
+                },
+                {
+                    destinationTerminology: "CURRENTBATCH",
+                    terminologyName: "New Concept Requests"
+                },
+                {
+                    destinationTerminology: "NEWCONCEPTREQUESTS",
+                    terminologyName: "Current Batch Requests"
+                }
+            ];
             vm.loadingProjects = true;
             vm.loadingAuthors = true;
             vm.projects = [];
