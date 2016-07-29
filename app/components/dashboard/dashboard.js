@@ -13,11 +13,20 @@ angular
             .when('/requests', {
                 redirectTo: '/dashboard/requests'
             })
+            .when('/my-assigned-requests', {
+                redirectTo: '/dashboard/my-assigned-requests'
+            })
             .when('/batches', {
                 redirectTo: '/dashboard/batches'
             })
             .when('/accepted-requests', {
                 redirectTo: '/dashboard/accepted-requests'
+            })
+            .when('/submitted-requests',{
+                redirectTo: '/dashboard/submitted-requests'
+            })
+            .when('/filter-requests',{
+                redirectTo: '/dashboard/filter-requests'
             });
     })
     .controller('DashboardCtrl', [
@@ -28,7 +37,8 @@ angular
         '$route',
         'accountService',
         'notificationService',
-        function ($rootScope, $uibModal, $routeParams, $location, $route, accountService, notificationService) {
+        'requestService',
+        function ($rootScope, $uibModal, $routeParams, $location, $route, accountService, notificationService, requestService) {
             var vm = this;
 
             var initView = function () {
@@ -40,11 +50,29 @@ angular
                         ];
                         vm.listView = 'components/batch/batch-list.html';
                         break;
+                    case 'my-assigned-requests':
+                        $rootScope.pageTitles = [
+                            {url: '#/my-assigned-requests', label: 'crs.request.list.title.myAssignedRequests'}
+                        ];
+                        vm.listView = 'components/request/my-assigned-requests.html';
+                        break;
                     case 'accepted-requests':
                         $rootScope.pageTitles = [
                             {url: '#/accepted-requests', label: 'crs.request.list.title.acceptedRequests'}
                         ];
                         vm.listView = 'components/request/accepted-request-list.html';
+                        break;
+                    case 'submitted-requests':
+                        $rootScope.pageTitles = [
+                            {url: '#/submitted-requests', label: 'crs.request.list.title.submittedRequests'}
+                        ];
+                        vm.listView = 'components/request/submitted-request-list.html';
+                        break;
+                    case 'filter-requests':
+                        $rootScope.pageTitles = [
+                            {url: '#/submitted-requests', label: 'crs.request.list.title.submittedRequests'}
+                        ];
+                        vm.listView = 'components/request/filter-requests.html';
                         break;
                     case 'requests':
                     /* falls through */
@@ -56,11 +84,15 @@ angular
                         break;
                 }
 
+                getStatisticsRequests();
+
                 // check admin role
                 accountService.checkUserPermission().then(function (rs) {
                     vm.permissionChecked = true;
                     vm.isAdmin = (rs.isAdmin === true);
                     vm.isViewer = (rs.isViewer === true);
+                    vm.isStaff = (rs.isStaff === true);
+                    vm.isRequester = (rs.isRequester === true);
                 });
             };
 
@@ -113,14 +145,82 @@ angular
                 });
             };
 
+            var getStatisticsRequests = function(){
+                return requestService.getStatisticsRequests().then(function(data){
+                    vm.statisticsRequests = data;
+                    // for(var i in data){
+                    //     if(data[i].status === 'Assigned'){
+                    //         var obj = {};
+                    //         obj.status = 'Unassigned';
+                    //         obj.count = data[i].countAssignedReq;
+                    //         vm.statisticsRequests.splice(3, 0, obj);
+                    //         break;
+                    //     }
+                    // }
+                });
+            };
+
+            var filterStatus = function(status){
+                if(status === 'ALL'){
+                    return;
+                }
+				var manager = null;
+				switch(status) {
+					case 'ALL_REQUEST':
+						status = null;
+						break;
+					case 'Assigned':
+						status = null;
+						manager = "{assigned}";
+						break;
+					// case 'My_Assigned':
+					// 	status = null;
+					// 	manager = currentUser;
+					// 	break;
+					case 'Unassigned':
+						status = null;
+						manager = "{unassigned}";
+						break;
+					
+					default:
+						break;
+				}
+				if(status !== 'My_Assigned'){
+                    $location.path('dashboard/submitted-requests').search({status:status, manager:manager, cache:false});
+                }else{
+                    $location.path('dashboard/my-assigned-requests').search({cache: false});
+                }
+            };
+            var filterAssignedRequests = function(status){
+                if(status === 'ALL_REQUEST' || status === 'Assigned' || status === 'ALL' || status === 'Unassigned'){
+                    return;
+                }
+                accountService.getAccountInfo().then(function (accountDetails) {
+                    $location.path('dashboard/submitted-requests').search({status:status, manager: accountDetails.login, cache: false});                   
+                });
+            };
+			
+
+            var filterMyRequest = function(status){
+                if(status === 'SUBMITTED'){
+                    return;
+                }
+                $location.path('dashboard/requests').search({status:status, cache: false});
+            };
+
             vm.openCreateRequestModal = openCreateRequestModal;
             vm.openBatchImportModal = openBatchImportModal;
             vm.editRequest = editRequest;
             vm.previewRequest = previewRequest;
             vm.showBatchDetails = showBatchDetails;
+            vm.filterStatus = filterStatus;
+            vm.filterMyRequest = filterMyRequest;
+            vm.filterAssignedRequests = filterAssignedRequests;
             vm.permissionChecked = false;
             vm.isAdmin = false;
             vm.isViewer = false;
+            vm.isStaff = false;
+            vm.isRequester = false;
 
             vm.testIMS = function () {
                 accountService.getTestUsers();

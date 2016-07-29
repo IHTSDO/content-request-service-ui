@@ -27,7 +27,8 @@ angular
         'REQUEST_STATUS',
         'REQUEST_INPUT_MODE',
         'jiraService',
-        function($scope, $rootScope, $routeParams, $location, $anchorScroll, $uibModal, $sce, $q, requestService, notificationService, requestMetadataService, objectService, snowowlService, snowowlMetadataService, crsJiraService, scaService, accountService, REQUEST_METADATA_KEY, REQUEST_TYPE, CONCEPT_EDIT_EVENT, REQUEST_STATUS, REQUEST_INPUT_MODE, jiraService) {
+        '$timeout',
+        function($scope, $rootScope, $routeParams, $location, $anchorScroll, $uibModal, $sce, $q, requestService, notificationService, requestMetadataService, objectService, snowowlService, snowowlMetadataService, crsJiraService, scaService, accountService, REQUEST_METADATA_KEY, REQUEST_TYPE, CONCEPT_EDIT_EVENT, REQUEST_STATUS, REQUEST_INPUT_MODE, jiraService, $timeout) {
             var vm = this;
             var REQUEST_MODE = {
                 NEW: { value: 'new', langKey: 'crs.request.requestMode.newRequest' },
@@ -171,16 +172,40 @@ angular
                 });
             };
 
+            var loadSemanticTags = function(){
+                return crsJiraService.getSemanticTags().then(function(semanticTags){
+                    vm.semanticTags = semanticTags;
+                    if(vm.pageMode !== REQUEST_MODE.NEW){
+                        var isNotInArr;
+                        for(var i in semanticTags){
+                            if(semanticTags[i].value !== vm.request.value){
+                                isNotInArr = true;
+                            }
+                        }
+                        if(isNotInArr){
+                            var obj = {};
+                            obj.value = vm.request.value;
+                            vm.semanticTags.push(obj);
+                        }
+                    }
+                    
+                    return semanticTags;
+                });
+            };
+
             var getAuthorName = function(authorKey) {
                 if (!vm.authors || vm.authors.length === 0) {
                     return authorKey;
                 } else {
                     for (var i = 0; i < vm.authors.length; i++) {
+                        // if (vm.authors[i].key !== authorKey) {
+                        //     return authorKey;
+                        // }
                         if (vm.authors[i].key === authorKey) {
                             //return vm.authors[i].displayName;
                             return $sce.trustAsHtml([
                                 '<img style="padding-bottom:2px" src="' + vm.authors[i].avatarUrls['16x16'] + '"/>',
-                                '<span style="vertical-align:middle">&nbsp;' + vm.authors[i].displayName + '</span>'
+                                '<span style="vertical-align:middle">&nbsp;' + vm.authors[i].displayName + '</span>',
                             ].join(''));
                         }
                     }
@@ -234,7 +259,7 @@ angular
                     vm.relationshipsFilter = vm.originalConcept.relationships.filter(function(obj) {
                         return (obj.characteristicType === relationshipType && obj.active === true);
                     });
-                    if (vm.pageMode !== REQUEST_MODE.NEW && element === undefined && relationshipType !== undefined && vm.originalConcept !== null && vm.requestType.value === 'CHANGE_RETIRE_RELATIONSHIP') {
+                    if (vm.pageMode !== REQUEST_MODE.NEW && element === undefined && relationshipType !== undefined && vm.originalConcept !== null && vm.requestType.value === 'RETIRE_RELATIONSHIP') {
                         var arr = vm.originalConcept.relationships;
                         var isRelationshipActive = function(obj) {
                             var requestItems = vm.requestItems;
@@ -268,11 +293,18 @@ angular
                 return vm.originalConcept;
             }, function(newVal) {
                 if (newVal !== null) {
-                    vm.filterRelationshipType(vm.request.characteristicType);
+                    vm.filterRelationshipType(vm.request.relationshipCharacteristicType);
                     vm.reFilterRelationship = true;
                     vm.isShowFilter = true;
 
                 }
+            });
+
+            $scope.$on('viewTaxonomy', function() {
+                vm.actionTab = 1;
+                $timeout(function() {
+                    angular.element('.sidebar-tabs>li>a').eq(0).click();
+                });
             });
 
             var initView = function() {
@@ -295,6 +327,9 @@ angular
                 // load projects
                 loadProjects();
 
+                //load semantic tag
+                loadSemanticTags();
+
                 if (!isValid) {
                     showErrorMessage('crs.request.message.error.invalidPage');
                 } else {
@@ -316,6 +351,8 @@ angular
                                 }
                             };
 
+                            vm.request.showRel = 'STATED_RELATIONSHIP';
+
                             if (requestType === REQUEST_TYPE.NEW_CONCEPT) {
                                 originConcept = objectService.getNewConcept();
                                 originConcept.definitionOfChanges = buildNewConceptDefinitionOfChanges();
@@ -323,8 +360,8 @@ angular
                                 vm.concept = angular.copy(vm.originalConcept);
                             }
 
-                            if (requestType === REQUEST_TYPE.CHANGE_RETIRE_RELATIONSHIP) {
-                                vm.request.characteristicType = RELATIONSHIP_CHARACTERISTIC_TYPE.STATED;
+                            if (requestType === REQUEST_TYPE.RETIRE_RELATIONSHIP) {
+                                vm.request.relationshipCharacteristicType = RELATIONSHIP_CHARACTERISTIC_TYPE.STATED;
                             }
 
                             if (requestType === REQUEST_TYPE.OTHER) {
@@ -418,12 +455,13 @@ angular
                 return requestService.getRequest(requestId).then(function(requestData) {
                     // build request
                     vm.request = buildRequestFromRequestData(requestData);
-                   
+                    vm.request.showRel = vm.request.relationshipCharacteristicType;
+
                     vm.requestItems = requestData.requestItems;
-                    if(requestData.requestType === REQUEST_TYPE.NEW_CONCEPT.value){
-                        for(var i in vm.requestItems){
-                            for(var j in vm.requestItems[i].proposedParents){
-                                if(vm.requestItems[i].proposedParents[j].fsn === null){
+                    if (requestData.requestType === REQUEST_TYPE.NEW_CONCEPT.value) {
+                        for (var i in vm.requestItems) {
+                            for (var j in vm.requestItems[i].proposedParents) {
+                                if (vm.requestItems[i].proposedParents[j].fsn === null) {
                                     var tmp = vm.requestItems[i].proposedParents[j].conceptId;
                                     vm.requestItems[i].proposedParents[j].fsn = tmp;
                                 }
@@ -431,6 +469,7 @@ angular
                         }
                     }
                     // get original concept
+                    // if(requestData.concept !== null){
                     if (requestData.requestType === REQUEST_TYPE.NEW_CONCEPT.value) {
                         originConcept = objectService.getNewConcept();
                         originConcept.definitionOfChanges = buildNewConceptDefinitionOfChanges();
@@ -441,17 +480,44 @@ angular
                         vm.originalConcept = null;
                         vm.request.definitionOfChanges = buildOtherRequestDefinitionOfChanges();
                     } else {
-                        vm.originalConcept = {
-                            conceptId: requestData.concept.conceptId,
-                            fsn: requestData.concept.fsn
-                        };
-                        /*return snowowlService.getFullConcept(null, null, requestData.concept.conceptId).then(function (response) {
-                            originalConcept = response;
+                        snowowlService.getFullConcept(null, null, requestData.requestItems[0].conceptId).then(function(response) {
                             vm.originalConcept = response;
-                        });*/
+                            for (var i in requestData.requestItems) {
+                                for (var j in vm.originalConcept.relationships) {
+                                    var arr = [];
+                                    if (vm.originalConcept.relationships[j].relationshipId === requestData.requestItems[i].relationshipId) {
+                                        var obj = {};
+                                        obj = vm.originalConcept.relationships[j];
+                                        arr.push(obj);
+
+                                        if (arr.length === 0 || arr.length === 2) {
+                                            return;
+                                        } else if (arr.length === 1) {
+                                            if(obj.active === false){
+                                                var rel = angular.copy(obj);
+                                                rel.active = true;
+                                                vm.originalConcept.relationships.push(rel);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        });
                     }
 
+                    // }else{
+                    //     vm.originalConcept = {
+                    //         conceptId: requestData.concept.conceptId,
+                    //         fsn: requestData.concept.fsn
+                    //     };
+                    //     return snowowlService.getFullConcept(null, null, requestData.concept.conceptId).then(function (response) {
+                    //         originalConcept = response;
+                    //         vm.originalConcept = response;
+                    //     });
+                    // }
+
                     // rebuild concept from request data
+
                     vm.concept = requestData.concept;
 
                     return requestData;
@@ -507,14 +573,6 @@ angular
                                 fsn: (relationship.target && relationship.target.fsn) ? relationship.target.fsn : null
                             };
 
-                            // request.parentConcept = [];
-                            // for(var i in requestData.requestItems[0].proposedParents){
-                            //     var obj = {};
-                            //     obj = requestData.requestItems[0].proposedParents[i];
-                            //     request.parentConcept.push(obj);
-                            // }
-                            // concept.relationships = concept.relationships.concat(arr);
-
                             break;
                         }
                     }
@@ -530,16 +588,16 @@ angular
                     concept.relationships = [];
                 }
 
-                if(vm.requestType === REQUEST_TYPE.NEW_CONCEPT){
+                if (vm.requestType === REQUEST_TYPE.NEW_CONCEPT) {
                     var arr = [];
-                    for(var i=0;i<parentConcept.length;i++){
+                    for (var i = 0; i < parentConcept.length; i++) {
                         var obj = angular.copy(isaRelationship);
                         obj.target.conceptId = parentConcept[i].conceptId;
                         obj.target.fsn = parentConcept[i].fsn;
                         arr.push(obj);
                     }
                     concept.relationships = concept.relationships.concat(arr);
-                }else{
+                } else {
                     isaRelationship.target = parentConcept;
                     concept.relationships.push(isaRelationship);
                 }
@@ -614,6 +672,80 @@ angular
                 concept.descriptions.push(desc);
             };
 
+            var cloneConceptRelationship = function(concept, sourceRelationshipId, proposedRefinability, proposedRelationshipStatus, applyChanges, destinationConcept, characteristicType, relationshipType, groupId) {
+                var sourceRelationship, newRelaionship, sourceRel;
+
+                for (var i = 0; i < concept.relationships.length; i++) {
+                    sourceRel = concept.relationships[i];
+
+                    if (sourceRel.relationshipId === sourceRelationshipId) {
+                        sourceRelationship = sourceRel;
+                        break;
+                    }
+                }
+
+                if (sourceRelationship) {
+                    newRelaionship = angular.copy(sourceRelationship);
+
+                    // if (destinationConcept) {
+                        newRelaionship.target = {
+                            active: destinationConcept? destinationConcept.active: concept.active,
+                            conceptId: destinationConcept? destinationConcept.conceptId: concept.conceptId ,
+                            definitionStatus: destinationConcept? destinationConcept.definitionStatus: concept.definitionStatus,
+                            effectiveTime: destinationConcept? destinationConcept.effectiveTime: concept.effectiveTime,
+                            fsn: destinationConcept? destinationConcept.fsn: concept.fsn,
+                            moduleId: destinationConcept? destinationConcept.moduleId: concept.moduleId
+                        };
+                    // }
+
+                    if (relationshipType) {
+                        newRelaionship.type = relationshipType;
+                    }
+
+                    if (groupId) {
+                        newRelaionship.groupId = groupId;
+                    }
+
+                    newRelaionship.relationshipId = null;
+                    newRelaionship.effectiveTime = null;
+
+                    if (proposedRefinability !== undefined &&
+                        proposedRefinability !== null &&
+                        proposedRefinability.trim() !== '') {
+                        newRelaionship.refinability = proposedRefinability;
+                    }
+
+                    if (proposedRelationshipStatus) {
+                        newRelaionship.relationshipStatus = proposedRelationshipStatus;
+                    }
+
+                    if (applyChanges) {
+                        newRelaionship.definitionOfChanges = {
+                            changeId: null,
+                            changeType: REQUEST_TYPE.NEW_RELATIONSHIP.value,
+                            changed: true
+                        };
+                    }
+
+                    if (!angular.isArray(concept.relationships)) {
+                        concept.relationships = [];
+                    } else if (applyChanges) {
+                        sourceRelationship.active = false;
+                        sourceRelationship.definitionOfChanges = {
+                            changeId: null,
+                            changeType: REQUEST_TYPE.CHANGE_RELATIONSHIP.value,
+                            changed: true,
+                            relationshipStatus: proposedRelationshipStatus,
+                            refinability: proposedRefinability,
+                            characteristicType: characteristicType,
+                            relationshipGroup: groupId,
+                        };
+                    }
+
+                    concept.relationships.push(newRelaionship);
+                }
+            };
+
             var cloneConceptDescription = function(concept, sourceDescriptionId, proposedTerm, proposedCaseSignificance, applyChanges, descriptionStatus) {
                 var sourceDescription, newDesc, sourceDesc;
 
@@ -642,7 +774,7 @@ angular
                         newDesc.caseSignificance = proposedCaseSignificance;
                     }
 
-                    if (applyChanges) {
+                    if (applyChanges && vm.requestType !== REQUEST_TYPE.RETIRE_DESCRIPTION) {
                         newDesc.definitionOfChanges = {
                             changeId: null,
                             changeType: REQUEST_TYPE.NEW_DESCRIPTION.value,
@@ -652,19 +784,30 @@ angular
 
                     if (!angular.isArray(concept.descriptions)) {
                         concept.descriptions = [];
-                    } else if (applyChanges) {
+                    } else if (applyChanges && vm.requestType !== REQUEST_TYPE.RETIRE_DESCRIPTION) {
                         sourceDescription.active = false;
                         sourceDescription.definitionOfChanges = {
                             changeId: null,
-                            changeType: REQUEST_TYPE.CHANGE_RETIRE_DESCRIPTION.value,
+                            changeType: REQUEST_TYPE.CHANGE_DESCRIPTION.value,
+                            changed: true,
+                            descriptionStatus: descriptionStatus,
+                            proposedDescription: proposedTerm,
+                            proposedCaseSignificance: proposedCaseSignificance
+                        };
+                    } else if (vm.requestType === REQUEST_TYPE.RETIRE_DESCRIPTION) {
+                        sourceDescription.active = false;
+                        sourceDescription.definitionOfChanges = {
+                            changeId: null,
+                            changeType: REQUEST_TYPE.RETIRE_DESCRIPTION.value,
                             changed: true,
                             descriptionStatus: descriptionStatus,
                             proposedDescription: proposedTerm,
                             proposedCaseSignificance: proposedCaseSignificance
                         };
                     }
-
-                    concept.descriptions.push(newDesc);
+                    if (vm.requestType !== REQUEST_TYPE.RETIRE_DESCRIPTION) {
+                        concept.descriptions.push(newDesc);
+                    }
                 }
             };
 
@@ -693,7 +836,7 @@ angular
                         currentFsn.active = false;
                         currentFsn.definitionOfChanges = {
                             changeId: null,
-                            changeType: REQUEST_TYPE.CHANGE_RETIRE_DESCRIPTION.value,
+                            changeType: REQUEST_TYPE.CHANGE_DESCRIPTION.value,
                             changed: true,
                             descriptionStatus: 'Retired'
                         };
@@ -845,15 +988,15 @@ angular
                 }
             };
 
-            var buildRequestWorkItem = function(concept, definitionOfChanges, changedTarget) {
+            var buildRequestWorkItem = function(concept, definitionOfChanges, changedTarget, request) {
 
                 var item = {};
                 var parentConcept, isDescriptionPT = false;
 
                 item.requestType = definitionOfChanges.changeType;
                 item.id = definitionOfChanges.changeId;
-
                 item.topic = concept.definitionOfChanges.topic;
+                item.summary = concept.definitionOfChanges.summary;
                 item.reasonForChange = concept.definitionOfChanges.reasonForChange;
                 item.notes = concept.definitionOfChanges.notes;
                 item.reference = concept.definitionOfChanges.reference;
@@ -869,13 +1012,21 @@ angular
                         item.proposedSynonyms = extractConceptSynonyms(concept, item.conceptPT, true);
                         item.proposedDefinitions = extractConceptDefinitions(concept, true);
                         item.proposedParents = [];
-                        for(var i=0;i<changedTarget.parentConcept.length;i++){
-                            var obj = {};
-                            obj.conceptId = changedTarget.parentConcept[i].conceptId;
-                            obj.fsn = changedTarget.parentConcept[i].fsn;
-                            obj.refType = 'EXISTING';
-                            item.proposedParents.push(obj);
+                        item.requestorInternalTerm = changedTarget.requestorInternalTerm;
+                        item.proposedUse = changedTarget.proposedUse;
+                        item.semanticTag = changedTarget.value;
+                        item.umlsCui = changedTarget.umlsCui;
+                        if (changedTarget.parentConcept) {
+                            for (var i = 0; i < changedTarget.parentConcept.length; i++) {
+                                var obj = {};
+                                obj.conceptId = changedTarget.parentConcept[i].conceptId;
+                                obj.fsn = changedTarget.parentConcept[i].fsn;
+                                obj.sourceTerminology = changedTarget.parentConcept[i].sourceTerminology;
+                                obj.refType = 'EXISTING';
+                                item.proposedParents.push(obj);
+                            }
                         }
+
                         break;
 
                     case REQUEST_TYPE.CHANGE_RETIRE_CONCEPT.value:
@@ -885,6 +1036,9 @@ angular
                         item.proposedStatus = definitionOfChanges.proposedStatus;
                         item.historyAttribute = definitionOfChanges.historyAttribute;
                         item.historyAttributeValue = definitionOfChanges.historyAttributeValue;
+                        item.sourceTerminology = definitionOfChanges.sourceTerminology;
+                        item.destinationTerminology = definitionOfChanges.destinationTerminology;
+                        item.duplicatedConceptId = vm.duplicateConcept.conceptId;
                         break;
 
                     case REQUEST_TYPE.NEW_DESCRIPTION.value:
@@ -899,9 +1053,25 @@ angular
                         item.conceptFSN = concept.fsn;
                         item.proposedDescription = changedTarget.term;
                         item.descriptionIsPT = isDescriptionPT;
+                        item.proposedCaseSignificance = request.proposedCaseSignificance;
+                        item.sourceTerminology = request.sourceTerminology;
+                        item.destinationTerminology = request.destinationTerminology;
                         break;
 
-                    case REQUEST_TYPE.CHANGE_RETIRE_DESCRIPTION.value:
+                    case REQUEST_TYPE.CHANGE_DESCRIPTION.value:
+                        item.conceptId = concept.conceptId;
+                        item.conceptFSN = concept.fsn;
+                        item.descriptionId = changedTarget.descriptionId;
+                        item.currentDescription = changedTarget.term;
+                        item.conceptDescription = changedTarget.term;
+                        item.proposedDescription = definitionOfChanges.proposedDescription || changedTarget.term;
+                        item.proposedCaseSignificance = definitionOfChanges.proposedCaseSignificance;
+                        item.sourceTerminology = request.sourceTerminology;
+                        item.destinationTerminology = request.destinationTerminology;
+                        item.proposedDescriptionStatus = 'Retired';
+                        break;
+
+                    case REQUEST_TYPE.RETIRE_DESCRIPTION.value:
                         item.conceptId = concept.conceptId;
                         item.conceptFSN = concept.fsn;
                         item.descriptionId = changedTarget.descriptionId;
@@ -910,6 +1080,8 @@ angular
                         item.proposedDescription = definitionOfChanges.proposedDescription || changedTarget.term;
                         item.proposedCaseSignificance = definitionOfChanges.proposedCaseSignificance;
                         item.proposedDescriptionStatus = definitionOfChanges.descriptionStatus;
+                        item.sourceTerminology = request.sourceTerminology;
+                        item.destinationTerminology = request.destinationTerminology;
                         break;
 
                     case REQUEST_TYPE.NEW_RELATIONSHIP.value:
@@ -918,15 +1090,34 @@ angular
                         item.destConceptId = changedTarget.target.conceptId;
                         item.characteristicType = definitionOfChanges.characteristicType;
                         item.refinability = definitionOfChanges.refinability;
+                        item.sourceTerminology = request.sourceTerminology;
+                        item.destinationTerminology = request.destinationTerminology;
                         break;
 
-                    case REQUEST_TYPE.CHANGE_RETIRE_RELATIONSHIP.value:
+                    case REQUEST_TYPE.RETIRE_RELATIONSHIP.value:
                         item.conceptId = concept.conceptId;
                         item.conceptFSN = concept.fsn;
                         item.relationshipId = changedTarget.relationshipId;
                         item.refinability = definitionOfChanges.refinability;
                         item.relationshipStatus = definitionOfChanges.relationshipStatus;
-                        item.characteristicType = changedTarget.characteristicType;
+                        item.relationshipCharacteristicType = changedTarget.characteristicType;
+                        item.sourceTerminology = request.sourceTerminology;
+                        item.destinationTerminology = request.destinationTerminology;
+                        break;
+
+                    case REQUEST_TYPE.CHANGE_RELATIONSHIP.value:
+                        item.conceptId = concept.conceptId;
+                        item.conceptFSN = concept.fsn;
+                        item.relationshipType = changedTarget.type.conceptId;
+                        item.destConceptId = (request.destinationConcept) ? request.destinationConcept.conceptId : concept.conceptId;
+                        item.relationshipId = changedTarget.relationshipId;
+                        item.refinability = definitionOfChanges.refinability;
+                        item.relationshipStatus = 'Retired';
+                        item.characteristicType = definitionOfChanges.characteristicType;
+                        item.relationshipGroup = definitionOfChanges.relationshipGroup;
+                        item.relationshipCharacteristicType = changedTarget.characteristicType;
+                        item.sourceTerminology = request.sourceTerminology;
+                        item.destinationTerminology = request.destinationTerminology;
                         break;
                 }
 
@@ -960,7 +1151,7 @@ angular
                         //     fsn: mainItem.parentFSN
                         // };
                         request.parentConcept = [];
-                        for(var i in requestData.requestItems[0].proposedParents){
+                        for (var i in requestData.requestItems[0].proposedParents) {
                             var obj = {};
                             obj = requestData.requestItems[0].proposedParents[i];
                             request.parentConcept.push(obj);
@@ -970,6 +1161,10 @@ angular
                         request.conceptPT = mainItem.conceptPT;
                         request.proposedSynonyms = mainItem.proposedSynonyms;
                         request.proposedDefinitions = mainItem.proposedDefinitions;
+                        request.proposedUse = mainItem.proposedUse;
+                        request.requestorInternalTerm = mainItem.requestorInternalTerm;
+                        request.value = mainItem.semanticTag;
+                        request.umlsCui = mainItem.umlsCui;
                         break;
 
                     case REQUEST_TYPE.CHANGE_RETIRE_CONCEPT.value:
@@ -979,6 +1174,20 @@ angular
                         request.proposedStatus = mainItem.proposedStatus;
                         request.historyAttribute = mainItem.historyAttribute;
                         request.historyAttributeValue = mainItem.historyAttributeValue;
+                        request.sourceTerminology = mainItem.sourceTerminology;
+                        request.destinationTerminology = mainItem.destinationTerminology;
+
+                        // load duplicate concept
+                        snowowlService.getFullConcept(null, null, mainItem.duplicatedConceptId).then(function(response) {
+                            vm.duplicateConcept = response;
+                        });
+
+                        if(!vm.duplicateConcept.conceptId || !vm.duplicateConcept.fsn){
+                            vm.duplicateConcept = {
+                                conceptId: mainItem.duplicatedConceptId,
+                                fsn: mainItem.duplicatedConceptId
+                            };
+                        }
                         break;
 
                     case REQUEST_TYPE.NEW_DESCRIPTION.value:
@@ -986,15 +1195,31 @@ angular
 
                         request.proposedDescription = mainItem.proposedDescription;
                         request.descriptionIsPT = mainItem.descriptionIsPT;
+                        request.sourceTerminology = mainItem.sourceTerminology;
+                        request.destinationTerminology = mainItem.destinationTerminology;
+                        request.proposedCaseSignificance = mainItem.proposedCaseSignificance;
                         break;
 
-                    case REQUEST_TYPE.CHANGE_RETIRE_DESCRIPTION.value:
-                        //mainItem = extractItemByRequestType(requestItems, REQUEST_TYPE.CHANGE_RETIRE_DESCRIPTION);
+                    case REQUEST_TYPE.CHANGE_DESCRIPTION.value:
+                        //mainItem = extractItemByRequestType(requestItems, REQUEST_TYPE.CHANGE_DESCRIPTION);
 
                         request.descriptionId = mainItem.descriptionId;
                         request.proposedDescription = mainItem.proposedDescription;
                         request.proposedCaseSignificance = mainItem.proposedCaseSignificance;
                         request.descriptionStatus = mainItem.proposedDescriptionStatus;
+                        request.sourceTerminology = mainItem.sourceTerminology;
+                        request.destinationTerminology = mainItem.destinationTerminology;
+                        break;
+
+                    case REQUEST_TYPE.RETIRE_DESCRIPTION.value:
+                        //mainItem = extractItemByRequestType(requestItems, REQUEST_TYPE.CHANGE_DESCRIPTION);
+
+                        request.descriptionId = mainItem.descriptionId;
+                        request.proposedDescription = mainItem.proposedDescription;
+                        request.proposedCaseSignificance = mainItem.proposedCaseSignificance;
+                        request.descriptionStatus = mainItem.proposedDescriptionStatus;
+                        request.sourceTerminology = mainItem.sourceTerminology;
+                        request.destinationTerminology = mainItem.destinationTerminology;
                         break;
 
                     case REQUEST_TYPE.NEW_RELATIONSHIP.value:
@@ -1002,6 +1227,8 @@ angular
 
                         request.characteristicType = mainItem.characteristicType;
                         request.refinability = mainItem.refinability;
+                        request.sourceTerminology = mainItem.sourceTerminology;
+                        request.destinationTerminology = mainItem.destinationTerminology;
 
                         // load destination concept
                         request.destinationConcept = {
@@ -1018,18 +1245,48 @@ angular
 
                         break;
 
-                    case REQUEST_TYPE.CHANGE_RETIRE_RELATIONSHIP.value:
-                        //mainItem = extractItemByRequestType(requestItems, REQUEST_TYPE.CHANGE_RETIRE_RELATIONSHIP);
+                    case REQUEST_TYPE.RETIRE_RELATIONSHIP.value:
+                        //mainItem = extractItemByRequestType(requestItems, REQUEST_TYPE.RETIRE_RELATIONSHIP);
 
                         request.relationshipId = mainItem.relationshipId;
                         request.relationshipStatus = mainItem.relationshipStatus;
                         request.refinability = mainItem.refinability;
                         request.characteristicType = mainItem.characteristicType;
+                        request.relationshipCharacteristicType = mainItem.relationshipCharacteristicType;
+                        request.sourceTerminology = mainItem.sourceTerminology;
+                        request.destinationTerminology = mainItem.destinationTerminology;
+
+                        break;
+
+                    case REQUEST_TYPE.CHANGE_RELATIONSHIP.value:
+                        //mainItem = extractItemByRequestType(requestItems, REQUEST_TYPE.RETIRE_RELATIONSHIP);
+
+                        request.relationshipId = mainItem.relationshipId;
+                        request.relationshipStatus = mainItem.relationshipStatus;
+                        request.refinability = mainItem.refinability;
+                        request.characteristicType = mainItem.characteristicType;
+                        request.groupId = mainItem.relationshipGroup;
+                        request.relationshipCharacteristicType = mainItem.relationshipCharacteristicType;
+                        request.sourceTerminology = mainItem.sourceTerminology;
+                        request.destinationTerminology = mainItem.destinationTerminology;
+
+                        // load destination concept
+                        request.destinationConcept = {
+                            conceptId: mainItem.destConceptId
+                        };
+
+                        // load relationship type
+                        snowowlService.getFullConcept(null, null, mainItem.relationshipType).then(function(response) {
+                            request.relationshipType = {
+                                conceptId: mainItem.relationshipType,
+                                fsn: response.fsn
+                            };
+                        });
 
                         break;
 
                     case REQUEST_TYPE.OTHER.value:
-                        //mainItem = extractItemByRequestType(requestItems, REQUEST_TYPE.CHANGE_RETIRE_RELATIONSHIP);
+                        //mainItem = extractItemByRequestType(requestItems, REQUEST_TYPE.RETIRE_RELATIONSHIP);
                         request.requestDescription = mainItem.requestDescription;
 
                         break;
@@ -1046,6 +1303,7 @@ angular
                     item.requestType = request.definitionOfChanges.changeType;
                     item.id = request.definitionOfChanges.changeId;
                     item.topic = request.additionalFields.topic;
+                    item.summary = request.definitionOfChanges.summary;
                     item.notes = request.additionalFields.notes;
                     item.reference = request.additionalFields.reference;
                     item.reasonForChange = request.additionalFields.reasonForChange;
@@ -1085,33 +1343,16 @@ angular
                     angular.forEach(concept.descriptions, function(description) {
 
                         if (description.definitionOfChanges && description.definitionOfChanges.changed) {
-                            requestDetails.requestItems.push(buildRequestWorkItem(concept, description.definitionOfChanges, description));
+                            requestDetails.requestItems.push(buildRequestWorkItem(concept, description.definitionOfChanges, description, request));
                         }
                     });
 
                     angular.forEach(concept.relationships, function(relationship) {
                         if (relationship.definitionOfChanges && relationship.definitionOfChanges.changed) {
-                            requestDetails.requestItems.push(buildRequestWorkItem(concept, relationship.definitionOfChanges, relationship));
+                            requestDetails.requestItems.push(buildRequestWorkItem(concept, relationship.definitionOfChanges, relationship, request));
                         }
                     });
                 }
-
-                // if(requestDetails.requestItems.length > 1){
-                //     var arr = [];
-                //     for(var i=1;i<requestDetails.requestItems.length;i++){
-                //         var obj = angular.copy(requestDetails.requestItems[i]);
-                //         obj.requestType = REQUEST_TYPE.NEW_RELATIONSHIP.value;
-                //         for(var j=0; j<concept.relationships.length; j++){
-                //             if(requestDetails.requestItems[i].relationshipId === concept.relationships[j].relationshipId){
-                //                 obj.destConceptId = concept.relationships[j].target.conceptId;
-                //                 obj.relationshipType = concept.relationships[j].type.conceptId;
-                //             }
-                //         }
-                //         arr.push(obj);
-                //     }
-                //     requestDetails.requestItems = requestDetails.requestItems.concat(arr);
-                // }
-
 
                 return requestDetails;
             };
@@ -1127,6 +1368,9 @@ angular
 
                 // build concept additional fields
                 concept.definitionOfChanges.topic = request.additionalFields.topic;
+                concept.definitionOfChanges.summary = request.additionalFields.summary;
+                // concept.definitionOfChanges.localTerm = request.localTerm;
+                // concept.definitionOfChanges.proposedUse = request.proposedUse;
                 concept.definitionOfChanges.notes = request.additionalFields.notes;
                 concept.definitionOfChanges.reference = request.additionalFields.reference;
                 concept.definitionOfChanges.reasonForChange = request.additionalFields.reasonForChange;
@@ -1139,7 +1383,7 @@ angular
                     parentConcept;
                 if (vm.originalConcept) {
                     concept = angular.copy(vm.originalConcept);
-                    if(requestType === REQUEST_TYPE.CHANGE_RETIRE_CONCEPT){
+                    if (requestType === REQUEST_TYPE.CHANGE_RETIRE_CONCEPT) {
                         concept.fsn = '';
                     }
 
@@ -1194,7 +1438,11 @@ angular
                             }
                             break;
 
-                        case REQUEST_TYPE.CHANGE_RETIRE_DESCRIPTION:
+                        case REQUEST_TYPE.CHANGE_DESCRIPTION:
+                            cloneConceptDescription(concept, request.descriptionId, request.proposedDescription, request.proposedCaseSignificance, true, request.descriptionStatus);
+                            break;
+
+                        case REQUEST_TYPE.RETIRE_DESCRIPTION:
                             cloneConceptDescription(concept, request.descriptionId, request.proposedDescription, request.proposedCaseSignificance, true, request.descriptionStatus);
                             break;
 
@@ -1202,7 +1450,7 @@ angular
                             injectRelationship(concept, request.relationshipType, request.destinationConcept, request.characteristicType, request.refinability, true);
                             break;
 
-                        case REQUEST_TYPE.CHANGE_RETIRE_RELATIONSHIP:
+                        case REQUEST_TYPE.RETIRE_RELATIONSHIP:
                             // collect selected relationships       
                             //vm.request.relationshipId = selectedRelationshipsOutput();
 
@@ -1212,7 +1460,7 @@ angular
                                         concept.relationships[i].active = false;
                                         concept.relationships[i].definitionOfChanges = {
                                             changeId: null,
-                                            changeType: REQUEST_TYPE.CHANGE_RETIRE_RELATIONSHIP.value,
+                                            changeType: REQUEST_TYPE.RETIRE_RELATIONSHIP.value,
                                             changed: true,
                                             relationshipStatus: request.relationshipStatus,
                                             refinability: request.refinability
@@ -1221,6 +1469,10 @@ angular
                                     }
                                 }
                             }
+                            break;
+
+                        case REQUEST_TYPE.CHANGE_RELATIONSHIP:
+                            cloneConceptRelationship(concept, request.relationshipId, request.refinability, 'Retired', true, request.destinationConcept, request.characteristicType, request.relationshipType, request.groupId);
                             break;
                     }
                 }
@@ -1251,6 +1503,16 @@ angular
                     if (!vm.request.additionalFields.topic ||
                         !vm.request.additionalFields.topic.trim()) {
                         error.topic = fieldRequiredLangKey;
+                    }
+
+                    if (!vm.request.additionalFields.reasonForChange ||
+                        !vm.request.additionalFields.reasonForChange.trim()) {
+                        error.reasonForChange = fieldRequiredLangKey;
+                    }
+
+                    if (!vm.request.additionalFields.summary ||
+                        !vm.request.additionalFields.summary.trim()) {
+                        error.summary = fieldRequiredLangKey;
                     }
                 }
 
@@ -1322,14 +1584,26 @@ angular
                 }
 
                 requestData = buildRequestData(vm.request, vm.concept);
-                if(vm.requestType === REQUEST_TYPE.NEW_CONCEPT){
-                    for(var i in requestData.requestItems[0].proposedParents){
-                        if(requestData.requestItems[0].proposedParents[i].conceptId === undefined && requestData.requestItems[0].proposedParents[i].fsn === undefined){
+                if (vm.requestType === REQUEST_TYPE.NEW_CONCEPT) {
+                    for (var i in requestData.requestItems[0].proposedParents) {
+                        if (requestData.requestItems[0].proposedParents[i].conceptId === undefined && requestData.requestItems[0].proposedParents[i].fsn === undefined) {
                             requestData.requestItems[0].proposedParents.splice(i, requestData.requestItems[0].proposedParents.length);
                         }
                     }
                 }
-                
+                if (vm.inputMode !== REQUEST_INPUT_MODE.DIRECT) {
+                    if (vm.requestType === REQUEST_TYPE.RETIRE_DESCRIPTION || vm.requestType === REQUEST_TYPE.RETIRE_RELATIONSHIP || vm.requestType === REQUEST_TYPE.CHANGE_DESCRIPTION || vm.requestType === REQUEST_TYPE.CHANGE_RELATIONSHIP) {
+                        for (var j in requestData.requestItems) {
+                            if (requestData.requestItems[j].requestType === REQUEST_TYPE.CHANGE_RETIRE_CONCEPT.value) {
+                                requestData.requestItems.splice(j, 1);
+                            }
+                            if (requestData.requestItems[j].requestType === REQUEST_TYPE.NEW_RELATIONSHIP.value) {
+                                requestData.requestItems.splice(j, 1);
+                            }
+                        }
+                    }
+                }
+
                 requestService.saveRequest(requestData)
                     .then(function() {
                         notificationService.sendMessage('crs.request.message.requestSaved', 5000);
@@ -1343,7 +1617,7 @@ angular
             };
 
             var saveAndSubmitRequest = function() {
-                vm.request.relationshipId = selectedRelationshipsOutput();
+                // vm.request.relationshipId = selectedRelationshipsOutput();
                 // requestData
                 var requestData;
 
@@ -1363,10 +1637,30 @@ angular
                 }
 
                 requestData = buildRequestData(vm.request, vm.concept);
+                if (vm.requestType === REQUEST_TYPE.NEW_CONCEPT) {
+                    for (var i in requestData.requestItems[0].proposedParents) {
+                        if (requestData.requestItems[0].proposedParents[i].conceptId === undefined && requestData.requestItems[0].proposedParents[i].fsn === undefined) {
+                            requestData.requestItems[0].proposedParents.splice(i, requestData.requestItems[0].proposedParents.length);
+                        }
+                    }
+                }
+                if (vm.inputMode !== REQUEST_INPUT_MODE.DIRECT) {
+                    if (vm.requestType === REQUEST_TYPE.RETIRE_DESCRIPTION || vm.requestType === REQUEST_TYPE.RETIRE_RELATIONSHIP || vm.requestType === REQUEST_TYPE.CHANGE_DESCRIPTION || vm.requestType === REQUEST_TYPE.CHANGE_RELATIONSHIP) {
+                        for (var j in requestData.requestItems) {
+                            if (requestData.requestItems[j].requestType === REQUEST_TYPE.CHANGE_RETIRE_CONCEPT.value) {
+                                requestData.requestItems.splice(j, 1);
+                            }
+                            if (requestData.requestItems[j].requestType === REQUEST_TYPE.NEW_RELATIONSHIP.value) {
+                                requestData.requestItems.splice(j, 1);
+                            }
+                        }
+                    }
+                }
 
                 requestService.saveRequest(requestData)
                     .then(function(response) {
                         var requestId = response.id;
+                        vm.request.id = requestId;
 
                         return requestService.submitRequest(requestId);
                     })
@@ -1395,6 +1689,16 @@ angular
 
             var acceptRequest = function() {
                 changeRequestStatus(vm.request.id, REQUEST_STATUS.ACCEPTED)
+                    .then(function() {
+                        notificationService.sendMessage('crs.request.message.requestAccepted', 5000);
+                        $location.path(prevPage).search({});
+                    }, function(e) {
+                        showErrorMessage(e.message);
+                    });
+            };
+
+            var moveToInInceptionElaboration = function() {
+                changeRequestStatus(vm.request.id, REQUEST_STATUS.IN_INCEPTION_ELABORATION)
                     .then(function() {
                         notificationService.sendMessage('crs.request.message.requestAccepted', 5000);
                         $location.path(prevPage).search({});
@@ -1607,7 +1911,6 @@ angular
                 });
             };
 
-
             $scope.$on(CONCEPT_EDIT_EVENT.STOP_EDIT_CONCEPT, function(event, data) {
                 if (!data || !data.concept) {
                     console.error('Cannot remove concept: concept must be supplied');
@@ -1650,6 +1953,7 @@ angular
             vm.assignRequestToStaff = assignRequestToStaff;
             vm.rejectRequest = rejectRequest;
             vm.rejectAppeal = rejectAppeal;
+            vm.moveToInInceptionElaboration = moveToInInceptionElaboration;
             vm.requestClarification = requestClarification;
             vm.saveAndSubmitRequest = saveAndSubmitRequest;
             vm.startEditingConcept = startEditingConcept;
@@ -1669,10 +1973,43 @@ angular
                 searching: false,
                 valid: true
             };
+            vm.duplicateConcept = {
+                conceptId: null,
+                fsn: null
+            };
+            vm.sourceTerminologies = [
+                {
+                    sourceTerminology: "SNOMEDCT",
+                    terminologyName: "SNOMED CT International"
+                },
+                {
+                    sourceTerminology: "CURRENTBATCH",
+                    terminologyName: "New Concept Requests"
+                },
+                {
+                    sourceTerminology: "NEWCONCEPTREQUESTS",
+                    terminologyName: "Current Batch Requests"
+                }
+            ];
+            vm.destinationTerminologies = [
+                {
+                    destinationTerminology: "SNOMEDCT",
+                    terminologyName: "SNOMED CT International"
+                },
+                {
+                    destinationTerminology: "CURRENTBATCH",
+                    terminologyName: "New Concept Requests"
+                },
+                {
+                    destinationTerminology: "NEWCONCEPTREQUESTS",
+                    terminologyName: "Current Batch Requests"
+                }
+            ];
             vm.loadingProjects = true;
             vm.loadingAuthors = true;
             vm.projects = [];
             vm.authors = [];
+            vm.loadSemanticTags = loadSemanticTags;
 
             $scope.panelId = 'REQUEST_DETAILS';
 

@@ -8,7 +8,8 @@ angular.module('conceptRequestServiceApp.request')
         'REQUEST_TYPE',
         'REQUEST_STATUS',
         'CRS_API_ENDPOINT',
-        function ($rootScope, $q, crsService, REQUEST_TYPE, REQUEST_STATUS, CRS_API_ENDPOINT) {
+        'STATISTICS_STATUS',
+        function ($rootScope, $q, crsService, REQUEST_TYPE, REQUEST_STATUS, CRS_API_ENDPOINT, STATISTICS_STATUS) {
 
             var identifyRequestType = function (value) {
                 for (var requestTypeKey in REQUEST_TYPE) {
@@ -32,17 +33,38 @@ angular.module('conceptRequestServiceApp.request')
                 return null;
             };
 
-            var getRequests = function (page, pageCount, searchStr, sortFields, sortDirections) {
-                var listEndpoint = CRS_API_ENDPOINT.REQUEST_LIST;
-                var params = {
-                    offset: page,
-                    limit: pageCount,
-                    search: searchStr,
-                    sortFields: sortFields,
-                    sortDirections: sortDirections
-                };
+            var identifyStatisticsStatus = function (value) {
+                for (var statisticsStatusKey in STATISTICS_STATUS) {
+                    if (STATISTICS_STATUS.hasOwnProperty(statisticsStatusKey) &&
+                        STATISTICS_STATUS[statisticsStatusKey].value === value) {
+                        return STATISTICS_STATUS[statisticsStatusKey];
+                    }
+                }
 
-                return crsService.sendGet(listEndpoint, params, null);
+                return null;
+            };
+
+            // var getRequests = function (page, pageCount, searchStr, sortFields, sortDirections, batchRequest, fsn, jiraTicketId) {
+            //     var listEndpoint = CRS_API_ENDPOINT.REQUEST_LIST;
+            //     var params = {
+            //         offset: page,
+            //         limit: pageCount,
+            //         search: searchStr,
+            //         sortFields: sortFields,
+            //         sortDirections: sortDirections,
+            //         batchRequest: batchRequest,
+            //         concept: fsn,
+            //         jiraTicketId: jiraTicketId
+            //     };
+
+            //     return crsService.sendGet(listEndpoint, params, null);
+            // };
+
+            var getRequests = function (requestList) {
+                var listEndpoint = CRS_API_ENDPOINT.REQUEST_LIST;
+                
+
+                return crsService.sendPost(listEndpoint, null, requestList);
             };
 
             var getSubmittedRequests = function (page, pageCount, searchStr, sortFields, sortDirections) {
@@ -156,6 +178,60 @@ angular.module('conceptRequestServiceApp.request')
                 }
             };
 
+            var getStatisticsRequests = function(){
+                var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
+                return crsService.sendGet(requestEndpoint + '/statusStatistics');
+            };
+
+            var savedFilterValues;
+
+            var setFilterValues = function(filterValues){
+               savedFilterValues = filterValues;
+            };
+
+            var getFilterValues = function(){
+               return savedFilterValues;
+            };
+
+            var savedSubmittedFilterValues;
+
+            var setSubmittedFilterValues = function(filterValues){
+               savedSubmittedFilterValues = filterValues;
+            };
+
+            var getSubmittedFilterValues = function(){
+               return savedSubmittedFilterValues;
+            };
+
+            var savedAcceptedFilterValues;
+
+            var setAcceptedFilterValues = function(filterValues){
+               savedAcceptedFilterValues = filterValues;
+            };
+
+            var getAcceptedFilterValues = function(){
+               return savedAcceptedFilterValues;
+            };
+
+            var savedAssignedFilterValues;
+
+            var setAssignedFilterValues = function(filterValues){
+               savedAssignedFilterValues = filterValues;
+            };
+
+            var getAssignedFilterValues = function(){
+               return savedAssignedFilterValues;
+            };
+
+            function getBatchConcept(requestId, conceptId) {
+                var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
+                var params;
+                params = {
+                    searchId: conceptId
+                };
+                return crsService.sendGet(requestEndpoint + '/batchNewConcept/' + requestId, params);
+            }
+
             return {
                 identifyRequestType: identifyRequestType,
                 identifyRequestStatus: identifyRequestStatus,
@@ -168,7 +244,18 @@ angular.module('conceptRequestServiceApp.request')
                 removeRequests: removeRequests,
                 assignRequests: assignRequests,
                 assignRequestsToStaff: assignRequestsToStaff,
-                changeRequestStatus: changeRequestStatus
+                changeRequestStatus: changeRequestStatus,
+                getStatisticsRequests: getStatisticsRequests,
+                identifyStatisticsStatus: identifyStatisticsStatus,
+                getBatchConcept: getBatchConcept,
+                setFilterValues: setFilterValues,
+                getFilterValues: getFilterValues,
+                setSubmittedFilterValues: setSubmittedFilterValues,
+                getSubmittedFilterValues: getSubmittedFilterValues,
+                setAcceptedFilterValues: setAcceptedFilterValues,
+                getAcceptedFilterValues: getAcceptedFilterValues,
+                setAssignedFilterValues: setAssignedFilterValues,
+                getAssignedFilterValues: getAssignedFilterValues
             };
 
         }]);

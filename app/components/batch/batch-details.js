@@ -8,9 +8,9 @@ angular
         '$filter',
         '$routeParams',
         '$location',
-        'ngTableParams',
+        'NgTableParams',
         'batchService',
-        function ($rootScope, $filter, $routeParams, $location, ngTableParams, batchService) {
+        function ($rootScope, $filter, $routeParams, $location, NgTableParams, batchService) {
             var vm = this;
 
             var initView = function () {
@@ -77,7 +77,7 @@ angular
 
             };
 
-            var requestTableParams = new ngTableParams({
+            var requestTableParams = new NgTableParams({
                     page: 1,
                     count: 10,
                     sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'asc', id: 'asc'}

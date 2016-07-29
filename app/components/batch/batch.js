@@ -60,13 +60,33 @@ angular
             value: 'CHANGE_RETIRE_CONCEPT',
             previewTable: 'components/batch/batch-preview-change-retire-concept-table.html'
         },
-        CHANGE_RETIRE_DESCRIPTION: {
-            value: 'CHANGE_RETIRE_DESCRIPTION',
+        CHANGE_DESCRIPTION: {
+            value: 'CHANGE_DESCRIPTION',
             previewTable: 'components/batch/batch-preview-change-retire-description-table.html'
         },
-        CHANGE_RETIRE_RELATIONSHIP: {
-            value: 'CHANGE_RETIRE_RELATIONSHIP',
+        RETIRE_DESCRIPTION: {
+            value: 'RETIRE_DESCRIPTION',
+            previewTable: 'components/batch/batch-preview-retire-description-table.html'
+        },
+        RETIRE_RELATIONSHIP: {
+            value: 'RETIRE_RELATIONSHIP',
             previewTable: 'components/batch/batch-preview-change-retire-relationship-table.html'
+        },
+        CHANGE_RELATIONSHIP: {
+            value: 'CHANGE_RELATIONSHIP',
+            previewTable: 'components/batch/batch-preview-change-relationship-table.html'
+        },
+        SUB_TYPE_ADD_PARENT: {
+            value: 'SUB_TYPE_ADD_PARENT',
+            previewTable: 'components/batch/batch-preview-add-parent-table.html'
+        },
+        SUB_TYPE_CHANGE_PARENT: {
+            value: 'SUB_TYPE_CHANGE_PARENT',
+            previewTable: 'components/batch/batch-preview-change-parent-table.html'
+        },
+        CHANGE_PARENT: {
+            value: 'CHANGE_PARENT',
+            previewTable: 'components/batch/batch-preview-change-parent-table.html'
         },
         OTHER: {
             value: 'OTHER',

@@ -7,7 +7,7 @@ angular
         SIMPLE: {
             value: 'SIMPLE',
             langKey: 'crs.request.inputMode.simple',
-            requestTypes: ['NEW_CONCEPT', 'NEW_DESCRIPTION', 'NEW_RELATIONSHIP', 'CHANGE_RETIRE_CONCEPT', 'CHANGE_RETIRE_DESCRIPTION', 'CHANGE_RETIRE_RELATIONSHIP','OTHER']
+            requestTypes: ['NEW_CONCEPT', 'NEW_DESCRIPTION', 'NEW_RELATIONSHIP', 'CHANGE_DESCRIPTION', 'CHANGE_RELATIONSHIP', 'RETIRE_DESCRIPTION', 'RETIRE_RELATIONSHIP', 'CHANGE_RETIRE_CONCEPT', 'OTHER']
         },
         DIRECT: {
             value: 'DIRECT',
@@ -26,7 +26,8 @@ angular
                     { name: 'proposedFSN', required: true},
                     { name: 'conceptPT', required: true},
                     { name: 'proposedSynonyms'},
-                    { name: 'proposedDefinitions'}
+                    { name: 'proposedDefinitions', required: true},
+                    { name: 'value', required: true}
                 ]
             }
         },
@@ -38,7 +39,7 @@ angular
                 "fields": [
                     {"name": "requestorInternalId"},
                     {"name": "proposedDescription", "required": true},
-                    {"name": "descriptionIsPT"}
+                    {"name": "descriptionIsPT"},
                 ]
 
             }
@@ -54,7 +55,7 @@ angular
                     {"name": "relationshipType", "required": true},
                     {"name": "destinationConcept", "required": true},
                     {"name": "characteristicType"},
-                    {"name": "refinability"}
+                    {"name": "refinability"},
                 ]
             }
         },
@@ -69,13 +70,13 @@ angular
                     {"name": "proposedFSN"},
                     {"name": "proposedStatus"},
                     {"name": "historyAttribute"},
-                    {"name": "historyAttributeValue"}
+                    {"name": "historyAttributeValue"},
                 ]
 
             }
         },
-        CHANGE_RETIRE_DESCRIPTION: {
-            value: 'CHANGE_RETIRE_DESCRIPTION',
+        CHANGE_DESCRIPTION: {
+            value: 'CHANGE_DESCRIPTION',
             langKey: 'crs.request.requestType.changeRetireDescription',
             form: {
                 template: 'components/request/request-change-retire-description-form.html',
@@ -85,12 +86,27 @@ angular
                     {"name": "descriptionId", "required": true},
                     {"name": "proposedDescription"},
                     {"name": "proposedCaseSignificance"},
-                    {"name": "proposedDescriptionStatus"}
+                    {"name": "proposedDescriptionStatus"},
                 ]
             }
         },
-        CHANGE_RETIRE_RELATIONSHIP: {
-            value: 'CHANGE_RETIRE_RELATIONSHIP',
+        RETIRE_DESCRIPTION: {
+            value: 'RETIRE_DESCRIPTION',
+            langKey: 'crs.request.requestType.retireDescription',
+            form: {
+                template: 'components/request/request-retire-description-form.html',
+                modal: 'components/request/request-change-retire-description-modal.html',
+                "fields": [
+                    {"name": "requestorInternalId"},
+                    {"name": "descriptionId", "required": true},
+                    {"name": "proposedDescription"},
+                    {"name": "proposedCaseSignificance"},
+                    {"name": "proposedDescriptionStatus"},
+                ]
+            }
+        },
+        RETIRE_RELATIONSHIP: {
+            value: 'RETIRE_RELATIONSHIP',
             langKey: 'crs.request.requestType.changeRetireRelationship',
             form: {
                 template: 'components/request/request-change-retire-relationship-form.html',
@@ -99,7 +115,21 @@ angular
                     {"name": "requestorInternalId"},
                     {"name": "relationshipId", "required": true},
                     {"name": "refinability"},
-                    {"name": "relationshipStatus"}
+                    {"name": "relationshipStatus", required: true},
+                ]
+            }
+        },
+        CHANGE_RELATIONSHIP: {
+            value: 'CHANGE_RELATIONSHIP',
+            langKey: 'crs.request.requestType.changeRelationship',
+            form: {
+                template: 'components/request/request-change-relationship-form.html',
+                modal: 'components/request/request-change-retire-relationship-modal.html',
+                "fields": [
+                    {"name": "requestorInternalId"},
+                    {"name": "relationshipId", "required": true},
+                    {"name": "refinability"},
+                    {"name": "relationshipStatus"},
                 ]
             }
         },
@@ -110,7 +140,7 @@ angular
                 template: 'components/request/request-other-form.html',
                 "fields": [
                     {"name": "requestorInternalId"},
-                    {"name": "requestDescription", "required": true}
+                    {"name": "requestDescription", "required": true},
                 ]
             }
         }
@@ -168,6 +198,88 @@ angular
         FORWARDED: {
             value: 'FORWARDED',
             langKey: 'crs.request.requestStatus.forwarded'
+        },
+        IN_INCEPTION_ELABORATION: {
+            value: 'IN_INCEPTION_ELABORATION',
+            langKey: 'crs.request.requestStatus.inInceptionElaboration'
+        },
+        READY_FOR_RELEASE: {
+            value: 'READY_FOR_RELEASE',
+            langKey: 'crs.request.requestStatus.readyForRelease'
+        }
+    })
+    .value('STATISTICS_STATUS',{
+        Assigned: {
+            value: 'Assigned',
+            langKey: 'crs.dashboard.sidebar.assigned'
+        },
+        ACCEPTED: {
+            value: 'ACCEPTED',
+            langKey: 'crs.dashboard.sidebar.accepted'
+        },
+        APPEAL_REJECTED: {
+            value: 'APPEAL_REJECTED',
+            langKey: 'crs.dashboard.sidebar.appealRejected'
+        },
+        UNDER_AUTHORING: {
+            value: 'UNDER_AUTHORING',
+            langKey: 'crs.dashboard.sidebar.underAuthoring'
+        },
+        CLARIFICATION_NEEDED: {
+            value: 'CLARIFICATION_NEEDED',
+            langKey: 'crs.dashboard.sidebar.clarificationNeeded'
+        },
+        RELEASED: {
+            value: 'RELEASED',
+            langKey: 'crs.dashboard.sidebar.released'
+        },
+        FORWARDED: {
+            value: 'FORWARDED',
+            langKey: 'crs.dashboard.sidebar.forwarded'
+        },
+        NEW: {
+            value: 'NEW',
+            langKey: 'crs.dashboard.sidebar.new'
+        },
+        REJECTED: {
+            value: 'REJECTED',
+            langKey: 'crs.dashboard.sidebar.rejected'
+        },
+        WITHDRAWN: {
+            value: 'WITHDRAWN',
+            langKey: 'crs.dashboard.sidebar.withdraw'
+        },
+        APPEAL: {
+            value: 'APPEAL',
+            langKey: 'crs.dashboard.sidebar.appeal'
+        },
+        DRAFT: {
+            value: 'DRAFT',
+            langKey: 'crs.dashboard.sidebar.draft'
+        },
+        SUBMITTED: {
+            value: 'SUBMITTED',
+            langKey: 'crs.dashboard.sidebar.submitted'
+        },
+        ALL_REQUEST: {
+            value: 'ALL_REQUEST',
+            langKey: 'crs.dashboard.sidebar.allRequests'
+        },
+        ALL: {
+            value: 'ALL',
+            langKey: 'crs.dashboard.sidebar.all'
+        },
+        Unassigned: {
+            value:'Unassigned',
+            langKey: 'crs.dashboard.sidebar.unassigned'
+        },
+		IN_INCEPTION_ELABORATION: {
+            value:'IN_INCEPTION_ELABORATION',
+            langKey: 'crs.dashboard.sidebar.in_inception_elaboration'
+        },
+		My_Assigned: {
+            value:'My_Assigned',
+            langKey: 'crs.dashboard.sidebar.my_assigned'
         }
     })
     .value('REQUEST_METADATA_KEY', {

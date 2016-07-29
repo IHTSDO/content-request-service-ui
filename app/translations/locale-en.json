@@ -15,8 +15,8 @@
             "feedback": "Feedback"
         },
         "app": {
-            "name": "Concept Request Service",
-            "copyright": "Copyright IHTSDO 2015"
+            "name": "Content Request Service",
+            "copyright": "Copyright IHTSDO 2016"
         },
         "notification": {
             "title": "Notifications",
@@ -34,11 +34,40 @@
         "dashboard": {
             "title": "Dashboard",
             "sidebar": {
-                "myRequest": "Submitted Requests",
+                "myRequest": "My Requests",
                 "myBatch": "My Batch Requests",
                 "createRequest": "Create New Request",
                 "importBatch": "New Batch Import",
-                "acceptedRequest": "Accepted Requests"
+                "acceptedRequest": "Accepted Requests",
+                "myAssignedRequests": "My Assigned Requests",
+                "submittedRequest": "Submitted Requests",
+                "submitted": "Submitted",
+                "ACCEPTED": "Accepted",
+                "approved": "Approved",
+                "draft": "Draft",
+                "allRequests": "All Requests",
+                "all": "All",
+                "assigned": "Assigned",
+                "assignedMe": "Assigned to me",
+                "unassigned": "Unassigned",
+                "accepted": "Accepted",
+                "appealNotAccepted": "Appeal not accepted",
+                "inProgress": "In Progress",
+                "clarificationRequested": "Clarification Requested",
+                "completed": "Completed",
+                "forwarded": "Forwarded",
+                "new": "New",
+                "notAccepted": "Not accepted",
+                "withdraw": "Withdrawn",
+                "underAppeal": "Under appeal",
+                "released": "Completed",
+                "rejected": "Rejected",
+                "underAuthoring": "Under Authoring",
+                "appealRejected": "Appeal Rejected",
+                "appeal": "Appeal",
+                "clarificationNeeded": "Clarification Needed",
+		"in_inception_elaboration": "In Inception",
+		"my_assigned": "My Assigned"
             }
         },
         "request": {
@@ -47,7 +76,8 @@
                     "requests": "Requests",
                     "myRequests": "My Requests",
                     "acceptedRequests": "Accepted Requests",
-                    "submittedRequests": "Submitted Requests"
+                    "submittedRequests": "Submitted Requests",
+                    "myAssignedRequests": "My Assigned Requests"
                 },
                 "tip": {
                     "count": "Number of requests",
@@ -57,7 +87,8 @@
                     "assign": "Assign requests to Authoring",
                     "assignToStaff": "Assign requests to Staff",
                     "batchId": "Click to open batch details view",
-                    "conceptFSN": "Click to open request editing view"
+                    "conceptFSN": "Click to open request editing view",
+                    "filter": "Filter requests"
                 },
                 "searchPlaceHolder": {
                     "myRequests": "Search My Requests",
@@ -66,8 +97,9 @@
                 },
                 "tableHeader": {
                     "batchId": "Batch ID",
-                    "requestorInternalId": "Requestor Interal ID",
-                    "ticketId": "Request ID",
+                    "requestorInternalId": "Local Code",
+                    "ticketId": "Jira ID",
+                    "requestId": "Request ID",
                     "description": "Description",
                     "lastModified": "Last Modified",
                     "requestType": "Request Type",
@@ -81,7 +113,8 @@
                     "originator": "Created By",
                     "createdDate": "Created On",
                     "requestDescription": "Descripion of Request",
-                    "manager": "Manager"
+                    "manager": "Manager",
+                    "summary": "Summary"
                 }
             },
             "details": {
@@ -97,7 +130,7 @@
                 },
                 "label": {
                     "topic": "Topic",
-                    "requestorInternalId": "Requestor Internal ID",
+                    "requestorInternalId": "Local Code",
                     "proposedFSN": "New Concept FSN",
                     "parentConcept": "Parent Concept",
                     "concept": "Concept",
@@ -106,11 +139,11 @@
                     "conceptPT": "Preferred Term",
                     "proposedSynonym": "Synonym(s)",
                     "proposedDefinition": "Definition",
-                    "reasonForChange": "Reason for Request",
+                    "reasonForChange": "Justification",
                     "reference": "Reference",
                     "description": "Description",
                     "descriptionId": "Description ID",
-                    "currentDescription": "Current Description",
+                    "currentDescription": "Active Description",
                     "proposedDescription": "Proposed New Description",
                     "relationshipGroup": "Relationship Group",
                     "relationshipId": "Relationship ID",
@@ -131,7 +164,20 @@
                     "isPt": "Description is PT",
                     "requestDescription": "Description Of Request",
                     "manager": "Manager",
-                    "namespace": "Namespace"
+                    "namespace": "Namespace",
+                    "proposedRefinability": "Proposed Refinability",
+                    "proposedCharacteristicType": "Proposed CharacteristicType",
+                    "proposedRelationshipType": "Proposed RelationshipType",
+                    "proposedDestinationConcept": "Proposed Destination Concept",
+                    "groupId": "Proposed Relationship Group",
+                    "localTerm": "Local Term",
+                    "proposedUse": "Proposed Use",
+                    "semanticTag": "Semantic Tag",
+                    "summary": "Summary",
+                    "umlsCui": "UMLS CUI",
+                    "sourceTerminology": "Terminology",
+                    "destinationTerminology": "Destination Terminology",
+                    "duplicateConcept": "Duplicated Concept"
                 },
                 "tip": {
                     "editConceptHint": "Edit a concept from Saved List or drag and drop concept here"
@@ -157,7 +203,8 @@
                         "pendingForClarification": "Pending Clarification",
                         "acceptAndAssign": "Accept and Assign To Author",
                         "assign": "Assign Request",
-                        "assignToStaff": "Accept and Assign To Staff"
+                        "assignToStaff": "Accept and Assign To Staff",
+                        "moveToInInceptionElaboration": "Move to In Inception/Elaboration"
                     },
                     "label": {
                         "batchId": "Batch ID",
@@ -251,8 +298,10 @@
                 "newDescription": "New Description",
                 "newRelationship": "New Relationship",
                 "changeRetireConcept": "Change or Retire Concept",
-                "changeRetireDescription": "Change or Retire Description",
-                "changeRetireRelationship": "Change or Retire Relationship",
+                "changeRetireDescription": "Change Description",
+                "retireDescription": "Retire Description",
+                "changeRetireRelationship": "Retire Relationship",
+                "changeRelationship": "Change Relationship",
                 "other": "Other"
             },
             "inputMode": {
@@ -275,10 +324,13 @@
                 "appealRejected": "Appeal Rejected",
                 "withdraw": "Withdrawn",
                 "underAuthoring": "Under Authoring",
-                "released": "Released",
+                "released": "Completed",
                 "onHold": "On Hold",
                 "forwarded": "Forwarded",
-                "approved": "Approved"
+                "approved": "Approved",
+                "inInceptionElaboration": "In Inception/Elaboration",
+                "readyForRelease": "Ready For Release",
+                "submitted": "Submitted"
             }
         },
         "batch": {
@@ -375,25 +427,28 @@
                 },
                 "requestList": {
                     "tableHeader": {
-                        "sourceTerminology": "Source Terminology",
+                        "sourceTerminology": "Terminology",
                         "sourceTerminologyVersion": "Source Terminology Version",
-                        "requestorInternalId": "Requestor Internal ID",
-                        "reasonForChange": "Reason for Change",
+                        "requestorInternalId": "Local Code",
+                        "reasonForChange": "Justification",
                         "topic": "Topic",
                         "notes": "Notes",
                         "references": "References",
                         "parentId": "Parent ID",
                         "parentFSN": "Parent FSN",
-                        "proposedParentId1": "Parent Id (1)",
-                        "proposedParentId2": "Parent Id (2)",
-                        "FSN": "FSN",
+                        "localRequestId": "Request Id",
+                        "parentTerminology1": "Terminology (1)",
+                        "parentTerminology2": "Terminology (2)",
+                        "proposedParentId1": "Parent Concept Id(1)",
+                        "proposedParentId2": "Parent Concept Id(2)",
+                        "FSN": "Fully Specified Name",
                         "semanticTag": "Semantic Tag",
                         "synonym": "Synonym",
                         "definition": "Definition",
                         "conceptId": "Concept ID",
-                        "sourceConceptId": "Source Concept ID",
+                        "sourceConceptId": "Concept ID",
                         "conceptFSN": "Concept FSN",
-                        "description": "Description",
+                        "description": "Term",
                         "descriptionIsPT": "Description is PT",
                         "relationshipType": "Relationship Type",
                         "destinationTerminology": "Destination Terminology",
@@ -406,17 +461,32 @@
                         "historyAttribute": "Concept History Attribute",
                         "historyAttributeValue": "Concept History Attribute Value",
                         "descriptionId": "Description ID",
-                        "currentDescription": "Current Description",
-                        "newDescription": "Proposed New Description",
-                        "newCaseSignature": "Proposed New Case Signature",
+                        "currentDescription": "Active Description",
+                        "newDescription": "Term",
+                        "newCaseSignature": "Case Significance",
                         "newDescriptionStatus": "Proposed New Description Status",
                         "relationshipId": "Relationship ID",
-                        "newRefinability": "Proposed New Refinability",
+                        "newRefinability": "Refinability",
                         "newRelationshipStatus": "Proposed New Relationship Status",
                         "validationResult": "Validation Result",
                         "originator": "Created By",
                         "createdDate": "Created On",
-                        "requestDescription": "Description of Request"
+                        "requestDescription": "Description",
+                        "proposedDestinationConcept": "Proposed Destination Concept ID",
+                        "proposedRelationshipType": "Proposed Relationship Type",
+                        "proposedCharacteristicType": "Characteristic Type",
+                        "summary": "Summary",
+                        "requestorInternalTerm": "Local Term",
+                        "proposedUse": "Proposed Use",
+                        "preferedTerm": "Preferred Term",
+                        "umlsCui": "UMLS CUI",
+                        "proposedCaseSignificance": "Case Significance",
+                        "parentConceptId": "Parent Concept Id",
+                        "newParentTerminology": "New Parent Terminology",
+                        "newParentConceptId": "New Parent Concept Id",
+                        "changeConceptToStatus": "Change Concept To Status",
+                        "duplicateConceptId": "Duplicate Concept Id",
+                        "changeDescriptionStatusTo": "Change Description Status To"
                     }
                 }
             }

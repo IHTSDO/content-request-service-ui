@@ -2,15 +2,24 @@
 <form class="form-floating" form-control-readonly="requestVM.request.requestHeader.status !== 'DRAFT'">
 
     <div class="form-group">
-
-        <form-control type="concept"
+        <div ng-if="requestVM.originalConcept || requestVM.pageMode.value === 'new'">
+            <form-control type="concept"
                       model="requestVM.originalConcept"
                       label="crs.request.details.label.concept"
                       required
                       error-model="requestVM.error.concept"
                       concept-status="requestVM.conceptStatus"></form-control>
+        </div>
 
-        <form-control type="select"
+        <div ng-if="!requestVM.originalConcept && requestVM.pageMode.value !== 'new'">
+          <form-control type="text"
+                        model="requestVM.requestItems[0].conceptId"
+                        label="crs.request.details.label.concept"
+                        readonly></form-control>
+        </div>
+
+        <div ng-if="requestVM.originalConcept.descriptions || requestVM.pageMode.value === 'new'">
+          <form-control type="select"
                       model="requestVM.request.descriptionId"
                       options="suggestion.descriptionId as suggestion.term for suggestion in requestVM.originalConcept.descriptions"
                       label="crs.request.details.label.currentDescription"
@@ -18,6 +27,14 @@
                       required
                       error-model="requestVM.error.descriptionId"
                       loading-mask="requestVM.conceptStatus.loading || requestVM.conceptStatus.searching"></form-control>
+        </div>
+        
+        <div ng-if="!requestVM.originalConcept.descriptions && requestVM.pageMode.value !== 'new'">
+          <form-control type="text"
+                      model="requestVM.request.descriptionId"
+                      label="crs.request.details.label.currentDescription"
+                      readonly></form-control>
+        </div>
 
         <form-control type="text"
                       model="requestVM.request.proposedDescription"
@@ -29,11 +46,11 @@
                       options="caseSignificance.value as caseSignificance.text for caseSignificance in requestVM.caseSignificances"
                       label="crs.request.details.label.proposedCaseSignificance"
                       name="slCaseSignificance"></form-control>
-        <form-control type="select"
+        <!-- <form-control type="select"
                       model="requestVM.request.descriptionStatus"
                       options="descriptionStatus for descriptionStatus in requestVM.descriptionStatuses"
                       label="crs.request.details.label.descriptionStatus"
-                      name="slDescriptionStatus"></form-control>
+                      name="slDescriptionStatus"></form-control> -->
 
     </div>
 </form>

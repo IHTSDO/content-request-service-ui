@@ -16,23 +16,32 @@
             <td data-title="'crs.batch.preview.requestList.tableHeader.topic' | translate" >
                 {{request.topic}}
             </td>
+            <td data-title="'crs.batch.preview.requestList.tableHeader.summary' | translate">
+                {{request.summary}}
+            </td>
             <td data-title="'crs.batch.preview.requestList.tableHeader.sourceTerminologyVersion' | translate" >
                 {{request.sourceTerminologyVersion}}
             </td>
             <td data-title="'crs.batch.preview.requestList.tableHeader.requestorInternalId' | translate" >
                 {{request.requestorInternalId}}
             </td>
-            <!-- <td data-title="'crs.batch.preview.requestList.tableHeader.parentId' | translate" >
-                {{request.parentId}}
+            <td data-title="'crs.batch.preview.requestList.tableHeader.localRequestId' | translate" >
+                {{request.localRequestId}}
             </td>
-            <td data-title="'crs.batch.preview.requestList.tableHeader.parentFSN' | translate" >
-                {{request.parentFSN}}
-            </td> -->
+            <td data-title="'crs.batch.preview.requestList.tableHeader.parentTerminology1' | translate" >
+                {{request.parentTerminology1}}
+            </td> 
             <td data-title="'crs.batch.preview.requestList.tableHeader.proposedParentId1' | translate" >
                 {{request.proposedParentId1}}
             </td>
+            <td data-title="'crs.batch.preview.requestList.tableHeader.parentTerminology2' | translate" >
+                {{request.parentTerminology2}}
+            </td>
             <td data-title="'crs.batch.preview.requestList.tableHeader.proposedParentId2' | translate" >
                 {{request.proposedParentId2}}
+            </td>
+            <td data-title="'crs.batch.preview.requestList.tableHeader.umlsCui' | translate" >
+                {{request.umlsCui}}
             </td>
             <td data-title="'crs.batch.preview.requestList.tableHeader.FSN' | translate" >
                 {{request.proposedFSN}}
@@ -40,14 +49,20 @@
             <td data-title="'crs.batch.preview.requestList.tableHeader.semanticTag' | translate" >
                 {{request.semanticTag}}
             </td>
-            <td data-title="'PT'" >
+            <td data-title="'crs.batch.preview.requestList.tableHeader.requestorInternalTerm' | translate" >
+                {{request.requestorInternalTerm}}
+            </td>
+            <td data-title="'crs.batch.preview.requestList.tableHeader.proposedUse' | translate" >
+                {{request.proposedUse}}
+            </td>
+            <td data-title="'crs.batch.preview.requestList.tableHeader.preferedTerm' | translate" >
                 {{request.conceptPT}}
             </td>
             <td data-title="('crs.batch.preview.requestList.tableHeader.synonym' | translate) + ' (1)'" >
-                {{request.proposedSynonym1}}
+                {{request.proposedSynonyms[0]}}
             </td>
             <td data-title="('crs.batch.preview.requestList.tableHeader.synonym' | translate) + ' (2)'" >
-                {{request.proposedSynonym2}}
+                {{request.proposedSynonyms[1]}}
             </td>
             <td data-title="'crs.batch.preview.requestList.tableHeader.definition' | translate" >
                 {{request.proposedDefinition}}

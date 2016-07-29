@@ -86,7 +86,6 @@ angular
                     return rs;
                 });
             };
-
             var checkUserPermission = function () {
                 return checkRoles([CRS_ROLE.ADMINISTRATOR, CRS_ROLE.MANAGER]).then(function (adminRs) {
                     if (adminRs === true) {
@@ -94,10 +93,26 @@ angular
                             isAdmin: true
                         };
                     } else {
-                        return checkRoles([CRS_ROLE.VIEWER]).then(function (viewerRs) {
-                            return {
-                                isViewer: viewerRs
-                            };
+                        return checkRoles([CRS_ROLE.STAFF]).then(function (staffRs) {
+                            if(staffRs === true){
+                                return {
+                                    isStaff: true
+                                }; 
+                            }else{
+                                return checkRoles([CRS_ROLE.REQUESTOR, CRS_ROLE.PARTNER, CRS_ROLE.MEMBER]).then(function (requestorRs) {
+                                    if(requestorRs === true){
+                                        return {
+                                            isRequester: true
+                                        }; 
+                                    }else{
+                                        return checkRoles([CRS_ROLE.VIEWER]).then(function (viewerRs) {
+                                            return {
+                                                isViewer: viewerRs
+                                            };
+                                        });
+                                    }
+                                });
+                            }
                         });
                     }
                 });

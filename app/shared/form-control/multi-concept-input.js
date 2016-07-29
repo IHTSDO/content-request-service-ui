@@ -12,10 +12,12 @@ angular
                 },
                 template: [
                     '<div class="row" style="margin-left: -15px;margin-right: -15px;margin-bottom: 10px" ng-repeat="model in models track by $index" >',
-                    '<div class="{{readonly?\'col-md-12\':\'col-md-10\'}}">',
+                    '<div class="{{readonly?\'col-md-8\':\'col-md-6\'}}">',
                     '<concept-input concept="models[$index]" on-concept-changed="" readonly="" concept-status="" ></concept-input>',
                     '</div>',
-                    //'<input type="text" class="form-control" ng-model="models[$index]" maxlength="255" ng-readonly="readonly" /></div>',
+                    '<div class="{{readonly?\'col-md-4\':\'col-md-4\'}}">',
+                    '<select class="form-control" ng-model="models[$index].sourceTerminology" ng-options="suggestion.sourceTerminology as suggestion.label for suggestion in sourceTerminologies"></select>',
+                    '</div>',
                     '<div ng-if="!readonly" class="col-md-2">',
                     '<button type="button" ng-click="addField($index)" tabindex="-1"',
                     'class="btn-default add-buttons md fa fa-plus button-width-plus pull-right tooltips-left tooltips-light normal-case"></button>',
@@ -34,6 +36,21 @@ angular
                     if (!angular.isArray($scope.models) || $scope.models.length === 0) {
                         $scope.models = [{}];
                     }
+
+                    $scope.sourceTerminologies = [
+                        {
+                            label: 'SNOMED CT',
+                            sourceTerminology: 'SNOMEDCT'
+                        },
+                        {   
+                            label: 'Current Batch',
+                            sourceTerminology: 'CURRENTBATCH'
+                        }
+                        // {
+                        //     label: 'New Concept',
+                        //     sourceTerminology: 'NEWCONCEPTREQUESTS'
+                        // }
+                    ];
 
                     $scope.addField = function (index) {
                         $scope.models.splice(index + 1, 0, '');

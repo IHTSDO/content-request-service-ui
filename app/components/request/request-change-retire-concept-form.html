@@ -19,6 +19,11 @@
                       label="crs.request.details.label.proposedStatus"
                       name="slNewConceptStatus"></form-control>
 
+        <form-control type="concept"
+                      model="requestVM.duplicateConcept"
+                      label="crs.request.details.label.duplicateConcept"
+                      error-model="requestVM.error.concept"></form-control>
+
         <form-control type="select"
                       model="requestVM.request.historyAttribute"
                       options="historyAttribute for historyAttribute in requestVM.historyAttributes"

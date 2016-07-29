@@ -6605,7 +6605,7 @@ fieldset[disabled] .btn-secondary:hover {
   background-color: #fff;
 }
 .btn-round {
-  min-width: 30px;
+  min-width: 20px;
   height: 30px;
   font-size: 14px;
   line-height: 30px;
@@ -6635,6 +6635,7 @@ fieldset[disabled] .btn-secondary:hover {
   box-shadow: none;
   border-color: transparent;
 }
+
 .c3 .c3-tooltip th.panel a,
 .card .list-group .panel.list-group-item.active a {
   color: #fff;
@@ -6642,6 +6643,18 @@ fieldset[disabled] .btn-secondary:hover {
 .c3 .c3-tooltip th.panel a h2,
 .card .list-group .panel.list-group-item.active a h2 {
   color: #fff;
+}
+.tab-pane .btn-round.btn[disabled] {
+    pointer-events: visibleFill!important;
+    opacity: 1;
+}
+.tab-pane .btn-round.btn[disabled]:hover {
+    background-color: #EF5350;
+    color: #fff;
+}
+.tooltips-bottom, .tooltips-btm, .tooltips-left, .tooltips-right, .tooltips-top {
+    position: relative;
+    display: inline;
 }
 .panel.theme-fourth-bg a,
 .panel.theme-primary-bg a,

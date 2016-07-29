@@ -10,13 +10,13 @@ angular
         '$routeParams',
         '$interval',
         '$uibModal',
-        'ngTableParams',
+        'NgTableParams',
         'batchService',
         'configService',
         'notificationService',
         'BATCH_IMPORT_STATUS',
         'BATCH_PREVIEW_TAB',
-        function ($rootScope, $scope, $filter, $routeParams, $interval, $uibModal, ngTableParams, batchService, configService, notificationService, BATCH_IMPORT_STATUS, BATCH_PREVIEW_TAB) {
+        function ($rootScope, $scope, $filter, $routeParams, $interval, $uibModal, NgTableParams, batchService, configService, notificationService, BATCH_IMPORT_STATUS, BATCH_PREVIEW_TAB) {
             var fileStatusPoller;
             var vm = this;
             var fileStatusPollingInterval = configService.getFileStatusPollingInterval();
@@ -92,7 +92,7 @@ angular
                 loadPreviewData(BATCH_PREVIEW_TAB.NEW_CONCEPT.value, true);
             };
 
-            var filesTableParams = new ngTableParams({
+            var filesTableParams = new NgTableParams({
                     page: 1,
                     count: 5,
                     sorting: {'uploadedTime': 'desc', fileName: 'asc'}
@@ -164,7 +164,7 @@ angular
                 }
             );
 
-            var previewTableParams = new ngTableParams({
+            var previewTableParams = new NgTableParams({
                     page: 1,
                     count: 10
                 },

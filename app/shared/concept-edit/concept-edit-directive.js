@@ -826,7 +826,7 @@ angular
                             if (!description.definitionOfChanges) {
                                 description.definitionOfChanges = {
                                     changeId: null,
-                                    changeType: REQUEST_TYPE.CHANGE_RETIRE_DESCRIPTION.value,
+                                    changeType: REQUEST_TYPE.RETIRE_DESCRIPTION.value,
                                     changed: false
                                 };
                             }
@@ -1123,7 +1123,7 @@ angular
                             if (!relationship.definitionOfChanges) {
                                 relationship.definitionOfChanges = {
                                     changeId: null,
-                                    changeType: REQUEST_TYPE.CHANGE_RETIRE_RELATIONSHIP.value,
+                                    changeType: REQUEST_TYPE.RETIRE_RELATIONSHIP.value,
                                     changed: false
                                 };
                             }

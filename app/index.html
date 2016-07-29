@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>IHTSDO CRS (Concept Request Service)</title>
+    <title>IHTSDO CRS (Content Request Service)</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -15,15 +15,17 @@
     <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32"/>
     <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16"/>
     <link rel="stylesheet" type="text/css" href="lib/isteven-multi-select/isteven-multi-select.css">
-    <meta name="application-name" content="Concept Request Service"/>
+    <meta name="application-name" content="Content Request Service"/>
     <meta name="msapplication-TileColor" content="#00A4E4"/>
     <meta name="msapplication-TileImage" content="mstile-144x144.png"/>
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/ng-table/dist/ng-table.min.css" />
+    <link rel="stylesheet" href="bower_components/ng-table/dist/ng-table.css" />
     <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
     <link rel="stylesheet" href="bower_components/angular-ui-tree/dist/angular-ui-tree.min.css" />
     <link rel="stylesheet" href="bower_components/textAngular/dist/textAngular.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap-daterangepicker-reloaded/daterangepicker-bs3.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -73,6 +75,7 @@
     ga('send', 'pageview');
 </script>
 
+
 <!-- build:js(.) scripts/vendor.js -->
 <!-- bower:js -->
 <script src="bower_components/jquery/dist/jquery.js"></script>
@@ -85,7 +88,7 @@
 <script src="bower_components/angular-route/angular-route.js"></script>
 <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
 <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-<script src="bower_components/ng-table/dist/ng-table.min.js"></script>
+<script src="bower_components/ng-table/dist/ng-table.js"></script>
 <script src="bower_components/angular-translate/angular-translate.js"></script>
 <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
 <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
@@ -102,6 +105,11 @@
 <script src="bower_components/textAngular/dist/textAngular.js"></script>
 <script src="bower_components/textAngular/dist/textAngular-sanitize.js"></script>
 <script src="bower_components/textAngular/dist/textAngularSetup.js"></script>
+<script src="bower_components/angular-elastic/elastic.js"></script>
+<script src="bower_components/moment/moment.js"></script>
+<script src="bower_components/bootstrap-daterangepicker-reloaded/daterangepicker.js"></script>
+<!-- <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script> -->
+<script src="bower_components/nDaterangepicker/build/ndaterangepicker.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
@@ -114,6 +122,7 @@
 <script src="components/error/error.js"></script>
 <script src="components/error/error-handler-service.js"></script>
 <script src="components/dashboard/dashboard.js"></script>
+<script src="components/dashboard/statistics-filter.js"></script>
 <script src="components/request/request.js"></script>
 <script src="components/user-preferences/user-preferences.js"></script>
 <script src="components/request/modal-create-request.js"></script>
@@ -125,6 +134,7 @@
 <script src="components/request/accepted-request-list.js"></script>
 <script src="components/request/request-details.js"></script>
 <script src="components/request/request-type-filter.js"></script>
+<script src="components/request/filter-requests.js"></script>
 <script src="components/request/request-status-filter.js"></script>
 <script src="components/request/modal-assign-request-to-staff.js"></script>
 <script src="components/batch/batch.js"></script>
@@ -162,7 +172,9 @@
 <script src="shared/search/search-panel.js"></script>
 <script src="shared/concept-information/concept-info-modal.js"></script>
 <script src="shared/taxonomy/taxonomy.js"></script>
-<script src="shared/taxonomy/taxonomy-tree-directive.js"></script>
+<script src="shared/taxonomy/taxonomyCtrl.js"></script>
+<script src="shared/taxonomy/taxonomyPlugin.js"></script>
+<script src="shared/taxonomy-tree/taxonomyTree.js"></script>
 <script src="shared/saved-list/saved-list.js"></script>
 <script src="shared/saved-list/saved-list-service.js"></script>
 <script src="shared/saved-list/saved-list-panel.js"></script>
@@ -212,7 +224,7 @@
             });
         });
     })(jQuery);
-</script>
+</script> 
 
 </body>
 

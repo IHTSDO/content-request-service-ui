@@ -36,30 +36,52 @@ angular.module('conceptRequestServiceApp.search')
 
             // $scope.options from searchPlugin.js ( not all used)
             // TODO Make these enabled
-            /*$scope.options = {
-                serverUrl: '/snowowl',
-                edition: 'snomed-ct/v2/browser',
-                release: $scope.branch,
-                selectedView: 'inferred',
-                displayChildren: false,
-                langRefset: '900000000000509007',
-                closeButton: false,
-                collapseButton: false,
-                linkerButton: false,
-                subscribersMarker: true,
-                searchMode: 'partialMatching',
-                searchLang: 'english',
-                diagrammingMarkupEnabled: false,
-                statusSearchFilter: 'activeOnly',
-                highlightByEffectiveTime: 'false',
-                taskSet: false,
-                taskKey: null
-            };*/
+            // $scope.options = {
+            //     serverUrl: '/snowowl',
+            //     edition: 'snomed-ct/v2/browser',
+            //     release: $scope.branch,
+            //     selectedView: 'inferred',
+            //     displayChildren: false,
+            //     langRefset: '900000000000509007',
+            //     closeButton: false,
+            //     collapseButton: false,
+            //     linkerButton: false,
+            //     subscribersMarker: true,
+            //     searchMode: 'partialMatching',
+            //     searchLang: 'english',
+            //     diagrammingMarkupEnabled: false,
+            //     statusSearchFilter: 'activeOnly',
+            //     highlightByEffectiveTime: 'false',
+            //     taskSet: false,
+            //     taskKey: null
+            // };
 
             $scope.toggleGroupByConcept = function () {
                 $scope.userOptions.groupByConcept = !$scope.userOptions.groupByConcept;
                 $scope.processResults();
 
+            };
+
+            $scope.searchType = 'Active Only';
+            $scope.userOptions.searchType = 1;
+
+            $scope.toggleSearchType = function (){
+                if($scope.searchType === 'Active and Inactive')
+                {
+                    $scope.searchType = 'Active Only'; 
+                    $scope.userOptions.searchType = 1;
+                }
+                else if($scope.searchType === 'Active Only')
+                {
+                    $scope.searchType = 'Inactive Only';
+                    $scope.userOptions.searchType = 2;
+                }
+                else
+                {
+                    $scope.searchType = 'Active and Inactive';   
+                    $scope.userOptions.searchType = 0;
+                }
+                $scope.processResults();
             };
 
             /**
@@ -112,7 +134,20 @@ angular.module('conceptRequestServiceApp.search')
                     }
                 }
 
-                $scope.results = displayedResults;
+                // $scope.results = displayedResults;
+                if($scope.userOptions.searchType === 1){
+                    $scope.results = displayedResults.filter(function (item) {
+                      return item.concept.active === true;
+                    });
+                }
+                else if($scope.userOptions.searchType === 2){
+                    $scope.results = displayedResults.filter(function (item) {
+                      return item.concept.active === false;
+                    });
+                }
+                else{
+                    $scope.results = displayedResults;
+                }
 
                 // user cue for status
                 if ($scope.results.length === 0) {
@@ -121,6 +156,8 @@ angular.module('conceptRequestServiceApp.search')
                     $scope.searchStatus = null;
                 }
             };
+
+
 
             /**
              * Executes a search based on current scope variable searchStr
@@ -177,6 +214,15 @@ angular.module('conceptRequestServiceApp.search')
              */
             $scope.loadMore = function () {
                 $scope.search(true); // search in append mode
+            };
+
+            $scope.viewConceptInTaxonomy = function(item) {
+                $rootScope.$broadcast('viewTaxonomy', {
+                    concept: {
+                        conceptId: item.concept.conceptId,
+                        fsn: item.concept.fsn
+                    }
+                });
             };
 
             /**

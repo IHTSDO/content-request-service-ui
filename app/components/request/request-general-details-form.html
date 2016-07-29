@@ -14,18 +14,39 @@
                       name="txtTopic"
                       required
                       error-model="requestVM.error.topic"></form-control>
-
         <form-control type="text"
+                      model="requestVM.request.additionalFields.summary"
+                      label="crs.request.details.label.summary"
+                      name="txtReference"
+                      required
+                      error-model="requestVM.error.summary"></form-control>
+
+        <form-control type="textarea"
                       model="requestVM.request.additionalFields.reasonForChange"
                       label="crs.request.details.label.reasonForChange"
-                      name="txtReasonForChange"></form-control>
+                      name="txtReasonForChange"
+                      required
+                      error-model="requestVM.error.reasonForChange"></form-control>
+        <div ng-if="requestVM.requestType.value !== 'NEW_CONCEPT'">
+          <form-control type="select"
+                        model="requestVM.request.sourceTerminology"
+                        label="crs.request.details.label.sourceTerminology"
+                        options="suggestion.sourceTerminology as suggestion.terminologyName for suggestion in requestVM.sourceTerminologies"></form-control>
+        </div>
+
+        <div ng-if="requestVM.requestType.value === 'NEW_RELATIONSHIP' || requestVM.requestType.value === 'RETIRE_RELATIONSHIP' || requestVM.requestType.value === 'CHANGE_RELATIONSHIP'">
+          <form-control type="select"
+                        model="requestVM.request.destinationTerminology"
+                        label="crs.request.details.label.destinationTerminology"
+                        options="suggestion.destinationTerminology as suggestion.terminologyName for suggestion in requestVM.destinationTerminologies"></form-control>
+        </div>
 
         <form-control type="textarea"
                       model="requestVM.request.additionalFields.notes"
                       label="crs.request.details.label.notes"
                       name="txtNotes"></form-control>
 
-        <form-control type="text"
+        <form-control type="textarea"
                       model="requestVM.request.additionalFields.reference"
                       label="crs.request.details.label.reference"
                       name="txtReference"></form-control>
@@ -33,5 +54,25 @@
                       model="requestVM.request.additionalFields.namespace"
                       label="crs.request.details.label.namespace"
                       name="txtReference"></form-control>
+        <div ng-if="requestVM.requestType.value === 'NEW_CONCEPT'">        
+        <form-control type="select"
+                      model="requestVM.request.value"
+                      label="crs.request.details.label.semanticTag"
+                      options="suggestion.value as suggestion.value for suggestion in requestVM.semanticTags"
+                      required
+                      error-model="requestVM.error.value"></form-control>
+        <form-control type="text"
+                      model="requestVM.request.requestorInternalTerm"
+                      label="crs.request.details.label.localTerm"
+                      name="txtReference"></form-control>
+        <form-control type="text"
+                      model="requestVM.request.proposedUse"
+                      label="crs.request.details.label.proposedUse"
+                      name="txtReference"></form-control>
+        <form-control type="text"
+                      model="requestVM.request.umlsCui"
+                      label="crs.request.details.label.umlsCui"
+                      name="txtReference"></form-control></div>
+        
     </div>
 </form>

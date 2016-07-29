@@ -1,5 +1,5 @@
 {
-    "version": "0.1.10-SNAPSHOT",
+    "version": "0.1.14-SNAPSHOT",
     "endpoint": {
         "crs": "http://local.ihtsdotools.org/crs/",
         "ims": "https://dev-ims.ihtsdotools.org/",
@@ -37,6 +37,9 @@
     },
     "link": {
         "userGuide": "https://confluence.ihtsdotools.org/display/SCTCR/CRS+User+Guide",
-        "batchTemplate": "https://confluence.ihtsdotools.org/display/SCTCR/CRS+Template+File+For+Batch+Import"
+        "batchTemplate": "https://confluence.ihtsdotools.org/download/attachments/27594472/SIRS_Batch_Template-2016.xls",
+        "termOfService": "https://confluence.ihtsdotools.org/display/SCTCR/Content+Request+Service+Terms+of+Service",
+        "privacyPolicy": "https://confluence.ihtsdotools.org/display/TOOLS/IHTSDO+Tools+Privacy+Policy",
+        "contactUs": "http://www.ihtsdo.org/contact-us/"
     }
 }

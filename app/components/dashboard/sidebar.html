@@ -8,6 +8,18 @@
             </button>
         </a></li>
 
+        <li ng-if="dashboard.permissionChecked && dashboard.isAdmin"><a class="dashboard-links" ng-href="#/my-assigned-requests">
+            <button type="button" class="btn grey darken-3 dashboard-links">
+                <i class="md md-format-list-numbered"></i> {{'crs.dashboard.sidebar.myAssignedRequests' | translate}}
+            </button>
+        </a></li>
+
+        <li><a class="dashboard-links" ng-href="#/submitted-requests">
+            <button type="button" class="btn grey darken-3 dashboard-links">
+                <i class="md md-format-list-numbered"></i> {{'crs.dashboard.sidebar.submittedRequest' | translate}}
+            </button>
+        </a></li>
+
         <li ng-if="dashboard.permissionChecked && dashboard.isAdmin"><a class="dashboard-links" ng-href="#/accepted-requests">
             <button type="button" class="btn grey darken-3 dashboard-links">
                 <i class="md md-format-list-numbered"></i> {{'crs.dashboard.sidebar.acceptedRequest' | translate}}
@@ -39,4 +51,51 @@
         </li>-->
 
     </ul>
+    <div ng-if="dashboard.permissionChecked && dashboard.isAdmin" class="statistics-requests">
+        <div ng-repeat="number in dashboard.statisticsRequests" class="statistics-request"  ng-cloak >
+            <div class="labelSb">    
+                <span>
+                    {{number.status | statisticsStatus | translate}}
+                </span>
+            </div>
+            :   &nbsp;
+            <div class="numberSb" style="font-size: 11px;">
+                <a class="pointer" ng-click="dashboard.filterStatus(number.status)">
+                    {{number.count}}
+                </a>
+                <div style="display: inline-flex;" ng-show="number.status !== 'ALL_REQUEST' && number.status !== 'ALL' && number.status !== 'Assigned' && number.status !== 'Unassigned' && number.status !='My_Assigned'">
+                    (
+                    <a class="pointer" ng-click="dashboard.filterMyRequest(number.status)">
+                        {{number.countMyReq}}
+                    </a>
+                    )
+					(
+                    <a class="pointer" ng-click="dashboard.filterAssignedRequests(number.status)">
+                        {{number.countAssignedReq}}
+                    </a>
+                    )
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-if="dashboard.permissionChecked && dashboard.isRequester" class="statistics-requests">
+        <div ng-repeat="number in dashboard.statisticsRequests" class="statistics-request"  ng-cloak >
+            <div class="labelSb">    
+                <span>
+                    {{number.status | statisticsStatus | translate}}
+                </span>
+            </div>
+            :   &nbsp;
+            <div class="numberSb" ng-show="number.status !== 'SUBMITTED' && number.status !== 'Assigned' && number.status !== 'Unassigned'"">
+                <a class="pointer" ng-click="dashboard.filterMyRequest(number.status)">
+                    {{number.countMyReq}}
+                </a>
+            </div>
+			<div class="numberSb" ng-show="number.status == 'SUBMITTED' || number.status == 'Assigned' || number.status == 'Unassigned'"">
+                <a class="pointer" ng-click="dashboard.filterMyRequest(number.status)">
+                    {{number.count}}
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
