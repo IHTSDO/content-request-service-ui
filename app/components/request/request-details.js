@@ -1053,7 +1053,7 @@ angular
                         item.conceptFSN = concept.fsn;
                         item.proposedDescription = changedTarget.term;
                         item.descriptionIsPT = isDescriptionPT;
-                        item.proposedCaseSignificance = changedTarget.caseSignificance;
+                        item.proposedCaseSignificance = request.proposedCaseSignificance;
                         item.sourceTerminology = request.sourceTerminology;
                         item.destinationTerminology = request.destinationTerminology;
                         break;
