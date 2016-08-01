@@ -1082,11 +1082,11 @@ angular
                                 changed: true
                             };
 
-                            showDefinitionOfChange(relationship).then(function (defOfChange) {
-                                //relationship.definitionOfChanges = defOfChange;
+                            // showDefinitionOfChange(relationship).then(function (defOfChange) {
+                            //     //relationship.definitionOfChanges = defOfChange;
                                 addRel();
 
-                            });
+                            // });
                         } else {
                             addRel();
                         }
