@@ -203,7 +203,7 @@
                         "pendingForClarification": "Pending Clarification",
                         "acceptAndAssign": "Accept and Assign To Author",
                         "assign": "Assign Request",
-                        "assignToStaff": "Accept and Assign To Staff",
+                        "assignToStaff": "Assign To Staff",
                         "moveToInInceptionElaboration": "Move to In Inception/Elaboration"
                     },
                     "label": {

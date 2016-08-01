@@ -1770,11 +1770,12 @@ angular
                 }
             };
 
-            var assignRequestToStaff = function() {
+            var assignRequestToStaff = function(status) {
                 if (vm.staffs.length > 0) {
                     var modalInstance = openAssignRequestToStaffModal();
                     modalInstance.result.then(function(rs) {
-                        changeRequestStatus(vm.request.id, REQUEST_STATUS.ACCEPTED)
+                        if(status === REQUEST_STATUS.NEW.value){
+                            changeRequestStatus(vm.request.id, REQUEST_STATUS.ACCEPTED)
                             .then(function() {
                                 return requestService.assignRequestsToStaff([vm.request.id], ((rs.assignee) ? rs.assignee.key : null));
                             }, function(e) {
@@ -1785,6 +1786,13 @@ angular
                                 notificationService.sendMessage('Request accepted and assigned successfully', 5000);
                                 $location.path(prevPage).search({});
                             });
+                        }else{
+                            notificationService.sendMessage('Assigning requests');
+                            requestService.assignRequestsToStaff([vm.request.id], ((rs.assignee) ? rs.assignee.key : null)).then(function() {
+                                notificationService.sendMessage('Request assigned successfully', 5000);
+                                $location.path(prevPage).search({});
+                            });
+                        }
                     });
                 }
             };
