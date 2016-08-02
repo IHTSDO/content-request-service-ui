@@ -202,7 +202,14 @@ angular
 			
 
             var filterMyRequest = function(status){
-                if(status === 'SUBMITTED'){
+				if(status === 'Assigned' || status === 'Unassigned'){
+					var manager = "{assigned}";
+					if(status === 'Unassigned'){
+						manager = "{unassigned}";
+					}
+					accountService.getAccountInfo().then(function (accountDetails) {
+						$location.path('dashboard/submitted-requests').search({manager:manager, ogirinatorId: accountDetails.login, cache: false});                   
+					});
                     return;
                 }
                 $location.path('dashboard/requests').search({status:status, cache: false});

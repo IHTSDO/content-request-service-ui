@@ -564,6 +564,7 @@ angular
                     filter: {
                         status: $routeParams.status,
                         manager: $routeParams.manager,
+						author: $routeParams.ogirinatorId,
                         requestDate: {
                             startDate: null,
                             endDate: null
