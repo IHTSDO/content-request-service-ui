@@ -62,7 +62,7 @@ angular.module('conceptRequestServiceApp.snowowl')
 					b = b.toLowerCase();
 
 					return (a < b) ? -1 : (a > b) ? 1 : 0;
-				}
+				};
 
                 var getProjects = function () {
                     return sendScaRequest('GET', SCA_TARGET.PROJECT.path, null, null, null)
@@ -70,7 +70,7 @@ angular.module('conceptRequestServiceApp.snowowl')
 							var data = response.data;
 							data.sort(function(a, b) {
 							  return compareStrings(a.title, b.title);
-							})
+							});
                             return data;
                         });
                 };
