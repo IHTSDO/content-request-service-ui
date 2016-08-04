@@ -1036,8 +1036,8 @@ angular
                         item.proposedStatus = definitionOfChanges.proposedStatus;
                         item.historyAttribute = definitionOfChanges.historyAttribute;
                         item.historyAttributeValue = definitionOfChanges.historyAttributeValue;
-                        item.sourceTerminology = definitionOfChanges.sourceTerminology;
-                        item.destinationTerminology = definitionOfChanges.destinationTerminology;
+                        item.sourceTerminology = changedTarget.sourceTerminology;
+                        item.destinationTerminology = changedTarget.destinationTerminology;
                         item.duplicatedConceptId = vm.duplicateConcept.conceptId;
                         break;
 
@@ -1600,6 +1600,9 @@ angular
                             if (requestData.requestItems[j].requestType === REQUEST_TYPE.NEW_RELATIONSHIP.value) {
                                 requestData.requestItems.splice(j, 1);
                             }
+                            if (requestData.requestItems[j].requestType === REQUEST_TYPE.NEW_DESCRIPTION.value) {
+                                requestData.requestItems.splice(j, 1);
+                            }
                         }
                     }
                 }
@@ -1651,6 +1654,9 @@ angular
                                 requestData.requestItems.splice(j, 1);
                             }
                             if (requestData.requestItems[j].requestType === REQUEST_TYPE.NEW_RELATIONSHIP.value) {
+                                requestData.requestItems.splice(j, 1);
+                            }
+                            if (requestData.requestItems[j].requestType === REQUEST_TYPE.NEW_DESCRIPTION.value) {
                                 requestData.requestItems.splice(j, 1);
                             }
                         }

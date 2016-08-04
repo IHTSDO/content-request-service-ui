@@ -110,9 +110,16 @@ angular
                 return elementHtml;
             };
 
-            var buildTextAreaControl = function (name, model, readonlyExp) {
-                return '<textarea  class="form-control animate msd-elastic: \n;" name="' + name +
+            var buildTextAreaControl = function (name, model,isMulti, readonlyExp) {
+                var elementHtml = '';
+                if (isMulti) {
+                    elementHtml += '<multi-textarea name="' + name +
+                    '" models="' + model + '" ' + ((readonlyExp)?'ng-readonly="' + readonlyExp +'"':'') + ' ></textarea>';
+                }else{
+                    elementHtml += '<textarea  class="form-control animate msd-elastic: \n;" name="' + name +
                     '" ng-model="' + model + '" maxlength="4000" ' + ((readonlyExp)?'ng-readonly="' + readonlyExp +'"':'') + ' ></textarea>';
+                }
+                return elementHtml;
             };
 
             var buildDropdownControl = function (name, model, options, readonlyExp) {
@@ -211,6 +218,7 @@ angular
                             elementHtml = buildTextAreaControl(
                                 $attrs.name,
                                 $attrs.model,
+                                (multi === 'true'),
                                 $attrs.readonly);
                             break;
                         case 'textangular':

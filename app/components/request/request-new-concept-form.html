@@ -28,21 +28,21 @@
                       label="crs.request.details.label.proposedSynonym"
                       title="{{'tooltips.request.details.label.proposedSynonym' | translate}}"
                       multi="true"></form-control>
-        <form-control type="text"
+        <form-control type="textarea"
                       model="requestVM.request.proposedDefinitions"
                       label="crs.request.details.label.proposedDefinition"
                       title="{{'tooltips.request.details.label.proposedDefinition' | translate}}"
                       multi="true"
                       required
                       error-model="requestVM.error.proposedDefinitions"></form-control>
-        <!-- <form-control type="select"
+        <form-control type="select"
                       model="requestVM.request.value"
                       label="crs.request.details.label.semanticTag"
                       options="suggestion.value as suggestion.value for suggestion in requestVM.semanticTags"
                       required
                       error-model="requestVM.error.value"></form-control>
 
-        <form-control type="text"
+        <!-- <form-control type="text"
                       model="requestVM.request.requestorInternalTerm"
                       label="crs.request.details.label.localTerm"
                       name="txtReference"></form-control>

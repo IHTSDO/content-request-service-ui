@@ -31,13 +31,13 @@
                       name="txtReasonForChange"
                       required
                       error-model="requestVM.error.reasonForChange"></form-control>
-        <div ng-if="requestVM.requestType.value !== 'NEW_CONCEPT'">
+        <!-- <div ng-if="requestVM.requestType.value !== 'NEW_CONCEPT'">
           <form-control type="select"
                         model="requestVM.request.sourceTerminology"
                         label="crs.request.details.label.sourceTerminology"
                         title="{{'tooltips.request.details.label.sourceTerminology' | translate}}"
                         options="suggestion.sourceTerminology as suggestion.terminologyName for suggestion in requestVM.sourceTerminologies"></form-control>
-        </div>
+        </div> -->
 
         <div ng-if="requestVM.requestType.value === 'NEW_RELATIONSHIP' || requestVM.requestType.value === 'RETIRE_RELATIONSHIP' || requestVM.requestType.value === 'CHANGE_RELATIONSHIP'">
           <form-control type="select"
