@@ -80,8 +80,15 @@ angular
                 'en_*': 'en'
             })
             .useStaticFilesLoader({
-                prefix: 'translations/locale-',
-                suffix: '.json'
+                files: [{
+                    prefix: 'translations/locale-',
+                    suffix: '.json'
+                },
+                {
+                    prefix: 'translations/tooltips-',
+                    suffix: '.json'
+                }]
+
             })
             .uniformLanguageTag('bcp47')
             .determinePreferredLanguage()

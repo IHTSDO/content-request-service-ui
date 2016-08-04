@@ -6,12 +6,14 @@
         <form-control type="concept"
                       model="requestVM.originalConcept"
                       label="crs.request.details.label.sourceConcept"
+                      title="{{'tooltips.request.details.label.sourceConcept' | translate}}"
                       required
                       error-model="requestVM.error.concept"></form-control>
 
         <form-control type="relationshipType"
                       model="requestVM.request.relationshipType"
                       label="crs.request.details.label.relationshipType"
+                      title="{{'tooltips.request.details.label.relationshipType' | translate}}"
                       parent-relationships="requestVM.originalConcept.relationships"
                       required
                       error-model="requestVM.error.relationshipType"></form-control>
@@ -19,6 +21,7 @@
         <form-control type="attributeValue"
                       model="requestVM.request.destinationConcept"
                       label="crs.request.details.label.destinationConcept"
+                      title="{{'tooltips.request.details.label.destinationConcept' | translate}}"
                       required
                       domain-attribute="requestVM.request.relationshipType"
                       error-model="requestVM.error.destinationConcept"></form-control>
@@ -27,12 +30,14 @@
                       model="requestVM.request.characteristicType"
                       options="characteristicType for characteristicType in requestVM.characteristicTypes"
                       label="crs.request.details.label.characteristicType"
+                      title="{{'tooltips.request.details.label.characteristicType' | translate}}"
                       name="slCharacteristicType"></form-control>
 
         <form-control type="select"
                       model="requestVM.request.refinability"
                       options="refinability for refinability in requestVM.refinabilities"
                       label="crs.request.details.label.refinability"
+                      title="{{'tooltips.request.details.label.refinability' | translate}}"
                       name="slRefinability"></form-control>
 
     </div>

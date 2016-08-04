@@ -282,6 +282,80 @@ angular
             langKey: 'crs.dashboard.sidebar.my_assigned'
         }
     })
+    .value('STATISTICS_LABEL',{
+        Assigned: {
+            value: 'Assigned',
+            langKey: 'tooltips.dashboard.sidebar.assigned'
+        },
+        ACCEPTED: {
+            value: 'ACCEPTED',
+            langKey: 'tooltips.dashboard.sidebar.accepted'
+        },
+        APPEAL_REJECTED: {
+            value: 'APPEAL_REJECTED',
+            langKey: 'tooltips.dashboard.sidebar.appealRejected'
+        },
+        UNDER_AUTHORING: {
+            value: 'UNDER_AUTHORING',
+            langKey: 'tooltips.dashboard.sidebar.underAuthoring'
+        },
+        CLARIFICATION_NEEDED: {
+            value: 'CLARIFICATION_NEEDED',
+            langKey: 'tooltips.dashboard.sidebar.clarificationNeeded'
+        },
+        RELEASED: {
+            value: 'RELEASED',
+            langKey: 'tooltips.dashboard.sidebar.released'
+        },
+        FORWARDED: {
+            value: 'FORWARDED',
+            langKey: 'tooltips.dashboard.sidebar.forwarded'
+        },
+        NEW: {
+            value: 'NEW',
+            langKey: 'tooltips.dashboard.sidebar.new'
+        },
+        REJECTED: {
+            value: 'REJECTED',
+            langKey: 'tooltips.dashboard.sidebar.rejected'
+        },
+        WITHDRAWN: {
+            value: 'WITHDRAWN',
+            langKey: 'tooltips.dashboard.sidebar.withdraw'
+        },
+        APPEAL: {
+            value: 'APPEAL',
+            langKey: 'tooltips.dashboard.sidebar.appeal'
+        },
+        DRAFT: {
+            value: 'DRAFT',
+            langKey: 'tooltips.dashboard.sidebar.draft'
+        },
+        SUBMITTED: {
+            value: 'SUBMITTED',
+            langKey: 'tooltips.dashboard.sidebar.submitted'
+        },
+        ALL_REQUEST: {
+            value: 'ALL_REQUEST',
+            langKey: 'tooltips.dashboard.sidebar.allRequests'
+        },
+        ALL: {
+            value: 'ALL',
+            langKey: 'tooltips.dashboard.sidebar.all'
+        },
+        Unassigned: {
+            value:'Unassigned',
+            langKey: 'tooltips.dashboard.sidebar.unassigned'
+        },
+        IN_INCEPTION_ELABORATION: {
+            value:'IN_INCEPTION_ELABORATION',
+            langKey: 'tooltips.dashboard.sidebar.in_inception_elaboration'
+        },
+        My_Assigned: {
+            value:'My_Assigned',
+            langKey: 'tooltips.dashboard.sidebar.my_assigned'
+        }
+    })
     .value('REQUEST_METADATA_KEY', {
         SOURCE_TERMINOLOGY: 'SOURCE_TERMINOLOGY',
         CASE_SIGNIFICANCE: 'CASE_SIGNIFICANCE',
