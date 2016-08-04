@@ -64,13 +64,7 @@
                       title="{{'tooltips.request.details.label.namespace' | translate}}"
                       name="txtReference"></form-control>
         <div ng-if="requestVM.requestType.value === 'NEW_CONCEPT'">        
-        <form-control type="select"
-                      model="requestVM.request.value"
-                      label="crs.request.details.label.semanticTag"
-                      title="{{'tooltips.request.details.label.semanticTag' | translate}}"
-                      options="suggestion.value as suggestion.value for suggestion in requestVM.semanticTags"
-                      required
-                      error-model="requestVM.error.value"></form-control>
+        
         <form-control type="text"
                       model="requestVM.request.requestorInternalTerm"
                       label="crs.request.details.label.localTerm"

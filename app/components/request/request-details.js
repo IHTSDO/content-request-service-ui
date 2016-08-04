@@ -1600,9 +1600,12 @@ angular
                             if (requestData.requestItems[j].requestType === REQUEST_TYPE.NEW_RELATIONSHIP.value) {
                                 requestData.requestItems.splice(j, 1);
                             }
-                            if (requestData.requestItems[j].requestType === REQUEST_TYPE.NEW_DESCRIPTION.value) {
-                                requestData.requestItems.splice(j, 1);
+                            if(vm.requestType === REQUEST_TYPE.RETIRE_DESCRIPTION){
+                                if (requestData.requestItems[j].requestType === REQUEST_TYPE.NEW_DESCRIPTION.value) {
+                                    requestData.requestItems.splice(j, 1);
+                                }
                             }
+                           
                         }
                     }
                 }
@@ -1656,11 +1659,13 @@ angular
                             if (requestData.requestItems[j].requestType === REQUEST_TYPE.NEW_RELATIONSHIP.value) {
                                 requestData.requestItems.splice(j, 1);
                             }
-                            if (requestData.requestItems[j].requestType === REQUEST_TYPE.NEW_DESCRIPTION.value) {
-                                requestData.requestItems.splice(j, 1);
+                            if(vm.requestType === REQUEST_TYPE.RETIRE_DESCRIPTION){
+                                if (requestData.requestItems[j].requestType === REQUEST_TYPE.NEW_DESCRIPTION.value) {
+                                    requestData.requestItems.splice(j, 1);
+                                }
                             }
                         }
-                    }
+                    } 
                 }
 
                 requestService.saveRequest(requestData)
