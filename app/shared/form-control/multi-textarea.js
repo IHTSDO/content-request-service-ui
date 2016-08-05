@@ -12,7 +12,7 @@ angular
                 },
                 template: [
                     '<div class="row" style="margin-left: -15px;margin-right: -15px;margin-bottom: 10px" ng-repeat="model in models track by $index" >',
-                    '<div class="{{readonly?\'col-md-12\':\'col-md-10\'}}"><textarea type="text" maxlength="4000" class="form-control animate msd-elastic: \n;" ng-model="models[$index]" maxlength="255" ng-readonly="readonly" ></textarea></div>',
+                    '<div class="{{readonly?\'col-md-12\':\'col-md-10\'}}"><textarea maxlength="4000" id="auto-resize" class="form-control animate msd-elastic: \n;" ng-model="models[$index]" ng-readonly="readonly"></textarea></div>',
                     '<div ng-if="!readonly" class="col-md-2">',
                     '<button type="button" ng-click="addField($index)" tabindex="-1"',
                     'class="btn-default add-buttons md fa fa-plus button-width-plus pull-right tooltips-left tooltips-light normal-case"></button>',

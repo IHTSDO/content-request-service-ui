@@ -16,6 +16,12 @@
                       name="txtFSN"
                       required
                       error-model="requestVM.error.proposedFSN"></form-control>
+        <form-control type="select"
+                      model="requestVM.request.value"
+                      label="crs.request.details.label.semanticTag"
+                      options="suggestion.value as suggestion.value for suggestion in requestVM.semanticTags"
+                      required
+                      error-model="requestVM.error.value"></form-control>
         <form-control type="text"
                       model="requestVM.request.conceptPT"
                       label="crs.request.details.label.conceptPT"
@@ -35,13 +41,6 @@
                       multi="true"
                       required
                       error-model="requestVM.error.proposedDefinitions"></form-control>
-        <form-control type="select"
-                      model="requestVM.request.value"
-                      label="crs.request.details.label.semanticTag"
-                      options="suggestion.value as suggestion.value for suggestion in requestVM.semanticTags"
-                      required
-                      error-model="requestVM.error.value"></form-control>
-
         <!-- <form-control type="text"
                       model="requestVM.request.requestorInternalTerm"
                       label="crs.request.details.label.localTerm"

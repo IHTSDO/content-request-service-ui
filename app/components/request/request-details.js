@@ -519,7 +519,10 @@ angular
                     // rebuild concept from request data
 
                     vm.concept = requestData.concept;
-
+                    $timeout(function () {
+                        angular.element('#auto-resize').css('height', angular.element('#auto-resize').height() + 15);
+                    });
+                    
                     return requestData;
                 }, function(reason) {
                     notificationService.sendError(reason.message, 5000, null, true);
