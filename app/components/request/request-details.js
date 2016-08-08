@@ -1383,13 +1383,9 @@ angular
                 concept.definitionOfChanges.reasonForChange = request.additionalFields.reasonForChange;
                 concept.definitionOfChanges.namespace = request.additionalFields.namespace;
                 concept.definitionOfChanges.currentFsn = concept.fsn;
-				if(request.requestorInternalId == ''){
-					concept.conceptId = null;
-				}
-				else{
+				if(null != request.requestorInternalId && '' != request.requestorInternalId && REQUEST_TYPE.NEW_CONCEPT.value == request.requestType){
 					concept.conceptId = request.requestorInternalId;
 				}
-				
             };
 
             var buildConceptFromRequest = function(request) {
