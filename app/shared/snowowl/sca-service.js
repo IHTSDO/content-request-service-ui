@@ -56,21 +56,10 @@ angular.module('conceptRequestServiceApp.snowowl')
                     return config;
                 };
 
-				var compareStrings = function(a, b) {
-					// Assuming you want case-insensitive comparison
-					a = a.toLowerCase();
-					b = b.toLowerCase();
-
-					return (a < b) ? -1 : (a > b) ? 1 : 0;
-				}
-
                 var getProjects = function () {
                     return sendScaRequest('GET', SCA_TARGET.PROJECT.path, null, null, null)
                         .then(function (response) {
 							var data = response.data;
-							data.sort(function(a, b) {
-							  return compareStrings(a.title, b.title);
-							})
                             return data;
                         });
                 };

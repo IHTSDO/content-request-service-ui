@@ -46,6 +46,7 @@ angular
         // shared
         'conceptRequestServiceApp.imsAuthentication',
         'conceptRequestServiceApp.configuration',
+		'conceptRequestServiceApp.utils',
         'conceptRequestServiceApp.formControl',
         'conceptRequestServiceApp.search',
         'conceptRequestServiceApp.conceptInfo',
@@ -56,6 +57,7 @@ angular
         'conceptRequestServiceApp.conceptEdit',
         'conceptRequestServiceApp.objectService',
         'conceptRequestServiceApp.scroll'
+		
     ])
     .config(function ($rootScopeProvider, $routeProvider, $modalProvider, $translateProvider, cfpLoadingBarProvider) {
         // up the digest limit to account for extremely long depth of SNOMEDCT trees leading to spurious errors

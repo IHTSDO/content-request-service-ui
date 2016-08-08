@@ -28,7 +28,8 @@ angular
         'REQUEST_INPUT_MODE',
         'jiraService',
         '$timeout',
-        function($scope, $rootScope, $routeParams, $location, $anchorScroll, $uibModal, $sce, $q, requestService, notificationService, requestMetadataService, objectService, snowowlService, snowowlMetadataService, crsJiraService, scaService, accountService, REQUEST_METADATA_KEY, REQUEST_TYPE, CONCEPT_EDIT_EVENT, REQUEST_STATUS, REQUEST_INPUT_MODE, jiraService, $timeout) {
+		'utilsService', 
+        function($scope, $rootScope, $routeParams, $location, $anchorScroll, $uibModal, $sce, $q, requestService, notificationService, requestMetadataService, objectService, snowowlService, snowowlMetadataService, crsJiraService, scaService, accountService, REQUEST_METADATA_KEY, REQUEST_TYPE, CONCEPT_EDIT_EVENT, REQUEST_STATUS, REQUEST_INPUT_MODE, jiraService, $timeout, utilsService) {
             var vm = this;
             var REQUEST_MODE = {
                 NEW: { value: 'new', langKey: 'crs.request.requestMode.newRequest' },
@@ -140,6 +141,9 @@ angular
             var loadProjects = function() {
                 vm.loadingProjects = true;
                 scaService.getProjects().then(function(response) {
+					response.sort(function(a, b) {
+						return utilsService.compareStrings(a.title, b.title);
+					})
                     vm.projects = response;
                 }).finally(function() {
                     vm.loadingProjects = false;
