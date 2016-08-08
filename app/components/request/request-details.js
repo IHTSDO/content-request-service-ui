@@ -523,7 +523,10 @@ angular
                     // rebuild concept from request data
 
                     vm.concept = requestData.concept;
-
+                    $timeout(function () {
+                        angular.element('#auto-resize').css('height', angular.element('#auto-resize').height() + 15);
+                    });
+                    
                     return requestData;
                 }, function(reason) {
                     notificationService.sendError(reason.message, 5000, null, true);
@@ -1040,8 +1043,8 @@ angular
                         item.proposedStatus = definitionOfChanges.proposedStatus;
                         item.historyAttribute = definitionOfChanges.historyAttribute;
                         item.historyAttributeValue = definitionOfChanges.historyAttributeValue;
-                        item.sourceTerminology = definitionOfChanges.sourceTerminology;
-                        item.destinationTerminology = definitionOfChanges.destinationTerminology;
+                        item.sourceTerminology = changedTarget.sourceTerminology;
+                        item.destinationTerminology = changedTarget.destinationTerminology;
                         item.duplicatedConceptId = vm.duplicateConcept.conceptId;
                         break;
 
@@ -1604,6 +1607,12 @@ angular
                             if (requestData.requestItems[j].requestType === REQUEST_TYPE.NEW_RELATIONSHIP.value) {
                                 requestData.requestItems.splice(j, 1);
                             }
+                            if(vm.requestType === REQUEST_TYPE.RETIRE_DESCRIPTION){
+                                if (requestData.requestItems[j].requestType === REQUEST_TYPE.NEW_DESCRIPTION.value) {
+                                    requestData.requestItems.splice(j, 1);
+                                }
+                            }
+                           
                         }
                     }
                 }
@@ -1657,8 +1666,13 @@ angular
                             if (requestData.requestItems[j].requestType === REQUEST_TYPE.NEW_RELATIONSHIP.value) {
                                 requestData.requestItems.splice(j, 1);
                             }
+                            if(vm.requestType === REQUEST_TYPE.RETIRE_DESCRIPTION){
+                                if (requestData.requestItems[j].requestType === REQUEST_TYPE.NEW_DESCRIPTION.value) {
+                                    requestData.requestItems.splice(j, 1);
+                                }
+                            }
                         }
-                    }
+                    } 
                 }
 
                 requestService.saveRequest(requestData)

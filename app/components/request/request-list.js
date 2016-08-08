@@ -13,7 +13,8 @@ angular
         'accountService',
         'jiraService',
         '$routeParams',
-        function ($filter, $sce, crsJiraService, NgTableParams, requestService, notificationService, accountService, jiraService, $routeParams) {
+        '$uibModal',
+        function ($filter, $sce, crsJiraService, NgTableParams, requestService, notificationService, accountService, jiraService, $routeParams, $uibModal) {
             var vm = this;
 
             vm.filterRequests = {
@@ -354,23 +355,36 @@ angular
                             vm.selectedRequests.items[requestId]=false;
                         }
                     });
-
                     if (removingRequestIds.length > 0) {
-                        if (window.confirm('Are you sure you want to remove ' + removingRequestIds.length +' requests?')) {
+                        var modalInstance = $uibModal.open({
+                            templateUrl: 'components/request/confirm-modal.html',
+                            controller: 'ConfirmModalCtrl as vm',
+                            resolve: {
+                                number: function() {
+                                    return removingRequestIds.length;
+                                }
+                            }
+                        });
+
+                        modalInstance.result.then(function() {
+                            notificationService.sendMessage('Removing Requests...', 8000);
                             requestService.removeRequests(removingRequestIds).then(function () {
-                                //notificationService.sendMessage('crs.request.message.requestRemoved', 5000);
-                                window.alert('Requests have been removed successfully ! ');
+                                
                                 if (vm.tableParams) {
                                     vm.tableParams.reload();
+                                    notificationService.sendMessage('Requests have been removed successfully!', 5000);
                                 }
                                 if (vm.submittedTableParams) {
                                     vm.submittedTableParams.reload();
+                                    notificationService.sendMessage('Requests have been removed successfully!', 5000);
                                 }
 
+                            }, function(error){
+                                notificationService.sendMessage(error.message, 5000);
                             });
-                        }
-                    } else {
-                        window.alert('Please select at least a request to delete.');
+                        });
+                    }else {
+                        notificationService.sendMessage('Please select at least a request to remove.', 5000);
                     }
                 }
             };

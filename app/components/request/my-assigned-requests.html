@@ -25,10 +25,6 @@
                             <span class="md md-add"></span>
                             <div class="ripple-wrapper"></div>
                         </button>
-                        <button type="button" class="btn btn-round btn-default " title="{{'crs.request.list.tip.remove' | translate}}" ng-click="vm.removeSelectedRequests()">
-                            <span class="md md-delete"></span>
-                            <div class="ripple-wrapper"></div>
-                        </button>
                     </div>
                 </div>
             </div>
@@ -37,11 +33,11 @@
             <div class="table-responsive white" style="min-height: 416px;">
                 <table ng-table="vm.assignedRequestTableParams" template-pagination="layout/template/review-table-pager.html"
                        class="table table-full table-full-small table-requests" show-filter="">
-                    <tr ng-repeat="request in $data" ng-click="dashboard.editRequest(request.id)" class="clickable-row" ng-class="{'row-selected': vm.selectedRequests.items[request.id] === true}">
-                        <td class="col-checkbox" header="'ng-table/headers/checkbox.html'" ng-click="$event.stopPropagation()">
+                    <tr ng-repeat="request in $data" ng-click="dashboard.previewRequest(request.id)" class="clickable-row" ng-class="{'row-selected': vm.selectedRequests.items[request.id] === true}">
+                        <!-- <td class="col-checkbox" header="'ng-table/headers/checkbox.html'" ng-click="$event.stopPropagation()">
                             <input type="checkbox" class="small-checkbox" ng-model="vm.selectedRequests.items[request.id]">
                         </td>
-
+ -->
                         <td data-title="'crs.request.list.tableHeader.requestId' | translate" sortable="'id'" filter="vm.filterRequests.requestId">
                             {{request.id}}
                         </td>
