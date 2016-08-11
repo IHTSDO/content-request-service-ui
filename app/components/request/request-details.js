@@ -179,6 +179,9 @@ angular
             var loadSemanticTags = function(){
                 return crsJiraService.getSemanticTags().then(function(semanticTags){
                     vm.semanticTags = semanticTags;
+					vm.semanticTags.sort(function(a, b) {
+						return utilsService.compareStrings(a.value, b.value);
+					});
                     if(vm.pageMode !== REQUEST_MODE.NEW){
                         var isNotInArr;
                         for(var i in semanticTags){
@@ -594,7 +597,6 @@ angular
                 if (!angular.isArray(concept.relationships)) {
                     concept.relationships = [];
                 }
-
                 if (vm.requestType === REQUEST_TYPE.NEW_CONCEPT) {
                     var arr = [];
                     for (var i = 0; i < parentConcept.length; i++) {
@@ -612,7 +614,6 @@ angular
 
             var injectRelationship = function(concept, relationshipType, destinationConcept, characteristicType, refinability, applyChanges) {
                 var relationship = objectService.getNewAttributeRelationship(concept.conceptId);
-
                 if (!angular.isArray(concept.relationships)) {
                     concept.relationships = [];
                 }
@@ -642,7 +643,7 @@ angular
 
             var extractConceptDescriptions = function(concept, descriptionType, extractAll) {
                 var description, descriptions = [];
-
+				
                 if (concept &&
                     angular.isArray(concept.descriptions) &&
                     concept.descriptions.length > 0) {
@@ -663,7 +664,6 @@ angular
             var injectConceptDescription = function(concept, descriptionTerm, applyChanges) {
                 var desc = objectService.getNewDescription(concept.conceptId);
                 desc.term = descriptionTerm;
-
                 if (!angular.isArray(concept.descriptions)) {
                     concept.descriptions = [];
                 }
@@ -681,7 +681,6 @@ angular
 
             var cloneConceptRelationship = function(concept, sourceRelationshipId, proposedRefinability, proposedRelationshipStatus, applyChanges, destinationConcept, characteristicType, relationshipType, groupId) {
                 var sourceRelationship, newRelaionship, sourceRel;
-
                 for (var i = 0; i < concept.relationships.length; i++) {
                     sourceRel = concept.relationships[i];
 
@@ -755,7 +754,6 @@ angular
 
             var cloneConceptDescription = function(concept, sourceDescriptionId, proposedTerm, proposedCaseSignificance, applyChanges, descriptionStatus) {
                 var sourceDescription, newDesc, sourceDesc;
-
                 for (var i = 0; i < concept.descriptions.length; i++) {
                     sourceDesc = concept.descriptions[i];
 
@@ -766,6 +764,7 @@ angular
                 }
 
                 if (sourceDescription) {
+					
                     newDesc = angular.copy(sourceDescription);
 
                     newDesc.descriptionId = null;
@@ -865,7 +864,6 @@ angular
 
             var extractConceptPT = function(concept) {
                 var syns = extractConceptDescriptions(concept, DESCRIPTION_TYPE.SYN, true);
-
                 for (var i = 0; i < syns.length; i++) {
                     if (syns[i].acceptabilityMap &&
                         syns[i].acceptabilityMap[ACCEPTABILITY_DIALECT.EN_GB] === ACCEPTABILITY_VALUE.PREFERRED &&
@@ -879,7 +877,6 @@ angular
 
             var injectConceptPT = function(concept, conceptPT, applyChanges) {
                 var preferredTerm = objectService.getNewPt(concept.conceptId);
-
                 if (!angular.isArray(concept.descriptions)) {
                     concept.descriptions = [];
                 }
@@ -903,7 +900,6 @@ angular
                 var syns = extractConceptDescriptions(concept, DESCRIPTION_TYPE.SYN, extractAll);
                 var sysnTerms = [];
                 var excludedPT;
-
                 for (var i = 0; i < syns.length; i++) {
                     if (!excludedPT &&
                         syns[i].acceptabilityMap &&
@@ -926,7 +922,6 @@ angular
                 if (!angular.isArray(concept.descriptions)) {
                     concept.descriptions = [];
                 }
-
                 if (angular.isArray(synonyms) && synonyms.length > 0) {
                     for (var i = 0; i < synonyms.length; i++) {
                         synTerm = synonyms[i];
@@ -960,7 +955,6 @@ angular
             var extractConceptDefinitions = function(concept, extractAll) {
                 var defs = extractConceptDescriptions(concept, DESCRIPTION_TYPE.DEF, extractAll);
                 var defTerms = [];
-
                 for (var i = 0; i < defs.length; i++) {
                     defTerms.push(defs[i].term);
                 }
@@ -970,7 +964,6 @@ angular
 
             var injectConceptDefinitions = function(concept, definitions, applyChanges) {
                 var defTerm, defDesc;
-
                 if (!angular.isArray(concept.descriptions)) {
                     concept.descriptions = [];
                 }

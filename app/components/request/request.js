@@ -4,16 +4,18 @@ angular
     .module('conceptRequestServiceApp.request', [
     ])
     .value('REQUEST_INPUT_MODE', {
+		DIRECT: {
+            value: 'DIRECT',
+            langKey: 'crs.request.inputMode.direct',
+            requestTypes: ['NEW_CONCEPT', 'CHANGE_RETIRE_CONCEPT']
+        },
+		
         SIMPLE: {
             value: 'SIMPLE',
             langKey: 'crs.request.inputMode.simple',
             requestTypes: ['NEW_CONCEPT', 'NEW_DESCRIPTION', 'NEW_RELATIONSHIP', 'CHANGE_DESCRIPTION', 'CHANGE_RELATIONSHIP', 'RETIRE_DESCRIPTION', 'RETIRE_RELATIONSHIP', 'CHANGE_RETIRE_CONCEPT', 'OTHER']
-        },
-        DIRECT: {
-            value: 'DIRECT',
-            langKey: 'crs.request.inputMode.direct',
-            requestTypes: ['NEW_CONCEPT', 'CHANGE_RETIRE_CONCEPT']
         }
+        
     })
     .value('REQUEST_TYPE', {
         NEW_CONCEPT: {

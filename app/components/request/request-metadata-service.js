@@ -4,7 +4,8 @@ angular.module('conceptRequestServiceApp.request')
     .service('requestMetadataService', [
         '$q',
         'REQUEST_METADATA_KEY',
-        function ($q, REQUEST_METADATA_KEY) {
+		'utilsService',
+        function ($q, REQUEST_METADATA_KEY, utilsService) {
             var metadata = {};
 
             // Source Terminology
@@ -14,6 +15,10 @@ angular.module('conceptRequestServiceApp.request')
                 'SNOMED CT Canadian French Extension'
             ];
 
+			metadata[REQUEST_METADATA_KEY.SOURCE_TERMINOLOGY].sort(function(a, b) {
+				return utilsService.compareStrings(a, b);
+			});
+			
             // Semantic Tag
             metadata[REQUEST_METADATA_KEY.SEMANTIC_TAG] = [
                 'administrative concept',
@@ -62,6 +67,10 @@ angular.module('conceptRequestServiceApp.request')
                 {value: 'CASE_INSENSITIVE', text: 'Entire term case insensitive'},
                 {value: 'INITIAL_CHARACTER_CASE_INSENSITIVE', text: 'Only initial character case insensitive'},
             ];
+			
+			metadata[REQUEST_METADATA_KEY.CASE_SIGNIFICANCE].sort(function(a, b) {
+				return utilsService.compareStrings(a.text, b.text);
+			});
 
             // Relationship Type
             metadata[REQUEST_METADATA_KEY.RELATIONSHIP_TYPE] = [
@@ -135,12 +144,20 @@ angular.module('conceptRequestServiceApp.request')
                 'SNOMED CT Canadian Extension'
             ];
 
+			metadata[REQUEST_METADATA_KEY.DESTINATION_TERMINOLOGY].sort(function(a, b) {
+				return utilsService.compareStrings(a, b);
+			});
+			
             // Characteristic Types
             metadata[REQUEST_METADATA_KEY.CHARACTERISTIC_TYPE] = [
                 'Defining relationship',
                 'Qualifying relationship',
                 'Additional relationship'
             ];
+			
+			metadata[REQUEST_METADATA_KEY.CHARACTERISTIC_TYPE].sort(function(a, b) {
+				return utilsService.compareStrings(a, b);
+			});
 
             // Refinabilities
             metadata[REQUEST_METADATA_KEY.REFINABILITY] = [
@@ -149,6 +166,10 @@ angular.module('conceptRequestServiceApp.request')
                 'Mandatory'
             ];
 
+			metadata[REQUEST_METADATA_KEY.REFINABILITY].sort(function(a, b) {
+				return utilsService.compareStrings(a, b);
+			});
+			
             // Concept History Attributes
             metadata[REQUEST_METADATA_KEY.CONCEPT_HISTORY_ATTRIBUTE] = [
                 'Maybe a',
@@ -158,6 +179,10 @@ angular.module('conceptRequestServiceApp.request')
                 'Same As',
                 'Was a'
             ];
+			
+			metadata[REQUEST_METADATA_KEY.CONCEPT_HISTORY_ATTRIBUTE].sort(function(a, b) {
+				return utilsService.compareStrings(a, b);
+			});
 
             // New Concept Statuses
             metadata[REQUEST_METADATA_KEY.NEW_CONCEPT_STATUS] = [
@@ -180,6 +205,10 @@ angular.module('conceptRequestServiceApp.request')
                 'Retired'
             ];
 
+			metadata[REQUEST_METADATA_KEY.NEW_CONCEPT_STATUS].sort(function(a, b) {
+				return utilsService.compareStrings(a, b);
+			});
+			
             // New Description Statuses
             metadata[REQUEST_METADATA_KEY.NEW_DESCRIPTION_STATUS] = [
                 'Ambiguous',
@@ -192,6 +221,10 @@ angular.module('conceptRequestServiceApp.request')
                 'Retired'
             ];
 
+			metadata[REQUEST_METADATA_KEY.NEW_DESCRIPTION_STATUS].sort(function(a, b) {
+				return utilsService.compareStrings(a, b);
+			});
+			
             // New Relationship Statuses
             metadata[REQUEST_METADATA_KEY.NEW_RELATIONSHIP_STATUS] = [
                 'Ambiguous',
@@ -204,6 +237,10 @@ angular.module('conceptRequestServiceApp.request')
                 'Retired'
             ];
 
+			metadata[REQUEST_METADATA_KEY.NEW_RELATIONSHIP_STATUS].sort(function(a, b) {
+				return utilsService.compareStrings(a, b);
+			});
+			
             var getMetadata = function (metadataKeys) {
                 var deferred = $q.defer(),
                     keyArray,

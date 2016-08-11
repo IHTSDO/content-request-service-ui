@@ -14,7 +14,8 @@ angular
         'jiraService',
         '$routeParams',
         '$uibModal',
-        function ($filter, $sce, crsJiraService, NgTableParams, requestService, notificationService, accountService, jiraService, $routeParams, $uibModal) {
+		'utilsService',
+        function ($filter, $sce, crsJiraService, NgTableParams, requestService, notificationService, accountService, jiraService, $routeParams, $uibModal, utilsService) {
             var vm = this;
 
             vm.filterRequests = {
@@ -171,7 +172,15 @@ angular
             var initView = function () {
                 vm.selectedRequests = {checked: false, items: {}};
                 vm.selectedSubmittedRequests = {checked: false, items: {}};
-
+				
+				vm.requestStatus = vm.requestStatus.sort(function(a, b) {
+					return utilsService.compareStrings(a.title, b.title);
+				});
+				
+				vm.requestTypes = vm.requestTypes.sort(function(a, b) {
+					return utilsService.compareStrings(a.title, b.title);
+				});
+				
                 accountService.getAccountInfo().then(function (accountDetails) {
                     vm.assignee = accountDetails.login;                   
                 });
