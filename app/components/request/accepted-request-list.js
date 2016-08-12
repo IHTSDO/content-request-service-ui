@@ -14,7 +14,8 @@ angular
         'scaService',
         'crsJiraService',
         'jiraService',
-        function($filter, $sce, $uibModal, NgTableParams, requestService, notificationService, accountService, scaService, crsJiraService, jiraService) {
+		'utilsService',
+        function($filter, $sce, $uibModal, NgTableParams, requestService, notificationService, accountService, scaService, crsJiraService, jiraService, utilsService) {
             var vm = this;
 
             vm.filterRequests = {
@@ -176,7 +177,14 @@ angular
                     vm.isAdmin = (rs.isAdmin === true);
                     vm.isViewer = (rs.isViewer === true);
                 });
-
+				
+				vm.requestStatus.sort(function(a, b) {
+						return utilsService.compareStrings(a.title, b.title);
+				});
+				vm.requestTypes.sort(function(a, b) {
+						return utilsService.compareStrings(a.title, b.title);
+				});
+				
                 // load projects
                 loadProjects();
 
@@ -222,6 +230,9 @@ angular
             var loadProjects = function() {
                 vm.loadingProjects = true;
                 scaService.getProjects().then(function(response) {
+					response.sort(function(a, b) {
+						return utilsService.compareStrings(a.title, b.title);
+					});
                     vm.projects = response;
                     for(var i in vm.projects){
                         vm.projects[i].id = vm.projects[i].key;
@@ -551,7 +562,7 @@ angular
                 endDate: null
             };
             vm.options = {
-              format: 'DD/MM/YY',
+              format: 'YYYY-MM-DD',
               showDropdowns: true,
               type: 'moment'
             };

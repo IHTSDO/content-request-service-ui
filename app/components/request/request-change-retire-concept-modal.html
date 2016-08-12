@@ -5,18 +5,21 @@
                       model="definitionOfChanges.proposedStatus"
                       options="newConceptStatus for newConceptStatus in requestMetadata.newConceptStatuses"
                       label="crs.request.details.label.proposedStatus"
+                      title="{{'tooltips.request.details.label.proposedStatus' | translate}}"
                       name="slNewConceptStatus"></form-control>
 
         <form-control type="select"
                       model="definitionOfChanges.historyAttribute"
                       options="historyAttribute for historyAttribute in requestMetadata.historyAttributes"
                       label="crs.request.details.label.historyAttribute"
+                      title="{{'tooltips.request.details.label.historyAttribute' | translate}}"
                       name="slHistoryAttribute"></form-control>
 
 
         <form-control type="text"
                       model="definitionOfChanges.historyAttributeValue"
                       label="crs.request.details.label.historyAttributeValue"
+                      title="{{'tooltips.request.details.label.historyAttributeValue' | translate}}"
                       name="txtHistoryAttributeValue"></form-control>
     </div>
 </form>

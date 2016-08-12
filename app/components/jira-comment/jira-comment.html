@@ -10,7 +10,7 @@
                         <span class="user-name">{{comment.user.displayName}}</span>
                     </a>
                     <span>added a comment on</span>
-                    <span class="comment-date">{{comment.createDate | date:'MM-dd-yyyy H:mm:ss'}}</span>
+                    <span class="comment-date">{{comment.createDate | date:'yyyy-MM-dd H:mm:ss'}}</span>
                 </div>
                 <div class="comment-details" ng-if="comment.internal === true">
                     <a class="user-avatar" >
@@ -18,7 +18,7 @@
                         <span class="user-name">{{comment.user.displayName}}</span>
                     </a>
                     <span>added an<span style="color: #5cb85c"> internal comment </span>on</span>
-                    <span class="comment-date">{{comment.createDate | date:'MM-dd-yyyy H:mm:ss'}}</span>
+                    <span class="comment-date">{{comment.createDate | date:'yyyy-MM-dd H:mm:ss'}}</span>
                 </div>
             </div>
             <div class="comment-body">{{comment.body}}</div>

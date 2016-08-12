@@ -4,16 +4,22 @@ angular.module('conceptRequestServiceApp.request')
         '$rootScope',
         '$scope',
         '$uibModalInstance',
+		'utilsService',
         'REQUEST_INPUT_MODE',
         'REQUEST_TYPE',
-        function ($rootScope, $scope, $uibModalInstance, REQUEST_INPUT_MODE, REQUEST_TYPE) {
+        function ($rootScope, $scope, $uibModalInstance, utilsService, REQUEST_INPUT_MODE, REQUEST_TYPE) {
             var vm = this;
 
             var initView = function () {
                 vm.requestType = null;
                 vm.msgSuccess = null;
                 vm.msgError = null;
-
+				REQUEST_INPUT_MODE.SIMPLE.requestTypes.sort(function(a, b) {
+					return utilsService.compareStrings(a, b);
+				});
+				REQUEST_INPUT_MODE.DIRECT.requestTypes.sort(function(a, b) {
+					return utilsService.compareStrings(a, b);
+				});
                 vm.inputMode = REQUEST_INPUT_MODE.SIMPLE.value;
             };
 

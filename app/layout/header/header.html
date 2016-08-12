@@ -48,7 +48,7 @@
                         <button type="button" ng-class="[{'blue' : header.notification.type === 'MESSAGE'}, {'orange': header.notification.type ==='WARNING'}, {'red' : header.notification.type === 'ERROR'}]"><span class="md md-link"></span></button>
                     </a>
 
-                    <p>{{header.notification.time | date: 'short'}} <strong class="green-save">{{header.notification.message | translate}}</strong>
+                    <p>{{header.notification.time | date: 'yyyy-MM-dd HH-mm-ss'}} <strong class="green-save">{{header.notification.message | translate}}</strong>
                     </p>
                 </div>
             </div>

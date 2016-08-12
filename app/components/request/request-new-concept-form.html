@@ -6,38 +6,42 @@
         <form-control type="concept"
                       model="requestVM.request.parentConcept"
                       label="crs.request.details.label.parentConcept"
+                      title="{{'tooltips.request.details.label.parentConcept' | translate}}"
                       multi="true"></form-control>
 
         <form-control type="text"
                       model="requestVM.request.proposedFSN"
                       label="crs.request.details.label.proposedFSN"
+                      title="{{'tooltips.request.details.label.proposedFSN' | translate}}"
                       name="txtFSN"
                       required
                       error-model="requestVM.error.proposedFSN"></form-control>
+        <form-control type="select"
+                      model="requestVM.request.value"
+                      label="crs.request.details.label.semanticTag"
+                      options="suggestion.value as suggestion.value for suggestion in requestVM.semanticTags"
+                      required
+                      error-model="requestVM.error.value"></form-control>
         <form-control type="text"
                       model="requestVM.request.conceptPT"
                       label="crs.request.details.label.conceptPT"
+                      title="{{'tooltips.request.details.label.conceptPT' | translate}}"
                       name="txtPT"
                       required
                       error-model="requestVM.error.conceptPT"></form-control>
         <form-control type="text"
                       model="requestVM.request.proposedSynonyms"
                       label="crs.request.details.label.proposedSynonym"
+                      title="{{'tooltips.request.details.label.proposedSynonym' | translate}}"
                       multi="true"></form-control>
-        <form-control type="text"
+        <form-control type="textarea"
                       model="requestVM.request.proposedDefinitions"
                       label="crs.request.details.label.proposedDefinition"
+                      title="{{'tooltips.request.details.label.proposedDefinition' | translate}}"
                       multi="true"
                       required
                       error-model="requestVM.error.proposedDefinitions"></form-control>
-        <!-- <form-control type="select"
-                      model="requestVM.request.value"
-                      label="crs.request.details.label.semanticTag"
-                      options="suggestion.value as suggestion.value for suggestion in requestVM.semanticTags"
-                      required
-                      error-model="requestVM.error.value"></form-control>
-
-        <form-control type="text"
+        <!-- <form-control type="text"
                       model="requestVM.request.requestorInternalTerm"
                       label="crs.request.details.label.localTerm"
                       name="txtReference"></form-control>

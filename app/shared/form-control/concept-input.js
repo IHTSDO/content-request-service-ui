@@ -6,8 +6,9 @@ angular
         'snowowlService',
         '$routeParams',
         'requestService',
+		'utilsService',
         'REQUEST_TYPE',
-        function (snowowlService, $routeParams, requestService, REQUEST_TYPE) {
+        function (snowowlService, $routeParams, requestService, utilsService, REQUEST_TYPE) {
             return {
                 restrict: 'E',
                 require: ['?^formControlReadonly', '^form'],
@@ -93,6 +94,13 @@ angular
                         $scope.conceptStatus.searching = false;
                         // load concept details
                         snowowlService.getFullConcept(null, null, conceptData.id).then(function (response) {
+							response.descriptions.sort(function(a, b) {
+								return utilsService.compareStrings(a.term, b.term);
+							});
+							response.relationships.sort(function(a, b) {
+								return utilsService.compareStrings(a.type.fsn + " - " + a.target.fsn, b.type.fsn + " - " + b.target.fsn);
+							});
+							
                             $scope.concept = response;
                             // if(requestType === REQUEST_TYPE.NEW_CONCEPT){
                                 if(!conceptData.sourceTerminology){

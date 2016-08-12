@@ -56,11 +56,11 @@ angular.module('conceptRequestServiceApp.snowowl')
                     return config;
                 };
 
-
                 var getProjects = function () {
                     return sendScaRequest('GET', SCA_TARGET.PROJECT.path, null, null, null)
                         .then(function (response) {
-                            return response.data;
+							var data = response.data;
+                            return data;
                         });
                 };
 

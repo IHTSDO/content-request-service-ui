@@ -6,11 +6,12 @@
         <form-control type="concept"
                       model="requestVM.originalConcept"
                       label="crs.request.details.label.concept"
+                      title="{{'tooltips.request.details.label.concept' | translate}}"
                       required
                       error-model="requestVM.error.concept"></form-control>
 
         <div ng-if="requestVM.request.relationshipCharacteristicType || requestVM.pageMode.value === 'new'" class="multi-select-element" ng-class="{required:true, 'form-control-error': requestVM.error.relationshipId}">
-          <label translate="crs.request.details.label.relationship" style="color: red"></label>
+          <label translate="crs.request.details.label.relationship" title="{{'tooltips.request.details.label.relationship' | translate}}" style="color: red"></label>
           <span ng-if="requestVM.error.relationshipId" translate="crs.request.message.error.fieldRequired" style="color: rgb(169, 68, 66); padding-left: 5px;" class="ng-scope">required</span>
           <div
               isteven-multi-select
@@ -38,6 +39,7 @@
           <form-control type="text"
                       model="requestVM.requestItems[0].relationshipId"
                       label="crs.request.details.label.relationship"
+                      title="{{'tooltips.request.details.label.relationship' | translate}}"
                       readonly></form-control>
         </div>
         
@@ -45,6 +47,7 @@
                       model="requestVM.request.relationshipStatus"
                       options="relationshipStatus for relationshipStatus in requestVM.relationshipStatuses"
                       label="crs.request.details.label.relationshipStatus"
+                      title="{{'tooltips.request.details.label.relationshipStatus' | translate}}"
                       required
                       name="slRelationshipStatus"
                       error-model="requestVM.error.relationshipStatus"></form-control>                      
