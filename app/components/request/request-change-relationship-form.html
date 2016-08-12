@@ -6,6 +6,7 @@
         <form-control type="concept"
                       model="requestVM.originalConcept"
                       label="crs.request.details.label.concept"
+                      title="{{'tooltips.request.details.label.concept' | translate}}"
                       required
                       error-model="requestVM.error.concept"></form-control>
 
@@ -14,6 +15,7 @@
                       model="requestVM.request.relationshipId"
                       options="suggestion.relationshipId as (suggestion.type.fsn + ' - ' + suggestion.target.fsn) for suggestion in requestVM.originalConcept.relationships |filter:{active:true , characteristicType:requestVM.request.showRel}"
                       label="crs.request.details.label.relationship"
+                      title="{{'tooltips.request.details.label.relationship' | translate}}"
                       name="slRelationship"
                       required
                       error-model="requestVM.error.relationshipId"
@@ -31,20 +33,23 @@
 
         <div ng-if="!requestVM.request.relationshipCharacteristicType && requestVM.pageMode.value !== 'new'">
           <form-control type="text"
-                      model="requestVM.requestItems[0].relationshipId"
-                      label="crs.request.details.label.relationship"
-                      readonly></form-control>
+                        model="requestVM.requestItems[0].relationshipId"
+                        label="crs.request.details.label.relationship"
+                        title="{{'tooltips.request.details.label.relationship' | translate}}"
+                        readonly></form-control>
         </div>
 
         <form-control type="attributeValue"
                       model="requestVM.request.destinationConcept"
                       label="crs.request.details.label.proposedDestinationConcept"
+                      title="{{'tooltips.request.details.label.proposedDestinationConcept' | translate}}"
                       domain-attribute="requestVM.request.relationshipType"
                       error-model="requestVM.error.destinationConcept"></form-control>
 
         <form-control type="relationshipType"
                       model="requestVM.request.relationshipType"
                       label="crs.request.details.label.proposedRelationshipType"
+                      title="{{'tooltips.request.details.label.proposedRelationshipType' | translate}}"
                       parent-relationships="requestVM.originalConcept.relationships"
                       error-model="requestVM.error.relationshipType"></form-control>
 
@@ -52,17 +57,20 @@
                       model="requestVM.request.characteristicType"
                       options="characteristicType for characteristicType in requestVM.characteristicTypes"
                       label="crs.request.details.label.proposedCharacteristicType"
+                      title="{{'tooltips.request.details.label.proposedCharacteristicType' | translate}}"
                       name="slCharacteristicType"></form-control>
 
         <form-control type="select"
                       model="requestVM.request.refinability"
                       options="refinability for refinability in requestVM.refinabilities"
                       label="crs.request.details.label.proposedRefinability"
+                      title="{{'tooltips.request.details.label.proposedRefinability' | translate}}"
                       name="slRefinability"></form-control>
 
         <form-control type="text"
                       model="requestVM.request.groupId"
                       label="crs.request.details.label.groupId"
+                      title="{{'tooltips.request.details.label.groupId' | translate}}"
                       name="txtHistoryAttributeValue"></form-control>
 
         <!-- <form-control type="select"

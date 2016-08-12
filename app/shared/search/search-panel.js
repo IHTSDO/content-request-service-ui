@@ -181,7 +181,7 @@ angular.module('conceptRequestServiceApp.search')
                     $scope.storedResults = [];
                 }
 
-                snowowlService.findConcepts(null, null, $scope.searchStr, $scope.storedResults.length + 1, $scope.resultsSize).then(function (concepts) {
+                snowowlService.findConcepts(null, null, $scope.searchStr, $scope.storedResults.length, $scope.resultsSize).then(function (concepts) {
 
 
                     if (!concepts) {

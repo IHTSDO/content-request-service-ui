@@ -9,7 +9,8 @@ angular.module('conceptRequestServiceApp.request')
         'REQUEST_STATUS',
         'CRS_API_ENDPOINT',
         'STATISTICS_STATUS',
-        function ($rootScope, $q, crsService, REQUEST_TYPE, REQUEST_STATUS, CRS_API_ENDPOINT, STATISTICS_STATUS) {
+        'STATISTICS_LABEL',
+        function ($rootScope, $q, crsService, REQUEST_TYPE, REQUEST_STATUS, CRS_API_ENDPOINT, STATISTICS_STATUS, STATISTICS_LABEL) {
 
             var identifyRequestType = function (value) {
                 for (var requestTypeKey in REQUEST_TYPE) {
@@ -38,6 +39,17 @@ angular.module('conceptRequestServiceApp.request')
                     if (STATISTICS_STATUS.hasOwnProperty(statisticsStatusKey) &&
                         STATISTICS_STATUS[statisticsStatusKey].value === value) {
                         return STATISTICS_STATUS[statisticsStatusKey];
+                    }
+                }
+
+                return null;
+            };
+
+            var identifyStatisticsLabel = function (value) {
+                for (var statisticsLabelKey in STATISTICS_LABEL) {
+                    if (STATISTICS_LABEL.hasOwnProperty(statisticsLabelKey) &&
+                        STATISTICS_LABEL[statisticsLabelKey].value === value) {
+                        return STATISTICS_LABEL[statisticsLabelKey];
                     }
                 }
 
@@ -247,6 +259,7 @@ angular.module('conceptRequestServiceApp.request')
                 changeRequestStatus: changeRequestStatus,
                 getStatisticsRequests: getStatisticsRequests,
                 identifyStatisticsStatus: identifyStatisticsStatus,
+                identifyStatisticsLabel: identifyStatisticsLabel,
                 getBatchConcept: getBatchConcept,
                 setFilterValues: setFilterValues,
                 getFilterValues: getFilterValues,

@@ -3,43 +3,43 @@
     <ul ng-cloak style="padding: 0px; list-style: none;">
 
         <li><a class="dashboard-links" ng-href="#/requests">
-            <button type="button" class="btn grey darken-3 dashboard-links">
+            <button type="button" class="btn grey darken-3 dashboard-links" title="{{'tooltips.dashboard.sidebar.myRequest' | translate}}">
                 <i class="md md-format-list-numbered"></i> {{'crs.dashboard.sidebar.myRequest' | translate}}
             </button>
         </a></li>
 
         <li ng-if="dashboard.permissionChecked && dashboard.isAdmin"><a class="dashboard-links" ng-href="#/my-assigned-requests">
-            <button type="button" class="btn grey darken-3 dashboard-links">
+            <button type="button" class="btn grey darken-3 dashboard-links" title="{{'tooltips.dashboard.sidebar.myAssignedRequests' | translate}}">
                 <i class="md md-format-list-numbered"></i> {{'crs.dashboard.sidebar.myAssignedRequests' | translate}}
             </button>
         </a></li>
 
         <li><a class="dashboard-links" ng-href="#/submitted-requests">
-            <button type="button" class="btn grey darken-3 dashboard-links">
+            <button type="button" class="btn grey darken-3 dashboard-links" title="{{'tooltips.dashboard.sidebar.submittedRequest' | translate}}">
                 <i class="md md-format-list-numbered"></i> {{'crs.dashboard.sidebar.submittedRequest' | translate}}
             </button>
         </a></li>
 
         <li ng-if="dashboard.permissionChecked && dashboard.isAdmin"><a class="dashboard-links" ng-href="#/accepted-requests">
-            <button type="button" class="btn grey darken-3 dashboard-links">
+            <button type="button" class="btn grey darken-3 dashboard-links" title="{{'tooltips.dashboard.sidebar.acceptedRequest' | translate}}">
                 <i class="md md-format-list-numbered"></i> {{'crs.dashboard.sidebar.acceptedRequest' | translate}}
             </button>
         </a></li>
 
         <li ng-if="dashboard.permissionChecked && !dashboard.isViewer"><a class="dashboard-links" ng-href="#/batches">
-            <button type="button" class="btn grey darken-3 dashboard-links">
+            <button type="button" class="btn grey darken-3 dashboard-links" title="{{'tooltips.dashboard.sidebar.myBatch' | translate}}">
                 <i class="md md-folder"></i> {{'crs.dashboard.sidebar.myBatch' | translate}}
             </button>
         </a></li>
 
         <li ng-if="dashboard.permissionChecked && !dashboard.isViewer">
-            <button type="button" class="btn grey darken-3 create-links" ng-click="dashboard.openCreateRequestModal()">
+            <button type="button" class="btn grey darken-3 create-links" ng-click="dashboard.openCreateRequestModal()" title="{{'tooltips.dashboard.sidebar.createRequest' | translate}}">
                 <i class="md md-view-list"></i> {{'crs.dashboard.sidebar.createRequest' | translate}}
             </button>
         </li>
 
         <li ng-if="dashboard.permissionChecked && !dashboard.isViewer"><a class="dashboard-links" ng-href="#/batches/preview">
-            <button type="button" class="btn grey darken-3 create-links">
+            <button type="button" class="btn grey darken-3 create-links" title="{{'tooltips.dashboard.sidebar.importBatch' | translate}}">
                 <i class="md md-insert-drive-file"></i> {{'crs.dashboard.sidebar.importBatch' | translate}}
             </button>
         </a></li>
@@ -54,7 +54,7 @@
     <div ng-if="dashboard.permissionChecked && dashboard.isAdmin" class="statistics-requests">
         <div ng-repeat="number in dashboard.statisticsRequests" class="statistics-request"  ng-cloak >
             <div class="labelSb">    
-                <span>
+                <span title="{{number.status | statisticsLabel | translate}}">
                     {{number.status | statisticsStatus | translate}}
                 </span>
             </div>
@@ -81,7 +81,7 @@
     <div ng-if="dashboard.permissionChecked && dashboard.isRequester" class="statistics-requests">
         <div ng-repeat="number in dashboard.statisticsRequests" class="statistics-request"  ng-cloak >
             <div class="labelSb">    
-                <span>
+                <span title="{{number.status | statisticsLabel | translate}}">
                     {{number.status | statisticsStatus | translate}}
                 </span>
             </div>

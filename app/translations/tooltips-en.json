@@ -1,5 +1,5 @@
 {
-    "crs": {
+    "tooltips": {
         "message": {
             "unknownUser": "Logged in as unknown user",
             "profileTip":"display name will link to profile services in later updates",
@@ -66,8 +66,8 @@
                 "appealRejected": "Appeal Rejected",
                 "appeal": "Appeal",
                 "clarificationNeeded": "Clarification Needed",
-		"in_inception_elaboration": "In Inception",
-		"my_assigned": "My Assigned"
+        		"in_inception_elaboration": "In Inception",
+        		"my_assigned": "My Assigned"
             }
         },
         "request": {

@@ -28,7 +28,8 @@ angular
         'REQUEST_INPUT_MODE',
         'jiraService',
         '$timeout',
-        function($scope, $rootScope, $routeParams, $location, $anchorScroll, $uibModal, $sce, $q, requestService, notificationService, requestMetadataService, objectService, snowowlService, snowowlMetadataService, crsJiraService, scaService, accountService, REQUEST_METADATA_KEY, REQUEST_TYPE, CONCEPT_EDIT_EVENT, REQUEST_STATUS, REQUEST_INPUT_MODE, jiraService, $timeout) {
+		'utilsService', 
+        function($scope, $rootScope, $routeParams, $location, $anchorScroll, $uibModal, $sce, $q, requestService, notificationService, requestMetadataService, objectService, snowowlService, snowowlMetadataService, crsJiraService, scaService, accountService, REQUEST_METADATA_KEY, REQUEST_TYPE, CONCEPT_EDIT_EVENT, REQUEST_STATUS, REQUEST_INPUT_MODE, jiraService, $timeout, utilsService) {
             var vm = this;
             var REQUEST_MODE = {
                 NEW: { value: 'new', langKey: 'crs.request.requestMode.newRequest' },
@@ -140,6 +141,9 @@ angular
             var loadProjects = function() {
                 vm.loadingProjects = true;
                 scaService.getProjects().then(function(response) {
+					response.sort(function(a, b) {
+						return utilsService.compareStrings(a.title, b.title);
+					});
                     vm.projects = response;
                 }).finally(function() {
                     vm.loadingProjects = false;
@@ -175,6 +179,9 @@ angular
             var loadSemanticTags = function(){
                 return crsJiraService.getSemanticTags().then(function(semanticTags){
                     vm.semanticTags = semanticTags;
+					vm.semanticTags.sort(function(a, b) {
+						return utilsService.compareStrings(a.value, b.value);
+					});
                     if(vm.pageMode !== REQUEST_MODE.NEW){
                         var isNotInArr;
                         for(var i in semanticTags){
@@ -519,7 +526,10 @@ angular
                     // rebuild concept from request data
 
                     vm.concept = requestData.concept;
-
+                    $timeout(function () {
+                        angular.element('#auto-resize').css('height', angular.element('#auto-resize').height() + 15);
+                    });
+                    
                     return requestData;
                 }, function(reason) {
                     notificationService.sendError(reason.message, 5000, null, true);
@@ -587,7 +597,6 @@ angular
                 if (!angular.isArray(concept.relationships)) {
                     concept.relationships = [];
                 }
-
                 if (vm.requestType === REQUEST_TYPE.NEW_CONCEPT) {
                     var arr = [];
                     for (var i = 0; i < parentConcept.length; i++) {
@@ -605,7 +614,6 @@ angular
 
             var injectRelationship = function(concept, relationshipType, destinationConcept, characteristicType, refinability, applyChanges) {
                 var relationship = objectService.getNewAttributeRelationship(concept.conceptId);
-
                 if (!angular.isArray(concept.relationships)) {
                     concept.relationships = [];
                 }
@@ -635,7 +643,7 @@ angular
 
             var extractConceptDescriptions = function(concept, descriptionType, extractAll) {
                 var description, descriptions = [];
-
+				
                 if (concept &&
                     angular.isArray(concept.descriptions) &&
                     concept.descriptions.length > 0) {
@@ -656,7 +664,6 @@ angular
             var injectConceptDescription = function(concept, descriptionTerm, applyChanges) {
                 var desc = objectService.getNewDescription(concept.conceptId);
                 desc.term = descriptionTerm;
-
                 if (!angular.isArray(concept.descriptions)) {
                     concept.descriptions = [];
                 }
@@ -674,7 +681,6 @@ angular
 
             var cloneConceptRelationship = function(concept, sourceRelationshipId, proposedRefinability, proposedRelationshipStatus, applyChanges, destinationConcept, characteristicType, relationshipType, groupId) {
                 var sourceRelationship, newRelaionship, sourceRel;
-
                 for (var i = 0; i < concept.relationships.length; i++) {
                     sourceRel = concept.relationships[i];
 
@@ -748,7 +754,6 @@ angular
 
             var cloneConceptDescription = function(concept, sourceDescriptionId, proposedTerm, proposedCaseSignificance, applyChanges, descriptionStatus) {
                 var sourceDescription, newDesc, sourceDesc;
-
                 for (var i = 0; i < concept.descriptions.length; i++) {
                     sourceDesc = concept.descriptions[i];
 
@@ -759,6 +764,7 @@ angular
                 }
 
                 if (sourceDescription) {
+					
                     newDesc = angular.copy(sourceDescription);
 
                     newDesc.descriptionId = null;
@@ -858,7 +864,6 @@ angular
 
             var extractConceptPT = function(concept) {
                 var syns = extractConceptDescriptions(concept, DESCRIPTION_TYPE.SYN, true);
-
                 for (var i = 0; i < syns.length; i++) {
                     if (syns[i].acceptabilityMap &&
                         syns[i].acceptabilityMap[ACCEPTABILITY_DIALECT.EN_GB] === ACCEPTABILITY_VALUE.PREFERRED &&
@@ -872,7 +877,6 @@ angular
 
             var injectConceptPT = function(concept, conceptPT, applyChanges) {
                 var preferredTerm = objectService.getNewPt(concept.conceptId);
-
                 if (!angular.isArray(concept.descriptions)) {
                     concept.descriptions = [];
                 }
@@ -896,7 +900,6 @@ angular
                 var syns = extractConceptDescriptions(concept, DESCRIPTION_TYPE.SYN, extractAll);
                 var sysnTerms = [];
                 var excludedPT;
-
                 for (var i = 0; i < syns.length; i++) {
                     if (!excludedPT &&
                         syns[i].acceptabilityMap &&
@@ -919,7 +922,6 @@ angular
                 if (!angular.isArray(concept.descriptions)) {
                     concept.descriptions = [];
                 }
-
                 if (angular.isArray(synonyms) && synonyms.length > 0) {
                     for (var i = 0; i < synonyms.length; i++) {
                         synTerm = synonyms[i];
@@ -953,7 +955,6 @@ angular
             var extractConceptDefinitions = function(concept, extractAll) {
                 var defs = extractConceptDescriptions(concept, DESCRIPTION_TYPE.DEF, extractAll);
                 var defTerms = [];
-
                 for (var i = 0; i < defs.length; i++) {
                     defTerms.push(defs[i].term);
                 }
@@ -963,7 +964,6 @@ angular
 
             var injectConceptDefinitions = function(concept, definitions, applyChanges) {
                 var defTerm, defDesc;
-
                 if (!angular.isArray(concept.descriptions)) {
                     concept.descriptions = [];
                 }
@@ -1036,8 +1036,8 @@ angular
                         item.proposedStatus = definitionOfChanges.proposedStatus;
                         item.historyAttribute = definitionOfChanges.historyAttribute;
                         item.historyAttributeValue = definitionOfChanges.historyAttributeValue;
-                        item.sourceTerminology = definitionOfChanges.sourceTerminology;
-                        item.destinationTerminology = definitionOfChanges.destinationTerminology;
+                        item.sourceTerminology = changedTarget.sourceTerminology;
+                        item.destinationTerminology = changedTarget.destinationTerminology;
                         item.duplicatedConceptId = vm.duplicateConcept.conceptId;
                         break;
 
@@ -1136,7 +1136,8 @@ angular
                     jiraTicketId: requestData.jiraTicketId,
                     requestType: requestData.requestType,
                     inputMode: requestData.inputMode,
-                    requestHeader: requestData.requestHeader
+                    requestHeader: requestData.requestHeader,
+                    contentTrackerUrl: requestData.contentTrackerUrl
                 };
                 var requestItems = requestData.requestItems;
                 var mainItem = extractItemByRequestType(requestItems, requestService.identifyRequestType(request.requestType));
@@ -1376,6 +1377,9 @@ angular
                 concept.definitionOfChanges.reasonForChange = request.additionalFields.reasonForChange;
                 concept.definitionOfChanges.namespace = request.additionalFields.namespace;
                 concept.definitionOfChanges.currentFsn = concept.fsn;
+				if(null !== request.requestorInternalId && '' !== request.requestorInternalId && REQUEST_TYPE.NEW_CONCEPT.value === request.requestType){
+					concept.conceptId = request.requestorInternalId;
+				}
             };
 
             var buildConceptFromRequest = function(request) {
@@ -1600,6 +1604,12 @@ angular
                             if (requestData.requestItems[j].requestType === REQUEST_TYPE.NEW_RELATIONSHIP.value) {
                                 requestData.requestItems.splice(j, 1);
                             }
+                            if(vm.requestType === REQUEST_TYPE.RETIRE_DESCRIPTION){
+                                if (requestData.requestItems[j].requestType === REQUEST_TYPE.NEW_DESCRIPTION.value) {
+                                    requestData.requestItems.splice(j, 1);
+                                }
+                            }
+                           
                         }
                     }
                 }
@@ -1653,8 +1663,13 @@ angular
                             if (requestData.requestItems[j].requestType === REQUEST_TYPE.NEW_RELATIONSHIP.value) {
                                 requestData.requestItems.splice(j, 1);
                             }
+                            if(vm.requestType === REQUEST_TYPE.RETIRE_DESCRIPTION){
+                                if (requestData.requestItems[j].requestType === REQUEST_TYPE.NEW_DESCRIPTION.value) {
+                                    requestData.requestItems.splice(j, 1);
+                                }
+                            }
                         }
-                    }
+                    } 
                 }
 
                 requestService.saveRequest(requestData)
@@ -1698,13 +1713,16 @@ angular
             };
 
             var moveToInInceptionElaboration = function() {
-                changeRequestStatus(vm.request.id, REQUEST_STATUS.IN_INCEPTION_ELABORATION)
-                    .then(function() {
-                        notificationService.sendMessage('crs.request.message.requestAccepted', 5000);
-                        $location.path(prevPage).search({});
-                    }, function(e) {
-                        showErrorMessage(e.message);
-                    });
+                var modalInstance = openStatusCommentModal('inInceptionElaboration');
+                modalInstance.result.then(function(contentRequestUrl) {
+                    changeRequestStatus(vm.request.id, REQUEST_STATUS.IN_INCEPTION_ELABORATION, { contentRequestUrl: contentRequestUrl})
+                        .then(function() {
+                            notificationService.sendMessage('crs.request.message.requestAccepted', 5000);
+                            $location.path(prevPage).search({});
+                        }, function(e) {
+                            showErrorMessage(e.message);
+                        });
+                });
             };
 
             var openAssignRequestModal = function() {
@@ -1770,11 +1788,12 @@ angular
                 }
             };
 
-            var assignRequestToStaff = function() {
+            var assignRequestToStaff = function(status) {
                 if (vm.staffs.length > 0) {
                     var modalInstance = openAssignRequestToStaffModal();
                     modalInstance.result.then(function(rs) {
-                        changeRequestStatus(vm.request.id, REQUEST_STATUS.ACCEPTED)
+                        if(status === REQUEST_STATUS.NEW.value){
+                            changeRequestStatus(vm.request.id, REQUEST_STATUS.ACCEPTED)
                             .then(function() {
                                 return requestService.assignRequestsToStaff([vm.request.id], ((rs.assignee) ? rs.assignee.key : null));
                             }, function(e) {
@@ -1785,6 +1804,13 @@ angular
                                 notificationService.sendMessage('Request accepted and assigned successfully', 5000);
                                 $location.path(prevPage).search({});
                             });
+                        }else{
+                            notificationService.sendMessage('Assigning requests');
+                            requestService.assignRequestsToStaff([vm.request.id], ((rs.assignee) ? rs.assignee.key : null)).then(function() {
+                                notificationService.sendMessage('Request assigned successfully', 5000);
+                                $location.path(prevPage).search({});
+                            });
+                        }
                     });
                 }
             };
