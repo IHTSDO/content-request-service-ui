@@ -143,7 +143,7 @@ angular
                 scaService.getProjects().then(function(response) {
 					response.sort(function(a, b) {
 						return utilsService.compareStrings(a.title, b.title);
-					})
+					});
                     vm.projects = response;
                 }).finally(function() {
                     vm.loadingProjects = false;
@@ -1136,7 +1136,8 @@ angular
                     jiraTicketId: requestData.jiraTicketId,
                     requestType: requestData.requestType,
                     inputMode: requestData.inputMode,
-                    requestHeader: requestData.requestHeader
+                    requestHeader: requestData.requestHeader,
+                    contentTrackerUrl: requestData.contentTrackerUrl
                 };
                 var requestItems = requestData.requestItems;
                 var mainItem = extractItemByRequestType(requestItems, requestService.identifyRequestType(request.requestType));
@@ -1376,7 +1377,7 @@ angular
                 concept.definitionOfChanges.reasonForChange = request.additionalFields.reasonForChange;
                 concept.definitionOfChanges.namespace = request.additionalFields.namespace;
                 concept.definitionOfChanges.currentFsn = concept.fsn;
-				if(null != request.requestorInternalId && '' != request.requestorInternalId && REQUEST_TYPE.NEW_CONCEPT.value == request.requestType){
+				if(null !== request.requestorInternalId && '' !== request.requestorInternalId && REQUEST_TYPE.NEW_CONCEPT.value === request.requestType){
 					concept.conceptId = request.requestorInternalId;
 				}
             };
@@ -1712,13 +1713,16 @@ angular
             };
 
             var moveToInInceptionElaboration = function() {
-                changeRequestStatus(vm.request.id, REQUEST_STATUS.IN_INCEPTION_ELABORATION)
-                    .then(function() {
-                        notificationService.sendMessage('crs.request.message.requestAccepted', 5000);
-                        $location.path(prevPage).search({});
-                    }, function(e) {
-                        showErrorMessage(e.message);
-                    });
+                var modalInstance = openStatusCommentModal('inInceptionElaboration');
+                modalInstance.result.then(function(contentRequestUrl) {
+                    changeRequestStatus(vm.request.id, REQUEST_STATUS.IN_INCEPTION_ELABORATION, { contentRequestUrl: contentRequestUrl})
+                        .then(function() {
+                            notificationService.sendMessage('crs.request.message.requestAccepted', 5000);
+                            $location.path(prevPage).search({});
+                        }, function(e) {
+                            showErrorMessage(e.message);
+                        });
+                });
             };
 
             var openAssignRequestModal = function() {

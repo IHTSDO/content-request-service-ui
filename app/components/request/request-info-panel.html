@@ -64,6 +64,17 @@
                         </div>
                     </div>
                 </li>
+                <li ng-if="requestVM.request.contentTrackerUrl">
+                    <div class="timeline-badge">
+                        <i class="icon-circle theme-border"></i>
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.request.details.info.label.requestUrl" title="{{'tooltips.request.details.info.label.requestUrl' | translate}}"></label>
+                            <h4 class="timeline-title comment-body">{{requestVM.request.contentTrackerUrl}}</h4>
+                        </div>
+                    </div>
+                </li>
                 <li ng-if="requestVM.request.requestHeader.statusDate">
                     <div class="timeline-badge">
                         <i class="icon-circle theme-border"></i>

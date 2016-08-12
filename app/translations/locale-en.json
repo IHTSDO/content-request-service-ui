@@ -213,7 +213,8 @@
                         "lastModified": "Last Modified Date",
                         "createdDate": "Created Date",
                         "originator": "Created By",
-                        "manager": "Manager"
+                        "manager": "Manager",
+                        "requestUrl": "Request Url"
                     }
                 }
             },
@@ -252,10 +253,12 @@
                     "reject": "Reject Request",
                     "withdraw": "Withdraw Request",
                     "appeal": "Appeal Request Rejection",
-                    "needClarify": "Pending for Clarification"
+                    "needClarify": "Pending for Clarification",
+                    "inInceptionElaboration": "In Inception/Elaboration"
                 },
                 "comment": {
-                    "label": "Reason"
+                    "label": "Reason",
+                    "inInceptionElaboration": "Request Url"
                 },
                 "button": {
                     "confirm": "Confirm",

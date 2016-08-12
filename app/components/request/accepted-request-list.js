@@ -232,7 +232,7 @@ angular
                 scaService.getProjects().then(function(response) {
 					response.sort(function(a, b) {
 						return utilsService.compareStrings(a.title, b.title);
-					})
+					});
                     vm.projects = response;
                     for(var i in vm.projects){
                         vm.projects[i].id = vm.projects[i].key;

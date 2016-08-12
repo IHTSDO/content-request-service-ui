@@ -11,7 +11,7 @@ app.factory('utilsService', function() {
 		b = b.toLowerCase();
 
 		return (a < b) ? -1 : (a > b) ? 1 : 0;
-	}
+	};
 		
 	return factory;
 });
