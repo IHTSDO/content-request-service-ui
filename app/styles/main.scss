@@ -741,3 +741,14 @@ ul.batch-statistic.timeline {
     margin-left: -2%;
   }
 }
+
+#request-info-panel{
+  .pager{
+    margin: 23px;
+    li{
+      button{
+        margin-bottom: 5px;
+      }
+    }
+  }
+}
