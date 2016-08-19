@@ -1304,7 +1304,7 @@ angular
                     item.requestType = request.definitionOfChanges.changeType;
                     item.id = request.definitionOfChanges.changeId;
                     item.topic = request.additionalFields.topic;
-                    item.summary = request.definitionOfChanges.summary;
+                    item.summary = request.additionalFields.summary;
                     item.notes = request.additionalFields.notes;
                     item.reference = request.additionalFields.reference;
                     item.reasonForChange = request.additionalFields.reasonForChange;
