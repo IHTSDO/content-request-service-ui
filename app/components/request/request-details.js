@@ -1014,7 +1014,7 @@ angular
                         item.proposedParents = [];
                         item.requestorInternalTerm = changedTarget.requestorInternalTerm;
                         item.proposedUse = changedTarget.proposedUse;
-                        item.semanticTag = changedTarget.value;
+                        
                         item.umlsCui = changedTarget.umlsCui;
                         if (changedTarget.parentConcept) {
                             for (var i = 0; i < changedTarget.parentConcept.length; i++) {
@@ -1025,6 +1025,15 @@ angular
                                 obj.refType = 'EXISTING';
                                 item.proposedParents.push(obj);
                             }
+                        }
+                        if((definitionOfChanges.value === null || definitionOfChanges.value === undefined) && definitionOfChanges.currentFsn !== null){
+                            var semanticTag;
+                            var start = definitionOfChanges.currentFsn.indexOf("(");
+                            var end = definitionOfChanges.currentFsn.indexOf(")");
+                            semanticTag = definitionOfChanges.currentFsn.substring(start + 1, end);
+                            item.semanticTag = semanticTag;
+                        }else{
+                            item.semanticTag = changedTarget.value;
                         }
 
                         break;
