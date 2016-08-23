@@ -1830,12 +1830,14 @@ angular
                                 var indexOfFSN = description.term.indexOf("(");
                                 if(indexOfFSN !== -1){
                                     var substringFSN = description.term.substring(0, indexOfFSN);
+                                    var trimFSN = substringFSN.trim();
                                     if(scope.getDescriptions()[0].term !== null && scope.getDescriptions()[0].term !== undefined){
-                                        scope.getDescriptions()[1].term = substringFSN;
+                                        scope.getDescriptions()[1].term = trimFSN;
                                     }
                                 }else{
                                     if(scope.getDescriptions()[0].term !== null && scope.getDescriptions()[0].term !== undefined){
-                                        scope.getDescriptions()[1].term = description.term;
+                                        var trimFSN = description.term.trim();
+                                        scope.getDescriptions()[1].term = trimFSN;
                                     }
                                 }
                             }

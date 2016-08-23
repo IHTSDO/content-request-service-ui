@@ -1985,6 +1985,22 @@ angular
                 }
             });
 
+            $scope.$watch(function() {
+                return vm.request.proposedFSN;
+            }, function(newVal) {
+                if(newVal && vm.requestType === REQUEST_TYPE.NEW_CONCEPT && vm.request.proposedFSN){
+                    var indexOfFSN = vm.request.proposedFSN.indexOf("(");
+                    if(indexOfFSN !== -1){
+                        var substringFSN = vm.request.proposedFSN.substring(0, indexOfFSN);
+                        var trimFSN = substringFSN.trim();
+                        vm.request.conceptPT = trimFSN;
+                    }else{
+                        var trimFsn = vm.request.proposedFSN.trim();
+                        vm.request.conceptPT = trimFsn;
+                    }
+                }
+            });
+
             vm.cancelEditing = cancelEditing;
             vm.saveRequest = saveRequest;
             vm.acceptRequest = acceptRequest;
