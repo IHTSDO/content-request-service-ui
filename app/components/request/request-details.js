@@ -1527,6 +1527,11 @@ angular
                         !vm.request.additionalFields.summary.trim()) {
                         error.summary = fieldRequiredLangKey;
                     }
+
+                    if (!vm.request.additionalFields.reference ||
+                        !vm.request.additionalFields.reference.trim()) {
+                        error.reference = fieldRequiredLangKey;
+                    }
                 }
 
                 var isNotValidObj = function() {
