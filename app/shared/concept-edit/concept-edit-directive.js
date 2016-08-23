@@ -1825,6 +1825,21 @@ angular
                         if (!description) {
                             return;
                         }
+                        if(scope.conceptChangeType === REQUEST_TYPE.NEW_CONCEPT.value){
+                            if(description && description.type === 'FSN'){
+                                var indexOfFSN = description.term.indexOf("(");
+                                if(indexOfFSN !== -1){
+                                    var substringFSN = description.term.substring(0, indexOfFSN);
+                                    if(scope.getDescriptions()[0].term !== null && scope.getDescriptions()[0].term !== undefined){
+                                        scope.getDescriptions()[1].term = substringFSN;
+                                    }
+                                }else{
+                                    if(scope.getDescriptions()[0].term !== null && scope.getDescriptions()[0].term !== undefined){
+                                        scope.getDescriptions()[1].term = description.term;
+                                    }
+                                }
+                            }
+                        }
 
                         autoSave();
                     };
