@@ -3,16 +3,20 @@
     <section ng-cloak ng-if="vm.tableParams && !vm.isViewer" class="tables-data">
         <div class="card">
             <div class="row">
-                <div class="col-md-4 no-padding">
+                <div class="col-md-2 no-padding">
                     <h3 class="table-title p-20" translate="crs.request.list.title.myRequests"></h3>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <!-- <div class="table-search">
                         <input type="text" ng-model="vm.tableParams.filter()['search']" class="form-control"
                                placeholder="{{'crs.request.list.searchPlaceHolder.myRequests' | translate}}" autofocus/>
                     </div> -->
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2 promoted-check-box">
+                    <button class="btn btn-default" ng-class="[{'md-check-box' : vm.showClosedRequests}, {'md-check-box-outline-blank' : !vm.showClosedRequests}]" ng-click="vm.toggleShowClosedRequests('my-requests')" style="background: transparent">
+                        <span class="promoted-check-box">Show Closed Requests Only</span></button>
+                </div>
+                <div class="col-md-2">
                     <div class="pull-right p-t-20">
                         <!-- <button ng-click="vm.showFilter = !vm.showFilter" class="btn btn-round btn-default" title="{{'crs.request.list.tip.filter' | translate}}">
                             <span class="md md-search"></span>

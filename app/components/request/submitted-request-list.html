@@ -6,11 +6,15 @@
                 <div class="col-md-4 no-padding">
                     <h3 class="table-title p-20" translate="crs.request.list.title.submittedRequests"></h3>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <!-- <div class="table-search">
                         <input type="text" ng-model="vm.submittedTableParams.filter()['search']" class="form-control"
                                placeholder="{{'crs.request.list.searchPlaceHolder.submittedRequests' | translate}}" autofocus/>
                     </div> -->
+                </div>
+                <div class="col-md-2 promoted-check-box">
+                    <button class="btn btn-default" ng-class="[{'md-check-box' : vm.showClosedRequests}, {'md-check-box-outline-blank' : !vm.showClosedRequests}]" ng-click="vm.toggleShowClosedRequests('submitted-requests')" style="background: transparent">
+                        <span class="promoted-check-box">Show Closed Requests Only</span></button>
                 </div>
                 <div class="col-md-2">
                     <div class="pull-right p-t-20">
@@ -64,7 +68,7 @@
                             <span ng-show="vm.loadingAuthors" class="md md-autorenew" ng-class="{'md-spin':vm.loadingAuthors}"></span>
                             <div  ng-bind-html="(vm.getAuthorName(request.requestHeader.manager))?vm.getAuthorName(request.requestHeader.manager):request.requestHeader.manager"></div>
                         </td>
-                        <td data-title="'crs.request.list.tableHeader.originator' | translate" sortable="'requestHeader.ogirinatorId'" style="min-width: 150px" filter="{author: 'ng-table/author-select.html'}">
+                        <td data-title="'crs.request.list.tableHeader.originator' | translate" sortable="'requestHeader.ogirinatorId'" style="min-width: 150px" filter="vm.filterRequests.ogirinatorId">
                             <span ng-show="vm.loadingAuthors" class="md md-autorenew" ng-class="{'md-spin':vm.loadingAuthors}"></span>
                             <div ng-if="!vm.loadingAuthors" ng-bind-html="(vm.getAuthorName(request.requestHeader.ogirinatorId))?vm.getAuthorName(request.requestHeader.ogirinatorId):request.requestHeader.ogirinatorId"></div>
                         </td>
