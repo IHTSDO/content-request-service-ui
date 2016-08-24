@@ -200,6 +200,12 @@ angular
                 });
             };
 
+            var loadTopicOptions = function(){
+                return crsJiraService.getTopicOptions().then(function(topicOptions){
+                    vm.topicOptions = topicOptions;
+                });
+            };
+
             var getAuthorName = function(authorKey) {
                 if (!vm.authors || vm.authors.length === 0) {
                     return authorKey;
@@ -336,6 +342,9 @@ angular
 
                 //load semantic tag
                 loadSemanticTags();
+
+                //load topic options
+                loadTopicOptions();
 
                 if (!isValid) {
                     showErrorMessage('crs.request.message.error.invalidPage');

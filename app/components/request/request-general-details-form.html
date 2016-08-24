@@ -9,13 +9,14 @@
                       title="{{'tooltips.request.details.label.requestorInternalId' | translate}}"
                       error-model="requestVM.error.requestorInternalId"></form-control>
 
-        <form-control type="text"
+        <form-control type="select"
                       model="requestVM.request.additionalFields.topic"
                       label="crs.request.details.label.topic"
                       title="{{'tooltips.request.details.label.topic' | translate}}"
-                      name="txtTopic"
+                      options="suggestion.value as suggestion.value for suggestion in requestVM.topicOptions"
                       required
-                      error-model="requestVM.error.topic"></form-control>
+                      error-model="requestVM.error.value"></form-control>
+
         <form-control type="text"
                       model="requestVM.request.additionalFields.summary"
                       label="crs.request.details.label.summary"
