@@ -202,6 +202,9 @@ angular
 
             var loadTopicOptions = function(){
                 return crsJiraService.getTopicOptions().then(function(topicOptions){
+                    topicOptions.sort(function(a, b) {
+                        return utilsService.compareStrings(a.value, b.value);
+                    });
                     vm.topicOptions = topicOptions;
                 });
             };
