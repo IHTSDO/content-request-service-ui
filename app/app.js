@@ -105,18 +105,19 @@ angular
         'configService',
         'accountService',
         'crsService',
-        function ($rootScope, $location, configService, accountService, crsService) {
+        '$http',
+        function ($rootScope, $location, configService, accountService, crsService, $http) {
             var config = configService.getConfig();
+            $http.get('version.json', { cache: true })
+                .then(function (response) {
+                    $rootScope.clientVersion = response.data.version;
+                });
 
             $rootScope.showAppLoading = false;
             $rootScope.showSplash = true;
             $rootScope.pageTitles = [];
 
             $rootScope.link = (config && config.link)?config.link: {};
-            $rootScope.clientVersion = config.version;
-
-
-            $rootScope.clientVersion = config.version;
 
             crsService.getServerVersion().then(function (serverVersion) {
                 $rootScope.serverVersion = serverVersion;

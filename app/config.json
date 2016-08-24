@@ -1,5 +1,4 @@
 {
-    "version": "0.1.19",
     "endpoint": {
         "crs": "http://local.ihtsdotools.org/crs/",
         "ims": "https://dev-ims.ihtsdotools.org/",
