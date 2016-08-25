@@ -14,7 +14,7 @@
                 </div>
                 <div class="col-md-2 promoted-check-box">
                     <button class="btn btn-default" ng-class="[{'md-check-box' : vm.showClosedRequests}, {'md-check-box-outline-blank' : !vm.showClosedRequests}]" ng-click="vm.toggleShowClosedRequests('my-assigned-requests')" style="background: transparent">
-                        <span class="promoted-check-box">Show Closed Requests Only</span></button>
+                        <span class="promoted-check-box">Show Closed Requests</span></button>
                 </div>
                 <div class="col-md-3">
                     <div class="pull-right p-t-20">
@@ -46,7 +46,7 @@
                             <!--<a class="tooltips-right" ng-href="#/batches/view/{{request.batchRequest}}">{{request.batchRequest}} <span translate="crs.request.list.tip.batchId"></span></a>-->
                             {{request.batchRequest}}
                         </td>
-                        
+
                         <td data-title="'crs.request.list.tableHeader.requestId' | translate" sortable="'id'" filter="vm.filterRequests.requestId">
                             {{request.id}}
                         </td>
