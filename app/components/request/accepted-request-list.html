@@ -43,13 +43,15 @@
                         <td class="col-checkbox" header="'ng-table/headers/checkbox.html'" ng-click="$event.stopPropagation()">
                             <input type="checkbox" class="small-checkbox" ng-model="vm.selectedRequests.items[request.id]" ng-click="vm.pushSelectedRequest($event, request)">
                         </td>
-                        <td data-title="'crs.request.list.tableHeader.requestId' | translate" sortable="'id'" filter="vm.filterRequests.requestId">
-                            {{request.id}}
-                        </td>
                         <td data-title="'crs.request.list.tableHeader.batchId' | translate" sortable="'batchRequest'" filter="vm.filterRequests.batchRequest">
                             <!--<a class="tooltips-right" ng-href="#/batches/view/{{request.batchRequest}}">{{request.batchRequest}} <span translate="crs.request.list.tip.batchId"></span></a>-->
                             {{request.batchRequest}}
                         </td>
+                        
+                        <td data-title="'crs.request.list.tableHeader.requestId' | translate" sortable="'id'" filter="vm.filterRequests.requestId">
+                            {{request.id}}
+                        </td>
+                        
                         <td data-title="'crs.request.list.tableHeader.conceptFSN' | translate" sortable="'fsn'" filter="vm.filterRequests.fsn">
                             <!--<a class="tooltips-right" ng-href="#/requests/edit/{{request.id}}">{{request.fsn}} <span translate="crs.request.list.tip.conceptFSN"></span></a>-->
                             {{request.fsn}}

@@ -9,6 +9,12 @@
                       title="{{'tooltips.request.details.label.requestorInternalId' | translate}}"
                       error-model="requestVM.error.requestorInternalId"></form-control>
 
+        <form-control type="text"
+                      model="requestVM.request.requestorInternalTerm"
+                      label="crs.request.details.label.localTerm"
+                      title="{{'tooltips.request.details.label.localTerm' | translate}}"
+                      name="txtReference"></form-control>
+
         <form-control type="select"
                       model="requestVM.request.additionalFields.topic"
                       label="crs.request.details.label.topic"
@@ -41,12 +47,6 @@
                         options="suggestion.destinationTerminology as suggestion.terminologyName for suggestion in requestVM.destinationTerminologies"></form-control>
         </div>
 
-        <form-control type="textarea"
-                      model="requestVM.request.additionalFields.notes"
-                      label="crs.request.details.label.notes"
-                      title="{{'tooltips.request.details.label.notes'| translate}}"
-                      name="txtNotes"></form-control>
-
         <form-control ng-if="requestVM.request.requestHeader.status === 'DRAFT'"
                       type="textarea"
                       model="requestVM.request.additionalFields.reference"
@@ -55,6 +55,12 @@
                       name="txtReference"
                       required
                       error-model="requestVM.error.reference"></form-control>
+
+        <form-control type="textarea"
+                      model="requestVM.request.additionalFields.notes"
+                      label="crs.request.details.label.notes"
+                      title="{{'tooltips.request.details.label.notes'| translate}}"
+                      name="txtNotes"></form-control>
 
         <form-control type="text-readonly"
                       ng-if="requestVM.request.requestHeader.status !== 'DRAFT'"
@@ -73,11 +79,6 @@
         <div ng-if="requestVM.requestType.value === 'NEW_CONCEPT'">        
         
         <form-control type="text"
-                      model="requestVM.request.requestorInternalTerm"
-                      label="crs.request.details.label.localTerm"
-                      title="{{'tooltips.request.details.label.localTerm' | translate}}"
-                      name="txtReference"></form-control>
-        <form-control type="text"
                       model="requestVM.request.proposedUse"
                       label="crs.request.details.label.proposedUse"
                       title="{{'tooltips.request.details.label.proposedUse' | translate}}"
@@ -87,6 +88,5 @@
                       label="crs.request.details.label.umlsCui"
                       title="{{'tooltips.request.details.label.umlsCui' | translate}}"
                       name="txtReference"></form-control></div>
-        
     </div>
 </form>
