@@ -1273,6 +1273,9 @@ angular
                                 changeTarget.definitionOfChanges = results;
                                 scope.conceptHistoryPtr++;
                                 deferred.resolve(results);
+                                $rootScope.$broadcast('justificationForChange', {
+                                    changeNote: results,
+                                });
                             }, function () {
                                 deferred.reject();
                             });

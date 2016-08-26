@@ -2013,6 +2013,42 @@ angular
                 }
             });
 
+            //auto fill justification filed
+            $scope.$on('justificationForChange', function(event, args) {
+
+                vm.request.additionalFields.reasonForChange = extractJustification(args);
+            });
+
+            var changeRetireConceptDOC, newDescDOC, changeDescDOC, newRelaionshipDOC, changeRelationshipDOC;
+
+            var extractJustification = function(args){
+                var change;
+                switch(args.changeNote.changeType){
+                    case REQUEST_TYPE.CHANGE_RETIRE_CONCEPT.value:
+                        changeRetireConceptDOC = '[' + 'Change Or Retire Concept' + ': ' + args.changeNote.reasonForChange + ']';
+                        break;
+                    case REQUEST_TYPE.NEW_DESCRIPTION.value:
+                        newDescDOC = '[' + 'New Description' + ': ' + args.changeNote.reasonForChange + ']';
+                        break;
+                    case REQUEST_TYPE.CHANGE_DESCRIPTION.value:
+                        changeDescDOC = '[' + 'Change Description' + ': ' + args.changeNote.reasonForChange + ']';
+                        break;
+                    case REQUEST_TYPE.NEW_RELATIONSHIP.value:
+                        newRelaionshipDOC = '[' + 'New Relationship' + ': ' + args.changeNote.reasonForChange + ']';
+                        break;
+                    case REQUEST_TYPE.CHANGE_RELATIONSHIP.value:
+                        changeRelationshipDOC = '[' + 'Change Relationship' + ': ' + args.changeNote.reasonForChange + ']';
+                        break;
+                }
+                
+                change = (changeRetireConceptDOC? changeRetireConceptDOC + '\n': '') + 
+                         (newDescDOC? newDescDOC + '\n': '') + 
+                         (changeDescDOC? changeDescDOC + '\n': '') +
+                         (newRelaionshipDOC?newRelaionshipDOC + '\n': '') +
+                         (changeRelationshipDOC?changeRelationshipDOC + '\n': '');
+                return change;
+            };
+
             vm.cancelEditing = cancelEditing;
             vm.saveRequest = saveRequest;
             vm.acceptRequest = acceptRequest;
@@ -2032,6 +2068,12 @@ angular
             vm.withdrawRequest = withdrawRequest;
             vm.getAuthorName = getAuthorName;
             vm.getStaffName = getStaffName;
+            vm.loadingProjects = true;
+            vm.loadingAuthors = true;
+            vm.projects = [];
+            vm.authors = [];
+            vm.loadSemanticTags = loadSemanticTags;
+            vm.extractJustification = extractJustification;
             vm.isAdmin = false;
             vm.isViewer = false;
             vm.permissionChecked = false;
@@ -2052,11 +2094,11 @@ angular
                 },
                 {
                     sourceTerminology: "CURRENTBATCH",
-                    terminologyName: "New Concept Requests"
+                    terminologyName: "Current Batch Requests"
                 },
                 {
                     sourceTerminology: "NEWCONCEPTREQUESTS",
-                    terminologyName: "Current Batch Requests"
+                    terminologyName: "New Concept Requests"
                 }
             ];
             vm.destinationTerminologies = [
@@ -2066,18 +2108,13 @@ angular
                 },
                 {
                     destinationTerminology: "CURRENTBATCH",
-                    terminologyName: "New Concept Requests"
+                    terminologyName: "Current Batch Requests"
                 },
                 {
                     destinationTerminology: "NEWCONCEPTREQUESTS",
-                    terminologyName: "Current Batch Requests"
+                    terminologyName: "New Concept Requests"
                 }
             ];
-            vm.loadingProjects = true;
-            vm.loadingAuthors = true;
-            vm.projects = [];
-            vm.authors = [];
-            vm.loadSemanticTags = loadSemanticTags;
 
             $scope.panelId = 'REQUEST_DETAILS';
 

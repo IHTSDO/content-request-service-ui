@@ -46,7 +46,6 @@ angular.module('conceptRequestServiceApp.conceptEdit')
             };
 
             var selectDefinitionOfChanges = function () {
-                console.log($scope.definitionOfChanges);
                 $uibModalInstance.close($scope.definitionOfChanges);
             };
 
