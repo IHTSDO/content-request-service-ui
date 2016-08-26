@@ -38,6 +38,7 @@ angular
             langKey: 'crs.request.requestType.newDescription',
             form: {
                 template: 'components/request/request-new-description-form.html',
+                modal: 'components/request/request-new-description-modal.html',
                 "fields": [
                     {"name": "requestorInternalId"},
                     {"name": "proposedDescription", "required": true},

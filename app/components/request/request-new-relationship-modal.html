@@ -4,12 +4,20 @@
                       model="definitionOfChanges.characteristicType"
                       options="characteristicType for characteristicType in requestMetadata.characteristicTypes"
                       label="crs.request.details.label.characteristicType"
+                      title="{{'crs.request.details.label.characteristicType' | translate}}"
                       name="slCharacteristicType"></form-control>
 
         <form-control type="select"
                       model="definitionOfChanges.refinability"
                       options="refinability for refinability in requestMetadata.refinabilities"
                       label="crs.request.details.label.refinability"
+                      title="{{'crs.request.details.label.refinability' | translate}}"
+                      name="slRefinability"></form-control>
+
+        <form-control type="textarea"
+                      model="definitionOfChanges.reasonForChange"
+                      label="crs.request.details.label.reasonForChange"
+                      title="{{'crs.request.details.label.reasonForChange' | translate}}"
                       name="slRefinability"></form-control>
     </div>
 </form>

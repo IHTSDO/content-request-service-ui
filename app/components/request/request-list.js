@@ -64,6 +64,12 @@ angular
                         id: "number",
                         placeholder: "Ids..."
                     }
+                },
+                ogirinatorId: {
+                    ogirinatorId: {
+                        id: "text",
+                        placeholder: "Created By.."
+                    }
                 }
             };
 
@@ -403,7 +409,7 @@ angular
                 return milliseconds.getTime();
             };
 
-            var buildRequestList = function(typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, manager, status, author, requestId, requestType){
+            var buildRequestList = function(typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, manager, status, author, requestId, requestType, showClosedRequests){
                 var requestList = {};
                 requestList.batchRequest = batchRequest;
                 requestList.concept = fsn;
@@ -422,6 +428,7 @@ angular
                 requestList.requestId = requestId;
                 requestList.requestType = requestType;
                 requestList.search = search;
+                requestList.showClosedRequests = showClosedRequests;
                 return requestList;
 
             };
@@ -479,7 +486,8 @@ angular
                             params.filter().status,
                             params.filter().author,
                             params.filter().requestId,
-                            params.filter().requestType
+                            params.filter().requestType,
+                            vm.showClosedRequests
                         );
 
                         if(myRequests === undefined){
@@ -551,9 +559,10 @@ angular
                             // params.filter().summary,
                             vm.assignee,
                             params.filter().status,
-                            params.filter().author,
+                            params.filter().ogirinatorId,
                             params.filter().requestId,
-                            params.filter().requestType
+                            params.filter().requestType,
+                            vm.showClosedRequests
                         );
 
                         if(myAssignedRequests === undefined){
@@ -626,9 +635,10 @@ angular
                             // params.filter().summary,
                             params.filter().manager,
                             params.filter().status,
-                            params.filter().author,
+                            params.filter().ogirinatorId,
                             params.filter().requestId,
-                            params.filter().requestType
+                            params.filter().requestType,
+                            vm.showClosedRequests
                         );
                         if(subbmitedRequests === undefined){
                             subbmitedRequests = filterValues;
@@ -703,6 +713,23 @@ angular
                 requestTableParams.filter().requestDate = vm.daterange;
             };
 
+            var toggleShowClosedRequests = function(list) {
+                vm.selectedRequests = { checked: false, items: {}, requests: {} };
+                vm.showClosedRequests = !vm.showClosedRequests;
+                switch(list){
+                    case 'my-requests':
+                          vm.tableParams.reload();
+                          break;
+                    case 'submitted-requests':
+                          vm.submittedTableParams.reload();
+                          break;
+                    case 'my-assigned-requests':
+                          vm.assignedRequestTableParams.reload();
+                          break;
+                }
+                
+            };
+
             vm.showFilter = false;
             vm.isAdmin = false;
             vm.isViewer = false;
@@ -713,6 +740,8 @@ angular
             vm.onDateRangeChange = onDateRangeChange;
             vm.onDateRangeChangeSQ = onDateRangeChangeSQ;
             vm.onDateRangeChangeMAR = onDateRangeChangeMAR;
+            vm.toggleShowClosedRequests = toggleShowClosedRequests;
+            vm.showClosedRequests = false;
             vm.daterange = {
                 startDate: null,
                 endDate: null

@@ -41,6 +41,7 @@ body {
   height: 100%;
   padding-top: 64px;
   padding-bottom: 40px;
+  overflow-x: auto;
 
   .content {
     overflow:auto;
@@ -548,6 +549,7 @@ ul.batch-statistic.timeline {
 .dashboard-content {
   min-height: 100%;
   margin-left:16%;
+  width: 100%;
 }
 
 .promoted-check-box {
@@ -739,5 +741,16 @@ ul.batch-statistic.timeline {
 @media screen and (max-width: 1366px){
   .accepted-table{
     margin-left: -2%;
+  }
+}
+
+#request-info-panel{
+  .pager{
+    margin: 23px;
+    li{
+      button{
+        margin-bottom: 5px;
+      }
+    }
   }
 }

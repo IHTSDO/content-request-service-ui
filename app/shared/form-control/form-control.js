@@ -110,6 +110,12 @@ angular
                 return elementHtml;
             };
 
+            var buildTextReadonly = function (name, model) {
+                var elementHtml = '';
+                    elementHtml += '<div class="comment-body">{{' + model + '}}</div>';
+                return elementHtml;
+            };
+
             var buildTextAreaControl = function (name, model,isMulti, readonlyExp) {
                 var elementHtml = '';
                 if (isMulti) {
@@ -226,6 +232,13 @@ angular
                             break;
                         case 'text':
                             elementHtml = buildTextControl(
+                                $attrs.name,
+                                $attrs.model,
+                                (multi === 'true'),
+                                $attrs.readonly);
+                            break;
+                        case 'text-readonly':
+                            elementHtml = buildTextReadonly(
                                 $attrs.name,
                                 $attrs.model,
                                 (multi === 'true'),

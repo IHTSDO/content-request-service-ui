@@ -200,6 +200,15 @@ angular
                 });
             };
 
+            var loadTopicOptions = function(){
+                return crsJiraService.getTopicOptions().then(function(topicOptions){
+                    topicOptions.sort(function(a, b) {
+                        return utilsService.compareStrings(a.value, b.value);
+                    });
+                    vm.topicOptions = topicOptions;
+                });
+            };
+
             var getAuthorName = function(authorKey) {
                 if (!vm.authors || vm.authors.length === 0) {
                     return authorKey;
@@ -336,6 +345,9 @@ angular
 
                 //load semantic tag
                 loadSemanticTags();
+
+                //load topic options
+                loadTopicOptions();
 
                 if (!isValid) {
                     showErrorMessage('crs.request.message.error.invalidPage');
@@ -1014,7 +1026,7 @@ angular
                         item.proposedParents = [];
                         item.requestorInternalTerm = changedTarget.requestorInternalTerm;
                         item.proposedUse = changedTarget.proposedUse;
-                        item.semanticTag = changedTarget.value;
+                        
                         item.umlsCui = changedTarget.umlsCui;
                         if (changedTarget.parentConcept) {
                             for (var i = 0; i < changedTarget.parentConcept.length; i++) {
@@ -1025,6 +1037,15 @@ angular
                                 obj.refType = 'EXISTING';
                                 item.proposedParents.push(obj);
                             }
+                        }
+                        if((definitionOfChanges.value === null || definitionOfChanges.value === undefined) && definitionOfChanges.currentFsn !== null){
+                            var semanticTag;
+                            var start = definitionOfChanges.currentFsn.indexOf("(");
+                            var end = definitionOfChanges.currentFsn.indexOf(")");
+                            semanticTag = definitionOfChanges.currentFsn.substring(start + 1, end);
+                            item.semanticTag = semanticTag;
+                        }else{
+                            item.semanticTag = changedTarget.value;
                         }
 
                         break;
@@ -1304,7 +1325,7 @@ angular
                     item.requestType = request.definitionOfChanges.changeType;
                     item.id = request.definitionOfChanges.changeId;
                     item.topic = request.additionalFields.topic;
-                    item.summary = request.definitionOfChanges.summary;
+                    item.summary = request.additionalFields.summary;
                     item.notes = request.additionalFields.notes;
                     item.reference = request.additionalFields.reference;
                     item.reasonForChange = request.additionalFields.reasonForChange;
@@ -1517,6 +1538,11 @@ angular
                     if (!vm.request.additionalFields.summary ||
                         !vm.request.additionalFields.summary.trim()) {
                         error.summary = fieldRequiredLangKey;
+                    }
+
+                    if (!vm.request.additionalFields.reference ||
+                        !vm.request.additionalFields.reference.trim()) {
+                        error.reference = fieldRequiredLangKey;
                     }
                 }
 
@@ -1756,7 +1782,7 @@ angular
             };
 
             var assignRequest = function() {
-                if (vm.authors.length > 0) {
+                if (vm.authors.length > 0 && vm.projects.length > 0) {
                     var modalInstance = openAssignRequestModal();
 
                     modalInstance.result.then(function(rs) {
@@ -1971,6 +1997,58 @@ angular
                 }
             });
 
+            $scope.$watch(function() {
+                return vm.request.proposedFSN;
+            }, function(newVal) {
+                if(newVal && vm.requestType === REQUEST_TYPE.NEW_CONCEPT && vm.request.proposedFSN){
+                    var indexOfFSN = vm.request.proposedFSN.indexOf("(");
+                    if(indexOfFSN !== -1){
+                        var substringFSN = vm.request.proposedFSN.substring(0, indexOfFSN);
+                        var trimFSN = substringFSN.trim();
+                        vm.request.conceptPT = trimFSN;
+                    }else{
+                        var trimFsn = vm.request.proposedFSN.trim();
+                        vm.request.conceptPT = trimFsn;
+                    }
+                }
+            });
+
+            //auto fill justification filed
+            $scope.$on('justificationForChange', function(event, args) {
+
+                vm.request.additionalFields.reasonForChange = extractJustification(args);
+            });
+
+            var changeRetireConceptDOC, newDescDOC, changeDescDOC, newRelaionshipDOC, changeRelationshipDOC;
+
+            var extractJustification = function(args){
+                var change;
+                switch(args.changeNote.changeType){
+                    case REQUEST_TYPE.CHANGE_RETIRE_CONCEPT.value:
+                        changeRetireConceptDOC = '[' + 'Change Or Retire Concept' + ': ' + args.changeNote.reasonForChange + ']';
+                        break;
+                    case REQUEST_TYPE.NEW_DESCRIPTION.value:
+                        newDescDOC = '[' + 'New Description' + ': ' + args.changeNote.reasonForChange + ']';
+                        break;
+                    case REQUEST_TYPE.CHANGE_DESCRIPTION.value:
+                        changeDescDOC = '[' + 'Change Description' + ': ' + args.changeNote.reasonForChange + ']';
+                        break;
+                    case REQUEST_TYPE.NEW_RELATIONSHIP.value:
+                        newRelaionshipDOC = '[' + 'New Relationship' + ': ' + args.changeNote.reasonForChange + ']';
+                        break;
+                    case REQUEST_TYPE.CHANGE_RELATIONSHIP.value:
+                        changeRelationshipDOC = '[' + 'Change Relationship' + ': ' + args.changeNote.reasonForChange + ']';
+                        break;
+                }
+                
+                change = (changeRetireConceptDOC? changeRetireConceptDOC + '\n': '') + 
+                         (newDescDOC? newDescDOC + '\n': '') + 
+                         (changeDescDOC? changeDescDOC + '\n': '') +
+                         (newRelaionshipDOC?newRelaionshipDOC + '\n': '') +
+                         (changeRelationshipDOC?changeRelationshipDOC + '\n': '');
+                return change;
+            };
+
             vm.cancelEditing = cancelEditing;
             vm.saveRequest = saveRequest;
             vm.acceptRequest = acceptRequest;
@@ -1990,6 +2068,12 @@ angular
             vm.withdrawRequest = withdrawRequest;
             vm.getAuthorName = getAuthorName;
             vm.getStaffName = getStaffName;
+            vm.loadingProjects = true;
+            vm.loadingAuthors = true;
+            vm.projects = [];
+            vm.authors = [];
+            vm.loadSemanticTags = loadSemanticTags;
+            vm.extractJustification = extractJustification;
             vm.isAdmin = false;
             vm.isViewer = false;
             vm.permissionChecked = false;
@@ -2010,11 +2094,11 @@ angular
                 },
                 {
                     sourceTerminology: "CURRENTBATCH",
-                    terminologyName: "New Concept Requests"
+                    terminologyName: "Current Batch Requests"
                 },
                 {
                     sourceTerminology: "NEWCONCEPTREQUESTS",
-                    terminologyName: "Current Batch Requests"
+                    terminologyName: "New Concept Requests"
                 }
             ];
             vm.destinationTerminologies = [
@@ -2024,18 +2108,13 @@ angular
                 },
                 {
                     destinationTerminology: "CURRENTBATCH",
-                    terminologyName: "New Concept Requests"
+                    terminologyName: "Current Batch Requests"
                 },
                 {
                     destinationTerminology: "NEWCONCEPTREQUESTS",
-                    terminologyName: "Current Batch Requests"
+                    terminologyName: "New Concept Requests"
                 }
             ];
-            vm.loadingProjects = true;
-            vm.loadingAuthors = true;
-            vm.projects = [];
-            vm.authors = [];
-            vm.loadSemanticTags = loadSemanticTags;
 
             $scope.panelId = 'REQUEST_DETAILS';
 
