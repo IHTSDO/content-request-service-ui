@@ -60,9 +60,21 @@ angular
                 });
             };
 
+            var getTopicOptions = function(){
+                var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
+                return crsService.sendGet(requestEndpoint + '/topicOptions').then(function(topicOptions){
+                    if(topicOptions.error){
+                        return [];
+                    }else if(topicOptions){
+                        return topicOptions;
+                    }
+                });
+            };
+
             return {
                 getAuthorUsers: getAuthorUsers,
-                getSemanticTags: getSemanticTags
+                getSemanticTags: getSemanticTags,
+                getTopicOptions: getTopicOptions
             };
         }
     ]);

@@ -1273,6 +1273,9 @@ angular
                                 changeTarget.definitionOfChanges = results;
                                 scope.conceptHistoryPtr++;
                                 deferred.resolve(results);
+                                $rootScope.$broadcast('justificationForChange', {
+                                    changeNote: results,
+                                });
                             }, function () {
                                 deferred.reject();
                             });
@@ -1824,6 +1827,23 @@ angular
                         // console.debug('updateDescription');
                         if (!description) {
                             return;
+                        }
+                        if(scope.conceptChangeType === REQUEST_TYPE.NEW_CONCEPT.value){
+                            if(description && description.type === 'FSN'){
+                                var indexOfFSN = description.term.indexOf("(");
+                                if(indexOfFSN !== -1){
+                                    var substringFSN = description.term.substring(0, indexOfFSN);
+                                    var trimFSN = substringFSN.trim();
+                                    if(scope.getDescriptions()[0].term !== null && scope.getDescriptions()[0].term !== undefined){
+                                        scope.getDescriptions()[1].term = trimFSN;
+                                    }
+                                }else{
+                                    if(scope.getDescriptions()[0].term !== null && scope.getDescriptions()[0].term !== undefined){
+                                        var trimFSN = description.term.trim();
+                                        scope.getDescriptions()[1].term = trimFSN;
+                                    }
+                                }
+                            }
                         }
 
                         autoSave();

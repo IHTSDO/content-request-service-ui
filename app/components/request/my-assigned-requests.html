@@ -6,11 +6,15 @@
                 <div class="col-md-4 no-padding">
                     <h3 class="table-title p-20" translate="crs.request.list.title.myAssignedRequests"></h3>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-3">
                     <!-- <div class="table-search">
                         <input type="text" ng-model="vm.assignedRequestTableParams.filter()['search']" class="form-control"
                                placeholder="{{'crs.request.list.searchPlaceHolder.myRequests' | translate}}" autofocus/>
                     </div> -->
+                </div>
+                <div class="col-md-2 promoted-check-box">
+                    <button class="btn btn-default" ng-class="[{'md-check-box' : vm.showClosedRequests}, {'md-check-box-outline-blank' : !vm.showClosedRequests}]" ng-click="vm.toggleShowClosedRequests('my-assigned-requests')" style="background: transparent">
+                        <span class="promoted-check-box">Show Closed Requests</span></button>
                 </div>
                 <div class="col-md-3">
                     <div class="pull-right p-t-20">
@@ -38,14 +42,15 @@
                             <input type="checkbox" class="small-checkbox" ng-model="vm.selectedRequests.items[request.id]">
                         </td>
  -->
-                        <td data-title="'crs.request.list.tableHeader.requestId' | translate" sortable="'id'" filter="vm.filterRequests.requestId">
-                            {{request.id}}
-                        </td>
-
                         <td data-title="'crs.request.list.tableHeader.batchId' | translate" sortable="'batchRequest'" filter="vm.filterRequests.batchRequest">
                             <!--<a class="tooltips-right" ng-href="#/batches/view/{{request.batchRequest}}">{{request.batchRequest}} <span translate="crs.request.list.tip.batchId"></span></a>-->
                             {{request.batchRequest}}
                         </td>
+
+                        <td data-title="'crs.request.list.tableHeader.requestId' | translate" sortable="'id'" filter="vm.filterRequests.requestId">
+                            {{request.id}}
+                        </td>
+                        
                         <td data-title="'crs.request.list.tableHeader.conceptFSN' | translate" sortable="'fsn'" filter="vm.filterRequests.fsn">
                             <!--<a class="tooltips-right" ng-href="#/requests/edit/{{request.id}}">{{request.fsn}} <span translate="crs.request.list.tip.conceptFSN"></span></a>-->
                             {{request.fsn}}
@@ -63,21 +68,9 @@
                         <td data-title="'crs.request.list.tableHeader.summary' | translate" sortable="'additionalFields.summary'" >
                             {{(request.additionalFields)?request.additionalFields.summary:''}}
                         </td>
-
-                        <!-- <td data-title="'crs.request.list.tableHeader.manager' | translate" sortable="'requestHeader.manager'" filter="{manager: 'ng-table/manager-select.html'}" style="min-width: 150px">
+                        <td data-title="'crs.request.list.tableHeader.originator' | translate" sortable="'requestHeader.ogirinatorId'" style="min-width: 150px" filter="vm.filterRequests.ogirinatorId">
                             <span ng-show="vm.loadingAuthors" class="md md-autorenew" ng-class="{'md-spin':vm.loadingAuthors}"></span>
-                            <div  ng-bind-html="(vm.getAuthorName(request.requestHeader.manager))?vm.getAuthorName(request.requestHeader.manager):request.requestHeader.manager"></div>
-                        </td> -->
-
-                        <td data-title="'crs.request.list.tableHeader.validationResult' | translate" sortable="'currentValidationStatus'"  style="text-align: center">
-                            <a class="tooltips-left" >
-                                <button ng-show="request.currentValidationStatus"
-                                        type="button"
-                                        class="btn btn-round btn-default lighten-2 red" >
-                                    <div class="md md-school "></div>  <span class="red">{{request.currentValidationStatus}}</span>
-                                </button>
-
-                            </a>
+                            <div ng-if="!vm.loadingAuthors" ng-bind-html="(vm.getAuthorName(request.requestHeader.ogirinatorId))?vm.getAuthorName(request.requestHeader.ogirinatorId):request.requestHeader.ogirinatorId"></div>
                         </td>
 
                         <td data-title="'crs.request.list.tableHeader.status' | translate" sortable="'requestHeader.status'" filter="{status: 'ng-table/status-select.html'}">
@@ -99,13 +92,6 @@
           <span ng-if="(vm.daterangeMAR.startDate !== undefined && vm.daterangeMAR.endDate !== undefined) && (vm.daterangeMAR.startDate !== '' && vm.daterangeMAR.endDate !== '') && (vm.daterangeMAR.startDate !== null && vm.daterangeMAR.endDate !== null)" ng-click="vm.onDateRangeChangeMAR(true)" class="md md-remove-circle" style="color: red; float: right; margin-bottom: -16px; cursor: pointer"></span>
         <input type="text" class="" ng-change="vm.onDateRangeChangeMAR()" placeholder="Dates..." readonly="" options="vm.options" name="some_name" ng-model="vm.daterangeMAR" style="background: transparent; border: none; box-shadow: inset 0 -1px 0 #ddd; font-size: 13px;" date-range-picker /> 
     </div>
-</script>
-<script type="text/ng-template" id="ng-table/manager-select.html">
-    <span ng-if="params.filter().manager !== undefined && params.filter().manager !== '' && params.filter().manager !== null" ng-click="params.filter().manager = null" class="md md-remove-circle" style="color: red; float: right; margin-bottom: -11px; font-size: 14px; cursor: pointer"></span>
-    <form-control type="select"
-                  model="params.filter()[name]"
-                  options="suggestion.id as suggestion.title for suggestion in vm.staffs"
-                  ></form-control>
 </script>
 <script type="text/ng-template" id="ng-table/status-select.html">
     <span ng-if="params.filter().status !== undefined && params.filter().status !== '' && params.filter().status !== null" ng-click="params.filter().status = ''" class="md md-remove-circle" style="color: red; float: right; margin-bottom: -11px; font-size: 14px; cursor: pointer"></span>

@@ -64,6 +64,12 @@ angular
                         id: "number",
                         placeholder: "Ids..."
                     }
+                },
+                ogirinatorId: {
+                    ogirinatorId: {
+                        id: "text",
+                        placeholder: "Created By.."
+                    }
                 }
             };
 
@@ -500,7 +506,7 @@ angular
                         // params.filter().summary,
                         params.filter().manager,
                         params.filter().status,
-                        params.filter().author,
+                        params.filter().ogirinatorId,
                         params.filter().project,
                         params.filter().assignee,
                         params.filter().requestId,
