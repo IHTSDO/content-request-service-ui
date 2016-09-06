@@ -1,5 +1,4 @@
 .dashboard-links {
-  font-family: Roboto,"Helvetica Neue",Helvetica,Arial,sans-serif;
   box-shadow: none;
   text-align: left;
   border: none;
@@ -15,7 +14,7 @@
     background-color: #3b3b3b;
   }
   &:after {
-    content: "\f29c";
+  
     color: #4fc3f7;
     display: inline-block;
     font: normal normal normal 14px/1 'Material Design Iconic Font';
@@ -45,7 +44,7 @@
 }
 
 .create-links:after {
-  content: "\f1ed";
+
   color: #4fc3f7;
   display: inline-block;
   font: normal normal normal 14px/1 'Material Design Iconic Font';
