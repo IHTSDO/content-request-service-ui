@@ -1666,7 +1666,7 @@ angular
                 requestService.saveRequest(requestData)
                     .then(function() {
                         notificationService.sendMessage('crs.request.message.requestSaved', 5000);
-                        $location.path(prevPage).search({});
+                        // $location.path(prevPage).search({});
                     }, function(e) {
                         showErrorMessage(e.message);
                     })
