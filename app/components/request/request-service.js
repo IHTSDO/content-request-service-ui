@@ -244,6 +244,15 @@ angular.module('conceptRequestServiceApp.request')
                 return crsService.sendGet(requestEndpoint + '/batchNewConcept/' + requestId, params);
             }
 
+            var getNewConcept = function(localCode){
+                var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
+                var params;
+                params = {
+                    localCode: localCode
+                };
+                return crsService.sendGet(requestEndpoint + '/newConceptObject/' , params);
+            };
+
             return {
                 identifyRequestType: identifyRequestType,
                 identifyRequestStatus: identifyRequestStatus,
@@ -268,7 +277,8 @@ angular.module('conceptRequestServiceApp.request')
                 setAcceptedFilterValues: setAcceptedFilterValues,
                 getAcceptedFilterValues: getAcceptedFilterValues,
                 setAssignedFilterValues: setAssignedFilterValues,
-                getAssignedFilterValues: getAssignedFilterValues
+                getAssignedFilterValues: getAssignedFilterValues,
+                getNewConcept: getNewConcept
             };
 
         }]);

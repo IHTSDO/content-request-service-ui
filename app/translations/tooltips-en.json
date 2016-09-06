@@ -292,7 +292,8 @@
                     "invalidPage": "The page you request is not available",
                     "invalidInput": "Please correct request data before saving or generating concept",
                     "fieldRequired": "required",
-                    "fieldInvalid": "invalid"
+                    "fieldInvalid": "invalid",
+                    "conceptError": "Please drag and drop selected concept from terminology tree/search panel to this field or type concept ID in this field and select the concept from drop down list."
                 }
 
             },

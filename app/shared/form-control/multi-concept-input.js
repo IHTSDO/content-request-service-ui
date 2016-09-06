@@ -3,7 +3,8 @@
 angular
     .module('conceptRequestServiceApp.formControl')
     .directive('multiConceptInput', [
-        function () {
+        '$routeParams',
+        function ($routeParams) {
             return {
                 restrict: 'E',
                 require: ['?^formControlReadonly', '^form'],
@@ -27,7 +28,7 @@ angular
                 ].join(''),
                 link: function ($scope, $element, $attrs, reqiredControllers) {
                     var formControlReadonlyCtrl = reqiredControllers[0];
-                    $scope.readonly = false;
+                    var mode = $routeParams.mode;
 
                     if (formControlReadonlyCtrl) {
                         $scope.readonly = formControlReadonlyCtrl.getReadonlyStatus();
@@ -45,12 +46,16 @@ angular
                         {   
                             label: 'Current Batch',
                             sourceTerminology: 'CURRENTBATCH'
+                        },
+                        {
+                            label: 'New Concept Requests',
+                            sourceTerminology: 'NEWCONCEPTREQUESTS'
                         }
-                        // {
-                        //     label: 'New Concept',
-                        //     sourceTerminology: 'NEWCONCEPTREQUESTS'
-                        // }
                     ];
+
+                    if(mode === 'new'){
+                        $scope.sourceTerminologies.splice(1, 1);
+                    }
 
                     $scope.addField = function (index) {
                         $scope.models.splice(index + 1, 0, '');

@@ -202,10 +202,23 @@ angular
 
             var loadTopicOptions = function(){
                 return crsJiraService.getTopicOptions().then(function(topicOptions){
+                    vm.topicOptions = topicOptions;
                     topicOptions.sort(function(a, b) {
                         return utilsService.compareStrings(a.value, b.value);
                     });
-                    vm.topicOptions = topicOptions;
+                    if(vm.pageMode !== REQUEST_MODE.NEW){
+                        var isNotInArr;
+                        for(var i in topicOptions){
+                            if(topicOptions[i].value !== vm.request.additionalFields.topic){
+                                isNotInArr = true;
+                            }
+                        }
+                        if(isNotInArr){
+                            var obj = {};
+                            obj.value = vm.request.additionalFields.topic;
+                            vm.topicOptions.push(obj);
+                        }
+                    }
                 });
             };
 
@@ -353,6 +366,11 @@ angular
                     showErrorMessage('crs.request.message.error.invalidPage');
                 } else {
                     vm.pageMode = identifyPageMode(mode);
+                    //delete current batch option
+                    if(vm.pageMode === REQUEST_MODE.NEW){
+                        vm.sourceTerminologies.splice(1, 1);
+                        vm.destinationTerminologies.splice(1, 1);
+                    }
 
                     switch (vm.pageMode) {
                         case REQUEST_MODE.NEW:
@@ -392,7 +410,8 @@ angular
                             accountService.getAccountInfo().then(function(accountDetails) {
                                 vm.request.requestHeader.ogirinatorId = accountDetails.login;
                             });
-
+                            
+                            $rootScope.newConceptRequestType = requestType.value;
                             vm.requestType = requestType;
                             vm.isValidViewParams = isValid;
                             vm.inputMode = identifyInputMode(inputMode);
@@ -1160,6 +1179,7 @@ angular
                     requestHeader: requestData.requestHeader,
                     contentTrackerUrl: requestData.contentTrackerUrl
                 };
+                $rootScope.newConceptRequestType = requestData.requestType;
                 var requestItems = requestData.requestItems;
                 var mainItem = extractItemByRequestType(requestItems, requestService.identifyRequestType(request.requestType));
 
@@ -1187,6 +1207,7 @@ angular
                         request.requestorInternalTerm = mainItem.requestorInternalTerm;
                         request.value = mainItem.semanticTag;
                         request.umlsCui = mainItem.umlsCui;
+
                         break;
 
                     case REQUEST_TYPE.CHANGE_RETIRE_CONCEPT.value:
@@ -1251,6 +1272,7 @@ angular
                         request.refinability = mainItem.refinability;
                         request.sourceTerminology = mainItem.sourceTerminology;
                         request.destinationTerminology = mainItem.destinationTerminology;
+                        $rootScope.desTerminilogy = mainItem.destinationTerminology;
 
                         // load destination concept
                         request.destinationConcept = {
@@ -1291,6 +1313,7 @@ angular
                         request.relationshipCharacteristicType = mainItem.relationshipCharacteristicType;
                         request.sourceTerminology = mainItem.sourceTerminology;
                         request.destinationTerminology = mainItem.destinationTerminology;
+                        $rootScope.desTerminilogy = mainItem.destinationTerminology;
 
                         // load destination concept
                         request.destinationConcept = {
@@ -1998,7 +2021,9 @@ angular
             });
 
             $scope.$watch(function() {
-                return vm.request.proposedFSN;
+                if(vm.requestType === REQUEST_TYPE.NEW_CONCEPT && vm.request.proposedFSN){
+                    return vm.request.proposedFSN;
+                }
             }, function(newVal) {
                 if(newVal && vm.requestType === REQUEST_TYPE.NEW_CONCEPT && vm.request.proposedFSN){
                     var indexOfFSN = vm.request.proposedFSN.indexOf("(");
@@ -2048,6 +2073,18 @@ angular
                          (changeRelationshipDOC?changeRelationshipDOC + '\n': '');
                 return change;
             };
+
+            $scope.$watch(function() {
+                if(vm.requestType === REQUEST_TYPE.NEW_RELATIONSHIP || vm.requestType === REQUEST_TYPE.CHANGE_RELATIONSHIP){
+                    return vm.request.destinationTerminology;
+                }
+            }, function(newVal) {
+                if(newVal && (vm.requestType === REQUEST_TYPE.NEW_RELATIONSHIP || vm.requestType === REQUEST_TYPE.CHANGE_RELATIONSHIP) && vm.request.destinationTerminology){
+                    $rootScope.$broadcast('destinationTerminologyChange', {
+                        desTerminology: vm.request.destinationTerminology
+                    });
+                }
+            });
 
             vm.cancelEditing = cancelEditing;
             vm.saveRequest = saveRequest;
@@ -2115,7 +2152,7 @@ angular
                     terminologyName: "New Concept Requests"
                 }
             ];
-
+            
             $scope.panelId = 'REQUEST_DETAILS';
 
             initView();

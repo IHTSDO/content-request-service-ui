@@ -4,7 +4,10 @@ angular
     .module('conceptRequestServiceApp.formControl')
     .directive('attributeValueInput', [
         'snowowlService',
-        function (snowowlService) {
+        'requestService',
+        '$rootScope',
+        '$routeParams',
+        function (snowowlService, requestService, $rootScope, $routeParams) {
             return {
                 restrict: 'E',
                 require: ['?^formControlReadonly', '^form'],
@@ -31,7 +34,7 @@ angular
                     'typeahead-wait-ms="700" ',
                     'typeahead-on-select="selectConcept($item)" ',
                     'typeahead-editable="false" typeahead-min-length="3"/>',
-                    '<span style="top:0;position: absolute;padding-top:3px;right:5px;font-size:14px;{{(showError)?\'color:red\':\'\'}}" ' +
+                    '<span title="{{\'tooltips.request.message.error.conceptError\' | translate}}" style="top:0;position: absolute;padding-top:3px;right:5px;font-size:14px;{{(showError)?\'color:red\':\'\'}}" ' +
                         'ng-show="showLoading || showError" ' +
                         'class="md" ' +
                         'ng-class="{\'md-spin md-autorenew\':showLoading, \'md-error\':showError}"></span>',
@@ -41,6 +44,13 @@ angular
                 link: function ($scope, $element, $attrs, reqiredControllers) {
                     var formControlReadonlyCtrl = reqiredControllers[0];
                     var isFocused = false;
+                    var desTerminilogy = $rootScope.desTerminilogy;
+                    var pageMode = $routeParams.mode;
+                    if(pageMode === 'new'){
+                        desTerminilogy = null;
+                    }
+                    var requestId = $routeParams.param;
+                    
 
                     var buildInvalidConcept = function (droppingConceptId, fsn) {
                         return {
@@ -53,7 +63,6 @@ angular
                     var initControl = function () {
                         $scope.showLoading = false;
                         $scope.showError = false;
-
                         if (!$scope.conceptStatus) {
                             $scope.conceptStatus = {
                                 loading: false,
@@ -72,6 +81,10 @@ angular
                         }
                     };
 
+                    $scope.$on('destinationTerminologyChange', function(event, args){
+                        desTerminilogy = args.desTerminology;
+                    });
+
                     var dropConcept = function (conceptData) {
                         var attributeId = '';
 
@@ -85,37 +98,71 @@ angular
                             attributeId = $scope.domainAttribute.conceptId;
                         }
 
-                        return snowowlService.getDomainAttributeValues(null, null, attributeId, conceptData.name).then(function (response) {
+                        switch (desTerminilogy){
+                            case 'CURRENTBATCH':
+                                return requestService.getBatchConcept(requestId, conceptData.id).then(function(response){
+                                    $scope.concept.conceptId = response[0].concept.conceptId;
+                                    $scope.concept.fsn = response[0].concept.fsn;
+                                    $scope.showLoading = false;
+                                    $scope.conceptStatus.loading = false;
+                                    $scope.conceptStatus.searching = false;
+                                    $scope.showError = false;
+                                    $scope.conceptStatus.valid = true;
+                                }).finally(function () {
+                                    $scope.showLoading = false;
+                                    $scope.conceptStatus.loading = false;
+                                    $scope.conceptStatus.searching = false;
+                                });
 
-                            // remove duplicates
-                            if (response && response.length > 0) {
-                                return snowowlService.getFullConcept(null, null, conceptData.id);
-                            } else {
-                                $scope.showError = true;
-                                $scope.concept = buildInvalidConcept(conceptData.id, conceptData.name);
-                                $scope.conceptStatus.valid = false;
-                                return false;
-                            }
-                        }, function () {
-                            $scope.showError = true;
-                            $scope.concept = buildInvalidConcept(conceptData.id, conceptData.name);
-                            $scope.conceptStatus.valid = false;
-                        }).then(function (response) {
-                            if (response) {
-                                $scope.concept = response;
-                                $scope.showError = false;
-                                $scope.conceptStatus.valid = true;
-                            }
-                        }, function (error) {
-                            $scope.errorMsg = error.msg;
-                            $scope.showError = true;
-                            $scope.concept = buildInvalidConcept(conceptData.id, conceptData.name);
-                            $scope.conceptStatus.valid = false;
-                        }).finally(function () {
-                            $scope.showLoading = false;
-                            $scope.conceptStatus.loading = false;
-                            $scope.conceptStatus.searching = false;
-                        });
+                            case 'NEWCONCEPTREQUESTS':
+                                return requestService.getNewConcept(conceptData.id).then(function(response){
+                                    
+                                    $scope.concept.conceptId = response[0].conceptId;
+                                    $scope.concept.fsn = response[0].fsn;
+                                    $scope.showLoading = false;
+                                    $scope.conceptStatus.loading = false;
+                                    $scope.conceptStatus.searching = false;
+                                    $scope.showError = false;
+                                    $scope.conceptStatus.valid = true;
+                                }).finally(function () {
+                                    $scope.showLoading = false;
+                                    $scope.conceptStatus.loading = false;
+                                    $scope.conceptStatus.searching = false;
+                                });
+
+                            default:
+                                return snowowlService.getDomainAttributeValues(null, null, attributeId, conceptData.name).then(function (response) {
+
+                                // remove duplicates
+                                if (response && response.length > 0) {
+                                    return snowowlService.getFullConcept(null, null, conceptData.id);
+                                } else {
+                                    $scope.showError = true;
+                                    $scope.concept = buildInvalidConcept(conceptData.id, conceptData.name);
+                                    $scope.conceptStatus.valid = false;
+                                    return false;
+                                }
+                                }, function () {
+                                    $scope.showError = true;
+                                    $scope.concept = buildInvalidConcept(conceptData.id, conceptData.name);
+                                    $scope.conceptStatus.valid = false;
+                                }).then(function (response) {
+                                    if (response) {
+                                        $scope.concept = response;
+                                        $scope.showError = false;
+                                        $scope.conceptStatus.valid = true;
+                                    }
+                                }, function (error) {
+                                    $scope.errorMsg = error.msg;
+                                    $scope.showError = true;
+                                    $scope.concept = buildInvalidConcept(conceptData.id, conceptData.name);
+                                    $scope.conceptStatus.valid = false;
+                                }).finally(function () {
+                                    $scope.showLoading = false;
+                                    $scope.conceptStatus.loading = false;
+                                    $scope.conceptStatus.searching = false;
+                                });
+                        }
                     };
 
                     var getConceptsForValueTypeahead = function (viewValue) {
@@ -133,31 +180,97 @@ angular
                             attributeId = $scope.domainAttribute.conceptId;
                         }
 
-                        return snowowlService.getDomainAttributeValues(null, null, attributeId, viewValue).then(function (response) {
-                            //restore error status
-                            if (!isFocused) {
-                                validateConceptInput(viewValue);
-                            }
+                        switch (desTerminilogy){
+                            case 'SNOMEDCT':
+                                return snowowlService.getDomainAttributeValues(null, null, attributeId, viewValue).then(function (response) {
+                                    //restore error status
+                                    if (!isFocused) {
+                                        validateConceptInput(viewValue);
+                                    }
 
-                            // remove duplicates
-                            if (response && response.length > 0) {
-                                for (var i = 0; i < response.length; i++) {
-                                    // console.debug('checking for duplicates', i, response[i]);
-                                    for (var j = response.length - 1; j > i; j--) {
-                                        if (response[j].id === response[i].id) {
-                                            response.splice(j, 1);
-                                            j--;
+                                    // remove duplicates
+                                    if (response && response.length > 0) {
+                                        for (var i = 0; i < response.length; i++) {
+                                            // console.debug('checking for duplicates', i, response[i]);
+                                            for (var j = response.length - 1; j > i; j--) {
+                                                if (response[j].id === response[i].id) {
+                                                    response.splice(j, 1);
+                                                    j--;
+                                                }
+                                            }
                                         }
                                     }
-                                }
-                            }
 
-                            return response;
-                        }).finally(function () {
-                            $scope.showLoading = false;
-                            $scope.conceptStatus.loading = false;
-                            $scope.conceptStatus.searching = false;
-                        });
+                                    return response;
+                                }).finally(function () {
+                                    $scope.showLoading = false;
+                                    $scope.conceptStatus.loading = false;
+                                    $scope.conceptStatus.searching = false;
+                                }); 
+
+                            case 'CURRENTBATCH':
+                                return requestService.getBatchConcept(requestId, viewValue).then(function(response){
+                                    var desConceptList = [];
+                                    var desConceptObj;
+                                    for(var i in response){
+                                        desConceptObj = {
+                                            fsn: response[i].concept
+                                        };
+                                        desConceptObj.fsn.term = response[i].concept.fsn;
+                                        desConceptList.push(desConceptObj);
+                                    }
+                                    return desConceptList;
+                                }).finally(function () {
+                                    $scope.showLoading = false;
+                                    $scope.conceptStatus.loading = false;
+                                    $scope.conceptStatus.searching = false;
+                                });
+
+                            case 'NEWCONCEPTREQUESTS':
+                                return requestService.getNewConcept(viewValue).then(function(response){
+                                    var desConceptList = [];
+                                    var desConceptObj;
+                                    for(var i in response){
+                                        desConceptObj = {
+                                            fsn: response[i]
+                                        };
+                                        desConceptObj.fsn.term = response[i].fsn;
+                                        desConceptList.push(desConceptObj);
+                                    }
+                                    return desConceptList;
+                                }).finally(function () {
+                                    $scope.showLoading = false;
+                                    $scope.conceptStatus.loading = false;
+                                    $scope.conceptStatus.searching = false;
+                                });
+
+                            default:
+                                return snowowlService.getDomainAttributeValues(null, null, attributeId, viewValue).then(function (response) {
+                                    //restore error status
+                                    if (!isFocused) {
+                                        validateConceptInput(viewValue);
+                                    }
+
+                                    // remove duplicates
+                                    if (response && response.length > 0) {
+                                        for (var i = 0; i < response.length; i++) {
+                                            // console.debug('checking for duplicates', i, response[i]);
+                                            for (var j = response.length - 1; j > i; j--) {
+                                                if (response[j].id === response[i].id) {
+                                                    response.splice(j, 1);
+                                                    j--;
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    return response;
+                                }).finally(function () {
+                                    $scope.showLoading = false;
+                                    $scope.conceptStatus.loading = false;
+                                    $scope.conceptStatus.searching = false;
+                                });
+                        }
                     };
 
                     var selectConcept = function (conceptItem) {
@@ -166,21 +279,62 @@ angular
                         $scope.showError = false;
                         $scope.conceptStatus.loading = true;
                         $scope.conceptStatus.searching = false;
-                        // load concept details
-                        snowowlService.getFullConcept(null, null, conceptItem.fsn.conceptId).then(function (response) {
-                            $scope.concept = response;
-                            $scope.showError = false;
-                            $scope.conceptStatus.valid = true;
-                        }, function (error) {
-                            $scope.errorMsg = error.msg;
-                            $scope.showError = true;
-                            $scope.concept = buildInvalidConcept(conceptItem.fsn.conceptId, conceptItem.fsn.term);
-                            $scope.conceptStatus.valid = false;
-                        }).finally(function () {
-                            $scope.showLoading = false;
-                            $scope.conceptStatus.loading = false;
-                            $scope.conceptStatus.searching = false;
-                        });
+                        switch (desTerminilogy){
+                            case 'SNOMEDCT':
+                                 // load concept details
+                                snowowlService.getFullConcept(null, null, conceptItem.fsn.conceptId).then(function (response) {
+                                    $scope.concept = response;
+                                    $scope.showError = false;
+                                    $scope.conceptStatus.valid = true;
+                                }, function (error) {
+                                    $scope.errorMsg = error.msg;
+                                    $scope.showError = true;
+                                    $scope.concept = buildInvalidConcept(conceptItem.fsn.conceptId, conceptItem.fsn.term);
+                                    $scope.conceptStatus.valid = false;
+                                }).finally(function () {
+                                    $scope.showLoading = false;
+                                    $scope.conceptStatus.loading = false;
+                                    $scope.conceptStatus.searching = false;
+                                });
+                            break;
+
+                            case 'CURRENTBATCH':
+                                $scope.concept.conceptId = conceptItem.fsn.conceptId;
+                                $scope.concept.fsn = conceptItem.fsn.fsn;
+                                $scope.showLoading = false;
+                                $scope.conceptStatus.loading = false;
+                                $scope.conceptStatus.searching = false;
+                                $scope.showError = false;
+                                $scope.conceptStatus.valid = true;
+                            break;
+
+                            case 'NEWCONCEPTREQUESTS':
+                                $scope.concept.conceptId = conceptItem.fsn.conceptId;
+                                $scope.concept.fsn = conceptItem.fsn.fsn;
+                                $scope.showLoading = false;
+                                $scope.conceptStatus.loading = false;
+                                $scope.conceptStatus.searching = false;
+                                $scope.showError = false;
+                                $scope.conceptStatus.valid = true;
+                            break;
+
+                            default: 
+                                 // load concept details
+                                snowowlService.getFullConcept(null, null, conceptItem.fsn.conceptId).then(function (response) {
+                                    $scope.concept = response;
+                                    $scope.showError = false;
+                                    $scope.conceptStatus.valid = true;
+                                }, function (error) {
+                                    $scope.errorMsg = error.msg;
+                                    $scope.showError = true;
+                                    $scope.concept = buildInvalidConcept(conceptItem.fsn.conceptId, conceptItem.fsn.term);
+                                    $scope.conceptStatus.valid = false;
+                                }).finally(function () {
+                                    $scope.showLoading = false;
+                                    $scope.conceptStatus.loading = false;
+                                    $scope.conceptStatus.searching = false;
+                                });
+                        }   
                     };
 
                     var validateConceptInput = function (viewValue) {
@@ -217,8 +371,7 @@ angular
                         });
                     }
 
-                    $scope.$watch('domainAttribute', function (newVal) {
-                        console.log($scope.concept, newVal);
+                    $scope.$watch('domainAttribute', function () {
                         if ($scope.concept && ($scope.concept.droppingConceptId || $scope.concept.conceptId)) {
                             dropConcept({id:($scope.concept.droppingConceptId || $scope.concept.conceptId),name:$scope.concept.fsn});
                         }
