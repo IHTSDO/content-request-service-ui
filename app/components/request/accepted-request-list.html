@@ -1,6 +1,6 @@
 <div ng-controller="AcceptedRequestListCtrl as vm">
     <!-- My Requests -->
-    <section ng-if="vm.isAdmin" class="tables-data accepted-table" style="width: 118%;">
+    <section ng-if="vm.isAdmin" class="accepted-table" style="width: 100%;">
         <div class="card">
             <div class="row">
                 <div class="col-md-2 no-padding">
@@ -38,7 +38,7 @@
                 </div>
             </div>
             <div class="table-responsive white" style="min-height: 416px;">
-                <table ng-table="vm.tableParams" template-pagination="layout/template/review-table-pager.html" class="table table-full table-full-small table-requests" show-filter="">
+                <table ng-table="vm.tableParams" template-pagination="layout/template/review-table-pager.html" class="table table-full-small table-requests" show-filter="">
                     <tr ng-repeat="request in $data" ng-click="dashboard.previewRequest(request.id)" class="clickable-row" ng-class="{'row-selected': vm.selectedRequests.items[request.id] === true}">
                         <td class="col-checkbox" header="'ng-table/headers/checkbox.html'" ng-click="$event.stopPropagation()">
                             <input type="checkbox" class="small-checkbox" ng-model="vm.selectedRequests.items[request.id]" ng-click="vm.pushSelectedRequest($event, request)">
