@@ -699,6 +699,7 @@ ul.batch-statistic.timeline {
 .statistics-request {
   font-size: 12px;
   width: 100%;
+  display: flex;
   .labelSb {
     width: 60%;
     display: inline-block;
@@ -716,11 +717,30 @@ ul.batch-statistic.timeline {
 }
 @media (max-height: 667px) {
   .statistics-requests{
-    height: 350px;
+    height: 260px;
     width: 16%;
     position: fixed;
     overflow: auto;
   }
+}
+.dashboard-links .md{
+  color:#848999
+}
+.statistics-requests .badge {
+  font-size: 11px;
+  padding: 3px;
+  margin: 2px;
+  line-height: 13px;
+  border-radius: 4px;
+}
+.statistics-requests .badge.blue{
+  background-color:#00a8e1;
+}
+.statistics-requests .badge.turquoise{
+  background-color:#37ba9a;
+}
+.statistics-requests .badge.purple{
+  background-color:#8c79b8;
 }
 
 /*overwrite date range picker*/

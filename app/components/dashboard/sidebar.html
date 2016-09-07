@@ -1,7 +1,4 @@
 <div style="background-color:#434955;">
-<style>
-.dashboard-links .md{color:#848999}
-</style>
     <ul ng-cloak style="padding: 0px; list-style: none;">
 
         <li><a class="dashboard-links" ng-href="#/requests">
@@ -53,25 +50,20 @@
         </li>-->
 
     </ul>
-    
-    <style>
-	.statistics-requests .badge {
-
-    font-size: 11px;
-    padding: 3px;
-    margin: 2px;
-    line-height: 13px;
-
-    border-radius: 4px;
-}
-
-
-.statistics-requests .badge.blue{background-color:#00a8e1;}
-.statistics-requests .badge.turquoise{background-color:#37ba9a;}
-.statistics-requests .badge.purple{background-color:#8c79b8;}
-
-	</style>
     <div ng-if="dashboard.permissionChecked && dashboard.isAdmin" class="statistics-requests">
+        <div style="margin-bottom: 10px">
+           <div class="badge blue ">
+                Total 
+            </div>
+                    
+            <div class="badge turquoise">
+                Submitted By Me
+            </div>
+
+            <div class="badge purple">
+                Submitted
+            </div>
+        </div>
         <div ng-repeat="number in dashboard.statisticsRequests" class="statistics-request"  ng-cloak >
             <div class="labelSb">    
                 <span title="{{number.status | statisticsLabel | translate}}">
@@ -98,7 +90,20 @@
             </div>
         </div>
     </div>
-    <div ng-if="dashboard.permissionChecked && dashboard.isRequester" class="statistics-requests">
+    <div ng-if="dashboard.permissionChecked && dashboard.isRequester" class="statistics-request">
+        <div style="margin-bottom: 10px">
+           <div class="badge blue ">
+                Total 
+            </div>
+                    
+            <div class="badge turquoise">
+                Submitted By Me
+            </div>
+
+            <div class="badge purple">
+                Submitted
+            </div>
+        </div>
         <div ng-repeat="number in dashboard.statisticsRequests" class="statistics-request"  ng-cloak >
             <div class="labelSb">    
                 <span title="{{number.status | statisticsLabel | translate}}">
@@ -118,15 +123,4 @@
             </div>
         </div>
     </div>
-    <div class="statistics-requests">
-       <div class="badge blue ">
-             Total 
-                </div>
-                
-                 <div class="badge turquoise">
-        Submitted By Me
-                </div>
-                 <div class="badge purple">
-          Submitted
-                </div>
-</div></div>
+</div>
