@@ -783,7 +783,7 @@ button.fsn-title-button {
   position: fixed;
   top: 64px;
   bottom: 0px;
-  background-color: grey;
+  background-color: #434955;
   width: 50px;
   z-index:98;
 }
@@ -1042,7 +1042,7 @@ button.fsn-title-button {
       border-radius: 4px;
       padding-top: 50%;
       text-align: center;
-      border: dashed 2px #424242;
+      border: dashed 2px #434955;
 
       &.request-drag-target {
         border-color: #737373;

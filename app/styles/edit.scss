@@ -68,7 +68,7 @@ button,
 
 .darkbuttons:active,
 .darkbuttons:focus {
-  background-color: #212121 !important;
+  background-color: #2b3034 !important;
   color: #66bbfd !important;
 }
 
@@ -179,8 +179,8 @@ button,
 }
 
 .sca-content::-webkit-scrollbar-thumb:hover {
-  background-color: #212121;
-  border: 1px solid #212121;
+  background-color: #2b3034;
+  border: 1px solid #2b3034;
 }
 
 .sca-content::-webkit-scrollbar-thumb:active {
@@ -205,7 +205,6 @@ button,
 }
 
 .create-links:after {
-  content: "\f1ed";
   color: #4fc3f7;
   display: inline-block;
   font: normal normal normal 14px/1 'Material Design Iconic Font';
@@ -542,17 +541,17 @@ select.primitive {
 }
 
 .edit-scroll::-webkit-scrollbar-thumb {
-  background-color: #212121;
+  background-color: #2b3034;
   border-radius: 10px;
 }
 
 .edit-scroll::-webkit-scrollbar-thumb:hover {
-  background-color: #212121;
+  background-color: #2b3034;
   border: none;
 }
 
 .edit-scroll::-webkit-scrollbar-thumb:active {
-  background-color: #212121;
+  background-color: #2b3034;
   border: none;
 }
 
@@ -602,8 +601,8 @@ select.form-control:disabled {
 .badge {
   font-family: Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: normal;
-  font-size: 13px;
-  padding: 6px 10px;
+  font-size: 12px;
+  padding: 6px 8px;
   margin: 0px;
   line-height: 13px;
 
@@ -632,7 +631,7 @@ select.form-control:disabled {
 .Promoted.badge {
   background-color: cyan;
 }
-
+.dashboard-sidebar{color:#434955;}
 .dashboard-sidebar::-webkit-scrollbar {
   width: 0px;
   background-color: transparent;
@@ -645,7 +644,7 @@ select.form-control:disabled {
   padding: 0px;
   text-align: center;
   font-size: 18px;
-  background-color: #d1d1d1;
+  background-color: #ccd0db;
   color: #737373;
 }
 
@@ -654,7 +653,7 @@ select.form-control:disabled {
   padding: 0px;
   text-align: center;
   font-size: 18px;
-  background-color: #ececec;
+  background-color: #e6e9ee;
   color: #bebebe;
   box-shadow: none;
   color: #00a6e5;
@@ -667,7 +666,7 @@ select.form-control:disabled {
 }
 
 .sidebar-bg {
-  background-color: #ececec;
+  background-color: #e6e9ee;
 }
 
 .sidebar-tabs a.tooltips-btm span, .sidebar-tabs button.tooltips-btm span {
@@ -723,9 +722,7 @@ sca-column
   width: 90%;
 }
 
-.concept-headers {
-  padding-bottom: 5px;
-}
+
 
 .classify-buttons {
   border: 1.5px solid !important;

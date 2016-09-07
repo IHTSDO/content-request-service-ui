@@ -6,18 +6,8 @@
                 <div class="col-md-2 no-padding">
                     <h3 class="table-title p-20" translate="crs.request.list.title.myRequests"></h3>
                 </div>
-                <div class="col-md-6">
-                    <!-- <div class="table-search">
-                        <input type="text" ng-model="vm.tableParams.filter()['search']" class="form-control"
-                               placeholder="{{'crs.request.list.searchPlaceHolder.myRequests' | translate}}" autofocus/>
-                    </div> -->
-                </div>
-                <div class="col-md-2 promoted-check-box">
-                    <button class="btn btn-default" ng-class="[{'md-check-box' : vm.showClosedRequests}, {'md-check-box-outline-blank' : !vm.showClosedRequests}]" ng-click="vm.toggleShowClosedRequests('my-requests')" style="background: transparent">
-                        <span class="promoted-check-box">Show Closed Requests</span></button>
-                </div>
-                <div class="col-md-2">
-                    <div class="pull-right p-t-20">
+                 <div class="col-md-2 ">
+                    <div class=" p-t-20">
                         <!-- <button ng-click="vm.showFilter = !vm.showFilter" class="btn btn-round btn-default" title="{{'crs.request.list.tip.filter' | translate}}">
                             <span class="md md-search"></span>
                             <div class="ripple-wrapper"></div>
@@ -35,6 +25,17 @@
                         </button>
                     </div>
                 </div>
+                <div class="col-md-2 promoted-check-box">
+                    <button class="btn btn-default" ng-class="[{'md-check-box' : vm.showClosedRequests}, {'md-check-box-outline-blank' : !vm.showClosedRequests}]" ng-click="vm.toggleShowClosedRequests('my-requests')" style="background: transparent">
+                        <span class="promoted-check-box">Show Closed Requests</span></button>
+                </div>
+             
+                   <!-- <div class="col-md-6">
+                   <div class="table-search">
+                        <input type="text" ng-model="vm.tableParams.filter()['search']" class="form-control"
+                               placeholder="{{'crs.request.list.searchPlaceHolder.myRequests' | translate}}" autofocus/>
+                    </div> 
+                </div>-->
             </div>
             
            
@@ -69,15 +70,16 @@
                         <td data-title="'crs.request.list.tableHeader.topic' | translate" sortable="'additionalFields.topic'" filter="vm.filterRequests.topic">
                             {{(request.additionalFields)?request.additionalFields.topic:''}}
                         </td>
+                        <!--
                         <td data-title="'crs.request.list.tableHeader.summary' | translate" sortable="'additionalFields.summary'" >
                             {{(request.additionalFields)?request.additionalFields.summary:''}}
                         </td>
-
+-->
                         <td data-title="'crs.request.list.tableHeader.manager' | translate" sortable="'requestHeader.manager'" filter="{manager: 'ng-table/manager-select.html'}" style="min-width: 150px">
                             <span ng-show="vm.loadingAuthors" class="md md-autorenew" ng-class="{'md-spin':vm.loadingAuthors}"></span>
                             <div  ng-bind-html="(vm.getAuthorName(request.requestHeader.manager))?vm.getAuthorName(request.requestHeader.manager):request.requestHeader.manager"></div>
                         </td>
-
+<!--
                         <td data-title="'crs.request.list.tableHeader.validationResult' | translate" sortable="'currentValidationStatus'"  style="text-align: center">
                             <a class="tooltips-left" >
                                 <button ng-show="request.currentValidationStatus"
@@ -87,7 +89,7 @@
                                 </button>
 
                             </a>
-                        </td>
+                        </td>-->
 
                         <td data-title="'crs.request.list.tableHeader.status' | translate" sortable="'requestHeader.status'" filter="{status: 'ng-table/status-select.html'}">
                             <span class="badge requestStatus {{request.requestHeader.status}}">{{request.requestHeader.status | requestStatus | translate}}</span>
@@ -95,7 +97,7 @@
                     </tr>
                 </table>
                 <div ng-if="vm.requests.total === 0" class="no-request-found">
-                    No request found!
+                    No requests found!
                 </div>
             </div>
         </div>

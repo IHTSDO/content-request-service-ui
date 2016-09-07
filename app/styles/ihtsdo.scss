@@ -294,7 +294,7 @@ label {
   box-sizing: border-box;
 }
 body {
-  font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
   line-height: 1.846;
   color: #666;
 }
@@ -839,7 +839,7 @@ pre {
   line-height: 1.846;
   word-break: break-all;
   word-wrap: break-word;
-  color: #212121;
+  color: #2b3034;
   background-color: #f5f5f5;
   border: 1px solid #ccc;
   border-radius: 3px;
@@ -900,7 +900,7 @@ legend {
   display: block;
   width: 100%;
   line-height: inherit;
-  color: #212121;
+  color: #2b3034;
   border-bottom: 1px solid #e5e5e5;
 }
 .form-control {
@@ -3004,7 +3004,7 @@ tbody.collapse.in {
   color: #e9e9e9;
 }
 .navbar-default .navbar-nav > .active > a {
-  color: #212121;
+  color: #2b3034;
   background-color: transparent;
 }
 .navbar-default .navbar-nav > .active > a:focus,
@@ -3035,25 +3035,25 @@ tbody.collapse.in {
 }
 .navbar-default .navbar-nav > .open > a {
   background-color: transparent;
-  color: #212121;
+  color: #2b3034;
 }
 .navbar-default .navbar-nav > .open > a:focus,
 .navbar-default .navbar-nav > .open > a:hover {
   background-color: transparent;
-  color: #212121;
+  color: #2b3034;
 }
 .navbar-default .navbar-link {
   color: #666;
 }
 .navbar-default .navbar-link:hover {
-  color: #212121;
+  color: #2b3034;
 }
 .navbar-default .btn-link {
-  color: #666;
+  color: #ccd0db;
 }
 .navbar-default .btn-link:focus,
 .navbar-default .btn-link:hover {
-  color: #212121;
+  color: #2b3034;
 }
 .navbar-default .btn-link[disabled]:focus,
 .navbar-default .btn-link[disabled]:hover {
@@ -3064,17 +3064,17 @@ tbody.collapse.in {
     color: #666;
   }
   .navbar-default .navbar-nav .open > .active > a {
-    color: #212121;
+    color: #2b3034;
     background-color: transparent;
   }
   .navbar-default .navbar-nav .open > .active > a:focus,
   .navbar-default .navbar-nav .open > .active > a:hover {
-    color: #212121;
+    color: #2b3034;
     background-color: transparent;
   }
   .navbar-default .navbar-nav .open > li > a:focus,
   .navbar-default .navbar-nav .open > li > a:hover {
-    color: #212121;
+    color: #2b3034;
     background-color: transparent;
   }
   .navbar-default .navbar-nav .open > .disabled > a {
@@ -6177,7 +6177,7 @@ body {
   box-shadow: none !important;
 }
 .breadcrumb {
-  padding: 8px 15px;
+  padding: 14px 15px 0px 15px;
   margin: 12px 0;
   list-style: none;
   background-color: inherit;
@@ -6233,8 +6233,8 @@ html {
   height: 100%;
 }
 body {
-  background-color: #F9F9F9;
-  font-size: 13px;
+  background-color: #f7f6fc;
+  font-size: 12px;
 }
 img[src*=svg] {
   height: 100%;
@@ -6258,7 +6258,7 @@ h5 {
   font-weight: 500;
   line-height: 24px;
   font-size: 15px;
-  color: #212121;
+  color: #2b3034;
 }
 .h1,
 .h2,
@@ -6289,7 +6289,7 @@ main .main-container .main-content > section {
 }
 .brand-logo {
   min-height: 64px;
-  color: #868686;
+  color: #eee;
   line-height: 64px;
   text-align: center;
   font-weight: 300;
@@ -6297,6 +6297,7 @@ main .main-container .main-content > section {
 }
 #logo {
   display: inline-block;
+
 }
 #logo .foot1,
 #logo .foot2,
@@ -7148,7 +7149,8 @@ legend {
 }
 
 .navbar .btn-link:hover {
-  background-color: #535353;
+  background-color: #ccd0db;
+  color:#434955;
 }
 .navbar .form-group {
   margin-bottom: 0;
@@ -7594,7 +7596,7 @@ input[type=radio]:before {
 }
 .page-header h1,
 .theme-text {
-  color: #424242;
+  color: #383f47;
   font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 .todo-app .filters .filter {
@@ -8244,7 +8246,7 @@ fieldset[disabled] .btn-info:hover {
   background-color: #00a4e4;
 }
 .crs-default .navbar-default {
-  background: #474747;
+  background: #434955;
   color: #FFF;
 }
 .alert-success,
@@ -8255,8 +8257,9 @@ fieldset[disabled] .btn-info:hover {
   text-transform: none;
 }
 #logo {
-  height: 25px;
-  width: 40px;
+    height: 27px;
+    width: 39px;
+    margin-right: 5px;
 }
 .text-success {
   color: #66BB6A;
@@ -8871,6 +8874,10 @@ fieldset[disabled] .btn-info:hover {
   border-bottom: 0;
   -webkit-box-shadow: 0 -4px 5px rgba(0,0,0,0.15);
   box-shadow: 0 -4px 5px rgba(0,0,0,0.15);
+}
+.brand-logo span {
+    display: inline-block;
+    margin-top: 4px;
 }
 .no-border-b,
 .no-border-bl,
@@ -12103,26 +12110,26 @@ fieldset[disabled] .btn-info:hover {
   border-color: #616161;
 }
 .grey.darken-3 {
-  background-color: #424242;
+  background-color: #383f47;
   color: #fff;
 }
 .grey-text.darken-3,
 .page-header h1 i.darken-3 {
-  color: #424242;
+  color: #383f47;
 }
 .grey-border.darken-3 {
-  border-color: #424242;
+  border-color: #383f47;
 }
 .grey.darken-4 {
-  background-color: #212121;
+  background-color: #2b3034;
   color: #fff;
 }
 .grey-text.darken-4,
 .page-header h1 i.darken-4 {
-  color: #212121;
+  color: #2b3034;
 }
 .grey-border.darken-4 {
-  border-color: #212121;
+  border-color: #2b3034;
 }
 .shades.black {
   background-color: #000;
@@ -12162,7 +12169,7 @@ fieldset[disabled] .btn-info:hover {
   background: #E8E8E8;
 }
 .theme-picker .crs-default .theme-sidenav {
-  background: #474747;
+  background: #383f47;
 }
 .theme-picker .theme-template-light .theme-sidenav {
   background: #fff;
@@ -12177,7 +12184,7 @@ fieldset[disabled] .btn-info:hover {
   background: #E8E8E8;
 }
 .crs-default .sidebar {
-  background: #474747;
+  background: #383f47;
   color: #FFF;
 }
 .crs-default .sidebar .brand-logo,
@@ -12401,37 +12408,6 @@ aside.sidebar .theme-red a.collapsible-header:after {
 }
 .dashboard .table-dashboard-widget-1 .theme-red td:first-child,
 .page-header .theme-red h1 {
-  color: #e92848;
-}
-.theme-red .btn-link,
-.theme-red .dashboard .table-dashboard-widget-1 td:first-child {
-  color: #e92848;
-}
-.theme-red .nav-tabs > li.active > a {
-  color: #e92848;
-}
-.theme-red .nav-tabs > li.active > a:focus:hover {
-  color: #e92848;
-}
-.theme-red .nav-tabs > li > a:hover {
-  color: #e92848;
-}
-.theme-red .page-header h1,
-.theme-red .theme-text {
-  color: #e92848;
-}
-.theme-red .todo-app .filters .filter {
-  color: #e92848;
-}
-.theme-red .todo-app .filters .filter.active:hover,
-.theme-red .todo-app .filters .filter:focus:hover {
-  color: #e92848;
-}
-.todo-app .filters .theme-red .filter {
-  color: #e92848;
-}
-.todo-app .filters .theme-red .filter.active:hover,
-.todo-app .filters .theme-red .filter:focus:hover {
   color: #e92848;
 }
 .p-5 {
