@@ -1045,6 +1045,7 @@ angular
                         item.proposedParents = [];
                         item.requestorInternalTerm = changedTarget.requestorInternalTerm;
                         item.proposedUse = changedTarget.proposedUse;
+                        item.requestDescription = changedTarget.requestDescription;
                         
                         item.umlsCui = changedTarget.umlsCui;
                         if (changedTarget.parentConcept) {
@@ -1207,6 +1208,7 @@ angular
                         request.requestorInternalTerm = mainItem.requestorInternalTerm;
                         request.value = mainItem.semanticTag;
                         request.umlsCui = mainItem.umlsCui;
+                        request.requestDescription = mainItem.requestDescription;
 
                         break;
 
@@ -1567,6 +1569,11 @@ angular
                         !vm.request.additionalFields.reference.trim()) {
                         error.reference = fieldRequiredLangKey;
                     }
+
+                    if ((!vm.request.proposedUse ||
+                        !vm.request.proposedUse.trim()) && vm.requestType === REQUEST_TYPE.NEW_CONCEPT) {
+                        error.proposedUse = fieldRequiredLangKey;
+                    }
                 }
 
                 var isNotValidObj = function() {
@@ -1664,9 +1671,9 @@ angular
                 }
 
                 requestService.saveRequest(requestData)
-                    .then(function() {
+                    .then(function(response) {
                         notificationService.sendMessage('crs.request.message.requestSaved', 5000);
-                        // $location.path(prevPage).search({});
+                        $location.path('requests/preview/' + response.id).search({kb:true});
                     }, function(e) {
                         showErrorMessage(e.message);
                     })

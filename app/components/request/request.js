@@ -28,7 +28,7 @@ angular
                     { name: 'proposedFSN', required: true},
                     { name: 'conceptPT', required: true},
                     { name: 'proposedSynonyms'},
-                    { name: 'proposedDefinitions', required: true},
+                    // { name: 'proposedDefinitions', required: true},
                     { name: 'value', required: true}
                 ]
             }
