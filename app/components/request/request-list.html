@@ -7,7 +7,7 @@
                     <h3 class="table-title p-20" translate="crs.request.list.title.myRequests"></h3>
                 </div>
                  <div class="col-md-2 ">
-                    <div class=" p-t-20">
+                    <div class=" p-t-15">
                         <!-- <button ng-click="vm.showFilter = !vm.showFilter" class="btn btn-round btn-default" title="{{'crs.request.list.tip.filter' | translate}}">
                             <span class="md md-search"></span>
                             <div class="ripple-wrapper"></div>
@@ -21,6 +21,10 @@
                         </button>
                         <button type="button" class="btn btn-round btn-default " title="{{'crs.request.list.tip.remove' | translate}}" ng-click="vm.removeSelectedRequests()">
                             <span class="md md-delete"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
+                        <button type="button" class="btn btn-round btn-default " title="{{'crs.request.list.tip.submitRequests' | translate}}" ng-click="vm.submitSelectedRequests()">
+                            <span class="md md-send darken-2 iconbase"></span>
                             <div class="ripple-wrapper"></div>
                         </button>
                     </div>
@@ -104,6 +108,7 @@
     </section>
 </div>
 <script type="text/ng-template" id="ng-table/headers/checkbox.html">
+    <input type="checkbox" ng-model="vm.selectedRequests.checked" class="select-all-rqs" />
 </script>
 <script type="text/ng-template" id="ng-table/datetime-picker-startdate.html">
     <div class="input-group select-filter">

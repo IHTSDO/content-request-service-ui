@@ -554,7 +554,7 @@ ul.batch-statistic.timeline {
 
 .promoted-check-box {
   color: #9B9B9B;
-  padding-top: 15px;
+  padding-top: 20px;
 }
 
 .multiSelect {
@@ -781,4 +781,23 @@ ul.batch-statistic.timeline {
     text-transform: none;
     color: #fff;
     text-align: left;
+}
+
+
+input[type=checkbox].select-all-rqs {
+  position: relative;
+  margin-left: -4px !important;
+  margin-bottom: -8px !important;
+  &:after {
+    width: 18px;
+    height: 18px;
+    margin-left: 0px;
+  }
+
+  &:before {
+    top: 3px;
+    left: 10px;
+    width: 5px;
+    height: 10px;
+  }
 }

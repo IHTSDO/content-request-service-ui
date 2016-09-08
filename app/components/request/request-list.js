@@ -15,7 +15,8 @@ angular
         '$routeParams',
         '$uibModal',
 		'utilsService',
-        function ($filter, $sce, crsJiraService, NgTableParams, requestService, notificationService, accountService, jiraService, $routeParams, $uibModal, utilsService) {
+        '$scope',
+        function ($filter, $sce, crsJiraService, NgTableParams, requestService, notificationService, accountService, jiraService, $routeParams, $uibModal, utilsService, $scope) {
             var vm = this;
 
             vm.filterRequests = {
@@ -174,6 +175,11 @@ angular
                     title: "Other"
                 },
             ];
+
+            var bulkAction = {
+                submit: 'SUBMIT',
+                accept: 'ACCEPT'
+            };
 
             var initView = function () {
                 vm.selectedRequests = {checked: false, items: {}};
@@ -359,6 +365,19 @@ angular
                 }
             };
 
+            //watch for check all checkbox
+            $scope.$watch(function() {
+                return vm.selectedRequests.checked;
+            }, function(newVal) {
+                if(vm.requests){
+                    angular.forEach(vm.requests.items, function(item) {
+                        if (angular.isDefined(item.id)) {
+                            vm.selectedRequests.items[item.id] = newVal;
+                        }
+                    }); 
+                }
+            });
+
             var removeSelectedRequests = function () {
                 var selectedRequests = vm.selectedRequests,
                     removingRequestIds = [];
@@ -368,6 +387,7 @@ angular
                         if (isSelected) {
                             removingRequestIds.push(requestId);
                             vm.selectedRequests.items[requestId]=false;
+                            vm.selectedRequests.checked = false;
                         }
                     });
                     if (removingRequestIds.length > 0) {
@@ -401,6 +421,57 @@ angular
                     }else {
                         notificationService.sendMessage('Please select at least a request to remove.', 5000);
                     }
+                }
+            };
+
+            var submitSelectedRequests = function () {
+                notificationService.sendMessage('Processing...');
+                var selectedRequests = vm.selectedRequests,
+                    requestIds = [],
+                    action = bulkAction.submit,
+                    maxSize;
+                if (selectedRequests &&
+                    selectedRequests.items) {
+                    angular.forEach(selectedRequests.items, function (isSelected, requestId) {
+                        if (isSelected) {
+                            requestIds.push(requestId);
+                            vm.selectedRequests.items[requestId]=false;
+                            vm.selectedRequests.checked = false;
+                        }
+                    });
+
+                    requestService.getMaxSize().then(function(result){
+
+                        maxSize = result.maxSize;
+                        if(requestIds.length > maxSize){
+                            notificationService.sendMessage('Cannot submit! The list cannot be longer than ' + maxSize + ' requests.', 5000);
+                        }else if (requestIds.length > 0) {
+                                var submitingData = {
+                                    data: {},
+                                    requestIds: requestIds
+                                };
+
+                                notificationService.sendMessage('Submitting Requests...');
+                                requestService.submitRequests(submitingData, action).then(function () {
+                                    
+                                    if (vm.tableParams) {
+                                        vm.tableParams.reload();
+                                        notificationService.sendMessage('Requests have been submitted successfully!');
+                                    }
+                                    if (vm.submittedTableParams) {
+                                        vm.submittedTableParams.reload();
+                                        notificationService.sendMessage('Requests have been submitted successfully!');
+                                    }
+
+                                }, function(error){
+                                    notificationService.sendMessage(error.message, 5000);
+                                });
+                        }else {
+                            notificationService.sendMessage('Please select at least a request to submit.', 5000);
+                        }
+                    }, function(error){
+                        notificationService.sendMessage(error.message, 5000);
+                    });
                 }
             };
 
@@ -741,6 +812,7 @@ angular
             vm.onDateRangeChangeSQ = onDateRangeChangeSQ;
             vm.onDateRangeChangeMAR = onDateRangeChangeMAR;
             vm.toggleShowClosedRequests = toggleShowClosedRequests;
+            vm.submitSelectedRequests = submitSelectedRequests;
             vm.showClosedRequests = false;
             vm.daterange = {
                 startDate: null,

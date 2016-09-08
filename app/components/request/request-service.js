@@ -144,6 +144,25 @@ angular.module('conceptRequestServiceApp.request')
                 }
             };
 
+            var submitRequests = function(submitingData, action){
+                var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
+                var params;
+
+                if (submitingData !== undefined &&
+                    submitingData !== null) {
+                    params = {
+                        action: action
+                    };
+
+                    return crsService.sendPut(requestEndpoint + '/bulkAction', params, submitingData);
+                }
+            };
+
+            var getMaxSize = function(){
+                var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
+                return crsService.sendGet(requestEndpoint + '/bulkAction/' + '/maxSize', null, null);
+            };
+
             var removeRequests = function (requestList) {
                 var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
                 var params;
@@ -278,7 +297,9 @@ angular.module('conceptRequestServiceApp.request')
                 getAcceptedFilterValues: getAcceptedFilterValues,
                 setAssignedFilterValues: setAssignedFilterValues,
                 getAssignedFilterValues: getAssignedFilterValues,
-                getNewConcept: getNewConcept
+                getNewConcept: getNewConcept,
+                submitRequests: submitRequests,
+                getMaxSize: getMaxSize
             };
 
         }]);

@@ -15,7 +15,8 @@ angular
         'crsJiraService',
         'jiraService',
 		'utilsService',
-        function($filter, $sce, $uibModal, NgTableParams, requestService, notificationService, accountService, scaService, crsJiraService, jiraService, utilsService) {
+        '$scope',
+        function($filter, $sce, $uibModal, NgTableParams, requestService, notificationService, accountService, scaService, crsJiraService, jiraService, utilsService, $scope) {
             var vm = this;
 
             vm.filterRequests = {
@@ -409,6 +410,19 @@ angular
                     }
                 }
             };
+
+            //watch for check all checkbox
+            $scope.$watch(function() {
+                return vm.selectedRequests.checked;
+            }, function(newVal) {
+                if(vm.requests){
+                    angular.forEach(vm.requests.items, function(item) {
+                        if (angular.isDefined(item.id)) {
+                            vm.selectedRequests.items[item.id] = newVal;
+                        }
+                    }); 
+                }
+            });
 
             var pushSelectedRequest = function(event, request) {
                 if (event.target.checked) {
