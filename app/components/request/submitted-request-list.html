@@ -25,10 +25,14 @@
                         <button type="button" class="btn btn-round btn-info ng-scope " title="{{'crs.request.list.tip.count' | translate}}" >
                             {{vm.submittedTableParams.total()}} <div class="ripple-wrapper"></div>
                         </button>
-                        <!--<button type="button" class="btn btn-round btn-default " title="{{'crs.request.list.tip.assign' | translate}}" ng-click="vm.assignSubmittedRequests()">
-                            <span class="md md-content-paste"></span>
+                        <button ng-disabled="vm.loadingProjects || vm.loadingAuthors" type="button" class="btn btn-round btn-default " title="{{'crs.request.list.tip.assign' | translate}}" ng-click="vm.assignSelectedRequestsToStaff()">
+                            <span class="md md-assignment-ind"></span>
                             <div class="ripple-wrapper"></div>
-                        </button>-->
+                        </button>
+                        <button ng-disabled="vm.loadingProjects || vm.loadingAuthors" type="button" class="btn btn-round btn-default"  ng-click="vm.acceptSelectedRequests()" title="{{'tooltips.request.details.info.button.accept' | translate}}">
+                            <span class="md md-done"></span>
+                            <span class="button-link"></span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -36,9 +40,9 @@
                 <table ng-table="vm.submittedTableParams" template-pagination="layout/template/review-table-pager.html"
                        class="table table-full table-full-small table-requests" show-filter="">
                     <tr ng-repeat="request in $data" ng-click="dashboard.previewRequest(request.id)" class="clickable-row">
-                        <!--<td class="col-checkbox" header="'ng-table/headers/checkbox.html'" ng-click="$event.stopPropagation()">
+                        <td class="col-checkbox" header="'ng-table/headers/checkbox.html'" ng-click="$event.stopPropagation()">
                             <input type="checkbox" class="small-checkbox" ng-model="vm.selectedSubmittedRequests.items[request.id]" >
-                        </td>-->
+                        </td>
 
                         <td data-title="'crs.request.list.tableHeader.batchId' | translate" sortable="'batchRequest'" filter="vm.filterRequests.batchRequest">
                             <!--<a class="tooltips-right" ng-href="#/batches/view/{{request.batchRequest}}">{{request.batchRequest}} <span translate="crs.request.list.tip.batchId"></span></a>-->
@@ -81,7 +85,7 @@
                     </tr>
                 </table>
                 <div ng-if="vm.requests.total === 0" class="no-request-found">
-                    No request found!
+                    No requests found!
                 </div>
             </div>
 
@@ -89,6 +93,7 @@
     </section>
 </div>
 <script type="text/ng-template" id="ng-table/headers/checkbox.html">
+    <input type="checkbox" ng-model="vm.selectedSubmittedRequests.checked" class="select-all-rqs" />
 </script>
 <script type="text/ng-template" id="ng-table/datetime-picker-startdate.html">
     <div class="input-group select-filter">

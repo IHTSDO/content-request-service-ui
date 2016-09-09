@@ -145,7 +145,7 @@ angular.module('conceptRequestServiceApp.request')
             };
 
             var submitRequests = function(submitingData, action){
-                var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
+                var requestEndpoint = CRS_API_ENDPOINT.BULK_ACTION;
                 var params;
 
                 if (submitingData !== undefined &&
@@ -154,13 +154,27 @@ angular.module('conceptRequestServiceApp.request')
                         action: action
                     };
 
-                    return crsService.sendPut(requestEndpoint + '/bulkAction', params, submitingData);
+                    return crsService.sendPut(requestEndpoint, params, submitingData);
                 }
             };
 
             var getMaxSize = function(){
-                var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
-                return crsService.sendGet(requestEndpoint + '/bulkAction/' + '/maxSize', null, null);
+                var requestEndpoint = CRS_API_ENDPOINT.BULK_ACTION;
+                return crsService.sendGet(requestEndpoint + '/maxSize', null, null);
+            };
+
+            var acceptRequests = function(acceptingData, action){
+                var requestEndpoint = CRS_API_ENDPOINT.BULK_ACTION;
+                var params;
+
+                if (acceptingData !== undefined &&
+                    acceptingData !== null) {
+                    params = {
+                        action: action
+                    };
+
+                    return crsService.sendPut(requestEndpoint, params, acceptingData);
+                }
             };
 
             var removeRequests = function (requestList) {
@@ -299,7 +313,8 @@ angular.module('conceptRequestServiceApp.request')
                 getAssignedFilterValues: getAssignedFilterValues,
                 getNewConcept: getNewConcept,
                 submitRequests: submitRequests,
-                getMaxSize: getMaxSize
+                getMaxSize: getMaxSize,
+                acceptRequests: acceptRequests
             };
 
         }]);

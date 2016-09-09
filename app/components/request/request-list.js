@@ -16,7 +16,8 @@ angular
         '$uibModal',
 		'utilsService',
         '$scope',
-        function ($filter, $sce, crsJiraService, NgTableParams, requestService, notificationService, accountService, jiraService, $routeParams, $uibModal, utilsService, $scope) {
+        'scaService',
+        function ($filter, $sce, crsJiraService, NgTableParams, requestService, notificationService, accountService, jiraService, $routeParams, $uibModal, utilsService, $scope, scaService) {
             var vm = this;
 
             vm.filterRequests = {
@@ -184,6 +185,7 @@ angular
             var initView = function () {
                 vm.selectedRequests = {checked: false, items: {}};
                 vm.selectedSubmittedRequests = {checked: false, items: {}};
+                vm.selectedMyAssignedRequests = {checked: false, items: {}};
 				
 				vm.requestStatus = vm.requestStatus.sort(function(a, b) {
 					return utilsService.compareStrings(a.title, b.title);
@@ -299,6 +301,24 @@ angular
 
                 //load staffs
                 loadStaff();
+
+                //load projects
+                loadProjects();
+            };
+
+            var loadProjects = function() {
+                vm.loadingProjects = true;
+                scaService.getProjects().then(function(response) {
+                    response.sort(function(a, b) {
+                        return utilsService.compareStrings(a.title, b.title);
+                    });
+                    vm.projects = response;
+                    for(var i in vm.projects){
+                        vm.projects[i].id = vm.projects[i].key;
+                    }
+                }).finally(function() {
+                    vm.loadingProjects = false;
+                });
             };
 
             var loadAuthors = function () {
@@ -365,7 +385,7 @@ angular
                 }
             };
 
-            //watch for check all checkbox
+            //watch for check all checkbox my requests list
             $scope.$watch(function() {
                 return vm.selectedRequests.checked;
             }, function(newVal) {
@@ -377,6 +397,152 @@ angular
                     }); 
                 }
             });
+
+            //watch for check all checkbox submitted requests list
+            $scope.$watch(function() {
+                return vm.selectedSubmittedRequests.checked;
+            }, function(newVal) {
+                if(vm.requests){
+                    angular.forEach(vm.requests.items, function(item) {
+                        if (angular.isDefined(item.id)) {
+                            vm.selectedSubmittedRequests.items[item.id] = newVal;
+                        }
+                    }); 
+                }
+            });
+
+            //watch for check all checkbox my assigned requests list
+            $scope.$watch(function() {
+                return vm.selectedMyAssignedRequests.checked;
+            }, function(newVal) {
+                if(vm.requests){
+                    angular.forEach(vm.requests.items, function(item) {
+                        if (angular.isDefined(item.id)) {
+                            vm.selectedMyAssignedRequests.items[item.id] = newVal;
+                        }
+                    }); 
+                }
+            });
+
+            var assignSelectedRequests = function() {
+                if (vm.authors.length > 0 && vm.projects.length > 0) {
+                    var selectedRequests = vm.selectedMyAssignedRequests,
+                        selectedRequestIds = [],
+                        defaultSummary;
+                    if (selectedRequests &&
+                        selectedRequests.items) {
+                        angular.forEach(selectedRequests.items, function(isSelected, requestId) {
+                            if (isSelected) {
+                                selectedRequestIds.push(requestId);
+                            }
+                        });
+
+                        if (selectedRequestIds.length > 0) {
+                            if (selectedRequestIds.length === 1 &&
+                                selectedRequests.requests) {
+                                defaultSummary = selectedRequests.requests[selectedRequestIds[0]].additionalFields.topic;
+                            }
+                            openAssignRequestModal(selectedRequestIds, defaultSummary);
+                        }
+                    }
+                }
+            };
+
+            var openAssignRequestModal = function(selectedRequestIds, defaultSummary) {
+                var modalInstance = $uibModal.open({
+                    templateUrl: 'components/request/modal-assign-request.html',
+                    controller: 'ModalAssignRequestCtrl as modal',
+                    resolve: {
+                        authors: function() {
+                            return vm.authors;
+                        },
+                        projects: function() {
+                            return vm.projects;
+                        },
+                        defaultSummary: function() {
+                            return defaultSummary;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function(rs) {
+                    notificationService.sendMessage('Assigning requests');
+                    requestService.assignRequests(selectedRequestIds, rs.project.key, ((rs.assignee) ? rs.assignee.key : null), rs.summary).then(function() {
+                        notificationService.sendMessage('Request assigned successfully', 5000);
+                        vm.selectedRequests = { checked: false, items: {}, requests: {} };
+                        requestTableParams.reload();
+                    });
+                });
+            };
+
+            var openAssignRequestToStaffModal = function(selectedRequestIds) {
+                var modalInstance = $uibModal.open({
+                    templateUrl: 'components/request/modal-assign-request-to-staff.html',
+                    controller: 'ModalAssignRequestToStaffCtrl as modal',
+                    resolve: {
+                        staffs: function() {
+                            return vm.staffs;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function(rs) {
+                    notificationService.sendMessage('Assigning requests');
+                    requestService.assignRequestsToStaff(selectedRequestIds, ((rs.assignee) ? rs.assignee.key : null)).then(function() {
+                        notificationService.sendMessage('Request assigned successfully', 5000);
+                        vm.selectedSubmittedRequests = { checked: false, items: {}, requests: {} };
+                        vm.submittedTableParams.reload();
+                    });
+                });
+            };
+
+            var assignSelectedRequestsToStaff = function() {
+                if (vm.staffs.length > 0) {
+                    var selectedRequests = vm.selectedSubmittedRequests,
+                        selectedRequestIds = [];
+                    if (selectedRequests && selectedRequests.items) {
+                        angular.forEach(selectedRequests.items, function(isSelected, requestId) {
+                            if (isSelected) {
+                                selectedRequestIds.push(requestId);
+                            }
+                        });
+
+                        if (selectedRequestIds.length > 0) {
+                            openAssignRequestToStaffModal(selectedRequestIds);
+                        }
+                    }
+                }
+            };
+
+            var acceptSelectedRequests = function(){
+                if (vm.staffs.length > 0) {
+                    var selectedRequests = vm.selectedSubmittedRequests,
+                        selectedRequestIds = [],
+                        action = bulkAction.accept;
+                    if (selectedRequests && selectedRequests.items) {
+                        notificationService.sendMessage('Accepting requests');
+                        angular.forEach(selectedRequests.items, function(isSelected, requestId) {
+                            if (isSelected) {
+                                selectedRequestIds.push(requestId);
+                            }
+                        });
+
+                        if (selectedRequestIds.length > 0) {
+                             var acceptingData = {
+                                data: {},
+                                requestIds: selectedRequestIds
+                            };
+                           requestService.acceptRequests(acceptingData, action).then(function() {
+                                notificationService.sendMessage('Requests accepted successfully', 5000);
+                                vm.selectedSubmittedRequests = { checked: false, items: {}, requests: {} };
+                                vm.submittedTableParams.reload();
+                            });
+                        }else{
+                            notificationService.sendMessage('Please select at least a request to accept.', 5000);
+                        }
+                    }
+                }
+            };
 
             var removeSelectedRequests = function () {
                 var selectedRequests = vm.selectedRequests,
@@ -435,8 +601,6 @@ angular
                     angular.forEach(selectedRequests.items, function (isSelected, requestId) {
                         if (isSelected) {
                             requestIds.push(requestId);
-                            vm.selectedRequests.items[requestId]=false;
-                            vm.selectedRequests.checked = false;
                         }
                     });
 
@@ -453,16 +617,9 @@ angular
 
                                 notificationService.sendMessage('Submitting Requests...');
                                 requestService.submitRequests(submitingData, action).then(function () {
-                                    
-                                    if (vm.tableParams) {
-                                        vm.tableParams.reload();
-                                        notificationService.sendMessage('Requests have been submitted successfully!');
-                                    }
-                                    if (vm.submittedTableParams) {
-                                        vm.submittedTableParams.reload();
-                                        notificationService.sendMessage('Requests have been submitted successfully!');
-                                    }
-
+                                    vm.tableParams.reload();
+                                    notificationService.sendMessage('Requests have been submitted successfully!');
+                                    vm.selectedRequests.checked = false;
                                 }, function(error){
                                     notificationService.sendMessage(error.message, 5000);
                                 });
@@ -814,6 +971,9 @@ angular
             vm.toggleShowClosedRequests = toggleShowClosedRequests;
             vm.submitSelectedRequests = submitSelectedRequests;
             vm.showClosedRequests = false;
+            vm.assignSelectedRequestsToStaff = assignSelectedRequestsToStaff;
+            vm.acceptSelectedRequests = acceptSelectedRequests;
+            vm.assignSelectedRequests = assignSelectedRequests;
             vm.daterange = {
                 startDate: null,
                 endDate: null
