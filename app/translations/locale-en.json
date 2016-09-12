@@ -21,11 +21,11 @@
         "notification": {
             "title": "Notifications",
             "message": {
-                "noNotification": "There is no notification at the moment",
-                "batchImportStatusChange": "Batch file status has been changed",
-                "requestStatusChange": "Request status has been changed",
-                "batchImportSuccess": "Batch requests have been imported successfully",
-                "commentAdded": "Comment has been added"
+                "noNotification": "You have no notifications at the moment",
+                "batchImportStatusChange": "The batch file status has been changed",
+                "requestStatusChange": "The Request status has been changed",
+                "batchImportSuccess": "The Batch request has been imported successfully",
+                "commentAdded": "The comment has been added"
             },
             "button": {
                 "clear": "Clear"
@@ -84,7 +84,7 @@
                     "create": "Create New Request",
                     "remove": "Remove Selected Requests",
                     "requestorInternalId": "Click to open request editing view",
-                    "assign": "Assign requests to Authoring",
+                    "assign": "Assign requests to Authoring team",
                     "assignToStaff": "Assign requests to Staff",
                     "batchId": "Click to open batch details view",
                     "conceptFSN": "Click to open request editing view",
@@ -97,7 +97,7 @@
                 },
                 "tableHeader": {
                     "batchId": "Batch ID",
-                    "requestorInternalId": "Local Code",
+                    "requestorInternalId": "Local Code - International ID",
                     "ticketId": "Jira ID",
                     "requestId": "Request ID",
                     "description": "Description",
@@ -150,7 +150,7 @@
                     "relationship": "Relationship",
                     "inferredRel": "Show Inferred Relationship",
                     "statedRel": "Show Stated Relationship",
-                    "historyAttributeValue": "History Attribute Value",
+                    "historyAttributeValue": "Historical Attribute Value",
                     "notes": "Notes",
                     "relationshipType": "Relationship Type",
                     "characteristicType": "Characteristic Type",
@@ -258,7 +258,7 @@
                 },
                 "comment": {
                     "label": "Reason",
-                    "inInceptionElaboration": "Request Url"
+                    "inInceptionElaboration": "Content Request Project Url"
                 },
                 "button": {
                     "confirm": "Confirm",
@@ -420,7 +420,7 @@
                     }
                 },
                 "upload": {
-                    "hint": "Select or Drop Batch File Here",
+                    "hint": "Select or drag Batch File Here",
                     "uploading": "Uploading"
                 },
                 "button": {
