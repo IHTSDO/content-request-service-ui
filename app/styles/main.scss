@@ -756,9 +756,16 @@ ul.batch-statistic.timeline {
 }
 .dashboard-sidebar button {
     width: 100%;
-    padding: 8px 15px!important;
+    padding: 5px 10px!important;
     font-size: 13.5px;
     text-transform: none;
     color: #fff;
     text-align: left;
+}
+form .form-control-element.required label {
+    color: #474747;
+    font-weight: 700;
+}
+form .form-control-element label {
+    font-weight: 400;
 }
