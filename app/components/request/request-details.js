@@ -2027,6 +2027,7 @@ angular
                 }
             });
 
+            //auto fill preferred term field
             $scope.$watch(function() {
                 if(vm.requestType === REQUEST_TYPE.NEW_CONCEPT && vm.request.proposedFSN){
                     return vm.request.proposedFSN;
@@ -2041,6 +2042,29 @@ angular
                     }else{
                         var trimFsn = vm.request.proposedFSN.trim();
                         vm.request.conceptPT = trimFsn;
+                    }
+                }
+            });
+
+            //auto fill new concept fsn field
+            $scope.$watch(function() {
+                if(vm.requestType === REQUEST_TYPE.NEW_CONCEPT && vm.request.value){
+                    return vm.request.value;
+                }
+            }, function(newVal) {
+                if(newVal && vm.requestType === REQUEST_TYPE.NEW_CONCEPT && vm.request.value){
+                    if(vm.request.proposedFSN){
+                        var indexOfFSN = vm.request.proposedFSN.indexOf("(");
+                        if(indexOfFSN !== -1){
+                            var substringFSN = vm.request.proposedFSN.substring(0, indexOfFSN);
+                            var trimFSN = substringFSN.trim();
+                            vm.request.proposedFSN = trimFSN + ' (' + newVal + ')';
+                        }else{
+                            var trimFsn = vm.request.proposedFSN.trim();
+                            vm.request.proposedFSN = trimFsn + ' (' + newVal + ')';
+                        }
+                    }else{
+                        vm.request.proposedFSN = '(' + newVal + ')';
                     }
                 }
             });
