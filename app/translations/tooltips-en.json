@@ -205,7 +205,8 @@
                         "acceptAndAssign": "Accept and Assign To Author",
                         "assign": "Assign Request",
                         "assignToStaff": "Assign To Staff",
-                        "moveToInInceptionElaboration": "Move to In Inception/Elaboration"
+                        "moveToInInceptionElaboration": "Move to In Inception/Elaboration",
+                        "addNote": "Add Note"
                     },
                     "label": {
                         "batchId": "Batch ID",
@@ -336,6 +337,35 @@
                 "inInceptionElaboration": "In Inception/Elaboration",
                 "readyForRelease": "Ready For Release",
                 "submitted": "Submitted"
+            },
+            "bulkAction": {
+                "status": {
+                    "inProgress": "In Progress",
+                    "completed": "Completed",
+                    "error": "Error"
+                },
+                "title": {
+                    "bulkType": "Submit Selected Requests",
+                    "countRequests": "Total",
+                    "processedRequests": "Processed Requests",
+                    "ignoredRequest": "Failed Request",
+                    "error": "Error",
+                    "status": "Status",
+                    "totalFailed": "Failed Requests",
+                    "message": "message"
+                },
+                "action": {
+                    "submit": "Submit Requests",
+                    "assignAuthor": "Assign Requests To Author",
+                    "acceptAndAssign": "Accept And Assign Requests To Author",
+                    "assignToStaff": "Assign Requests To Staff",
+                    "accept": "Accept Requests",
+                    "unassignAuthor": "Unassign Project"
+                },
+                "button": {
+                    "close": "Close",
+                    "addNote": "Add Note"
+                }
             }
         },
         "batch": {

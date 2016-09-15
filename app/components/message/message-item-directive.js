@@ -6,13 +6,16 @@ angular.module('conceptRequestServiceApp.message')
         '$location',
         'messageService',
         'MESSAGE_TYPE',
-        function ($filter, $location, messageService, MESSAGE_TYPE) {
+        'BULK_ACTION',
+        '$uibModal',
+        function ($filter, $location, messageService, MESSAGE_TYPE, BULK_ACTION, $uibModal) {
             var dateFilter = $filter('date');
             var requestStatusFilter = $filter('requestStatus');
             var batchImportStatusFilter = $filter('batchImportStatus');
             var translateFilter = $filter('translate');
             var buildMessageItem = function (messageType, message) {
                 var targetUrl;
+                var bulkActionLangKey;
                 var msgItemHtml = [];
                 msgItemHtml.push('<div class="message-detail-date" style="float:right">' + dateFilter(message.createdDate, 'yyyy-MM-dd H:mm:ss') + '</div>');
                 msgItemHtml.push('<div class="message-detail-header">' + translateFilter(messageType.titleLangKey) + '</div>');
@@ -62,8 +65,27 @@ angular.module('conceptRequestServiceApp.message')
 
                         targetUrl = '#/requests/view/' + message.details.id;
                         break;
+                    case MESSAGE_TYPE.BULK_ACTION_COMPLETED:
+                        bulkActionLangKey = 'crs\.notification\.bulkAction\.modalTitle\.' + message.details.actionType;
+                        msgItemHtml.push('<div class="message-detail-content">');
+                        msgItemHtml.push(translateFilter('crs.notification.bulkAction.' + message.details.actionType));
+                        msgItemHtml.push(': ');
+                        msgItemHtml.push(message.details.processedItemsCount);
+                        msgItemHtml.push(', ');
+                        msgItemHtml.push(translateFilter('crs.notification.bulkAction.failedRequests'));
+                        msgItemHtml.push(': ');
+                        msgItemHtml.push(message.details.ignoredItemsCount);
+                        msgItemHtml.push('</div>');
+                        msgItemHtml.push('<a class="message-detail-content" ng-click="openBulkActionDetailDirective()">Click to view details</a>');
+
+                        break;
                     default:
                         break;
+                }
+
+                if(bulkActionLangKey){
+                    msgItemHtml.splice(0, 0, '<a style="color:inherit" ng-click="openBulkActionDetailDirective()">');
+                    msgItemHtml.push('</a>');
                 }
 
                 if (targetUrl) {
@@ -80,15 +102,37 @@ angular.module('conceptRequestServiceApp.message')
                 scope: {
                     message: '=messageItem'
                 },
-                link: function ($scope, $element) {
-                    if ($scope.message) {
-                        var messageType = messageService.identifyMessageType($scope.message);
+                controller: function($scope, $compile){
+                    $scope.createHTML = function(){
+                        if ($scope.message) {
+                            var messageType = messageService.identifyMessageType($scope.message);
+                            var appendHtml = $compile(buildMessageItem(messageType, $scope.message))($scope);
+                            return appendHtml;
+                        }
+                        return '';
+                    };
+                    $scope.openBulkActionDetailDirective = function(){
+                        var bulkActionTitleLangKey = 'crs\.notification\.bulkAction\.modalTitle\.' + $scope.message.details.actionType;
+                        var modalInstance = $uibModal.open({
+                            templateUrl: 'components/request/bulk-action-responding-modal.html',
+                            controller: 'BulkActionRespondingModalCtrl as modal',
+                            resolve: {
+                                bulkActionId: function() {
+                                    return $scope.message.details.id;
+                                },
+                                actionLangKey: function(){
+                                    return bulkActionTitleLangKey;
+                                }
+                            }
+                        });
 
-                        /*if (!$scope.message.read) {
-                            $element.toggleClass('unread');
-                        }*/
-
-                        $element.html(buildMessageItem(messageType, $scope.message));
+                        modalInstance.result.then(function() {
+                        });
+                    };
+                },
+                link: function (scope, $element) {
+                    if (scope.message) {
+                        $element.html(scope.createHTML());
                     }
                 }
             };

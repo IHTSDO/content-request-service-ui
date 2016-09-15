@@ -25,10 +25,30 @@
                 "batchImportStatusChange": "Batch file status has been changed",
                 "requestStatusChange": "Request status has been changed",
                 "batchImportSuccess": "Batch requests have been imported successfully",
-                "commentAdded": "Comment has been added"
+                "commentAdded": "Comment has been added",
+                "bulkActionCompleted": "Bulk Action has been completed"
             },
             "button": {
                 "clear": "Clear"
+            },
+            "bulkAction": {
+                "UNASSIGN_AUTHOR": "Unassigned Requests",
+                "ADD_NOTE": "Added Notes",
+                "SUBMIT": "Submitted Requests",
+                "ACCEPT": "Accepted Requests",
+                "ASSIGN_AUTHOR": "Assigned Requests(Author)",
+                "ASSIGN_MANAGER": "Assigned Requests(Staff)",
+                "ACCEPT_ASSIGN_AUTHOR": "Accepted And Assigned Requests",
+                "failedRequests": "Failed",
+                "modalTitle": {
+                    "UNASSIGN_AUTHOR": "Unassign Requests",
+                    "ADD_NOTE": "Add Note",
+                    "SUBMIT": "Submit Requests",
+                    "ACCEPT": "Accept Requests",
+                    "ASSIGN_AUTHOR": "Assign Requests To Author",
+                    "ASSIGN_MANAGER": "Assign Requests To Staff",
+                    "ACCEPT_ASSIGN_AUTHOR": "Accept And Assign Requests"
+                }
             }
         },
         "dashboard": {
@@ -89,7 +109,8 @@
                     "batchId": "Click to open batch details view",
                     "conceptFSN": "Click to open request editing view",
                     "filter": "Filter requests",
-                    "submitRequests": "Submit Selected Requests"
+                    "submitRequests": "Submit Selected Requests",
+                    "unassignRequests": "Unassign Requests"
                 },
                 "searchPlaceHolder": {
                     "myRequests": "Search My Requests",
@@ -205,7 +226,9 @@
                         "acceptAndAssign": "Accept and Assign To Author",
                         "assign": "Assign Request",
                         "assignToStaff": "Assign To Staff",
-                        "moveToInInceptionElaboration": "Move to In Inception/Elaboration"
+                        "moveToInInceptionElaboration": "Move to In Inception/Elaboration",
+                        "addNote": "Add Note",
+                        "unassign": "Unassign Request"
                     },
                     "label": {
                         "batchId": "Batch ID",
@@ -215,7 +238,8 @@
                         "createdDate": "Created Date",
                         "originator": "Created By",
                         "manager": "Manager",
-                        "requestUrl": "Request Url"
+                        "requestUrl": "Request Url",
+                        "authoringTicket":"Authoring Ticket"
                     }
                 }
             },
@@ -287,6 +311,8 @@
                 "requestWithdrawn": "Request has been withdrawn successfully",
                 "requestClarification": "Request has been pended to clarification successfully",
                 "requestRemoved": "Requests have been removed successfully",
+                "requestUnassigned": "Request has been unassigned successfully",
+                "requestUnassigning": "Unassigning request...",
 
                 "error": {
                     "requestTypeRequired": "Please select request type",
@@ -335,6 +361,36 @@
                 "inInceptionElaboration": "In Inception/Elaboration",
                 "readyForRelease": "Ready For Release",
                 "submitted": "Submitted"
+            },
+            "bulkAction": {
+                "status": {
+                    "inProgress": "In Progress",
+                    "completed": "Completed",
+                    "error": "Error"
+                },
+                "title": {
+                    "bulkType": "Submit Selected Requests",
+                    "countRequests": "Total",
+                    "processedRequests": "Processed Requests",
+                    "ignoredRequest": "Failed Request",
+                    "error": "Error",
+                    "status": "Status",
+                    "totalFailed": "Failed Requests",
+                    "message": "Message"
+                },
+                "action": {
+                    "submit": "Submit Requests",
+                    "assignAuthor": "Assign Requests To Author",
+                    "acceptAndAssign": "Accept And Assign Requests To Author",
+                    "assignToStaff": "Assign Requests To Staff",
+                    "accept": "Accept Requests",
+                    "unassignAuthor": "Unassign Project",
+                    "addNote": "Add Note"
+                },
+                "button": {
+                    "close": "Close",
+                    "addNote": "Add Note"
+                }
             }
         },
         "batch": {

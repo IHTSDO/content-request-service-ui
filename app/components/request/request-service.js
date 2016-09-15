@@ -144,17 +144,17 @@ angular.module('conceptRequestServiceApp.request')
                 }
             };
 
-            var submitRequests = function(submitingData, action){
+            var bulkAction = function(data, action){
                 var requestEndpoint = CRS_API_ENDPOINT.BULK_ACTION;
                 var params;
 
-                if (submitingData !== undefined &&
-                    submitingData !== null) {
+                if (data !== undefined &&
+                    data !== null) {
                     params = {
                         action: action
                     };
 
-                    return crsService.sendPut(requestEndpoint, params, submitingData);
+                    return crsService.sendPut(requestEndpoint, params, data);
                 }
             };
 
@@ -163,18 +163,9 @@ angular.module('conceptRequestServiceApp.request')
                 return crsService.sendGet(requestEndpoint + '/maxSize', null, null);
             };
 
-            var acceptRequests = function(acceptingData, action){
+            var getBulkActionStatus = function(bulkActionId){
                 var requestEndpoint = CRS_API_ENDPOINT.BULK_ACTION;
-                var params;
-
-                if (acceptingData !== undefined &&
-                    acceptingData !== null) {
-                    params = {
-                        action: action
-                    };
-
-                    return crsService.sendPut(requestEndpoint, params, acceptingData);
-                }
+                return crsService.sendGet(requestEndpoint + '/' + bulkActionId + '/status', null, null);
             };
 
             var removeRequests = function (requestList) {
@@ -205,6 +196,20 @@ angular.module('conceptRequestServiceApp.request')
                     };
 
                     return crsService.sendPut(requestEndpoint + '/assign', params, null);
+                }
+            };
+
+            var unassignRequest = function (requestId) {
+                var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
+                var params;
+
+                if (requestId !== undefined &&
+                    requestId !== null) {
+                    params = {
+                        requestId: requestId
+                    };
+
+                    return crsService.sendPut(requestEndpoint + '/unassignAuthoringTask', params, null);
                 }
             };
 
@@ -312,9 +317,10 @@ angular.module('conceptRequestServiceApp.request')
                 setAssignedFilterValues: setAssignedFilterValues,
                 getAssignedFilterValues: getAssignedFilterValues,
                 getNewConcept: getNewConcept,
-                submitRequests: submitRequests,
                 getMaxSize: getMaxSize,
-                acceptRequests: acceptRequests
+                bulkAction: bulkAction,
+                getBulkActionStatus: getBulkActionStatus,
+                unassignRequest: unassignRequest
             };
 
         }]);

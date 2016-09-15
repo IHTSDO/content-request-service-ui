@@ -1178,7 +1178,8 @@ angular
                     requestType: requestData.requestType,
                     inputMode: requestData.inputMode,
                     requestHeader: requestData.requestHeader,
-                    contentTrackerUrl: requestData.contentTrackerUrl
+                    contentTrackerUrl: requestData.contentTrackerUrl,
+                    authoringTaskTicket: requestData.authoringTaskTicket
                 };
                 $rootScope.newConceptRequestType = requestData.requestType;
                 var requestItems = requestData.requestItems;
@@ -1747,6 +1748,20 @@ angular
                     });
             };
 
+            var unassignSelectedRequests = function(){
+                notificationService.sendMessage('crs.request.message.requestUnassigning', 5000);
+                return requestService.unassignRequest(vm.request.id).then(function() {
+                    notificationService.sendMessage('crs.request.message.requestUnassigned', 5000);
+                    $location.path(prevPage).search({});
+                }, function(e) {
+                    console.log(e);
+                    showErrorMessage(e.message);
+                })
+                .finally(function() {
+                    $rootScope.showAppLoading = false;
+                });
+            };
+
             var changeRequestStatus = function(requestId, requestStatus, data) {
                 // show loading mask
                 $rootScope.showAppLoading = true;
@@ -2136,6 +2151,7 @@ angular
             vm.withdrawRequest = withdrawRequest;
             vm.getAuthorName = getAuthorName;
             vm.getStaffName = getStaffName;
+            vm.unassignSelectedRequests = unassignSelectedRequests;
             vm.loadingProjects = true;
             vm.loadingAuthors = true;
             vm.projects = [];

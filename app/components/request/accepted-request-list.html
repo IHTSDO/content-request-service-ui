@@ -28,6 +28,10 @@
                             <span class="md md-content-paste"></span>
                             <div class="ripple-wrapper"></div>
                         </button>
+                        <button ng-disabled="vm.loadingProjects || vm.loadingAuthors" type="button" class="btn btn-round btn-default " title="{{'crs.request.list.tip.unassignRequests' | translate}}" ng-click="vm.unassignSelectedRequests()">
+                            <span class="md md-assignment-late"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
                     </div>
                 </div>
                 <div class="col-md-2 promoted-check-box">

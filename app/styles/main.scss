@@ -801,3 +801,15 @@ input[type=checkbox].select-all-rqs {
     height: 10px;
   }
 }
+.bulkActionRespondingModal {
+  .value {
+    display: inline-flex;
+    label {
+      display: inline-table;
+    }
+  }
+}
+
+.statistics-requests-requester {
+  height: 334px !important;
+}

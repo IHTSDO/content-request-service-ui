@@ -42,6 +42,17 @@
                         </div>
                     </div>
                 </li>
+                <li ng-if="requestVM.request.authoringTaskTicket">
+                    <div class="timeline-badge">
+                        <i class="icon-circle theme-border"></i>
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.request.details.info.label.authoringTicket" title="{{'tooltips.request.details.info.label.authoringTicket' | translate}}"></label>
+                             <h4 class="timeline-title">{{requestVM.request.authoringTaskTicket}}</h4>
+                        </div>
+                    </div>
+                </li>
                 <li>
                     <div class="timeline-badge">
                         <i class="icon-circle theme-border"></i>
@@ -137,18 +148,25 @@
                 <span class="md md-done blue darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.accept"></span>
             </button>
+            
             <button ng-if="requestVM.pageMode.value === 'preview'" ng-disabled="requestVM.loadingProjects || vm.loadingAuthors" class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.assignRequestToStaff(requestVM.request.requestHeader.status)" title="{{'tooltips.request.details.info.button.assignToStaff' | translate}}">
                 <span class="md md-assignment-ind blue darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.assignToStaff"></span>
             </button>
             <button ng-if="requestVM.pageMode.value === 'preview' && requestVM.request.requestHeader.status === 'NEW'" ng-disabled="requestVM.loadingProjects || vm.loadingAuthors" class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.acceptAndAssignRequest()" title="{{'tooltips.request.details.info.button.acceptAndAssign' | translate}}">
-                <span class="md md-content-paste blue darken-2 iconbase"></span>
+                <span class="md md-assignment-turned-in blue darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.acceptAndAssign"></span>
             </button>
             <button ng-if="requestVM.pageMode.value === 'preview' && requestVM.request.requestHeader.status === 'ACCEPTED'" ng-disabled="requestVM.loadingProjects || vm.loadingAuthors" ng-disabled="requestVM.request.requestHeader.assignedProject" class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.assignRequest()" title="{{'tooltips.request.details.info.button.assign' | translate}}">
                 <span class="md md-content-paste blue darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.assign"></span>
             </button>
+
+            <button ng-if="requestVM.pageMode.value === 'preview' && requestVM.request.authoringTaskTicket" ng-disabled="requestVM.loadingProjects || vm.loadingAuthors" class="btn btn-default pink1 darken-1 review" style="text-transform: none" title="{{'tooltips.request.details.info.button.unassign' | translate}}" ng-click="requestVM.unassignSelectedRequests()">
+                <span class="md md-assignment-late pink darken-2 iconbase"></span>
+                <span class="button-link" translate="crs.request.details.info.button.unassign"></span>
+            </button>
+
             <button ng-if="requestVM.pageMode.value === 'preview' && (requestVM.request.requestHeader.status === 'NEW' || requestVM.request.requestHeader.status === 'CLARIFICATION_NEEDED')" ng-disabled="requestVM.request.requestHeader.status !== 'NEW' && requestVM.request.requestHeader.status !== 'APPEAL' && requestVM.request.requestHeader.status !== 'CLARIFICATION_NEEDED'" class="btn btn-default deep-purple darken-1 validate" ng-click="requestVM.rejectRequest()" style="text-transform: none" title="{{'tooltips.request.details.info.button.reject' | translate}}">
                 <span class="md md-dnd-forwardslash deep-purple darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.reject"></span>

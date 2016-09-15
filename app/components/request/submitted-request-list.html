@@ -19,12 +19,16 @@
                         <button type="button" class="btn btn-round btn-info ng-scope " title="{{'crs.request.list.tip.count' | translate}}" >
                             {{vm.submittedTableParams.total()}} <div class="ripple-wrapper"></div>
                         </button>
-                        <button ng-disabled="vm.loadingProjects || vm.loadingAuthors" type="button" class="btn btn-round btn-default " title="{{'crs.request.list.tip.assign' | translate}}" ng-click="vm.assignSelectedRequestsToStaff()">
+                        <button ng-if="dashboard.permissionChecked && dashboard.isAdmin" ng-disabled="vm.loadingProjects || vm.loadingAuthors" type="button" class="btn btn-round btn-default " title="{{'crs.request.list.tip.assignToStaff' | translate}}" ng-click="vm.assignSelectedRequestsToStaff()">
                             <span class="md md-assignment-ind"></span>
                             <div class="ripple-wrapper"></div>
                         </button>
-                        <button ng-disabled="vm.loadingProjects || vm.loadingAuthors" type="button" class="btn btn-round btn-default"  ng-click="vm.acceptSelectedRequests()" title="{{'tooltips.request.details.info.button.accept' | translate}}">
+                        <button ng-if="dashboard.permissionChecked && dashboard.isAdmin" ng-disabled="vm.loadingProjects || vm.loadingAuthors" type="button" class="btn btn-round btn-default"  ng-click="vm.acceptSelectedRequests()" title="{{'tooltips.request.details.info.button.accept' | translate}}">
                             <span class="md md-done"></span>
+                            <span class="button-link"></span>
+                        </button>
+                        <button ng-if="dashboard.permissionChecked && dashboard.isAdmin" ng-disabled="vm.loadingProjects || vm.loadingAuthors" type="button" class="btn btn-round btn-default"  ng-click="vm.addNote()" title="{{'tooltips.request.details.info.button.addNote' | translate}}">
+                            <span class="md md-event-note"></span>
                             <span class="button-link"></span>
                         </button>
                     </div>

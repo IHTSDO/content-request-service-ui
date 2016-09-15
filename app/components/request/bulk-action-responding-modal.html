@@ -1,0 +1,45 @@
+<div class="bulkActionRespondingModal">
+
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="modal.closeModal()">&times;</button>
+        <h4 class="modal-title">{{modal.actionLangKey | translate}}</h4>
+        <hr style="margin-bottom: -10px" />
+    </div>
+
+    <div class="modal-body batch-import-confirm-modal" style="max-height: 444px; overflow: auto">
+        <div class="row" ng-if="!modal.bulkActionLoading">
+            <div class="col-md-2 col-md-offset-5" style="">
+                <a style="font-size: 40px; margin-left: 10px">
+                    <i class="md md-spin md-autorenew"></i>
+                </a>
+            </div>
+        </div>
+        <div class="row" ng-if="modal.bulkActionLoading" style="padding-left: 20px">
+            <div class="col-md-12 value no-padding" ng-if="modal.bulkActionRespondingData.itemsCount">
+                <label>{{'crs.request.bulkAction.title.countRequests' | translate}}:</label> <span>{{modal.bulkActionRespondingData.itemsCount}}</span>
+            </div>
+            <div class="col-md-12 value no-padding">
+                <label>{{'crs.request.bulkAction.title.processedRequests' | translate}}:</label> <span>{{modal.bulkActionRespondingData.processedItemsCount? modal.bulkActionRespondingData.processedItemsCount: '0'}}</span>
+            </div>
+            <div class="col-md-12 value no-padding">
+                <label>{{'crs.request.bulkAction.title.totalFailed' | translate}}:</label> <span>{{modal.bulkActionRespondingData.ignoredItemsCount? modal.bulkActionRespondingData.ignoredItemsCount: '0'}}</span>
+            </div>
+            <div class="col-md-12 no-padding" ng-if="modal.bulkActionRespondingData.errorMessages">
+                <label>{{'crs.request.bulkAction.title.error' | translate}}:</label> <span ng-repeat="error in modal.splitErrorMessage" style="display: table; margin-left: 30px; margin-top: -28px; margin-bottom: 28px">{{error}}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <hr style="margin-bottom: 13px; margin-top: -15px"/>
+        <div class="col-md-6 col-md-offset-3">
+            <button type="button" ng-disabled="disabled" class=" col-md-12 btn btn-danger no-margin "
+                    ng-click="modal.closeModal()">{{'crs.request.bulkAction.button.close' | translate}}
+            </button>
+        </div>
+    </div>
+
+</div>
+
+
+</div>
