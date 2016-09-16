@@ -8,22 +8,26 @@
         <div class="col col-md-12">
 
             <ul class="timeline batch-statistic">
+                
                 <li>
-                    <div class="timeline-badge">
-                        <i class="md md-send NEW"></i>
-                    </div>
                     <div class="timeline-panel">
                         <div class="timeline-heading">
-                            <label class="control-label" translate="crs.batch.details.statistic.label.submitted"></label>
+                            <label class="control-label" translate="crs.batch.details.statistic.label.draft"></label>
+                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['DRAFT'] || '0'):'0'}}</span>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.batch.details.statistic.label.new"></label>
                             <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['NEW'] || '0'):'0'}}</span>
                         </div>
                     </div>
                 </li>
 
                 <li>
-                    <div class="timeline-badge">
-                        <i class="md md-done ACCEPTED"></i>
-                    </div>
                     <div class="timeline-panel">
                         <div class="timeline-heading">
                             <label class="control-label" translate="crs.batch.details.statistic.label.accepted"></label>
@@ -33,9 +37,6 @@
                 </li>
 
                 <li>
-                    <div class="timeline-badge">
-                        <i class="md md-dnd-forwardslash REJECTED"></i>
-                    </div>
                     <div class="timeline-panel">
                         <div class="timeline-heading">
                             <label class="control-label" translate="crs.batch.details.statistic.label.rejected"></label>
@@ -45,9 +46,69 @@
                 </li>
 
                 <li>
-                    <div class="timeline-badge">
-                        <i class="md md-person AUTHORING"></i>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.batch.details.statistic.label.appeal"></label>
+                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['APPEAL'] || '0'):'0'}}</span>
+                        </div>
                     </div>
+                </li>
+
+                <li>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.batch.details.statistic.label.appealReject"></label>
+                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['APPEAL_REJECTED'] || '0'):'0'}}</span>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.batch.details.statistic.label.forwarded"></label>
+                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['FORWARDED'] || '0'):'0'}}</span>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.batch.details.statistic.label.withdrawn"></label>
+                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['WITHDRAWN'] || '0'):'0'}}</span>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.batch.details.statistic.label.clarificationNeeded"></label>
+                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['CLARIFICATION_NEEDED'] || '0'):'0'}}</span>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.batch.details.statistic.label.inInception"></label>
+                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['IN_INCEPTION'] || '0'):'0'}}</span>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.batch.details.statistic.label.complete"></label>
+                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['COMPLETED'] || '0'):'0'}}</span>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
                     <div class="timeline-panel">
                         <div class="timeline-heading">
                             <label class="control-label" translate="crs.batch.details.statistic.label.underAuthoring"></label>
@@ -57,7 +118,7 @@
                 </li>
 
 
-                <li>
+                <!--<li>
                     <div class="timeline-badge">
                         <i class="md md-done-all APPROVED"></i>
                     </div>
@@ -67,7 +128,7 @@
                             <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['APPROVED'] || '0'):'0'}}</span>
                         </div>
                     </div>
-                </li>
+                </li> -->
 
             </ul>
         </div>

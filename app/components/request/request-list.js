@@ -15,8 +15,13 @@ angular
         '$routeParams',
         '$uibModal',
 		'utilsService',
-        function ($filter, $sce, crsJiraService, NgTableParams, requestService, notificationService, accountService, jiraService, $routeParams, $uibModal, utilsService) {
+        '$scope',
+        'scaService',
+        'BULK_ACTION_STATUS',
+        'BULK_ACTION',
+        function ($filter, $sce, crsJiraService, NgTableParams, requestService, notificationService, accountService, jiraService, $routeParams, $uibModal, utilsService, $scope, scaService, BULK_ACTION_STATUS, BULK_ACTION) {
             var vm = this;
+            var maxSize;
 
             vm.filterRequests = {
                 batchRequest: {
@@ -175,9 +180,19 @@ angular
                 },
             ];
 
+            var bulkAction = {
+                submit: 'SUBMIT',
+                accept: 'ACCEPT',
+                assignToStaff: 'ASSIGN_MANAGER',
+                assignToAuthor: 'ACCEPT_ASSIGN_AUTHOR',
+                assignAuthor: 'ASSIGN_AUTHOR',
+                addNote: 'ADD_NOTE'
+            };
+
             var initView = function () {
                 vm.selectedRequests = {checked: false, items: {}};
                 vm.selectedSubmittedRequests = {checked: false, items: {}};
+                vm.selectedMyAssignedRequests = {checked: false, items: {}};
 				
 				vm.requestStatus = vm.requestStatus.sort(function(a, b) {
 					return utilsService.compareStrings(a.title, b.title);
@@ -293,6 +308,27 @@ angular
 
                 //load staffs
                 loadStaff();
+
+                //load projects
+                loadProjects();
+
+                //load max size
+                getMaxSize();
+            };
+
+            var loadProjects = function() {
+                vm.loadingProjects = true;
+                scaService.getProjects().then(function(response) {
+                    response.sort(function(a, b) {
+                        return utilsService.compareStrings(a.title, b.title);
+                    });
+                    vm.projects = response;
+                    for(var i in vm.projects){
+                        vm.projects[i].id = vm.projects[i].key;
+                    }
+                }).finally(function() {
+                    vm.loadingProjects = false;
+                });
             };
 
             var loadAuthors = function () {
@@ -359,6 +395,318 @@ angular
                 }
             };
 
+            //watch for check all checkbox my requests list
+            $scope.$watch(function() {
+                return vm.selectedRequests.checked;
+            }, function(newVal) {
+                if(vm.requests){
+                    angular.forEach(vm.requests.items, function(item) {
+                        if (angular.isDefined(item.id)) {
+                            vm.selectedRequests.items[item.id] = newVal;
+                        }
+                    }); 
+                }
+            });
+
+            //watch for check all checkbox submitted requests list
+            $scope.$watch(function() {
+                return vm.selectedSubmittedRequests.checked;
+            }, function(newVal) {
+                if(vm.requests){
+                    angular.forEach(vm.requests.items, function(item) {
+                        if (angular.isDefined(item.id)) {
+                            vm.selectedSubmittedRequests.items[item.id] = newVal;
+                        }
+                    }); 
+                }
+            });
+
+            //watch for check all checkbox my submitted requests list
+            $scope.$watch(function() {
+                return vm.selectedMyAssignedRequests.checked;
+            }, function(newVal) {
+                if(vm.requests){
+                    angular.forEach(vm.requests.items, function(item) {
+                        if (angular.isDefined(item.id)) {
+                            vm.selectedMyAssignedRequests.items[item.id] = newVal;
+                        }
+                    }); 
+                }
+            });
+
+            //watch for check all checkbox my assigned requests list
+            $scope.$watch(function() {
+                return vm.selectedMyAssignedRequests.checked;
+            }, function(newVal) {
+                if(vm.requests){
+                    angular.forEach(vm.requests.items, function(item) {
+                        if (angular.isDefined(item.id)) {
+                            vm.selectedMyAssignedRequests.items[item.id] = newVal;
+                        }
+                    }); 
+                }
+            });
+
+            var assignSelectedRequests = function() {
+                if (vm.authors.length > 0 && vm.projects.length > 0) {
+                    var selectedRequests = vm.selectedMyAssignedRequests,
+                        selectedRequestIds = [],
+                        defaultSummary;
+                    if (selectedRequests &&
+                        selectedRequests.items) {
+                        angular.forEach(selectedRequests.items, function(isSelected, requestId) {
+                            if (isSelected) {
+                                selectedRequestIds.push(requestId);
+                            }
+                        });
+
+                        if(selectedRequestIds.length > maxSize){
+                            notificationService.sendMessage('Cannot assign requests! The list cannot be longer than ' + maxSize + ' requests.', 5000);
+                        }else if (selectedRequestIds.length > 0) {
+                            if (selectedRequestIds.length === 1 &&
+                                selectedRequests.requests) {
+                                defaultSummary = selectedRequests.requests[selectedRequestIds[0]].additionalFields.topic;
+                            }
+                            openAssignRequestModal(selectedRequestIds, defaultSummary);
+                        }else {
+                            notificationService.sendMessage('Please select at least a request to assign.', 5000);
+                        }
+
+                        // if (selectedRequestIds.length > 0) {
+                        //     if (selectedRequestIds.length === 1 &&
+                        //         selectedRequests.requests) {
+                        //         defaultSummary = selectedRequests.requests[selectedRequestIds[0]].additionalFields.topic;
+                        //     }
+                        //     openAssignRequestModal(selectedRequestIds, defaultSummary);
+                        // }
+                    }
+                }
+            };
+
+            var openAssignRequestModal = function(selectedRequestIds, defaultSummary) {
+                var modalInstance = $uibModal.open({
+                    templateUrl: 'components/request/modal-assign-request.html',
+                    controller: 'ModalAssignRequestCtrl as modal',
+                    resolve: {
+                        authors: function() {
+                            return vm.authors;
+                        },
+                        projects: function() {
+                            return vm.projects;
+                        },
+                        defaultSummary: function() {
+                            return defaultSummary;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function(rs) {
+                    // notificationService.sendMessage('Processing...');
+                    var action = bulkAction.assignAuthor;
+                    var assigningData = {
+                        data: {
+                            assignee: rs.assignee? rs.assignee.key : null,
+                            project: rs.project.key,
+                            summary: rs.summary
+                        },
+                        requestIds: selectedRequestIds
+                    };
+                    requestService.bulkAction(assigningData, action).then(function (response) {
+                        if(response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value){
+                            bulkActionRespondingModal(response.id, BULK_ACTION.ASSIGN_AUTHOR.langKey);
+                        }
+                    }, function(error){
+                        notificationService.sendMessage(error.message, 5000);
+                    });
+                });
+            };
+
+            var acceptAndAssignSelectedRequests = function() {
+                if (vm.authors.length > 0 && vm.projects.length > 0) {
+                    var selectedRequests = vm.selectedMyAssignedRequests,
+                        selectedRequestIds = [],
+                        action = bulkAction.assignToAuthor;
+                    if (selectedRequests && selectedRequests.items) {
+                        angular.forEach(selectedRequests.items, function(isSelected, requestId) {
+                            if (isSelected) {
+                                selectedRequestIds.push(requestId);
+                            }
+                        });
+
+                        if (selectedRequestIds.length > 0) {
+                            var modalInstance = $uibModal.open({
+                                templateUrl: 'components/request/modal-assign-request.html',
+                                controller: 'ModalAssignRequestCtrl as modal',
+                                resolve: {
+                                    authors: function() {
+                                        return vm.authors;
+                                    },
+                                    projects: function() {
+                                        return vm.projects;
+                                    },
+                                    defaultSummary: function(){
+                                        return '';
+                                    }
+                                }
+                            });
+
+                            modalInstance.result.then(function(rs) {
+                                // notificationService.sendMessage('Processing...');
+                                var data = {
+                                    data: {
+                                        assignee: rs.assignee? rs.assignee.key : null,
+                                        project: rs.project.key,
+                                        summary: rs.summary
+                                    },
+                                    requestIds: selectedRequestIds
+                                };
+                                requestService.bulkAction(data, action).then(function (response) {
+                                    if(response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value){
+                                        bulkActionRespondingModal(response.id, BULK_ACTION.ACCEPT_AND_ASSIGN.langKey);
+                                    }
+                                }, function(error){
+                                    notificationService.sendMessage(error.message, 5000);
+                                });
+                            });
+                        }else{
+                            notificationService.sendMessage('Please select at least a request to assign.', 5000);
+                        }
+                    }
+                }
+            };
+
+            var openAssignRequestToStaffModal = function(selectedRequestIds) {
+                var dataList = [];
+                var action = bulkAction.assignToStaff;
+                var unassignedUser = {
+                    displayName: 'Unassigned ',
+                    id: null,
+                    key: ''
+                };
+                dataList.push(unassignedUser);
+                for(var i in vm.staffs){
+                    dataList.push(vm.staffs[i]);
+                }
+                var modalInstance = $uibModal.open({
+                    templateUrl: 'components/request/modal-assign-request-to-staff.html',
+                    controller: 'ModalAssignRequestToStaffCtrl as modal',
+                    resolve: {
+                        staffs: function() {
+                            return dataList;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function(rs) {
+                    // notificationService.sendMessage('Processing...');
+                    var data = {
+                        data: {
+                            manager: rs.assignee? rs.assignee.key : null
+                        },
+                        requestIds: selectedRequestIds
+                    };
+                    requestService.bulkAction(data, action).then(function (response) {
+                        if(response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value){
+                            bulkActionRespondingModal(response.id, BULK_ACTION.ASSIGN_STAFF.langKey);
+                        }
+                    }, function(error){
+                        notificationService.sendMessage(error.message, 5000);
+                    });
+                });
+            };
+
+            var assignSelectedRequestsToStaff = function() {
+                if (vm.staffs.length > 0) {
+                    var selectedRequests = vm.selectedSubmittedRequests,
+                        selectedRequestIds = [];
+                    if (selectedRequests && selectedRequests.items) {
+                        angular.forEach(selectedRequests.items, function(isSelected, requestId) {
+                            if (isSelected) {
+                                selectedRequestIds.push(requestId);
+                            }
+                        });
+
+                        if(selectedRequestIds.length > maxSize){
+                            notificationService.sendMessage('Cannot assign requests! The list cannot be longer than ' + maxSize + ' requests.', 5000);
+                        }else if (selectedRequestIds.length > 0) {
+                            openAssignRequestToStaffModal(selectedRequestIds);
+                        }else {
+                            notificationService.sendMessage('Please select at least a request to assign.', 5000);
+                        }
+                    }
+                }
+            };
+
+            var acceptSelectedRequests = function(){
+                if (vm.staffs.length > 0) {
+                    var selectedRequests = vm.selectedSubmittedRequests,
+                        selectedRequestIds = [],
+                        action = bulkAction.accept;
+                    if (selectedRequests && selectedRequests.items) {
+                        notificationService.sendMessage('Accepting requests');
+                        angular.forEach(selectedRequests.items, function(isSelected, requestId) {
+                            if (isSelected) {
+                                selectedRequestIds.push(requestId);
+                            }
+                        });
+
+                        if(selectedRequestIds.length > maxSize){
+                            notificationService.sendMessage('Cannot accept requests! The list cannot be longer than ' + maxSize + ' requests.', 5000);
+                        }else if (selectedRequestIds.length > 0) {
+                            var acceptingData = {
+                                data: {},
+                                requestIds: selectedRequestIds
+                            };
+                            requestService.bulkAction(acceptingData, action).then(function(response) {
+                                if(response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value){
+                                    bulkActionRespondingModal(response.id, BULK_ACTION.ACCEPT.langKey);
+                                }
+                            });
+                        }else {
+                            notificationService.sendMessage('Please select at least a request to accept.', 5000);
+                        }
+                    }
+                }
+            };
+
+            var addNote = function(){
+                var selectedRequests = vm.selectedSubmittedRequests,
+                    selectedRequestIds = [];
+                var action = bulkAction.addNote;
+                if (selectedRequests &&
+                    selectedRequests.items) {
+                    angular.forEach(selectedRequests.items, function (isSelected, requestId) {
+                        if (isSelected) {
+                            selectedRequestIds.push(requestId);
+                        }
+                    });
+                    if(selectedRequestIds.length > maxSize){
+                        notificationService.sendMessage('Action denied! The list cannot be longer than ' + maxSize + ' requests.', 5000);
+                    }else if (selectedRequestIds.length > 0) {
+                        var modalInstance = $uibModal.open({
+                            templateUrl: 'components/request/add-note-modal.html',
+                            controller: 'AddNoteModalCtrl as modal'
+                        });
+                        modalInstance.result.then(function(rs) {
+                            var data = {
+                                data: {
+                                    message: rs.message,
+                                    isInternal: rs.isInternal
+                                },
+                                requestIds: selectedRequestIds
+                            };
+                            requestService.bulkAction(data, action).then(function(response) {
+                                if(response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value){
+                                    bulkActionRespondingModal(response.id, BULK_ACTION.ADD_NOTE.langKey);
+                                }
+                            });
+                        });
+                    }else {
+                        notificationService.sendMessage('Please select at least a request.', 5000);
+                    }
+                }
+            };
+
             var removeSelectedRequests = function () {
                 var selectedRequests = vm.selectedRequests,
                     removingRequestIds = [];
@@ -368,6 +716,7 @@ angular
                         if (isSelected) {
                             removingRequestIds.push(requestId);
                             vm.selectedRequests.items[requestId]=false;
+                            vm.selectedRequests.checked = false;
                         }
                     });
                     if (removingRequestIds.length > 0) {
@@ -402,6 +751,77 @@ angular
                         notificationService.sendMessage('Please select at least a request to remove.', 5000);
                     }
                 }
+            };
+
+            var getMaxSize = function(){
+                requestService.getMaxSize().then(function(result){
+                    maxSize = result.maxSize;
+                }, function(error){
+                    notificationService.sendMessage(error.message, 5000);
+                });
+            };
+
+            var submitSelectedRequests = function () {
+                // notificationService.sendMessage('Processing...');
+                var selectedRequests = vm.selectedRequests,
+                    requestIds = [],
+                    action = bulkAction.submit;
+                    
+                if (selectedRequests &&
+                    selectedRequests.items) {
+                    angular.forEach(selectedRequests.items, function (isSelected, requestId) {
+                        if (isSelected) {
+                            requestIds.push(requestId);
+                        }
+                    });
+
+                    if(requestIds.length > maxSize){
+                        notificationService.sendMessage('Cannot submit! The list cannot be longer than ' + maxSize + ' requests.', 5000);
+                    }else if (requestIds.length > 0) {
+                            var submitingData = {
+                                data: {},
+                                requestIds: requestIds
+                            };
+                            requestService.bulkAction(submitingData, action).then(function (response) {
+                                if(response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value){
+                                    bulkActionRespondingModal(response.id, BULK_ACTION.SUBMIT.langKey);
+                                }
+                                
+                            }, function(error){
+                                notificationService.sendMessage(error.message, 5000);
+                            });
+                    }else {
+                        notificationService.sendMessage('Please select at least a request to submit.', 5000);
+                    }
+                }
+            };
+
+            
+
+            var bulkActionRespondingModal = function(bulkActionId, actionTypeLangKey){
+                var modalInstance = $uibModal.open({
+                    templateUrl: 'components/request/bulk-action-responding-modal.html',
+                    controller: 'BulkActionRespondingModalCtrl as modal',
+                    resolve: {
+                        bulkActionId: function() {
+                            return bulkActionId;
+                        },
+                        actionLangKey: function(){
+                            return actionTypeLangKey;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function() {
+                    vm.selectedRequests = { checked: false, items: {}, requests: {} };
+                    vm.tableParams.reload();
+                    vm.selectedMyAssignedRequests = { checked: false, items: {}, requests: {} };
+                    assignedRequestTableParams.reload();
+                    vm.selectedMyAssignedRequests = { checked: false, items: {}, requests: {} };
+                    assignedRequestTableParams.reload();
+                    vm.selectedSubmittedRequests = { checked: false, items: {}, requests: {} };
+                    vm.submittedTableParams.reload();
+                });
             };
 
             var convertDateToMilliseconds = function(date){
@@ -741,7 +1161,13 @@ angular
             vm.onDateRangeChangeSQ = onDateRangeChangeSQ;
             vm.onDateRangeChangeMAR = onDateRangeChangeMAR;
             vm.toggleShowClosedRequests = toggleShowClosedRequests;
+            vm.submitSelectedRequests = submitSelectedRequests;
             vm.showClosedRequests = false;
+            vm.assignSelectedRequestsToStaff = assignSelectedRequestsToStaff;
+            vm.acceptSelectedRequests = acceptSelectedRequests;
+            vm.assignSelectedRequests = assignSelectedRequests;
+            vm.acceptAndAssignSelectedRequests = acceptAndAssignSelectedRequests;
+            vm.addNote = addNote;
             vm.daterange = {
                 startDate: null,
                 endDate: null

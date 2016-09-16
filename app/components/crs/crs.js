@@ -15,5 +15,6 @@ angular
         BATCH_UPLOADED_PREVIEW: 'api/batch/upload/preview',
         BATCH_LIST: 'api/batch/list',
         MESSAGE: 'api/notification',
-        MESSAGE_LIST: 'api/notification/list'
+        MESSAGE_LIST: 'api/notification/list',
+        BULK_ACTION: 'api/request/bulkAction'
     });

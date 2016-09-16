@@ -3,19 +3,13 @@
     <section ng-if="vm.isAdmin" class="accepted-table" style="width: 100%;">
         <div class="card">
             <div class="row">
-                <div class="col-md-2 no-padding">
+                <div class="col-md-3 no-padding">
                     <h3 class="table-title p-20" translate="crs.request.list.title.acceptedRequests"></h3>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <!-- <div class="table-search">
                         <input type="text" ng-model="vm.tableParams.filter()['search']" class="form-control" placeholder="{{'crs.request.list.searchPlaceHolder.acceptedRequests' | translate}}" autofocus/>
                     </div> -->
-                </div>
-                <div class="col-md-2 promoted-check-box">
-                    <button class="btn btn-default" ng-class="[{'md-check-box' : vm.showUnassignedRequests}, {'md-check-box-outline-blank' : !vm.showUnassignedRequests}]" ng-click="vm.toggleShowUnassignedRequests()" style="background: transparent">
-                        <span class="promoted-check-box">Show Unassigned only</span></button>
-                </div>
-                <div class="col-md-2">
                     <div class="p-t-20">
                         <!-- <button class="btn btn-primary pull-right" ng-disabled="!vm.tableParams.hasFilter()" ng-click="vm.tableParams.filter({})">Clear filters</button> -->
                         <!-- <button ng-click="vm.showFilter = !vm.showFilter" class="btn btn-round btn-default" title="{{'crs.request.list.tip.filter' | translate}}">
@@ -34,7 +28,15 @@
                             <span class="md md-content-paste"></span>
                             <div class="ripple-wrapper"></div>
                         </button>
+                        <button ng-disabled="vm.loadingProjects || vm.loadingAuthors" type="button" class="btn btn-round btn-default " title="{{'crs.request.list.tip.unassignRequests' | translate}}" ng-click="vm.unassignSelectedRequests()">
+                            <span class="md md-assignment-late"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
                     </div>
+                </div>
+                <div class="col-md-2 promoted-check-box">
+                    <button class="btn btn-default" ng-class="[{'md-check-box' : vm.showUnassignedRequests}, {'md-check-box-outline-blank' : !vm.showUnassignedRequests}]" ng-click="vm.toggleShowUnassignedRequests()" style="background: transparent">
+                        <span class="promoted-check-box">Show Unassigned only</span></button>
                 </div>
             </div>
             <div class="table-responsive white" style="min-height: 416px;">
@@ -97,6 +99,7 @@
     </section>
 </div>
 <script type="text/ng-template" id="ng-table/headers/checkbox.html">
+    <input type="checkbox" ng-model="vm.selectedRequests.checked" class="small-checkbox" style="margin-bottom: -11px;" />
 </script>
 <script type="text/ng-template" id="ng-table/datetime-picker-startdate.html">
     <div class="input-group select-filter">

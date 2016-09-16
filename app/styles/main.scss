@@ -553,11 +553,11 @@ ul.batch-statistic.timeline {
 }
 
 .promoted-check-box {
-    color: #9B9B9B;
-    padding-top: 19px;
-    font-family: Roboto!important;
-    font-size: 13px;
-    font-weight: 400;
+  color: #9B9B9B;
+  padding-top: 19px;
+  font-family: Roboto!important;
+  font-size: 13px;
+  font-weight: 400;
 }
 
 .multiSelect {
@@ -702,6 +702,7 @@ ul.batch-statistic.timeline {
 .statistics-request {
   font-size: 12px;
   width: 100%;
+  display: flex;
   .labelSb {
     width: 60%;
     display: inline-block;
@@ -719,11 +720,30 @@ ul.batch-statistic.timeline {
 }
 @media (max-height: 667px) {
   .statistics-requests{
-    height: 350px;
+    height: 297px;
     width: 16%;
     position: fixed;
     overflow: auto;
   }
+}
+.dashboard-links .md{
+  color:#848999
+}
+.statistics-requests .badge {
+  font-size: 11px;
+  padding: 2px 3px;
+  margin: 2px;
+  line-height: 13px;
+  border-radius: 4px;
+}
+.statistics-requests .badge.blue{
+  background-color:#00a8e1;
+}
+.statistics-requests .badge.turquoise{
+  background-color:#30a387;
+}
+.statistics-requests .badge.purple{
+  background-color:#8c79b8;
 }
 
 /*overwrite date range picker*/
@@ -759,16 +779,48 @@ ul.batch-statistic.timeline {
 }
 .dashboard-sidebar button {
     width: 100%;
-    padding: 5px 10px!important;
+    padding: 5px 15px!important;
     font-size: 13.5px;
     text-transform: none;
     color: #fff;
     text-align: left;
 }
-form .form-control-element.required label {
-    color: #474747;
-    font-weight: 700;
+
+.form .form-control-element.required label {
+  color: #474747;
+  font-weight: 700;
 }
-form .form-control-element label {
-    font-weight: 400;
+
+.form .form-control-element label {
+  font-weight: 700;
+}
+
+input[type=checkbox].select-all-rqs {
+  position: relative;
+  margin-left: -4px !important;
+  margin-bottom: -8px !important;
+  &:after {
+    width: 18px;
+    height: 18px;
+    margin-left: 0px;
+  }
+
+  &:before {
+    top: 3px;
+    left: 10px;
+    width: 5px;
+    height: 10px;
+  }
+}
+.bulkActionRespondingModal {
+  .value {
+    display: inline-flex;
+    label {
+      display: inline-table;
+    }
+  }
+}
+
+.statistics-requests-requester {
+  height: 363px !important;
 }

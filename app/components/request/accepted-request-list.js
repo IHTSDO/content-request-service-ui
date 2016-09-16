@@ -15,8 +15,14 @@ angular
         'crsJiraService',
         'jiraService',
 		'utilsService',
-        function($filter, $sce, $uibModal, NgTableParams, requestService, notificationService, accountService, scaService, crsJiraService, jiraService, utilsService) {
+        '$scope',
+        'BULK_ACTION_STATUS',
+        'BULK_ACTION',
+        function($filter, $sce, $uibModal, NgTableParams, requestService, notificationService, accountService, scaService, crsJiraService, jiraService, utilsService, $scope, BULK_ACTION_STATUS, BULK_ACTION) {
             var vm = this;
+            var maxSize;
+            var translateFilter = $filter('translate');
+            var translateRequestTypeFilter = $filter('requestType');
 
             vm.filterRequests = {
                 batchRequest: {
@@ -175,6 +181,15 @@ angular
                 },
             ];
 
+            var bulkAction = {
+                submit: 'SUBMIT',
+                accept: 'ACCEPT',
+                assignToStaff: 'ASSIGN_MANAGER',
+                assignToAuthor: 'ACCEPT_ASSIGN_AUTHOR',
+                assignAuthor: 'ASSIGN_AUTHOR',
+                unassignAuthor: 'UNASSIGN_AUTHOR'
+            };
+
             var initView = function() {
                 vm.selectedRequests = { checked: false, items: {}, requests: {} };
 
@@ -199,6 +214,9 @@ angular
 
                 //load staffs
                 loadStaff();
+
+                //load max size
+                getMaxSize();
 
                 vm.requestTableParams = requestTableParams;
                 var acceptedRequests;
@@ -231,6 +249,14 @@ angular
                         }
                     }
                 }
+            };
+
+            var getMaxSize = function(){
+                requestService.getMaxSize().then(function(result){
+                    maxSize = result.maxSize;
+                }, function(error){
+                    notificationService.sendMessage(error.message, 5000);
+                });
             };
                         
             var loadProjects = function() {
@@ -314,50 +340,62 @@ angular
                 }
             };
 
-            var openAssignRequestModal = function(selectedRequestIds, defaultSummary) {
+            var bulkActionRespondingModal = function(bulkActionId, actionTypeLangKey){
                 var modalInstance = $uibModal.open({
-                    templateUrl: 'components/request/modal-assign-request.html',
-                    controller: 'ModalAssignRequestCtrl as modal',
+                    templateUrl: 'components/request/bulk-action-responding-modal.html',
+                    controller: 'BulkActionRespondingModalCtrl as modal',
                     resolve: {
-                        authors: function() {
-                            return vm.authors;
+                        bulkActionId: function() {
+                            return bulkActionId;
                         },
-                        projects: function() {
-                            return vm.projects;
-                        },
-                        defaultSummary: function() {
-                            return defaultSummary;
+                        actionLangKey: function(){
+                            return actionTypeLangKey;
                         }
                     }
                 });
 
-                modalInstance.result.then(function(rs) {
-                    notificationService.sendMessage('Assigning requests');
-                    requestService.assignRequests(selectedRequestIds, rs.project.key, ((rs.assignee) ? rs.assignee.key : null), rs.summary).then(function() {
-                        notificationService.sendMessage('Request assigned successfully', 5000);
-                        vm.selectedRequests = { checked: false, items: {}, requests: {} };
-                        requestTableParams.reload();
-                    });
+                modalInstance.result.then(function() {
+                    vm.selectedRequests = { checked: false, items: {}, requests: {} };
+                    requestTableParams.reload();
                 });
             };
 
             var openAssignRequestToStaffModal = function(selectedRequestIds) {
+                var dataList = [];
+                var action = bulkAction.assignToStaff;
+                var unassignedUser = {
+                    displayName: 'Unassigned ',
+                    id: null,
+                    key: ''
+                };
+                dataList.push(unassignedUser);
+                for(var i in vm.staffs){
+                    dataList.push(vm.staffs[i]);
+                }
                 var modalInstance = $uibModal.open({
                     templateUrl: 'components/request/modal-assign-request-to-staff.html',
                     controller: 'ModalAssignRequestToStaffCtrl as modal',
                     resolve: {
                         staffs: function() {
-                            return vm.staffs;
+                            return dataList;
                         }
                     }
                 });
 
                 modalInstance.result.then(function(rs) {
-                    notificationService.sendMessage('Assigning requests');
-                    requestService.assignRequestsToStaff(selectedRequestIds, ((rs.assignee) ? rs.assignee.key : null)).then(function() {
-                        notificationService.sendMessage('Request assigned successfully', 5000);
-                        vm.selectedRequests = { checked: false, items: {}, requests: {} };
-                        requestTableParams.reload();
+                    // notificationService.sendMessage('Processing...');
+                    var data = {
+                        data: {
+                            manager: rs.assignee? rs.assignee.key : null
+                        },
+                        requestIds: selectedRequestIds
+                    };
+                    requestService.bulkAction(data, action).then(function (response) {
+                        if(response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value){
+                            bulkActionRespondingModal(response.id, BULK_ACTION.ASSIGN_STAFF.langKey);
+                        }
+                    }, function(error){
+                        notificationService.sendMessage(error.message, 5000);
                     });
                 });
             };
@@ -366,27 +404,54 @@ angular
                 if (vm.authors.length > 0 && vm.projects.length > 0) {
                     var selectedRequests = vm.selectedRequests,
                         selectedRequestIds = [],
+                        action = bulkAction.assignAuthor,
                         defaultSummary;
-                    if (selectedRequests &&
-                        selectedRequests.items) {
+                    if (selectedRequests && selectedRequests.items) {
                         angular.forEach(selectedRequests.items, function(isSelected, requestId) {
                             if (isSelected) {
                                 selectedRequestIds.push(requestId);
                             }
                         });
 
-                        for (var i in selectedRequests.requests) {
-                            if (selectedRequests.requests[i].requestHeader.assignee !== null) {
-                                notificationService.sendMessage("One or more requests are assigned. Let's remove them out of list and retry.", 5000);
-                                return;
-                            }
-                        }
                         if (selectedRequestIds.length > 0) {
-                            if (selectedRequestIds.length === 1 &&
-                                selectedRequests.requests) {
-                                defaultSummary = selectedRequests.requests[selectedRequestIds[0]].additionalFields.topic;
-                            }
-                            openAssignRequestModal(selectedRequestIds, defaultSummary);
+                            var defaultSummaryRequestType = translateFilter(translateRequestTypeFilter(selectedRequests.requests[selectedRequestIds[0]].requestType));
+                            defaultSummary = '[' + defaultSummaryRequestType + '] ' + selectedRequests.requests[selectedRequestIds[0]].additionalFields.summary;
+                            var modalInstance = $uibModal.open({
+                                templateUrl: 'components/request/modal-assign-request.html',
+                                controller: 'ModalAssignRequestCtrl as modal',
+                                resolve: {
+                                    authors: function() {
+                                        return vm.authors;
+                                    },
+                                    projects: function() {
+                                        return vm.projects;
+                                    },
+                                    defaultSummary: function(){
+                                        return defaultSummary;
+                                    }
+                                }
+                            });
+
+                            modalInstance.result.then(function(rs) {
+                                // notificationService.sendMessage('Processing...');
+                                var data = {
+                                    data: {
+                                        assignee: rs.assignee? rs.assignee.key : null,
+                                        project: rs.project.key,
+                                        summary: rs.summary
+                                    },
+                                    requestIds: selectedRequestIds
+                                };
+                                requestService.bulkAction(data, action).then(function (response) {
+                                    if(response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value){
+                                        bulkActionRespondingModal(response.id, BULK_ACTION.ACCEPT_AND_ASSIGN.langKey);
+                                    }
+                                }, function(error){
+                                    notificationService.sendMessage(error.message, 5000);
+                                });
+                            });
+                        }else{
+                            notificationService.sendMessage('Please select at least a request to assign.', 5000);
                         }
                     }
                 }
@@ -403,12 +468,60 @@ angular
                             }
                         });
 
-                        if (selectedRequestIds.length > 0) {
+                        if(selectedRequestIds.length > maxSize){
+                            notificationService.sendMessage('Cannot assign requests! The list cannot be longer than ' + maxSize + ' requests.', 5000);
+                        }else if (selectedRequestIds.length > 0) {
                             openAssignRequestToStaffModal(selectedRequestIds);
+                        }else {
+                            notificationService.sendMessage('Please select at least a request to assign.', 5000);
                         }
                     }
                 }
             };
+
+            var unassignSelectedRequests = function(){
+                var selectedRequests = vm.selectedRequests,
+                    selectedRequestIds = [],
+                    action = bulkAction.unassignAuthor;
+                if (selectedRequests && selectedRequests.items) {
+                    angular.forEach(selectedRequests.items, function(isSelected, requestId) {
+                        if (isSelected) {
+                            selectedRequestIds.push(requestId);
+                        }
+                    });
+
+                    if(selectedRequestIds.length > maxSize){
+                        notificationService.sendMessage('Cannot unassign requests! The list cannot be longer than ' + maxSize + ' requests.', 5000);
+                    }else if (selectedRequestIds.length > 0) {
+                        var data = {
+                            data: {},
+                            requestIds: selectedRequestIds
+                        };
+                        requestService.bulkAction(data, action).then(function (response) {
+                            if(response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value){
+                                bulkActionRespondingModal(response.id, BULK_ACTION.UNASSIGN_AUTHOR.langKey);
+                            }
+                        }, function(error){
+                            notificationService.sendMessage(error.message, 5000);
+                        });
+                    }else {
+                        notificationService.sendMessage('Please select at least a request to unassign.', 5000);
+                    }
+                }
+            };
+
+            //watch for check all checkbox
+            $scope.$watch(function() {
+                return vm.selectedRequests.checked;
+            }, function(newVal) {
+                if(vm.requests){
+                    angular.forEach(vm.requests.items, function(item) {
+                        if (angular.isDefined(item.id)) {
+                            vm.selectedRequests.items[item.id] = newVal;
+                        }
+                    }); 
+                }
+            });
 
             var pushSelectedRequest = function(event, request) {
                 if (event.target.checked) {
@@ -550,6 +663,7 @@ angular
             vm.tableParams = requestTableParams;
             vm.assignSelectedRequests = assignSelectedRequests;
             vm.assignSelectedRequestsToStaff = assignSelectedRequestsToStaff;
+            vm.unassignSelectedRequests = unassignSelectedRequests;
             vm.pushSelectedRequest = pushSelectedRequest;
             vm.getAuthorName = getAuthorName;
             vm.getStaffName = getStaffName;

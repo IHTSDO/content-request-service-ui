@@ -28,9 +28,13 @@ angular
         'REQUEST_INPUT_MODE',
         'jiraService',
         '$timeout',
-		'utilsService', 
-        function($scope, $rootScope, $routeParams, $location, $anchorScroll, $uibModal, $sce, $q, requestService, notificationService, requestMetadataService, objectService, snowowlService, snowowlMetadataService, crsJiraService, scaService, accountService, REQUEST_METADATA_KEY, REQUEST_TYPE, CONCEPT_EDIT_EVENT, REQUEST_STATUS, REQUEST_INPUT_MODE, jiraService, $timeout, utilsService) {
+		'utilsService',
+        '$filter',
+        function($scope, $rootScope, $routeParams, $location, $anchorScroll, $uibModal, $sce, $q, requestService, notificationService, requestMetadataService, objectService, snowowlService, snowowlMetadataService, crsJiraService, scaService, accountService, REQUEST_METADATA_KEY, REQUEST_TYPE, CONCEPT_EDIT_EVENT, REQUEST_STATUS, REQUEST_INPUT_MODE, jiraService, $timeout, utilsService, $filter) {
             var vm = this;
+            var translateFilter = $filter('translate');
+            var translateRequestTypeFilter = $filter('requestType');
+
             var REQUEST_MODE = {
                 NEW: { value: 'new', langKey: 'crs.request.requestMode.newRequest' },
                 EDIT: { value: 'edit', langKey: 'crs.request.requestMode.editRequest' },
@@ -202,10 +206,23 @@ angular
 
             var loadTopicOptions = function(){
                 return crsJiraService.getTopicOptions().then(function(topicOptions){
+                    vm.topicOptions = topicOptions;
                     topicOptions.sort(function(a, b) {
                         return utilsService.compareStrings(a.value, b.value);
                     });
-                    vm.topicOptions = topicOptions;
+                    if(vm.pageMode !== REQUEST_MODE.NEW){
+                        var isNotInArr;
+                        for(var i in topicOptions){
+                            if(topicOptions[i].value !== vm.request.additionalFields.topic){
+                                isNotInArr = true;
+                            }
+                        }
+                        if(isNotInArr){
+                            var obj = {};
+                            obj.value = vm.request.additionalFields.topic;
+                            vm.topicOptions.push(obj);
+                        }
+                    }
                 });
             };
 
@@ -353,6 +370,11 @@ angular
                     showErrorMessage('crs.request.message.error.invalidPage');
                 } else {
                     vm.pageMode = identifyPageMode(mode);
+                    //delete current batch option
+                    if(vm.pageMode === REQUEST_MODE.NEW){
+                        vm.sourceTerminologies.splice(1, 1);
+                        vm.destinationTerminologies.splice(1, 1);
+                    }
 
                     switch (vm.pageMode) {
                         case REQUEST_MODE.NEW:
@@ -392,7 +414,8 @@ angular
                             accountService.getAccountInfo().then(function(accountDetails) {
                                 vm.request.requestHeader.ogirinatorId = accountDetails.login;
                             });
-
+                            
+                            $rootScope.newConceptRequestType = requestType.value;
                             vm.requestType = requestType;
                             vm.isValidViewParams = isValid;
                             vm.inputMode = identifyInputMode(inputMode);
@@ -1026,6 +1049,7 @@ angular
                         item.proposedParents = [];
                         item.requestorInternalTerm = changedTarget.requestorInternalTerm;
                         item.proposedUse = changedTarget.proposedUse;
+                        item.requestDescription = changedTarget.requestDescription;
                         
                         item.umlsCui = changedTarget.umlsCui;
                         if (changedTarget.parentConcept) {
@@ -1158,8 +1182,10 @@ angular
                     requestType: requestData.requestType,
                     inputMode: requestData.inputMode,
                     requestHeader: requestData.requestHeader,
-                    contentTrackerUrl: requestData.contentTrackerUrl
+                    contentTrackerUrl: requestData.contentTrackerUrl,
+                    authoringTaskTicket: requestData.authoringTaskTicket
                 };
+                $rootScope.newConceptRequestType = requestData.requestType;
                 var requestItems = requestData.requestItems;
                 var mainItem = extractItemByRequestType(requestItems, requestService.identifyRequestType(request.requestType));
 
@@ -1187,6 +1213,8 @@ angular
                         request.requestorInternalTerm = mainItem.requestorInternalTerm;
                         request.value = mainItem.semanticTag;
                         request.umlsCui = mainItem.umlsCui;
+                        request.requestDescription = mainItem.requestDescription;
+
                         break;
 
                     case REQUEST_TYPE.CHANGE_RETIRE_CONCEPT.value:
@@ -1251,6 +1279,7 @@ angular
                         request.refinability = mainItem.refinability;
                         request.sourceTerminology = mainItem.sourceTerminology;
                         request.destinationTerminology = mainItem.destinationTerminology;
+                        $rootScope.desTerminilogy = mainItem.destinationTerminology;
 
                         // load destination concept
                         request.destinationConcept = {
@@ -1291,6 +1320,7 @@ angular
                         request.relationshipCharacteristicType = mainItem.relationshipCharacteristicType;
                         request.sourceTerminology = mainItem.sourceTerminology;
                         request.destinationTerminology = mainItem.destinationTerminology;
+                        $rootScope.desTerminilogy = mainItem.destinationTerminology;
 
                         // load destination concept
                         request.destinationConcept = {
@@ -1544,6 +1574,11 @@ angular
                         !vm.request.additionalFields.reference.trim()) {
                         error.reference = fieldRequiredLangKey;
                     }
+
+                    if ((!vm.request.proposedUse ||
+                        !vm.request.proposedUse.trim()) && vm.requestType === REQUEST_TYPE.NEW_CONCEPT) {
+                        error.proposedUse = fieldRequiredLangKey;
+                    }
                 }
 
                 var isNotValidObj = function() {
@@ -1641,9 +1676,9 @@ angular
                 }
 
                 requestService.saveRequest(requestData)
-                    .then(function() {
+                    .then(function(response) {
                         notificationService.sendMessage('crs.request.message.requestSaved', 5000);
-                        $location.path(prevPage).search({});
+                        $location.path('requests/preview/' + response.id).search({kb:true});
                     }, function(e) {
                         showErrorMessage(e.message);
                     })
@@ -1717,6 +1752,20 @@ angular
                     });
             };
 
+            var unassignSelectedRequests = function(){
+                notificationService.sendMessage('crs.request.message.requestUnassigning', 5000);
+                return requestService.unassignRequest(vm.request.id).then(function() {
+                    notificationService.sendMessage('crs.request.message.requestUnassigned', 5000);
+                    $location.path(prevPage).search({});
+                }, function(e) {
+                    console.log(e);
+                    showErrorMessage(e.message);
+                })
+                .finally(function() {
+                    $rootScope.showAppLoading = false;
+                });
+            };
+
             var changeRequestStatus = function(requestId, requestStatus, data) {
                 // show loading mask
                 $rootScope.showAppLoading = true;
@@ -1752,6 +1801,8 @@ angular
             };
 
             var openAssignRequestModal = function() {
+                var defaultSummaryRequestType = translateFilter(translateRequestTypeFilter(vm.request.requestType));               
+                var defaultSummary = '[' + defaultSummaryRequestType + '] ' + vm.request.additionalFields.summary;
                 return $uibModal.open({
                     templateUrl: 'components/request/modal-assign-request.html',
                     controller: 'ModalAssignRequestCtrl as modal',
@@ -1763,7 +1814,7 @@ angular
                             return vm.projects;
                         },
                         defaultSummary: function() {
-                            return '';
+                            return defaultSummary;
                         }
                     }
                 });
@@ -1997,8 +2048,11 @@ angular
                 }
             });
 
+            //auto fill preferred term field
             $scope.$watch(function() {
-                return vm.request.proposedFSN;
+                if(vm.requestType === REQUEST_TYPE.NEW_CONCEPT && vm.request.proposedFSN){
+                    return vm.request.proposedFSN;
+                }
             }, function(newVal) {
                 if(newVal && vm.requestType === REQUEST_TYPE.NEW_CONCEPT && vm.request.proposedFSN){
                     var indexOfFSN = vm.request.proposedFSN.indexOf("(");
@@ -2009,6 +2063,29 @@ angular
                     }else{
                         var trimFsn = vm.request.proposedFSN.trim();
                         vm.request.conceptPT = trimFsn;
+                    }
+                }
+            });
+
+            //auto fill new concept fsn field
+            $scope.$watch(function() {
+                if(vm.requestType === REQUEST_TYPE.NEW_CONCEPT && vm.request.value){
+                    return vm.request.value;
+                }
+            }, function(newVal) {
+                if(newVal && vm.requestType === REQUEST_TYPE.NEW_CONCEPT && vm.request.value){
+                    if(vm.request.proposedFSN){
+                        var indexOfFSN = vm.request.proposedFSN.indexOf("(");
+                        if(indexOfFSN !== -1){
+                            var substringFSN = vm.request.proposedFSN.substring(0, indexOfFSN);
+                            var trimFSN = substringFSN.trim();
+                            vm.request.proposedFSN = trimFSN + ' (' + newVal + ')';
+                        }else{
+                            var trimFsn = vm.request.proposedFSN.trim();
+                            vm.request.proposedFSN = trimFsn + ' (' + newVal + ')';
+                        }
+                    }else{
+                        vm.request.proposedFSN = '(' + newVal + ')';
                     }
                 }
             });
@@ -2049,6 +2126,18 @@ angular
                 return change;
             };
 
+            $scope.$watch(function() {
+                if(vm.requestType === REQUEST_TYPE.NEW_RELATIONSHIP || vm.requestType === REQUEST_TYPE.CHANGE_RELATIONSHIP){
+                    return vm.request.destinationTerminology;
+                }
+            }, function(newVal) {
+                if(newVal && (vm.requestType === REQUEST_TYPE.NEW_RELATIONSHIP || vm.requestType === REQUEST_TYPE.CHANGE_RELATIONSHIP) && vm.request.destinationTerminology){
+                    $rootScope.$broadcast('destinationTerminologyChange', {
+                        desTerminology: vm.request.destinationTerminology
+                    });
+                }
+            });
+
             vm.cancelEditing = cancelEditing;
             vm.saveRequest = saveRequest;
             vm.acceptRequest = acceptRequest;
@@ -2068,6 +2157,7 @@ angular
             vm.withdrawRequest = withdrawRequest;
             vm.getAuthorName = getAuthorName;
             vm.getStaffName = getStaffName;
+            vm.unassignSelectedRequests = unassignSelectedRequests;
             vm.loadingProjects = true;
             vm.loadingAuthors = true;
             vm.projects = [];
@@ -2115,7 +2205,7 @@ angular
                     terminologyName: "New Concept Requests"
                 }
             ];
-
+            
             $scope.panelId = 'REQUEST_DETAILS';
 
             initView();

@@ -28,7 +28,7 @@ angular
                     { name: 'proposedFSN', required: true},
                     { name: 'conceptPT', required: true},
                     { name: 'proposedSynonyms'},
-                    { name: 'proposedDefinitions', required: true},
+                    // { name: 'proposedDefinitions', required: true},
                     { name: 'value', required: true}
                 ]
             }
@@ -371,6 +371,50 @@ angular
         CONCEPT_HISTORY_ATTRIBUTE: 'CONCEPT_HISTORY_ATTRIBUTE',
         NEW_DESCRIPTION_STATUS: 'NEW_DESCRIPTION_STATUS',
         NEW_RELATIONSHIP_STATUS: 'NEW_RELATIONSHIP_STATUS'
+    })
+    .value('BULK_ACTION_STATUS', {
+        STATUS_IN_PROGRESS: {
+            value: 'IN_PROGRESS',
+            langKey: 'crs.request.bulkAction.status.inProgress'
+        },
+        STATUS_COMPLETED: {
+            value: 'COMPLETED',
+            langKey: 'crs.request.bulkAction.status.completed'
+        },
+        STATUS_ERROR: {
+            value: 'ERROR',
+            langKey: 'crs.request.bulkAction.status.error'
+        }
+    })
+    .value('BULK_ACTION', {
+        SUBMIT: {
+            value: 'SUBMIT',
+            langKey: 'crs.request.bulkAction.action.submit'
+        },
+        ASSIGN_AUTHOR: {
+            value: 'ASSIGN_AUTHOR',
+            langKey: 'crs.request.bulkAction.action.assignAuthor'
+        },
+        ACCEPT_AND_ASSIGN: {
+            value: 'ACCEPT_AND_ASSIGN',
+            langKey: 'crs.request.bulkAction.action.acceptAndAssign'
+        },
+        ASSIGN_STAFF: {
+            value: 'ASSIGN_MANAGER',
+            langKey: 'crs.request.bulkAction.action.assignToStaff'
+        },
+        ACCEPT: {
+            value: 'ACCEPT',
+            langKey: 'crs.request.bulkAction.action.accept'
+        },
+        UNASSIGN_AUTHOR: {
+            value: 'UNASSIGN_AUTHOR',
+            langKey: 'crs.request.bulkAction.action.unassignAuthor'
+        },
+        ADD_NOTE: {
+            value: 'ADD_NOTE',
+            langKey: 'crs.request.bulkAction.action.addNote'
+        }
     })
     .config(function ($routeProvider) {
         $routeProvider

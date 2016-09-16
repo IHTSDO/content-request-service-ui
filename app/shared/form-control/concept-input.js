@@ -8,7 +8,8 @@ angular
         'requestService',
 		'utilsService',
         'REQUEST_TYPE',
-        function (snowowlService, $routeParams, requestService, utilsService, REQUEST_TYPE) {
+        '$rootScope',
+        function (snowowlService, $routeParams, requestService, utilsService, REQUEST_TYPE, $rootScope) {
             return {
                 restrict: 'E',
                 require: ['?^formControlReadonly', '^form'],
@@ -34,7 +35,7 @@ angular
                     'typeahead-wait-ms="700" ',
                     'typeahead-on-select="selectConcept($item)" ',
                     'typeahead-editable="false" typeahead-min-length="3"/>',
-                    '<span style="top:0;position: absolute;padding-top:3px;right:5px;font-size:14px;{{(showError)?\'color:red\':\'\'}}" ' +
+                    '<span title="{{\'tooltips.request.message.error.conceptError\' | translate}}" style="top:0;position: absolute;padding-top:3px;right:5px;font-size:14px;{{(showError)?\'color:red\':\'\'}}" ' +
                         'ng-show="showLoading || showError" ' +
                         'class="md" ' +
                         'ng-class="{\'md-spin md-autorenew\':showLoading, \'md-error\':showError}"></span>',
@@ -45,23 +46,16 @@ angular
                 link: function ($scope, $element, $attrs, reqiredControllers) {
                     var formControlReadonlyCtrl = reqiredControllers[0];
                     var isFocused = false;
-                    var REQUEST_MODE = {
-                        NEW: { value: 'new', langKey: 'crs.request.requestMode.newRequest' },
-                        EDIT: { value: 'edit', langKey: 'crs.request.requestMode.editRequest' },
-                        PREVIEW: { value: 'preview', langKey: 'crs.request.requestMode.previewRequest' },
-                        VIEW: { value: 'view', langKey: 'crs.request.requestMode.viewRequest' }
-                    };
-                    var mode = $routeParams.mode,
-                        param = $routeParams.param;
-                    var requestId,
-                        requestType;
+                    var param = $routeParams.param;
+                    var requestId;
+
+                    var newConceptRequestType = $rootScope.newConceptRequestType;
                     var buildInvalidConcept = function (fsn) {
                         return {
                             conceptId: null,
                             fsn: fsn
                         };
                     };
-                    requestType = requestService.identifyRequestType(param);
                     var initControl = function () {
                         $scope.showLoading = false;
                         $scope.showError = false;
@@ -102,13 +96,13 @@ angular
 							});
 							
                             $scope.concept = response;
-                            // if(requestType === REQUEST_TYPE.NEW_CONCEPT){
+                            if(newConceptRequestType === REQUEST_TYPE.NEW_CONCEPT.value){
                                 if(!conceptData.sourceTerminology){
                                     $scope.concept.sourceTerminology = 'SNOMEDCT';
                                 }else{
                                     $scope.concept.sourceTerminology = conceptData.sourceTerminology;
                                 }
-                            // }
+                            }
                             
                             for(var name in $scope.concept.relationships){
                                 $scope.concept.relationships[name].viewName = $scope.concept.relationships[name].type.fsn + " " + $scope.concept.relationships[name].target.fsn;
@@ -132,32 +126,16 @@ angular
                         $scope.showLoading = true;
                         $scope.conceptStatus.loading = false;
                         $scope.conceptStatus.searching = true;
-                        if(mode === REQUEST_MODE.NEW.value){
-                            requestType = param;
-                        }else{
-                            requestId = param;
-                        }
+                        requestId = param;
 
                         if ($scope.concept) {
                             $scope.concept.conceptId = null;
                         }
-                        if(requestType === REQUEST_TYPE.NEW_CONCEPT){
-                            if($scope.concept.sourceTerminology === 'CURRENTBATCH'){
+                        
+                        if(newConceptRequestType === REQUEST_TYPE.NEW_CONCEPT.value){
+                            switch ($scope.concept.sourceTerminology){
+                                case 'CURRENTBATCH':
                                 return requestService.getBatchConcept(requestId, viewValue).then(function(response){
-                                    // if (!isFocused) {
-                                    //     validateConceptInput(viewValue);
-                                    // }
-
-                                    // remove duplicates
-                                    // for (var i = 0; i < response.length; i++) {
-                                    //     for (var j = response.length - 1; j > i; j--) {
-                                    //         if (response[j].concept.conceptId === response[i].concept.conceptId) {
-                                    //             // console.debug(' duplicate ', j, response[j]);
-                                    //             response.splice(j, 1);
-                                    //             j--;
-                                    //         }
-                                    //     }
-                                    // }
                                     for(var i in response){
                                         response[i].sourceTerminology = $scope.concept.sourceTerminology;
                                     }
@@ -167,10 +145,52 @@ angular
                                     $scope.conceptStatus.loading = false;
                                     $scope.conceptStatus.searching = false;
                                 });
+
+                                case 'NEWCONCEPTREQUESTS':
+                                    return requestService.getNewConcept(viewValue).then(function(response){
+                                        var desConceptList = [];
+                                        var desConceptObj;
+
+                                        for(var i in response){
+                                            desConceptObj = {
+                                                concept: response[i],
+                                                sourceTerminology: $scope.concept.sourceTerminology
+                                            };
+                                            desConceptList.push(desConceptObj);
+                                        }
+                                        return desConceptList;
+                                    }).finally(function () {
+                                        $scope.showLoading = false;
+                                        $scope.conceptStatus.loading = false;
+                                        $scope.conceptStatus.searching = false;
+                                    });
+
+                                default:
+                                // search concepts
+                                return snowowlService.findConcepts(null, null, viewValue, 0, 20).then(function (response) {
+                                    //restore error status
+                                    if (!isFocused) {
+                                        validateConceptInput(viewValue);
+                                    }
+
+                                    // remove duplicates
+                                    for (var i = 0; i < response.length; i++) {
+                                        for (var j = response.length - 1; j > i; j--) {
+                                            if (response[j].concept.conceptId === response[i].concept.conceptId) {
+                                                // console.debug(' duplicate ', j, response[j]);
+                                                response.splice(j, 1);
+                                                j--;
+                                            }
+                                        }
+                                    }
+                                    return response;
+                                }).finally(function () {
+                                    $scope.showLoading = false;
+                                    $scope.conceptStatus.loading = false;
+                                    $scope.conceptStatus.searching = false;
+                                });
                             }
                         }
-                        
-
                         // search concepts
                         return snowowlService.findConcepts(null, null, viewValue, 0, 20).then(function (response) {
                             //restore error status
@@ -197,7 +217,7 @@ angular
                     };
 
                     var selectConcept = function (conceptItem) {
-                        if(conceptItem.sourceTerminology !== 'CURRENTBATCH'){
+                        if(conceptItem.sourceTerminology !== 'CURRENTBATCH' && conceptItem.sourceTerminology !== 'NEWCONCEPTREQUESTS'){
                              // enable loading
                             $scope.showLoading = true;
                             $scope.showError = false;
@@ -227,7 +247,7 @@ angular
                                 $scope.conceptStatus.loading = false;
                                 $scope.conceptStatus.searching = false;
                             });
-                        }else if(conceptItem.sourceTerminology === 'CURRENTBATCH'){
+                        }else if(conceptItem.sourceTerminology === 'CURRENTBATCH' || conceptItem.sourceTerminology === 'NEWCONCEPTREQUESTS'){
                             $scope.concept.sourceTerminology = conceptItem.sourceTerminology;
                             $scope.concept.conceptId = conceptItem.concept.conceptId;
                             $scope.concept.fsn = conceptItem.concept.fsn;

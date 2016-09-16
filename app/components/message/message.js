@@ -18,5 +18,9 @@ angular.module('conceptRequestServiceApp.message', [])
         COMMENT_ADDED: {
             value: 'COMMENT_ADDED',
             titleLangKey: 'crs.notification.message.commentAdded'
+        },
+        BULK_ACTION_COMPLETED: {
+            value: 'BULK_ACTION_COMPLETED',
+            titleLangKey: 'crs.notification.message.bulkActionCompleted'
         }
     });

@@ -1,24 +1,7 @@
 <div style="background-color:#434955;">
-<style>
-.dashboard-links .md{color:#848999}
-.statistics-requests .badge {
-
-    font-size: 11px;
-    padding: 2px 3px;
-    margin: 2px;
-    line-height: 13px;
-
-    border-radius: 4px;
-}
-
-
-.statistics-requests .badge.blue{background-color:#00a8e1;}
-.statistics-requests .badge.turquoise{background-color:#30a387;}
-.statistics-requests .badge.purple{background-color:#8c79b8;}
-</style>
     <ul ng-cloak style="padding: 0px; list-style: none;">
 
-        <li><a class="dashboard-links" ng-href="#/requests">
+        <li ng-if="dashboard.permissionChecked && !dashboard.isViewer"><a class="dashboard-links" ng-href="#/requests">
             <button type="button" class="btn grey darken-3 dashboard-links" title="{{'tooltips.dashboard.sidebar.myRequest' | translate}}">
                 <i class="md md-format-list-numbered"></i> {{'crs.dashboard.sidebar.myRequest' | translate}}
             </button>
@@ -67,67 +50,79 @@
         </li>-->
 
     </ul>
-    
-    <style>
-	
+    <div class="statistics-requests" ng-class="{'statistics-requests-requester': dashboard.isRequester}">
+        <div ng-if="dashboard.permissionChecked && dashboard.isAdmin" >
+            <div style="margin-bottom: 10px">
+               <div class="badge blue ">
+                    Submitted 
+                </div>
+                        
+                <div class="badge turquoise">
+                    My Requests
+                </div>
 
-	</style>
-    <div ng-if="dashboard.permissionChecked && dashboard.isAdmin" class="statistics-requests">
-        <div ng-repeat="number in dashboard.statisticsRequests" class="statistics-request"  ng-cloak >
-            <div class="labelSb">    
-                <span title="{{number.status | statisticsLabel | translate}}">
-                    {{number.status | statisticsStatus | translate}}
-                </span>
+                <div class="badge purple">
+                    My Assignment
+                </div>
             </div>
-             &nbsp;
-            <div class="numberSb" >
-                <a class="badge blue " ng-click="dashboard.filterStatus(number.status)">
-                    {{number.count}}
-                </a>
-                <div style="display: inline-flex;" ng-show="number.status !== 'ALL_REQUEST' && number.status !== 'ALL' && number.status !== 'Assigned' && number.status !== 'Unassigned' && number.status !='My_Assigned'">
-                    
+            <div ng-repeat="number in dashboard.statisticsRequests" class="statistics-request"  ng-cloak >
+                <div class="labelSb">    
+                    <span title="{{number.status | statisticsLabel | translate}}">
+                        {{number.status | statisticsStatus | translate}}
+                    </span>
+                </div>
+                 &nbsp;
+                <div class="numberSb" >
+                    <a class="badge blue " ng-click="dashboard.filterStatus(number.status)">
+                        {{number.count}}
+                    </a>
+                    <div style="display: inline-flex;" ng-show="number.status !== 'ALL_REQUEST' && number.status !== 'ALL' && number.status !== 'Assigned' && number.status !== 'Unassigned' && number.status !='My_Assigned'">
+                        
+                        <a class="badge turquoise" ng-click="dashboard.filterMyRequest(number.status)">
+                            {{number.countMyReq}}
+                        </a>
+                        
+                        
+                        <a class="badge purple" ng-click="dashboard.filterAssignedRequests(number.status)">
+                            {{number.countAssignedReq}}
+                        </a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-if="dashboard.permissionChecked && dashboard.isRequester" >
+            <div style="margin-bottom: 10px">
+               <div class="badge blue ">
+                    Submitted 
+                </div>
+                        
+                <div class="badge turquoise">
+                    My Requests
+                </div>
+
+                <div class="badge purple">
+                    My Assignment
+                </div>
+            </div>
+            <div ng-repeat="number in dashboard.statisticsRequests" class="statistics-request"  ng-cloak >
+                <div class="labelSb">    
+                    <span title="{{number.status | statisticsLabel | translate}}">
+                        {{number.status | statisticsStatus | translate}}
+                    </span>
+                </div>
+                   &nbsp;
+                <div class= "numberSb" ng-show="number.status !== 'SUBMITTED' && number.status !== 'Assigned' && number.status !== 'Unassigned'">
                     <a class="badge turquoise" ng-click="dashboard.filterMyRequest(number.status)">
                         {{number.countMyReq}}
                     </a>
-                    
-					
-                    <a class="badge purple" ng-click="dashboard.filterAssignedRequests(number.status)">
-                        {{number.countAssignedReq}}
+                </div>
+                <div class="numberSb" ng-show="number.status == 'SUBMITTED' || number.status == 'Assigned' || number.status == 'Unassigned'">
+                    <a class="badge purple" ng-click="dashboard.filterMyRequest(number.status)">
+                        {{number.count}}
                     </a>
-                    
                 </div>
             </div>
         </div>
     </div>
-    <div ng-if="dashboard.permissionChecked && dashboard.isRequester" class="statistics-requests">
-        <div ng-repeat="number in dashboard.statisticsRequests" class="statistics-request"  ng-cloak >
-            <div class="labelSb">    
-                <span title="{{number.status | statisticsLabel | translate}}">
-                    {{number.status | statisticsStatus | translate}}
-                </span>
-            </div>
-               &nbsp;
-            <div class= "numberSb" ng-show="number.status !== 'SUBMITTED' && number.status !== 'Assigned' && number.status !== 'Unassigned'">
-                <a class="badge turquoise" ng-click="dashboard.filterMyRequest(number.status)">
-                    {{number.countMyReq}}
-                </a>
-            </div>
-			<div class="numberSb" ng-show="number.status == 'SUBMITTED' || number.status == 'Assigned' || number.status == 'Unassigned'">
-                <a class="badge purple" ng-click="dashboard.filterMyRequest(number.status)">
-                    {{number.count}}
-                </a>
-            </div>
-        </div>
-    </div>
-    <div class="statistics-requests">
-       <div class="badge blue ">
-             Total 
-                </div>
-                
-                 <div class="badge turquoise">
-        Submitted By Me
-                </div>
-                 <div class="badge purple">
-          Submitted
-                </div>
-</div></div>
+</div>
