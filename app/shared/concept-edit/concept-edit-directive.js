@@ -2084,9 +2084,9 @@ angular
                                     }
                                 }
                             }
-                            response.sort(function(a, b) {
-                                return utilsService.compareStrings(a.fsn.term, b.fsn.term);
-                            });
+                            // response.sort(function(a, b) {
+                            //     return utilsService.compareStrings(a.fsn.term, b.fsn.term);
+                            // });
 
                             return response;
                         });
