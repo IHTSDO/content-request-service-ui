@@ -8,24 +8,18 @@
                 </div>
                  <div class="col-md-2 ">
                     <div class=" p-t-15">
-                        <!-- <button ng-click="vm.showFilter = !vm.showFilter" class="btn btn-round btn-default" title="{{'crs.request.list.tip.filter' | translate}}">
-                            <span class="md md-search"></span>
-                            <div class="ripple-wrapper"></div>
-                        </button> -->
-                        <button type="button" class="btn btn-round btn-info ng-scope " title="{{'crs.request.list.tip.count' | translate}}" >
-                            {{vm.tableParams.total()}} <div class="ripple-wrapper"></div>
-                        </button>
                         <button type="button" class="btn btn-round btn-default " title="{{'crs.request.list.tip.create' | translate}}" ng-click="dashboard.openCreateRequestModal()">
                             <span class="md md-add"></span>
                             <div class="ripple-wrapper"></div>
                         </button>
-                        <button type="button" class="btn btn-round btn-default " title="{{'crs.request.list.tip.remove' | translate}}" ng-click="vm.removeSelectedRequests()">
-                            <span class="md md-delete"></span>
-                            <div class="ripple-wrapper"></div>
-                        </button>
+                        
                         <button type="button" class="btn btn-round btn-default " title="{{'crs.request.list.tip.submitRequests' | translate}}" ng-click="vm.submitSelectedRequests()">
                             <span class="md md-send darken-2 iconbase"></span>
                             <div class="ripple-wrapper"></div>
+                        </button>
+
+                        <button type="button" class="btn btn-round btn-info ng-scope " title="{{'crs.request.list.tip.count' | translate}}" >
+                            {{vm.tableParams.total()}} <div class="ripple-wrapper"></div>
                         </button>
                     </div>
                 </div>
@@ -34,12 +28,14 @@
                         <span class="promoted-check-box">Show Closed Requests</span></button>
                 </div>
              
-                   <!-- <div class="col-md-6">
-                   <div class="table-search">
-                        <input type="text" ng-model="vm.tableParams.filter()['search']" class="form-control"
-                               placeholder="{{'crs.request.list.searchPlaceHolder.myRequests' | translate}}" autofocus/>
-                    </div> 
-                </div>-->
+                <div class="col-md-6">
+                    <div class="p-t-15 pull-right">
+                       <button type="button" class="btn delete-button btn-round btn-default" title="{{'crs.request.list.tip.remove' | translate}}" ng-click="vm.removeSelectedRequests()">
+                            <span class="md md-delete"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
+                    </div>
+                </div>
             </div>
             
            

@@ -813,8 +813,8 @@ angular
                 });
 
                 modalInstance.result.then(function() {
+                    vm.selectedRequests = { checked: false, items: {}, requests: {} };
                     vm.tableParams.reload();
-                    vm.selectedRequests.checked = { checked: false, items: {}, requests: {} };
                     vm.selectedMyAssignedRequests = { checked: false, items: {}, requests: {} };
                     assignedRequestTableParams.reload();
                     vm.selectedMyAssignedRequests = { checked: false, items: {}, requests: {} };

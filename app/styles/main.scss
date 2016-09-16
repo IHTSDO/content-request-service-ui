@@ -554,7 +554,10 @@ ul.batch-statistic.timeline {
 
 .promoted-check-box {
   color: #9B9B9B;
-  padding-top: 20px;
+  padding-top: 19px;
+  font-family: Roboto!important;
+  font-size: 13px;
+  font-weight: 400;
 }
 
 .multiSelect {
@@ -717,7 +720,7 @@ ul.batch-statistic.timeline {
 }
 @media (max-height: 667px) {
   .statistics-requests{
-    height: 260px;
+    height: 297px;
     width: 16%;
     position: fixed;
     overflow: auto;
@@ -728,7 +731,7 @@ ul.batch-statistic.timeline {
 }
 .statistics-requests .badge {
   font-size: 11px;
-  padding: 3px;
+  padding: 2px 3px;
   margin: 2px;
   line-height: 13px;
   border-radius: 4px;
@@ -737,7 +740,7 @@ ul.batch-statistic.timeline {
   background-color:#00a8e1;
 }
 .statistics-requests .badge.turquoise{
-  background-color:#37ba9a;
+  background-color:#30a387;
 }
 .statistics-requests .badge.purple{
   background-color:#8c79b8;
@@ -776,13 +779,21 @@ ul.batch-statistic.timeline {
 }
 .dashboard-sidebar button {
     width: 100%;
-    padding: 8px 15px!important;
+    padding: 5px 15px!important;
     font-size: 13.5px;
     text-transform: none;
     color: #fff;
     text-align: left;
 }
 
+.form .form-control-element.required label {
+  color: #474747;
+  font-weight: 700;
+}
+
+.form .form-control-element label {
+  font-weight: 700;
+}
 
 input[type=checkbox].select-all-rqs {
   position: relative;
@@ -811,5 +822,5 @@ input[type=checkbox].select-all-rqs {
 }
 
 .statistics-requests-requester {
-  height: 334px !important;
+  height: 363px !important;
 }

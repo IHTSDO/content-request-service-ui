@@ -21,14 +21,34 @@
         "notification": {
             "title": "Notifications",
             "message": {
-                "noNotification": "There is no notification at the moment",
-                "batchImportStatusChange": "Batch file status has been changed",
-                "requestStatusChange": "Request status has been changed",
-                "batchImportSuccess": "Batch requests have been imported successfully",
-                "commentAdded": "Comment has been added"
+                "noNotification": "You have no notifications at the moment",
+                "batchImportStatusChange": "The batch file status has been changed",
+                "requestStatusChange": "The Request status has been changed",
+                "batchImportSuccess": "The Batch requests have been imported successfully",
+                "commentAdded": "The Comment has been added",
+                "bulkActionCompleted": "The Bulk Action has been completed"
             },
             "button": {
                 "clear": "Clear"
+            },
+            "bulkAction": {
+                "UNASSIGN_AUTHOR": "Unassigned Requests",
+                "ADD_NOTE": "Added Notes",
+                "SUBMIT": "Submitted Requests",
+                "ACCEPT": "Accepted Requests",
+                "ASSIGN_AUTHOR": "Assigned Requests(Author)",
+                "ASSIGN_MANAGER": "Assigned Requests(Manager)",
+                "ACCEPT_ASSIGN_AUTHOR": "Accepted And Assigned Requests",
+                "failedRequests": "Failed",
+                "modalTitle": {
+                    "UNASSIGN_AUTHOR": "Unassign Requests",
+                    "ADD_NOTE": "Add Note",
+                    "SUBMIT": "Submit Requests",
+                    "ACCEPT": "Accept Requests",
+                    "ASSIGN_AUTHOR": "Assign Requests To Author",
+                    "ASSIGN_MANAGER": "Assign Requests To Manager",
+                    "ACCEPT_ASSIGN_AUTHOR": "Accept And Assign Requests"
+                }
             }
         },
         "dashboard": {
@@ -84,12 +104,13 @@
                     "create": "Create New Request",
                     "remove": "Remove Selected Requests",
                     "requestorInternalId": "Click to open request editing view",
-                    "assign": "Assign requests to Authoring",
+                    "assign": "Assign requests to Authoring team",
                     "assignToStaff": "Assign requests to Manager",
                     "batchId": "Click to open batch details view",
                     "conceptFSN": "Click to open request editing view",
                     "filter": "Filter requests",
-                    "submitRequests": "Submit Selected Requests"
+                    "submitRequests": "Submit Selected Requests",
+                    "unassignRequests": "Unassign Requests"
                 },
                 "searchPlaceHolder": {
                     "myRequests": "Search My Requests",
@@ -98,7 +119,7 @@
                 },
                 "tableHeader": {
                     "batchId": "Batch ID",
-                    "requestorInternalId": "Local Code",
+                    "requestorInternalId": "Local Code - International Id",
                     "ticketId": "Jira ID",
                     "requestId": "Request ID",
                     "description": "Description",
@@ -151,7 +172,7 @@
                     "relationship": "Relationship",
                     "inferredRel": "Show Inferred Relationship",
                     "statedRel": "Show Stated Relationship",
-                    "historyAttributeValue": "History Attribute Value",
+                    "historyAttributeValue": "Historical Attribute Value",
                     "notes": "Notes",
                     "relationshipType": "Relationship Type",
                     "characteristicType": "Characteristic Type",
@@ -206,7 +227,8 @@
                         "assign": "Assign Request",
                         "assignToStaff": "Assign To Manager",
                         "moveToInInceptionElaboration": "Move to In Inception/Elaboration",
-                        "addNote": "Add Note"
+                        "addNote": "Add Note",
+                        "unassign": "Unassign Request"
                     },
                     "label": {
                         "batchId": "Batch ID",
@@ -216,7 +238,8 @@
                         "createdDate": "Created Date",
                         "originator": "Created By",
                         "manager": "Manager",
-                        "requestUrl": "Request Url"
+                        "requestUrl": "Request Url",
+                        "authoringTicket":"Authoring Ticket"
                     }
                 }
             },
@@ -260,7 +283,7 @@
                 },
                 "comment": {
                     "label": "Reason",
-                    "inInceptionElaboration": "Request Url"
+                    "inInceptionElaboration": "Content Request Project Url"
                 },
                 "button": {
                     "confirm": "Confirm",
@@ -288,14 +311,15 @@
                 "requestWithdrawn": "Request has been withdrawn successfully",
                 "requestClarification": "Request has been pended to clarification successfully",
                 "requestRemoved": "Requests have been removed successfully",
+                "requestUnassigned": "Request has been unassigned successfully",
+                "requestUnassigning": "Unassigning request...",
 
                 "error": {
                     "requestTypeRequired": "Please select request type",
                     "invalidPage": "The page you request is not available",
                     "invalidInput": "Please correct request data before saving or generating concept",
                     "fieldRequired": "required",
-                    "fieldInvalid": "invalid",
-                    "conceptError": "Please drag and drop selected concept from terminology tree/search panel to this field or type concept ID in this field and select the concept from drop down list."
+                    "fieldInvalid": "invalid"
                 }
 
             },
@@ -352,7 +376,7 @@
                     "error": "Error",
                     "status": "Status",
                     "totalFailed": "Failed Requests",
-                    "message": "message"
+                    "message": "Message"
                 },
                 "action": {
                     "submit": "Submit Requests",
@@ -360,7 +384,8 @@
                     "acceptAndAssign": "Accept And Assign Requests To Author",
                     "assignToStaff": "Assign Requests To Manager",
                     "accept": "Accept Requests",
-                    "unassignAuthor": "Unassign Project"
+                    "unassignAuthor": "Unassign Project",
+                    "addNote": "Add Note"
                 },
                 "button": {
                     "close": "Close",
@@ -399,11 +424,20 @@
                 },
                 "statistic": {
                     "label": {
-                        "submitted": "Submitted Requests",
-                        "accepted": "Accepted Requests",
-                        "rejected": "Rejected Requests",
+                        "submitted": "Submitted",
+                        "accepted": "Accepted",
+                        "rejected": "Rejected",
                         "underAuthoring": "Under Authoring",
-                        "approved": "Approved Requests"
+                        "approved": "Approved",
+                        "draft": "Draft",
+                        "new": "New",
+                        "appeal": "In Appeal",
+                        "appealReject": "Appeal Rejected",
+                        "forwarded": "Forwarded",
+                        "withdrawn": "Withdrawn",
+                        "clarificationNeeded": "Clarification Needed",
+                        "inInception": "In Inception",
+                        "complete": "Completed"
                     }
                 }
             },
@@ -452,7 +486,7 @@
                     }
                 },
                 "upload": {
-                    "hint": "Select or Drop Batch File Here",
+                    "hint": "Select or Drag Batch File Here",
                     "uploading": "Uploading"
                 },
                 "button": {
