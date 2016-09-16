@@ -22,6 +22,8 @@ angular
         function ($filter, $sce, crsJiraService, NgTableParams, requestService, notificationService, accountService, jiraService, $routeParams, $uibModal, utilsService, $scope, scaService, BULK_ACTION_STATUS, BULK_ACTION) {
             var vm = this;
             var maxSize;
+            var translateFilter = $filter('translate');
+            var translateRequestTypeFilter = $filter('requestType');
 
             vm.filterRequests = {
                 batchRequest: {
@@ -190,9 +192,9 @@ angular
             };
 
             var initView = function () {
-                vm.selectedRequests = {checked: false, items: {}};
-                vm.selectedSubmittedRequests = {checked: false, items: {}};
-                vm.selectedMyAssignedRequests = {checked: false, items: {}};
+                vm.selectedRequests = {checked: false, items: {}, requests: {}};
+                vm.selectedSubmittedRequests = {checked: false, items: {}, requests: {}};
+                vm.selectedMyAssignedRequests = {checked: false, items: {}, requests: {}};
 				
 				vm.requestStatus = vm.requestStatus.sort(function(a, b) {
 					return utilsService.compareStrings(a.title, b.title);
@@ -403,6 +405,7 @@ angular
                     angular.forEach(vm.requests.items, function(item) {
                         if (angular.isDefined(item.id)) {
                             vm.selectedRequests.items[item.id] = newVal;
+                            vm.selectedRequests.requests[item.id] = item;
                         }
                     }); 
                 }
@@ -416,19 +419,7 @@ angular
                     angular.forEach(vm.requests.items, function(item) {
                         if (angular.isDefined(item.id)) {
                             vm.selectedSubmittedRequests.items[item.id] = newVal;
-                        }
-                    }); 
-                }
-            });
-
-            //watch for check all checkbox my submitted requests list
-            $scope.$watch(function() {
-                return vm.selectedMyAssignedRequests.checked;
-            }, function(newVal) {
-                if(vm.requests){
-                    angular.forEach(vm.requests.items, function(item) {
-                        if (angular.isDefined(item.id)) {
-                            vm.selectedMyAssignedRequests.items[item.id] = newVal;
+                            vm.selectedSubmittedRequests.requests[item.id] = item;
                         }
                     }); 
                 }
@@ -442,6 +433,7 @@ angular
                     angular.forEach(vm.requests.items, function(item) {
                         if (angular.isDefined(item.id)) {
                             vm.selectedMyAssignedRequests.items[item.id] = newVal;
+                            vm.selectedMyAssignedRequests.requests[item.id] = item;
                         }
                     }); 
                 }
@@ -463,22 +455,12 @@ angular
                         if(selectedRequestIds.length > maxSize){
                             notificationService.sendMessage('Cannot assign requests! The list cannot be longer than ' + maxSize + ' requests.', 5000);
                         }else if (selectedRequestIds.length > 0) {
-                            if (selectedRequestIds.length === 1 &&
-                                selectedRequests.requests) {
-                                defaultSummary = selectedRequests.requests[selectedRequestIds[0]].additionalFields.topic;
-                            }
+                            var defaultSummaryRequestType = translateFilter(translateRequestTypeFilter(selectedRequests.requests[selectedRequestIds[0]].requestType));
+                            defaultSummary = '[' + defaultSummaryRequestType + '] ' + selectedRequests.requests[selectedRequestIds[0]].additionalFields.summary;
                             openAssignRequestModal(selectedRequestIds, defaultSummary);
                         }else {
                             notificationService.sendMessage('Please select at least a request to assign.', 5000);
                         }
-
-                        // if (selectedRequestIds.length > 0) {
-                        //     if (selectedRequestIds.length === 1 &&
-                        //         selectedRequests.requests) {
-                        //         defaultSummary = selectedRequests.requests[selectedRequestIds[0]].additionalFields.topic;
-                        //     }
-                        //     openAssignRequestModal(selectedRequestIds, defaultSummary);
-                        // }
                     }
                 }
             };
@@ -525,7 +507,8 @@ angular
                 if (vm.authors.length > 0 && vm.projects.length > 0) {
                     var selectedRequests = vm.selectedMyAssignedRequests,
                         selectedRequestIds = [],
-                        action = bulkAction.assignToAuthor;
+                        action = bulkAction.assignToAuthor,
+                        defaultSummary;
                     if (selectedRequests && selectedRequests.items) {
                         angular.forEach(selectedRequests.items, function(isSelected, requestId) {
                             if (isSelected) {
@@ -534,6 +517,8 @@ angular
                         });
 
                         if (selectedRequestIds.length > 0) {
+                            var defaultSummaryRequestType = translateFilter(translateRequestTypeFilter(selectedRequests.requests[selectedRequestIds[0]].requestType));
+                            defaultSummary = '[' + defaultSummaryRequestType + '] ' + selectedRequests.requests[selectedRequestIds[0]].additionalFields.summary;
                             var modalInstance = $uibModal.open({
                                 templateUrl: 'components/request/modal-assign-request.html',
                                 controller: 'ModalAssignRequestCtrl as modal',
@@ -545,7 +530,7 @@ angular
                                         return vm.projects;
                                     },
                                     defaultSummary: function(){
-                                        return '';
+                                        return defaultSummary;
                                     }
                                 }
                             });
@@ -670,7 +655,7 @@ angular
             };
 
             var addNote = function(){
-                var selectedRequests = vm.selectedSubmittedRequests,
+                var selectedRequests = vm.selectedMyAssignedRequests,
                     selectedRequestIds = [];
                 var action = bulkAction.addNote;
                 if (selectedRequests &&
@@ -813,14 +798,21 @@ angular
                 });
 
                 modalInstance.result.then(function() {
-                    vm.selectedRequests = { checked: false, items: {}, requests: {} };
-                    vm.tableParams.reload();
-                    vm.selectedMyAssignedRequests = { checked: false, items: {}, requests: {} };
-                    assignedRequestTableParams.reload();
-                    vm.selectedMyAssignedRequests = { checked: false, items: {}, requests: {} };
-                    assignedRequestTableParams.reload();
-                    vm.selectedSubmittedRequests = { checked: false, items: {}, requests: {} };
-                    vm.submittedTableParams.reload();
+                    switch($routeParams.list){
+                        case 'my-requests':
+                              vm.selectedRequests = { checked: false, items: {}, requests: {} };
+                              vm.tableParams.reload();
+                              break;
+                        case 'submitted-requests':
+                              vm.selectedSubmittedRequests = { checked: false, items: {}, requests: {} };
+                              vm.submittedTableParams.reload();
+                              break;
+                        case 'my-assigned-requests':
+                              vm.selectedMyAssignedRequests = { checked: false, items: {}, requests: {} };
+                              vm.assignedRequestTableParams.reload();
+                              break;
+                    }
+                    
                 });
             };
 
@@ -991,7 +983,6 @@ angular
 
                         //set filter values
                         requestService.setAssignedFilterValues(filterValues);
-                        console.log(myAssignedRequests);
                         return requestService.getRequests(myAssignedRequests).then(function (requests) {
                             isDateRangeFilteredFirstTime = true;
                             notificationService.sendMessage('crs.request.message.listLoaded', 5000);
