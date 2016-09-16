@@ -17,7 +17,8 @@ angular
         'snowowlMetadataService',
         'CONCEPT_EDIT_EVENT',
         'REQUEST_TYPE',
-        function ($rootScope, $timeout, $uibModal, $q, snowowlService, objectService, requestService, notificationService, $routeParams, snowowlMetadataService, CONCEPT_EDIT_EVENT, REQUEST_TYPE) {
+        'utilsService',
+        function ($rootScope, $timeout, $uibModal, $q, snowowlService, objectService, requestService, notificationService, $routeParams, snowowlMetadataService, CONCEPT_EDIT_EVENT, REQUEST_TYPE, utilsService) {
             return {
                 restrict: 'A',
                 transclude: false,
@@ -2024,6 +2025,9 @@ angular
                         idList = idList.substring(0, idList.length - 1);
 
                         snowowlService.getDomainAttributes(null, null, idList).then(function (response) {
+                            response.items.sort(function(a, b) {
+                                return utilsService.compareStrings(a.fsn.term, b.fsn.term);
+                            });
                             scope.allowedAttributes = response.items;
                         });
                     };
@@ -2067,7 +2071,6 @@ angular
                         return response;
                     };
                     scope.getConceptsForValueTypeahead = function (attributeId, searchStr) {
-                        console.log(attributeId, searchStr);
                         return snowowlService.getDomainAttributeValues(null, null, attributeId, searchStr).then(function (response) {
                             // remove duplicates
                             if (response && response.length > 0) {
@@ -2081,6 +2084,9 @@ angular
                                     }
                                 }
                             }
+                            response.sort(function(a, b) {
+                                return utilsService.compareStrings(a.fsn.term, b.fsn.term);
+                            });
 
                             return response;
                         });
