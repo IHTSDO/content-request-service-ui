@@ -21,6 +21,8 @@ angular
         function($filter, $sce, $uibModal, NgTableParams, requestService, notificationService, accountService, scaService, crsJiraService, jiraService, utilsService, $scope, BULK_ACTION_STATUS, BULK_ACTION) {
             var vm = this;
             var maxSize;
+            var translateFilter = $filter('translate');
+            var translateRequestTypeFilter = $filter('requestType');
 
             vm.filterRequests = {
                 batchRequest: {
@@ -402,7 +404,8 @@ angular
                 if (vm.authors.length > 0 && vm.projects.length > 0) {
                     var selectedRequests = vm.selectedRequests,
                         selectedRequestIds = [],
-                        action = bulkAction.assignAuthor;
+                        action = bulkAction.assignAuthor,
+                        defaultSummary;
                     if (selectedRequests && selectedRequests.items) {
                         angular.forEach(selectedRequests.items, function(isSelected, requestId) {
                             if (isSelected) {
@@ -411,6 +414,8 @@ angular
                         });
 
                         if (selectedRequestIds.length > 0) {
+                            var defaultSummaryRequestType = translateFilter(translateRequestTypeFilter(selectedRequests.requests[selectedRequestIds[0]].requestType));
+                            defaultSummary = '[' + defaultSummaryRequestType + '] ' + selectedRequests.requests[selectedRequestIds[0]].additionalFields.summary;
                             var modalInstance = $uibModal.open({
                                 templateUrl: 'components/request/modal-assign-request.html',
                                 controller: 'ModalAssignRequestCtrl as modal',
@@ -422,7 +427,7 @@ angular
                                         return vm.projects;
                                     },
                                     defaultSummary: function(){
-                                        return '';
+                                        return defaultSummary;
                                     }
                                 }
                             });

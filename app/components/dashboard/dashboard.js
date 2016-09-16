@@ -43,6 +43,21 @@ angular
 
             var initView = function () {
                 var list = $routeParams.list;
+                // check admin role
+                accountService.checkUserPermission().then(function (rs) {
+                    vm.permissionChecked = true;
+                    vm.isAdmin = (rs.isAdmin === true);
+                    vm.isViewer = (rs.isViewer === true);
+                    vm.isStaff = (rs.isStaff === true);
+                    vm.isRequester = (rs.isRequester === true);
+                    if(vm.isViewer){
+                        $rootScope.pageTitles = [
+                            {url: '#/submitted-requests', label: 'crs.request.list.title.submittedRequests'}
+                        ];
+                        vm.listView = 'components/request/submitted-request-list.html';
+                    }
+                });
+                
                 switch (list) {
                     case 'batches':
                         $rootScope.pageTitles = [
@@ -77,6 +92,13 @@ angular
                     case 'requests':
                     /* falls through */
                     default:
+                        // if(vm.isViewer){
+                        //     $rootScope.pageTitles = [
+                        //         {url: '#/submitted-requests', label: 'crs.request.list.title.submittedRequests'}
+                        //     ];
+                        //     vm.listView = 'components/request/submitted-request-list.html';
+                        //     break;
+                        // }
                         $rootScope.pageTitles = [
                             {url: '#/requests', label: 'crs.request.list.title.requests'}
                         ];
@@ -85,15 +107,6 @@ angular
                 }
 
                 getStatisticsRequests();
-
-                // check admin role
-                accountService.checkUserPermission().then(function (rs) {
-                    vm.permissionChecked = true;
-                    vm.isAdmin = (rs.isAdmin === true);
-                    vm.isViewer = (rs.isViewer === true);
-                    vm.isStaff = (rs.isStaff === true);
-                    vm.isRequester = (rs.isRequester === true);
-                });
             };
 
             var createRequest = function (rs) {

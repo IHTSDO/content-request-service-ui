@@ -85,7 +85,7 @@
                     "remove": "Remove Selected Requests",
                     "requestorInternalId": "Click to open request editing view",
                     "assign": "Assign requests to Authoring",
-                    "assignToStaff": "Assign requests to Staff",
+                    "assignToStaff": "Assign requests to Manager",
                     "batchId": "Click to open batch details view",
                     "conceptFSN": "Click to open request editing view",
                     "filter": "Filter requests",
@@ -204,7 +204,7 @@
                         "pendingForClarification": "Pending Clarification",
                         "acceptAndAssign": "Accept and Assign To Author",
                         "assign": "Assign Request",
-                        "assignToStaff": "Assign To Staff",
+                        "assignToStaff": "Assign To Manager",
                         "moveToInInceptionElaboration": "Move to In Inception/Elaboration",
                         "addNote": "Add Note"
                     },
@@ -235,7 +235,7 @@
             },
             "assignModal": {
                 "title": "Assign Requests to Authoring Task",
-                "assignToStaffTitle": "Assign Requests to Staff",
+                "assignToStaffTitle": "Assign Requests to Manager",
                 "project": {
                     "label": "Project"
                 },
@@ -358,7 +358,7 @@
                     "submit": "Submit Requests",
                     "assignAuthor": "Assign Requests To Author",
                     "acceptAndAssign": "Accept And Assign Requests To Author",
-                    "assignToStaff": "Assign Requests To Staff",
+                    "assignToStaff": "Assign Requests To Manager",
                     "accept": "Accept Requests",
                     "unassignAuthor": "Unassign Project"
                 },

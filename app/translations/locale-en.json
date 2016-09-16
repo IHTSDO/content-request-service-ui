@@ -37,7 +37,7 @@
                 "SUBMIT": "Submitted Requests",
                 "ACCEPT": "Accepted Requests",
                 "ASSIGN_AUTHOR": "Assigned Requests(Author)",
-                "ASSIGN_MANAGER": "Assigned Requests(Staff)",
+                "ASSIGN_MANAGER": "Assigned Requests(Manager)",
                 "ACCEPT_ASSIGN_AUTHOR": "Accepted And Assigned Requests",
                 "failedRequests": "Failed",
                 "modalTitle": {
@@ -46,7 +46,7 @@
                     "SUBMIT": "Submit Requests",
                     "ACCEPT": "Accept Requests",
                     "ASSIGN_AUTHOR": "Assign Requests To Author",
-                    "ASSIGN_MANAGER": "Assign Requests To Staff",
+                    "ASSIGN_MANAGER": "Assign Requests To Manager",
                     "ACCEPT_ASSIGN_AUTHOR": "Accept And Assign Requests"
                 }
             }
@@ -105,7 +105,7 @@
                     "remove": "Remove Selected Requests",
                     "requestorInternalId": "Click to open request editing view",
                     "assign": "Assign requests to Authoring",
-                    "assignToStaff": "Assign requests to Staff",
+                    "assignToStaff": "Assign requests to Manager",
                     "batchId": "Click to open batch details view",
                     "conceptFSN": "Click to open request editing view",
                     "filter": "Filter requests",
@@ -225,7 +225,7 @@
                         "pendingForClarification": "Pending Clarification",
                         "acceptAndAssign": "Accept and Assign To Author",
                         "assign": "Assign Request",
-                        "assignToStaff": "Assign To Staff",
+                        "assignToStaff": "Assign To Manager",
                         "moveToInInceptionElaboration": "Move to In Inception/Elaboration",
                         "addNote": "Add Note",
                         "unassign": "Unassign Request"
@@ -258,7 +258,7 @@
             },
             "assignModal": {
                 "title": "Assign Requests to Authoring Task",
-                "assignToStaffTitle": "Assign Requests to Staff",
+                "assignToStaffTitle": "Assign Requests to Manager",
                 "project": {
                     "label": "Project"
                 },
@@ -382,7 +382,7 @@
                     "submit": "Submit Requests",
                     "assignAuthor": "Assign Requests To Author",
                     "acceptAndAssign": "Accept And Assign Requests To Author",
-                    "assignToStaff": "Assign Requests To Staff",
+                    "assignToStaff": "Assign Requests To Manager",
                     "accept": "Accept Requests",
                     "unassignAuthor": "Unassign Project",
                     "addNote": "Add Note"
@@ -424,11 +424,20 @@
                 },
                 "statistic": {
                     "label": {
-                        "submitted": "Submitted Requests",
-                        "accepted": "Accepted Requests",
-                        "rejected": "Rejected Requests",
+                        "submitted": "Submitted",
+                        "accepted": "Accepted",
+                        "rejected": "Rejected",
                         "underAuthoring": "Under Authoring",
-                        "approved": "Approved Requests"
+                        "approved": "Approved",
+                        "draft": "Draft",
+                        "new": "New",
+                        "appeal": "In Appeal",
+                        "appealReject": "Appeal Rejected",
+                        "forwarded": "Forwarded",
+                        "withdrawn": "Withdrawn",
+                        "clarificationNeeded": "Clarification Needed",
+                        "inInception": "In Inception",
+                        "complete": "Completed"
                     }
                 }
             },
