@@ -10,7 +10,7 @@
                 </div>
             </li>
             <li>
-                <ul class="breadcrumb" style="line-height: 2em;">
+                <ul class="breadcrumb" >
                     <li><a ng-href="#/">{{'crs.dashboard.title' | translate}}</a></li>
                     <li ng-repeat = "titleSection in pageTitles">
                         <a ng-if="titleSection.url && !$last" ng-href="{{titleSection.url}}" translate="{{titleSection.label}}"></a>

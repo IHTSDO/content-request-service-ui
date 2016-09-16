@@ -43,6 +43,22 @@ angular
 
             var initView = function () {
                 var list = $routeParams.list;
+                // check admin role
+                accountService.checkUserPermission().then(function (rs) {
+                    vm.permissionChecked = true;
+                    vm.isAdmin = (rs.isAdmin === true);
+                    vm.isViewer = (rs.isViewer === true);
+                    vm.isStaff = (rs.isStaff === true);
+                    vm.isRequester = (rs.isRequester === true);
+                    if(vm.isViewer){
+                        $rootScope.pageTitles = [
+                            {url: '#/submitted-requests', label: 'crs.request.list.title.submittedRequests'}
+                        ];
+                        vm.listView = 'components/request/submitted-request-list.html';
+                    }
+                    getStatisticsRequests();
+                });
+                
                 switch (list) {
                     case 'batches':
                         $rootScope.pageTitles = [
@@ -77,23 +93,19 @@ angular
                     case 'requests':
                     /* falls through */
                     default:
+                        // if(vm.isViewer){
+                        //     $rootScope.pageTitles = [
+                        //         {url: '#/submitted-requests', label: 'crs.request.list.title.submittedRequests'}
+                        //     ];
+                        //     vm.listView = 'components/request/submitted-request-list.html';
+                        //     break;
+                        // }
                         $rootScope.pageTitles = [
                             {url: '#/requests', label: 'crs.request.list.title.requests'}
                         ];
                         vm.listView = 'components/request/request-list.html';
                         break;
                 }
-
-                getStatisticsRequests();
-
-                // check admin role
-                accountService.checkUserPermission().then(function (rs) {
-                    vm.permissionChecked = true;
-                    vm.isAdmin = (rs.isAdmin === true);
-                    vm.isViewer = (rs.isViewer === true);
-                    vm.isStaff = (rs.isStaff === true);
-                    vm.isRequester = (rs.isRequester === true);
-                });
             };
 
             var createRequest = function (rs) {
@@ -148,15 +160,17 @@ angular
             var getStatisticsRequests = function(){
                 return requestService.getStatisticsRequests().then(function(data){
                     vm.statisticsRequests = data;
-                    // for(var i in data){
-                    //     if(data[i].status === 'Assigned'){
-                    //         var obj = {};
-                    //         obj.status = 'Unassigned';
-                    //         obj.count = data[i].countAssignedReq;
-                    //         vm.statisticsRequests.splice(3, 0, obj);
-                    //         break;
-                    //     }
-                    // }
+                    if(vm.isRequester){
+                        for(var i in data){
+                            if(data[i].status === 'Assigned'){
+                                vm.statisticsRequests.splice(i, 1);
+                            }
+                            if(data[i].status === 'Unassigned'){
+                                vm.statisticsRequests.splice(i, 1);
+                            }
+                        }
+                    }
+                    
                 });
             };
 
@@ -208,7 +222,7 @@ angular
 						manager = "{unassigned}";
 					}
 					accountService.getAccountInfo().then(function (accountDetails) {
-						$location.path('dashboard/submitted-requests').search({manager:manager, ogirinatorId: accountDetails.login, cache: false});                   
+						$location.path('dashboard/requests').search({manager:manager, ogirinatorId: accountDetails.login, cache: false});                   
 					});
                     return;
                 }

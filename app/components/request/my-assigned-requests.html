@@ -3,20 +3,14 @@
     <section ng-cloak ng-if="vm.assignedRequestTableParams && !vm.isViewer" class="tables-data">
         <div class="card">
             <div class="row">
-                <div class="col-md-4 no-padding">
+                <div class="col-md-3 no-padding">
                     <h3 class="table-title p-20" translate="crs.request.list.title.myAssignedRequests"></h3>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <!-- <div class="table-search">
                         <input type="text" ng-model="vm.assignedRequestTableParams.filter()['search']" class="form-control"
                                placeholder="{{'crs.request.list.searchPlaceHolder.myRequests' | translate}}" autofocus/>
                     </div> -->
-                </div>
-                <div class="col-md-2 promoted-check-box">
-                    <button class="btn btn-default" ng-class="[{'md-check-box' : vm.showClosedRequests}, {'md-check-box-outline-blank' : !vm.showClosedRequests}]" ng-click="vm.toggleShowClosedRequests('my-assigned-requests')" style="background: transparent">
-                        <span class="promoted-check-box">Show Closed Requests</span></button>
-                </div>
-                <div class="col-md-3">
                     <div class="pull-right p-t-20">
                         <!-- <button ng-click="vm.showFilter = !vm.showFilter" class="btn btn-round btn-default" title="{{'crs.request.list.tip.filter' | translate}}">
                             <span class="md md-search"></span>
@@ -29,7 +23,23 @@
                             <span class="md md-add"></span>
                             <div class="ripple-wrapper"></div>
                         </button>
+                        <button class="btn btn-round btn-default"  ng-click="vm.assignSelectedRequests()" title="{{'tooltips.request.details.info.button.assign' | translate}}">
+                            <span class="md md-content-paste"></span>
+                            <span class="button-link"></span>
+                        </button>
+                        <button class="btn btn-round btn-default"  ng-click="vm.acceptAndAssignSelectedRequests()" title="{{'tooltips.request.details.info.button.acceptAndAssign' | translate}}">
+                            <span class="md md-assignment-turned-in"></span>
+                            <span class="button-link"></span>
+                        </button>
+                        <button ng-if="dashboard.permissionChecked && dashboard.isAdmin" ng-disabled="vm.loadingProjects || vm.loadingAuthors" type="button" class="btn btn-round btn-default"  ng-click="vm.addNote()" title="{{'tooltips.request.details.info.button.addNote' | translate}}">
+                            <span class="md md-event-note"></span>
+                            <span class="button-link"></span>
+                        </button>
                     </div>
+                </div>
+                <div class="col-md-2 promoted-check-box">
+                    <button class="btn btn-default" ng-class="[{'md-check-box' : vm.showClosedRequests}, {'md-check-box-outline-blank' : !vm.showClosedRequests}]" ng-click="vm.toggleShowClosedRequests('my-assigned-requests')" style="background: transparent">
+                        <span class="promoted-check-box">Show Closed Requests</span></button>
                 </div>
             </div>
             
@@ -38,10 +48,10 @@
                 <table ng-table="vm.assignedRequestTableParams" template-pagination="layout/template/review-table-pager.html"
                        class="table table-full table-full-small table-requests" show-filter="">
                     <tr ng-repeat="request in $data" ng-click="dashboard.previewRequest(request.id)" class="clickable-row" ng-class="{'row-selected': vm.selectedRequests.items[request.id] === true}">
-                        <!-- <td class="col-checkbox" header="'ng-table/headers/checkbox.html'" ng-click="$event.stopPropagation()">
-                            <input type="checkbox" class="small-checkbox" ng-model="vm.selectedRequests.items[request.id]">
+                        <td class="col-checkbox" header="'ng-table/headers/checkbox.html'" ng-click="$event.stopPropagation()">
+                            <input type="checkbox" class="small-checkbox" ng-model="vm.selectedMyAssignedRequests.items[request.id]">
                         </td>
- -->
+
                         <td data-title="'crs.request.list.tableHeader.batchId' | translate" sortable="'batchRequest'" filter="vm.filterRequests.batchRequest">
                             <!--<a class="tooltips-right" ng-href="#/batches/view/{{request.batchRequest}}">{{request.batchRequest}} <span translate="crs.request.list.tip.batchId"></span></a>-->
                             {{request.batchRequest}}
@@ -86,6 +96,7 @@
     </section>
 </div>
 <script type="text/ng-template" id="ng-table/headers/checkbox.html">
+    <input type="checkbox" ng-model="vm.selectedMyAssignedRequests.checked" class="select-all-rqs" />
 </script>
 <script type="text/ng-template" id="ng-table/datetime-picker-startdate.html">
     <div class="input-group select-filter">

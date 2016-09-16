@@ -51,7 +51,7 @@
         <div ng-if="!concept.definitionOfChanges.changed" class="more-button-width" ng-class="{static: isStatic}">
         </div>
         <button ng-if="concept.definitionOfChanges.changed" ng-click="showDefinitionOfChange(concept)" type="button"
-                    class="btn btn-default morebuttons darken-4 md more-button-width fa fa-pencil tooltips-right tooltips-light normal-case"
+                    class="btn btn-default morebuttons md more-button-width fa fa-pencil tooltips-right normal-case"
                     ng-class="{red:(concept.definitionOfChanges.changeType === 'CHANGE_RETIRE_CONCEPT'), green:(concept.definitionOfChanges.changeType === 'NEW_CONCEPT'), static: isStatic}"
                     ><span>Change details</span></button>
 
