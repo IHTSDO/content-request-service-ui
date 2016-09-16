@@ -187,7 +187,8 @@ angular
                 assignToStaff: 'ASSIGN_MANAGER',
                 assignToAuthor: 'ACCEPT_ASSIGN_AUTHOR',
                 assignAuthor: 'ASSIGN_AUTHOR',
-                unassignAuthor: 'UNASSIGN_AUTHOR'
+                unassignAuthor: 'UNASSIGN_AUTHOR',
+                addNote: 'ADD_NOTE'
             };
 
             var initView = function() {
@@ -479,6 +480,44 @@ angular
                 }
             };
 
+            var addNote = function(){
+                var selectedRequests = vm.selectedRequests,
+                    selectedRequestIds = [];
+                var action = bulkAction.addNote;
+                if (selectedRequests &&
+                    selectedRequests.items) {
+                    angular.forEach(selectedRequests.items, function (isSelected, requestId) {
+                        if (isSelected) {
+                            selectedRequestIds.push(requestId);
+                        }
+                    });
+                    if(selectedRequestIds.length > maxSize){
+                        notificationService.sendMessage('Action denied! The list cannot be longer than ' + maxSize + ' requests.', 5000);
+                    }else if (selectedRequestIds.length > 0) {
+                        var modalInstance = $uibModal.open({
+                            templateUrl: 'components/request/add-note-modal.html',
+                            controller: 'AddNoteModalCtrl as modal'
+                        });
+                        modalInstance.result.then(function(rs) {
+                            var data = {
+                                data: {
+                                    message: rs.message,
+                                    isInternal: rs.isInternal
+                                },
+                                requestIds: selectedRequestIds
+                            };
+                            requestService.bulkAction(data, action).then(function(response) {
+                                if(response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value){
+                                    bulkActionRespondingModal(response.id, BULK_ACTION.ADD_NOTE.langKey);
+                                }
+                            });
+                        });
+                    }else {
+                        notificationService.sendMessage('Please select at least a request.', 5000);
+                    }
+                }
+            };
+
             var unassignSelectedRequests = function(){
                 var selectedRequests = vm.selectedRequests,
                     selectedRequestIds = [],
@@ -518,6 +557,7 @@ angular
                     angular.forEach(vm.requests.items, function(item) {
                         if (angular.isDefined(item.id)) {
                             vm.selectedRequests.items[item.id] = newVal;
+                            vm.selectedRequests.requests[item.id] = item;
                         }
                     }); 
                 }
@@ -668,6 +708,7 @@ angular
             vm.getAuthorName = getAuthorName;
             vm.getStaffName = getStaffName;
             vm.toggleShowUnassignedRequests = toggleShowUnassignedRequests;
+            vm.addNote = addNote;
             vm.isAdmin = false;
             vm.isViewer = false;
             vm.loadingProjects = true;

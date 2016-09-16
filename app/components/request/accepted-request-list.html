@@ -32,6 +32,10 @@
                             <span class="md md-assignment-late"></span>
                             <div class="ripple-wrapper"></div>
                         </button>
+                        <button ng-if="dashboard.permissionChecked && dashboard.isAdmin" ng-disabled="vm.loadingProjects || vm.loadingAuthors" type="button" class="btn btn-round btn-default"  ng-click="vm.addNote()" title="{{'tooltips.request.details.info.button.addNote' | translate}}">
+                            <span class="md md-event-note"></span>
+                            <span class="button-link"></span>
+                        </button>
                     </div>
                 </div>
                 <div class="col-md-2 promoted-check-box">

@@ -56,6 +56,7 @@ angular
                         ];
                         vm.listView = 'components/request/submitted-request-list.html';
                     }
+                    getStatisticsRequests();
                 });
                 
                 switch (list) {
@@ -105,8 +106,6 @@ angular
                         vm.listView = 'components/request/request-list.html';
                         break;
                 }
-
-                getStatisticsRequests();
             };
 
             var createRequest = function (rs) {
