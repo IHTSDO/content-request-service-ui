@@ -22,8 +22,6 @@ angular
         function ($filter, $sce, crsJiraService, NgTableParams, requestService, notificationService, accountService, jiraService, $routeParams, $uibModal, utilsService, $scope, scaService, BULK_ACTION_STATUS, BULK_ACTION) {
             var vm = this;
             var maxSize;
-            var translateFilter = $filter('translate');
-            var translateRequestTypeFilter = $filter('requestType');
 
             vm.filterRequests = {
                 batchRequest: {
@@ -455,8 +453,6 @@ angular
                         if(selectedRequestIds.length > maxSize){
                             notificationService.sendMessage('Cannot assign requests! The list cannot be longer than ' + maxSize + ' requests.', 5000);
                         }else if (selectedRequestIds.length > 0) {
-                            var defaultSummaryRequestType = translateFilter(translateRequestTypeFilter(selectedRequests.requests[selectedRequestIds[0]].requestType));
-                            defaultSummary = '[' + defaultSummaryRequestType + '] ' + selectedRequests.requests[selectedRequestIds[0]].additionalFields.summary;
                             openAssignRequestModal(selectedRequestIds, defaultSummary);
                         }else {
                             notificationService.sendMessage('Please select at least a request to assign.', 5000);
@@ -465,7 +461,7 @@ angular
                 }
             };
 
-            var openAssignRequestModal = function(selectedRequestIds, defaultSummary) {
+            var openAssignRequestModal = function(selectedRequestIds) {
                 var modalInstance = $uibModal.open({
                     templateUrl: 'components/request/modal-assign-request.html',
                     controller: 'ModalAssignRequestCtrl as modal',
@@ -477,7 +473,7 @@ angular
                             return vm.projects;
                         },
                         defaultSummary: function() {
-                            return defaultSummary;
+                            return '';
                         }
                     }
                 });
@@ -507,8 +503,7 @@ angular
                 if (vm.authors.length > 0 && vm.projects.length > 0) {
                     var selectedRequests = vm.selectedMyAssignedRequests,
                         selectedRequestIds = [],
-                        action = bulkAction.assignToAuthor,
-                        defaultSummary;
+                        action = bulkAction.assignToAuthor;
                     if (selectedRequests && selectedRequests.items) {
                         angular.forEach(selectedRequests.items, function(isSelected, requestId) {
                             if (isSelected) {
@@ -517,8 +512,6 @@ angular
                         });
 
                         if (selectedRequestIds.length > 0) {
-                            var defaultSummaryRequestType = translateFilter(translateRequestTypeFilter(selectedRequests.requests[selectedRequestIds[0]].requestType));
-                            defaultSummary = '[' + defaultSummaryRequestType + '] ' + selectedRequests.requests[selectedRequestIds[0]].additionalFields.summary;
                             var modalInstance = $uibModal.open({
                                 templateUrl: 'components/request/modal-assign-request.html',
                                 controller: 'ModalAssignRequestCtrl as modal',
@@ -530,7 +523,7 @@ angular
                                         return vm.projects;
                                     },
                                     defaultSummary: function(){
-                                        return defaultSummary;
+                                        return '';
                                     }
                                 }
                             });
@@ -799,7 +792,7 @@ angular
 
                 modalInstance.result.then(function() {
                     switch($routeParams.list){
-                        case 'my-requests':
+                        case 'requests':
                               vm.selectedRequests = { checked: false, items: {}, requests: {} };
                               vm.tableParams.reload();
                               break;
@@ -811,6 +804,10 @@ angular
                               vm.selectedMyAssignedRequests = { checked: false, items: {}, requests: {} };
                               vm.assignedRequestTableParams.reload();
                               break;
+                        default: 
+                              vm.selectedRequests = { checked: false, items: {}, requests: {} };
+                              vm.tableParams.reload();  
+                              break; 
                     }
                     
                 });
