@@ -49,7 +49,7 @@
                       required
                       error-model="requestVM.error.summary"></form-control>  
 
-        <!-- rename Reason For Change to proposed use --> 
+        <!-- rename Reason For Change to proposed use case--> 
         <form-control type="textarea"
                       ng-if="requestVM.request.requestHeader.status === 'DRAFT'"
                       model="requestVM.request.additionalFields.reasonForChange"
@@ -94,14 +94,14 @@
                       error-model="requestVM.error.reference"></form-control>
 
         <!-- rename Proposed Use to Use Case -->
-        <form-control type="text"
+        <!-- <form-control type="text"
                       ng-if="requestVM.requestType.value === 'NEW_CONCEPT' && requestVM.request.requestHeader.status === 'DRAFT'"
                       model="requestVM.request.proposedUse"
                       label="crs.request.details.label.proposedUse"
                       title="{{'tooltips.request.details.label.proposedUse' | translate}}"
                       name="txtReference"
                       required
-                      error-model="requestVM.error.proposedUse"></form-control> 
+                      error-model="requestVM.error.proposedUse"></form-control> --> 
 
         <form-control type="textarea"
                       ng-if="requestVM.requestType.value === 'NEW_CONCEPT'"
