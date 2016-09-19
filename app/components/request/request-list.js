@@ -1031,6 +1031,7 @@ angular
                                 sortDirs.push(dir);
                             });
                         }
+                        notificationService.sendMessage('crs.request.message.listLoading');
 
                         filterValues = buildRequestList(
                             'SUBMITTED',
@@ -1061,6 +1062,7 @@ angular
                         
                         return requestService.getRequests(subbmitedRequests).then(function (requests) {
                             isDateRangeFilteredFirstTime = true;
+                            notificationService.sendMessage('crs.request.message.listLoaded', 5000);
                             params.total(requests.total);
                             vm.requests = requests;
                             if (requests.items && requests.items.length > 0) {

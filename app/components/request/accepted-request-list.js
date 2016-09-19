@@ -637,6 +637,7 @@ angular
                             sortDirs.push(dir);
                         });
                     }
+                    notificationService.sendMessage('crs.request.message.listLoading');
                     
                     filterValues = buildRequestFilterValues(
                         'ACCEPTED',
@@ -671,6 +672,7 @@ angular
 
                     return requestService.getRequests(acceptedRequests).then(function(requests) {
                         isDateRangeFilteredFirstTime = true;
+                        notificationService.sendMessage('crs.request.message.listLoaded', 5000);
                         params.total(requests.total);
                         vm.requests = requests;
                         if (requests.items && requests.items.length > 0) {
