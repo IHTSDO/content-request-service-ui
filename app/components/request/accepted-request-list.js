@@ -440,7 +440,7 @@ angular
                                 };
                                 requestService.bulkAction(data, action).then(function (response) {
                                     if(response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value){
-                                        bulkActionRespondingModal(response.id, BULK_ACTION.ACCEPT_AND_ASSIGN.langKey);
+                                        bulkActionRespondingModal(response.id, BULK_ACTION.ASSIGN_AUTHOR.langKey);
                                     }
                                 }, function(error){
                                     notificationService.sendMessage(error.message, 5000);
