@@ -72,7 +72,7 @@ angular
                 ogirinatorId: {
                     ogirinatorId: {
                         id: "text",
-                        placeholder: "Created By.."
+                        placeholder: "Surname.."
                     }
                 }
             };
