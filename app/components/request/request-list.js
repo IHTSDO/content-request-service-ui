@@ -648,8 +648,13 @@ angular
             };
 
             var addNote = function(){
-                var selectedRequests = vm.selectedMyAssignedRequests,
+                var selectedRequests,
                     selectedRequestIds = [];
+                    if($routeParams.list === 'submitted-requests'){
+                        selectedRequests = vm.selectedSubmittedRequests;
+                    }else{
+                        selectedRequests = vm.selectedMyAssignedRequests;
+                    }
                 var action = bulkAction.addNote;
                 if (selectedRequests &&
                     selectedRequests.items) {
