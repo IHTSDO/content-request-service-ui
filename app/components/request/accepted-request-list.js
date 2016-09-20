@@ -675,6 +675,7 @@ angular
                         notificationService.sendMessage('crs.request.message.listLoaded', 5000);
                         params.total(requests.total);
                         vm.requests = requests;
+                        vm.selectedRequests = { checked: false, items: {}, requests: {} };
                         if (requests.items && requests.items.length > 0) {
                             return requests.items;
                         } else {
