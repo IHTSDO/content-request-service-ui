@@ -93,16 +93,8 @@
         </div>
         <div ng-if="dashboard.permissionChecked && dashboard.isRequester" >
             <div style="margin-bottom: 10px">
-               <div class="badge blue ">
-                    Submitted 
-                </div>
-                        
                 <div class="badge turquoise">
                     My Requests
-                </div>
-
-                <div class="badge purple">
-                    My Assignment
                 </div>
             </div>
             <div ng-repeat="number in dashboard.statisticsRequests" class="statistics-request"  ng-cloak >

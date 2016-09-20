@@ -72,7 +72,7 @@ angular
                 ogirinatorId: {
                     ogirinatorId: {
                         id: "text",
-                        placeholder: "Created By.."
+                        placeholder: "Surname.."
                     }
                 }
             };
@@ -440,7 +440,7 @@ angular
                                 };
                                 requestService.bulkAction(data, action).then(function (response) {
                                     if(response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value){
-                                        bulkActionRespondingModal(response.id, BULK_ACTION.ACCEPT_AND_ASSIGN.langKey);
+                                        bulkActionRespondingModal(response.id, BULK_ACTION.ASSIGN_AUTHOR.langKey);
                                     }
                                 }, function(error){
                                     notificationService.sendMessage(error.message, 5000);
@@ -637,6 +637,7 @@ angular
                             sortDirs.push(dir);
                         });
                     }
+                    notificationService.sendMessage('crs.request.message.listLoading');
                     
                     filterValues = buildRequestFilterValues(
                         'ACCEPTED',
@@ -671,8 +672,10 @@ angular
 
                     return requestService.getRequests(acceptedRequests).then(function(requests) {
                         isDateRangeFilteredFirstTime = true;
+                        notificationService.sendMessage('crs.request.message.listLoaded', 5000);
                         params.total(requests.total);
                         vm.requests = requests;
+                        vm.selectedRequests = { checked: false, items: {}, requests: {} };
                         if (requests.items && requests.items.length > 0) {
                             return requests.items;
                         } else {

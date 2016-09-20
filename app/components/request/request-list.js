@@ -73,7 +73,7 @@ angular
                 ogirinatorId: {
                     ogirinatorId: {
                         id: "text",
-                        placeholder: "Created By.."
+                        placeholder: "Surname.."
                     }
                 }
             };
@@ -648,8 +648,13 @@ angular
             };
 
             var addNote = function(){
-                var selectedRequests = vm.selectedMyAssignedRequests,
+                var selectedRequests,
                     selectedRequestIds = [];
+                    if($routeParams.list === 'submitted-requests'){
+                        selectedRequests = vm.selectedSubmittedRequests;
+                    }else{
+                        selectedRequests = vm.selectedMyAssignedRequests;
+                    }
                 var action = bulkAction.addNote;
                 if (selectedRequests &&
                     selectedRequests.items) {
@@ -911,6 +916,7 @@ angular
                             notificationService.sendMessage('crs.request.message.listLoaded', 5000);
                             params.total(requests.total);
                             vm.requests = requests;
+                            vm.selectedRequests = { checked: false, items: {}, requests: {} };
                             if (requests.items && requests.items.length > 0) {
                                 return requests.items;
                             } else {
@@ -985,6 +991,7 @@ angular
                             notificationService.sendMessage('crs.request.message.listLoaded', 5000);
                             params.total(requests.total);
                             vm.requests = requests;
+                            vm.selectedMyAssignedRequests = { checked: false, items: {}, requests: {} };
                             if (requests.items && requests.items.length > 0) {
                                 return requests.items;
                             } else {
@@ -1026,6 +1033,7 @@ angular
                                 sortDirs.push(dir);
                             });
                         }
+                        notificationService.sendMessage('crs.request.message.listLoading');
 
                         filterValues = buildRequestList(
                             'SUBMITTED',
@@ -1056,8 +1064,10 @@ angular
                         
                         return requestService.getRequests(subbmitedRequests).then(function (requests) {
                             isDateRangeFilteredFirstTime = true;
+                            notificationService.sendMessage('crs.request.message.listLoaded', 5000);
                             params.total(requests.total);
                             vm.requests = requests;
+                            vm.selectedSubmittedRequests = { checked: false, items: {}, requests: {} };
                             if (requests.items && requests.items.length > 0) {
                                 return requests.items;
                             } else {
