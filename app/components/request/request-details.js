@@ -1575,10 +1575,10 @@ angular
                         error.reference = fieldRequiredLangKey;
                     }
 
-                    if ((!vm.request.proposedUse ||
-                        !vm.request.proposedUse.trim()) && vm.requestType === REQUEST_TYPE.NEW_CONCEPT) {
-                        error.proposedUse = fieldRequiredLangKey;
-                    }
+                    // if ((!vm.request.proposedUse ||
+                    //     !vm.request.proposedUse.trim()) && vm.requestType === REQUEST_TYPE.NEW_CONCEPT) {
+                    //     error.proposedUse = fieldRequiredLangKey;
+                    // }
                 }
 
                 var isNotValidObj = function() {
