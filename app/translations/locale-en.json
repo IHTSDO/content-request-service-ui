@@ -499,7 +499,7 @@
                         "sourceTerminology": "Terminology",
                         "sourceTerminologyVersion": "Source Terminology Version",
                         "requestorInternalId": "Local Code",
-                        "reasonForChange": "Proposed Use",
+                        "reasonForChange": "Proposed Use Case",
                         "topic": "Topic",
                         "notes": "Notes",
                         "references": "References",
