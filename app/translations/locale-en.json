@@ -86,8 +86,9 @@
                 "appealRejected": "Appeal Rejected",
                 "appeal": "Appeal",
                 "clarificationNeeded": "Clarification Needed",
-		"in_inception_elaboration": "In Inception",
-		"my_assigned": "My Assigned"
+        		"in_inception_elaboration": "In Inception",
+        		"my_assigned": "My Assigned",
+                "readyForRelease": "Ready For Release"
             }
         },
         "request": {
@@ -437,7 +438,8 @@
                         "withdrawn": "Withdrawn",
                         "clarificationNeeded": "Clarification Needed",
                         "inInception": "In Inception",
-                        "complete": "Completed"
+                        "complete": "Completed",
+                        "readyForRelease": "Ready For Release"
                     }
                 }
             },
