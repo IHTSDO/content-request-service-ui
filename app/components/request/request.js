@@ -283,6 +283,10 @@ angular
 		My_Assigned: {
             value:'My_Assigned',
             langKey: 'crs.dashboard.sidebar.my_assigned'
+        },
+        READY_FOR_RELEASE: {
+            value: 'READY_FOR_RELEASE',
+            langKey: 'crs.dashboard.sidebar.readyForRelease'
         }
     })
     .value('STATISTICS_LABEL',{

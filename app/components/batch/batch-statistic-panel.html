@@ -117,6 +117,15 @@
                     </div>
                 </li>
 
+                <li>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.batch.details.statistic.label.readyForRelease"></label>
+                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['READY_FOR_RELEASE'] || '0'):'0'}}</span>
+                        </div>
+                    </div>
+                </li>
+
 
                 <!--<li>
                     <div class="timeline-badge">

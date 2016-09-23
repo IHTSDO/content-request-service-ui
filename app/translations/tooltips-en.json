@@ -87,7 +87,8 @@
                 "appeal": "Appeal",
                 "clarificationNeeded": "Where insufficient information is provided to proceed with a request, the request manager will incorporate questions to be resolved into the comments text field and change the status of the request to Clarification Requested.",
         		"in_inception_elaboration": "Where a new request aligns with an ongoing content project, the request will be placed on hold until editorial policy is available to support the requested change or addition. Content projects are intended to investigate issues or enhancements to both existing and future content for SNOMED CT. \nA process for understanding the problem and elaboration of a solution is undertaken in order to make improvements to existing content and clarify how content of a similar nature will be incorporated into SNOMED CT in the future. Depending upon the nature of the content project, this may be a longterm large scale content project or a smaller project with a shorter timescale.",
-        		"my_assigned": "My Assigned"
+        		"my_assigned": "My Assigned",
+                "readyForRelease": "Ready For Release"
             }
         },
         "request": {
@@ -437,7 +438,8 @@
                         "withdrawn": "Withdrawn",
                         "clarificationNeeded": "Clarification Needed",
                         "inInception": "In Inception",
-                        "complete": "Completed"
+                        "complete": "Completed",
+                        "readyForRelease": "Ready For Release"
                     }
                 }
             },

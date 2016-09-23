@@ -23,7 +23,8 @@
             "version": "2"
         },
         "author-group": "ihtsdo-sca-author",
-        "staff-group": "crs-staff"
+        "staff-group": "crs-staff",
+        "requestor-group": "crs-requestor"
     },
     "userRole": {
         "ADMINISTRATOR": "ROLE_crs-administrator",

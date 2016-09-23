@@ -1,5 +1,5 @@
-<div style="background-color:#434955;">
-    <ul ng-cloak style="padding: 0px; list-style: none;">
+<div class="dashboard-left-hand">
+    <ul class="dashboard-site-menu" ng-cloak style="padding: 0px; list-style: none;">
 
         <li ng-if="dashboard.permissionChecked && !dashboard.isViewer"><a class="dashboard-links" ng-href="#/requests">
             <button type="button" class="btn grey darken-3 dashboard-links" title="{{'tooltips.dashboard.sidebar.myRequest' | translate}}">
@@ -50,8 +50,8 @@
         </li>-->
 
     </ul>
-    <div class="statistics-requests" ng-class="{'statistics-requests-requester': dashboard.isRequester}">
-        <div ng-if="dashboard.permissionChecked && dashboard.isAdmin" >
+    <div class="statistics-requests" >
+        <div class="statistics-requests-list" ng-if="dashboard.permissionChecked && dashboard.isAdmin" >
             <div style="margin-bottom: 10px">
                <div class="badge blue ">
                     Submitted 
@@ -91,7 +91,7 @@
                 </div>
             </div>
         </div>
-        <div ng-if="dashboard.permissionChecked && dashboard.isRequester" >
+        <div class="statistics-requests-list" ng-if="dashboard.permissionChecked && dashboard.isRequester" >
             <div style="margin-bottom: 10px">
                 <div class="badge turquoise">
                     My Requests
