@@ -206,6 +206,10 @@ footer {
     background-color: #ab47bc;
     color: white;
   }
+  &.FORWARDED{
+    background-color: #8c79b8;
+    color: white;
+  }
 }
 
 .batchStatus {
@@ -556,6 +560,12 @@ ul.batch-statistic.timeline {
       display: table-row;
       height: 1px;
     }
+  }
+}
+
+@media (max-width: 1030px){
+  .dashboard-content{
+    margin-left: 19% !important;
   }
 }
 
