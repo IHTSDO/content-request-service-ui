@@ -180,6 +180,18 @@ angular
                 });
             };
 
+            var loadRequestors = function() {
+                var jiraConfig = jiraService.getJiraConfig();
+                var groupName = jiraConfig['requestor-group'];
+                vm.loadingAuthors = true;
+                return crsJiraService.getAuthorUsers(0, 50, true, [], groupName).then(function(users) {
+                    vm.requestors = users;
+                    return users;
+                }).finally(function() {
+                    vm.loadingAuthors = false;
+                });
+            };
+
             var loadSemanticTags = function(){
                 return crsJiraService.getSemanticTags().then(function(semanticTags){
                     vm.semanticTags = semanticTags;
@@ -227,18 +239,29 @@ angular
             };
 
             var getAuthorName = function(authorKey) {
-                if (!vm.authors || vm.authors.length === 0) {
+                var usersList = [];
+
+                for(var x in vm.authors){
+                    usersList.push(vm.authors[x]);
+                }
+                for(var y in vm.staffs){
+                    usersList.push(vm.staffs[y]);
+                }
+                for(var z in vm.requestors){
+                    usersList.push(vm.requestors[z]);
+                }
+                if (!usersList || usersList.length === 0) {
                     return authorKey;
                 } else {
-                    for (var i = 0; i < vm.authors.length; i++) {
+                    for (var i = 0; i < usersList.length; i++) {
                         // if (vm.authors[i].key !== authorKey) {
                         //     return authorKey;
                         // }
-                        if (vm.authors[i].key === authorKey) {
+                        if (usersList[i].key === authorKey) {
                             //return vm.authors[i].displayName;
                             return $sce.trustAsHtml([
-                                '<img style="padding-bottom:2px" src="' + vm.authors[i].avatarUrls['16x16'] + '"/>',
-                                '<span style="vertical-align:middle">&nbsp;' + vm.authors[i].displayName + '</span>',
+                                '<img style="padding-bottom:2px" src="' + usersList[i].avatarUrls['16x16'] + '"/>',
+                                '<span style="vertical-align:middle">&nbsp;' + usersList[i].displayName + '</span>',
                             ].join(''));
                         }
                     }
@@ -356,6 +379,9 @@ angular
 
                 //load staffs
                 loadStaff();
+
+                //load requestors
+                loadRequestors();
 
                 // load projects
                 loadProjects();
