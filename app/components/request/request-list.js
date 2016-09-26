@@ -119,10 +119,10 @@ angular
                     id: "APPEAL_REJECTED",
                     title: "Appeal Rejected"
                 },
-                {
-                    id: "APPROVED",
-                    title: "Approved"
-                },
+                // {
+                //     id: "APPROVED",
+                //     title: "Approved"
+                // },
                 {
                     id: "RELEASED",
                     title: "Completed"
