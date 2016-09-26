@@ -461,6 +461,7 @@ angular
                                 var inputMode = identifyInputMode(vm.request.inputMode);
 
                                 accountService.getAccountInfo().then(function(accountDetails) {
+                                    vm.requestOwner = accountDetails.login;
                                     if (requestData.requestHeader.ogirinatorId === accountDetails.login &&
                                         (vm.pageMode === REQUEST_MODE.VIEW ||
                                             (vm.pageMode === REQUEST_MODE.PREVIEW &&
