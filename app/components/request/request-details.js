@@ -372,6 +372,7 @@ angular
                     vm.permissionChecked = true;
                     vm.isAdmin = (rs.isAdmin === true);
                     vm.isViewer = (rs.isViewer === true);
+                    vm.isStaff = (rs.isStaff === true);
                 });
 
                 // load authors
