@@ -373,6 +373,7 @@ angular
                     vm.isAdmin = (rs.isAdmin === true);
                     vm.isViewer = (rs.isViewer === true);
                     vm.isStaff = (rs.isStaff === true);
+                    vm.isRequester = (rs.isRequester === true);
                 });
 
                 // load authors
