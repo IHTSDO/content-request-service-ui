@@ -190,10 +190,10 @@ angular
             value: 'APPEAL_REJECTED',
             langKey: 'crs.request.requestStatus.appealRejected'
         },
-        APPROVED: {
-            value: 'APPROVED',
-            langKey: 'crs.request.requestStatus.approved'
-        },
+        // APPROVED: {
+        //     value: 'APPROVED',
+        //     langKey: 'crs.request.requestStatus.approved'
+        // },
         RELEASED: {
             value: 'RELEASED',
             langKey: 'crs.request.requestStatus.released'
