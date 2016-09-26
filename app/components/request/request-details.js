@@ -194,47 +194,26 @@ angular
 
             var loadSemanticTags = function(){
                 return crsJiraService.getSemanticTags().then(function(semanticTags){
-                    vm.semanticTags = semanticTags;
-					vm.semanticTags.sort(function(a, b) {
-						return utilsService.compareStrings(a.value, b.value);
-					});
-                    if(vm.pageMode !== REQUEST_MODE.NEW){
-                        var isNotInArr;
-                        for(var i in semanticTags){
-                            if(semanticTags[i].value !== vm.request.value){
-                                isNotInArr = true;
+                    if(semanticTags){
+                        vm.semanticTags = semanticTags;
+                        vm.semanticTags.sort(function(a, b) {
+                            return utilsService.compareStrings(a.value, b.value);
+                        });
+                        if(vm.pageMode !== REQUEST_MODE.NEW){
+                            var isNotInArr;
+                            for(var i in semanticTags){
+                                if(semanticTags[i].value !== vm.request.value){
+                                    isNotInArr = true;
+                                }
+                            }
+                            if(isNotInArr){
+                                var obj = {};
+                                obj.value = vm.request.value;
+                                vm.semanticTags.push(obj);
                             }
                         }
-                        if(isNotInArr){
-                            var obj = {};
-                            obj.value = vm.request.value;
-                            vm.semanticTags.push(obj);
-                        }
                     }
-                    
                     return semanticTags;
-                });
-            };
-
-            var loadTopicOptions = function(){
-                return crsJiraService.getTopicOptions().then(function(topicOptions){
-                    vm.topicOptions = topicOptions;
-                    topicOptions.sort(function(a, b) {
-                        return utilsService.compareStrings(a.value, b.value);
-                    });
-                    if(vm.pageMode !== REQUEST_MODE.NEW){
-                        var isNotInArr;
-                        for(var i in topicOptions){
-                            if(topicOptions[i].value !== vm.request.additionalFields.topic){
-                                isNotInArr = true;
-                            }
-                        }
-                        if(isNotInArr){
-                            var obj = {};
-                            obj.value = vm.request.additionalFields.topic;
-                            vm.topicOptions.push(obj);
-                        }
-                    }
                 });
             };
 
@@ -388,12 +367,6 @@ angular
                 // load projects
                 loadProjects();
 
-                //load semantic tag
-                loadSemanticTags();
-
-                //load topic options
-                loadTopicOptions();
-
                 if (!isValid) {
                     showErrorMessage('crs.request.message.error.invalidPage');
                 } else {
@@ -490,6 +463,12 @@ angular
                             });
                             break;
                     }
+                    //load semantic tag
+                    loadSemanticTags();
+
+                    //load topic options
+                    loadTopicOptions();
+                    
                     loadRequestMetadata();
                 }
             };
@@ -599,6 +578,28 @@ angular
                     notificationService.sendError(reason.message, 5000, null, true);
                     if ($location.path() !== '/dashboard') {
                         $location.path('/dashboard').search({});
+                    }
+                });
+            };
+
+            var loadTopicOptions = function(){
+                return crsJiraService.getTopicOptions().then(function(topicOptions){
+                    vm.topicOptions = topicOptions;
+                    topicOptions.sort(function(a, b) {
+                        return utilsService.compareStrings(a.value, b.value);
+                    });
+                    if(vm.pageMode !== REQUEST_MODE.NEW ){
+                        var isNotInArr;
+                        for(var i in topicOptions){
+                            if(topicOptions[i].value !== vm.request.additionalFields.topic){
+                                isNotInArr = true;
+                            }
+                        }
+                        if(isNotInArr){
+                            var obj = {};
+                            obj.value = vm.request.additionalFields.topic;
+                            vm.topicOptions.push(obj);
+                        }
                     }
                 });
             };
