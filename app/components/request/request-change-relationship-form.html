@@ -39,19 +39,19 @@
                         readonly></form-control>
         </div>
 
-        <form-control type="attributeValue"
-                      model="requestVM.request.destinationConcept"
-                      label="crs.request.details.label.proposedDestinationConcept"
-                      title="{{'tooltips.request.details.label.proposedDestinationConcept' | translate}}"
-                      domain-attribute="requestVM.request.relationshipType"
-                      error-model="requestVM.error.destinationConcept"></form-control>
-
         <form-control type="relationshipType"
                       model="requestVM.request.relationshipType"
                       label="crs.request.details.label.proposedRelationshipType"
                       title="{{'tooltips.request.details.label.proposedRelationshipType' | translate}}"
                       parent-relationships="requestVM.originalConcept.relationships"
                       error-model="requestVM.error.relationshipType"></form-control>
+
+        <form-control type="attributeValue"
+                      model="requestVM.request.destinationConcept"
+                      label="crs.request.details.label.proposedDestinationConcept"
+                      title="{{'tooltips.request.details.label.proposedDestinationConcept' | translate}}"
+                      domain-attribute="requestVM.request.relationshipType"
+                      error-model="requestVM.error.destinationConcept"></form-control>
 
         <form-control type="select"
                       model="requestVM.request.characteristicType"

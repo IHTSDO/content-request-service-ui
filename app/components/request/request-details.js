@@ -1687,12 +1687,12 @@ angular
                     }
                 }
                 if (vm.inputMode !== REQUEST_INPUT_MODE.DIRECT) {
-                    if (vm.requestType === REQUEST_TYPE.RETIRE_DESCRIPTION || vm.requestType === REQUEST_TYPE.RETIRE_RELATIONSHIP || vm.requestType === REQUEST_TYPE.CHANGE_DESCRIPTION || vm.requestType === REQUEST_TYPE.CHANGE_RELATIONSHIP) {
+                    if (vm.requestType === REQUEST_TYPE.RETIRE_DESCRIPTION || vm.requestType === REQUEST_TYPE.RETIRE_RELATIONSHIP || vm.requestType === REQUEST_TYPE.CHANGE_DESCRIPTION || vm.requestType === REQUEST_TYPE.CHANGE_RELATIONSHIP || vm.requestType === REQUEST_TYPE.NEW_RELATIONSHIP || vm.requestType === REQUEST_TYPE.NEW_DESCRIPTION) {
                         for (var j in requestData.requestItems) {
                             if (requestData.requestItems[j].requestType === REQUEST_TYPE.CHANGE_RETIRE_CONCEPT.value) {
                                 requestData.requestItems.splice(j, 1);
                             }
-                            if (requestData.requestItems[j].requestType === REQUEST_TYPE.NEW_RELATIONSHIP.value) {
+                            if (requestData.requestItems[j].requestType === REQUEST_TYPE.NEW_RELATIONSHIP.value && vm.requestType !== REQUEST_TYPE.NEW_RELATIONSHIP) {
                                 requestData.requestItems.splice(j, 1);
                             }
                             if(vm.requestType === REQUEST_TYPE.RETIRE_DESCRIPTION){
@@ -1746,12 +1746,12 @@ angular
                     }
                 }
                 if (vm.inputMode !== REQUEST_INPUT_MODE.DIRECT) {
-                    if (vm.requestType === REQUEST_TYPE.RETIRE_DESCRIPTION || vm.requestType === REQUEST_TYPE.RETIRE_RELATIONSHIP || vm.requestType === REQUEST_TYPE.CHANGE_DESCRIPTION || vm.requestType === REQUEST_TYPE.CHANGE_RELATIONSHIP) {
+                    if (vm.requestType === REQUEST_TYPE.RETIRE_DESCRIPTION || vm.requestType === REQUEST_TYPE.RETIRE_RELATIONSHIP || vm.requestType === REQUEST_TYPE.CHANGE_DESCRIPTION || vm.requestType === REQUEST_TYPE.CHANGE_RELATIONSHIP || vm.requestType === REQUEST_TYPE.NEW_RELATIONSHIP || vm.requestType === REQUEST_TYPE.NEW_DESCRIPTION) {
                         for (var j in requestData.requestItems) {
                             if (requestData.requestItems[j].requestType === REQUEST_TYPE.CHANGE_RETIRE_CONCEPT.value) {
                                 requestData.requestItems.splice(j, 1);
                             }
-                            if (requestData.requestItems[j].requestType === REQUEST_TYPE.NEW_RELATIONSHIP.value) {
+                            if (requestData.requestItems[j].requestType === REQUEST_TYPE.NEW_RELATIONSHIP.value && vm.requestType !== REQUEST_TYPE.NEW_RELATIONSHIP) {
                                 requestData.requestItems.splice(j, 1);
                             }
                             if(vm.requestType === REQUEST_TYPE.RETIRE_DESCRIPTION){
