@@ -328,16 +328,16 @@
                 "newConcept": "New Concept",
                 "newDescription": "New Description",
                 "newRelationship": "New Relationship",
-                "changeRetireConcept": "Change or Retire Concept",
+                "changeRetireConcept": "Change or Inactivate Concept",
                 "changeRetireDescription": "Change Description",
-                "retireDescription": "Retire Description",
-                "changeRetireRelationship": "Retire Relationship",
+                "retireDescription": "Inactivate Description",
+                "changeRetireRelationship": "Inactivate Relationship",
                 "changeRelationship": "Change Relationship",
                 "other": "Other"
             },
             "inputMode": {
-                "simple": "In Simple mode, you can create the following types of request: 'New Concept', 'New Description', 'New Relationship', 'Change Description', 'Change Relationship', 'Retire Description', 'Retire Relationship', 'Change or Retire Concept' or 'Other'",
-                "direct": "In Direct mode, you can create multiple changes on one request for either a 'New Concept' or 'Change or Retire an existing Concept'"
+                "simple": "In Simple mode, you can create the following types of request: 'New Concept', 'New Description', 'New Relationship', 'Change Description', 'Change Relationship', 'Inactivate Description', 'Inactivate Relationship', 'Change or Inactivate Concept' or 'Other'",
+                "direct": "In Direct mode, you can create multiple changes on one request for either a 'New Concept' or 'Change or Inactivate an existing Concept'"
             },
             "requestMode": {
                 "newRequest": "New Request",
