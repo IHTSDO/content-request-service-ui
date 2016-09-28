@@ -200,9 +200,9 @@ angular
 						break;
 				}
 				if(status !== 'My_Assigned'){
-                    $location.path('dashboard/submitted-requests').search({status:status, manager:manager, cache:false});
+                    $location.path('dashboard/submitted-requests').search({status:status, manager:manager, showClosedRequest:true, cache:false});
                 }else{
-                    $location.path('dashboard/my-assigned-requests').search({cache: false});
+                    $location.path('dashboard/my-assigned-requests').search({showClosedRequest:true, cache: false});
                 }
             };
             var filterAssignedRequests = function(status){
@@ -210,7 +210,7 @@ angular
                     return;
                 }
                 accountService.getAccountInfo().then(function (accountDetails) {
-                    $location.path('dashboard/submitted-requests').search({status:status, manager: accountDetails.login, cache: false});                   
+                    $location.path('dashboard/submitted-requests').search({status:status, manager: accountDetails.login, showClosedRequest:true, cache: false});                   
                 });
             };
 			
@@ -222,11 +222,11 @@ angular
 						manager = "{unassigned}";
 					}
 					accountService.getAccountInfo().then(function (accountDetails) {
-						$location.path('dashboard/requests').search({manager:manager, ogirinatorId: accountDetails.login, cache: false});                   
+						$location.path('dashboard/requests').search({manager:manager, ogirinatorId: accountDetails.login, showClosedRequest:true, cache: false});                   
 					});
                     return;
                 }
-                $location.path('dashboard/requests').search({status:status, cache: false});
+                $location.path('dashboard/requests').search({status:status, showClosedRequest:true, cache: false});
             };
 
             vm.openCreateRequestModal = openCreateRequestModal;
