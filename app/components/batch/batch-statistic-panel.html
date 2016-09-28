@@ -94,7 +94,7 @@
                     <div class="timeline-panel">
                         <div class="timeline-heading">
                             <label class="control-label" translate="crs.batch.details.statistic.label.inInception"></label>
-                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['IN_INCEPTION'] || '0'):'0'}}</span>
+                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['IN_INCEPTION_ELABORATION'] || '0'):'0'}}</span>
                         </div>
                     </div>
                 </li>
@@ -112,7 +112,7 @@
                     <div class="timeline-panel">
                         <div class="timeline-heading">
                             <label class="control-label" translate="crs.batch.details.statistic.label.underAuthoring"></label>
-                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['AUTHORING'] || '0'):'0'}}</span>
+                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['UNDER_AUTHORING'] || '0'):'0'}}</span>
                         </div>
                     </div>
                 </li>
