@@ -156,7 +156,7 @@ angular
                 },
                 {
                     id: "CHANGE_RETIRE_CONCEPT",
-                    title: "Change Retire Concept"
+                    title: "Change Inactivate Concept"
                 },
                 {
                     id: "CHANGE_DESCRIPTION",
@@ -164,11 +164,11 @@ angular
                 },
                 {
                     id: "RETIRE_DESCRIPTION",
-                    title: "Retire Description"
+                    title: "Inactivate Description"
                 },
                 {
                     id: "RETIRE_RELATIONSHIP",
-                    title: "Retire Relationship"
+                    title: "Inactivate Relationship"
                 },
                 {
                     id: "CHANGE_RELATIONSHIP",
