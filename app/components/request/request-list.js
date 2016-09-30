@@ -156,7 +156,7 @@ angular
                 },
                 {
                     id: "CHANGE_RETIRE_CONCEPT",
-                    title: "Change Retire Concept"
+                    title: "Change Inactivate Concept"
                 },
                 {
                     id: "CHANGE_DESCRIPTION",
@@ -164,11 +164,11 @@ angular
                 },
                 {
                     id: "RETIRE_DESCRIPTION",
-                    title: "Retire Description"
+                    title: "Inactivate Description"
                 },
                 {
                     id: "RETIRE_RELATIONSHIP",
-                    title: "Retire Relationship"
+                    title: "Inactivate Relationship"
                 },
                 {
                     id: "CHANGE_RELATIONSHIP",
@@ -193,6 +193,7 @@ angular
                 vm.selectedRequests = {checked: false, items: {}, requests: {}};
                 vm.selectedSubmittedRequests = {checked: false, items: {}, requests: {}};
                 vm.selectedMyAssignedRequests = {checked: false, items: {}, requests: {}};
+                vm.showClosedRequests = $routeParams.showClosedRequest?$routeParams.showClosedRequest: false;
 				
 				vm.requestStatus = vm.requestStatus.sort(function(a, b) {
 					return utilsService.compareStrings(a.title, b.title);
@@ -588,7 +589,7 @@ angular
                 var unassignedUser = {
                     displayName: 'Unassigned ',
                     id: null,
-                    key: ''
+                    key: null
                 };
                 dataList.push(unassignedUser);
                 for(var i in vm.staffs){
@@ -892,7 +893,8 @@ angular
                         requestDate: {
                             startDate: null,
                             endDate: null
-                        }
+                        },
+
                     }
                 },
                 {
@@ -1045,7 +1047,8 @@ angular
                             startDate: null,
                             endDate: null
                         }
-                    }
+                    },
+                    
                 },
                 
                 {
@@ -1177,6 +1180,7 @@ angular
                 
             };
 
+            
             vm.showFilter = false;
             vm.isAdmin = false;
             vm.isViewer = false;

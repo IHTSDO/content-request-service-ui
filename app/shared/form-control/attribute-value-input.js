@@ -165,6 +165,16 @@ angular
                         }
                     };
 
+                    var removeInactiveConcept = function(list){
+                        var activeList = [];
+                        for(var i in list){
+                            if(list[i].active === true){
+                                activeList.push(list[i]);
+                            }
+                        }
+                        return activeList;
+                    };
+
                     var getConceptsForValueTypeahead = function (viewValue) {
                         var attributeId = '';
                         $scope.showError = false;
@@ -201,7 +211,7 @@ angular
                                         }
                                     }
 
-                                    return response;
+                                    return removeInactiveConcept(response);
                                 }).finally(function () {
                                     $scope.showLoading = false;
                                     $scope.conceptStatus.loading = false;
@@ -264,7 +274,7 @@ angular
                                         }
                                     }
 
-                                    return response;
+                                    return removeInactiveConcept(response);
                                 }).finally(function () {
                                     $scope.showLoading = false;
                                     $scope.conceptStatus.loading = false;

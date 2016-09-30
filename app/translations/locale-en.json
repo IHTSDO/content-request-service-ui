@@ -328,10 +328,10 @@
                 "newConcept": "New Concept",
                 "newDescription": "New Description",
                 "newRelationship": "New Relationship",
-                "changeRetireConcept": "Change or Retire Concept",
+                "changeRetireConcept": "Change or Inactivate Concept",
                 "changeRetireDescription": "Change Description",
-                "retireDescription": "Retire Description",
-                "changeRetireRelationship": "Retire Relationship",
+                "retireDescription": "Inactivate Description",
+                "changeRetireRelationship": "Inactivate Relationship",
                 "changeRelationship": "Change Relationship",
                 "other": "Other"
             },
