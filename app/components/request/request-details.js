@@ -34,6 +34,7 @@ angular
             var vm = this;
             var translateFilter = $filter('translate');
             var translateRequestTypeFilter = $filter('requestType');
+            var autoFillPreferredTerm = true;
 
             var REQUEST_MODE = {
                 NEW: { value: 'new', langKey: 'crs.request.requestMode.newRequest' },
@@ -194,7 +195,7 @@ angular
 
             var loadSemanticTags = function(){
                 return crsJiraService.getSemanticTags().then(function(semanticTags){
-                    if(semanticTags){
+                    if(semanticTags && vm.request){
                         vm.semanticTags = semanticTags;
                         vm.semanticTags.sort(function(a, b) {
                             return utilsService.compareStrings(a.value, b.value);
@@ -588,7 +589,7 @@ angular
                     topicOptions.sort(function(a, b) {
                         return utilsService.compareStrings(a.value, b.value);
                     });
-                    if(vm.pageMode !== REQUEST_MODE.NEW ){
+                    if(vm.pageMode !== REQUEST_MODE.NEW && vm.request){
                         var isNotInArr;
                         for(var i in topicOptions){
                             if(topicOptions[i].value !== vm.request.additionalFields.topic){
@@ -1244,6 +1245,7 @@ angular
                         request.value = mainItem.semanticTag;
                         request.umlsCui = mainItem.umlsCui;
                         request.requestDescription = mainItem.requestDescription;
+                        autoFillPreferredTerm = false;
 
                         break;
 
@@ -2084,7 +2086,7 @@ angular
                     return vm.request.proposedFSN;
                 }
             }, function(newVal) {
-                if(newVal && vm.requestType === REQUEST_TYPE.NEW_CONCEPT && vm.request.proposedFSN){
+                if(newVal && vm.requestType === REQUEST_TYPE.NEW_CONCEPT && vm.request.proposedFSN && autoFillPreferredTerm){
                     var indexOfFSN = vm.request.proposedFSN.indexOf("(");
                     if(indexOfFSN !== -1){
                         var substringFSN = vm.request.proposedFSN.substring(0, indexOfFSN);
