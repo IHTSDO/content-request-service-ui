@@ -26,7 +26,8 @@
                 "requestStatusChange": "The Request status has been changed",
                 "batchImportSuccess": "The Batch requests have been imported successfully",
                 "commentAdded": "The Comment has been added",
-                "bulkActionCompleted": "The Bulk Action has been completed"
+                "bulkActionCompleted": "The Bulk Action has been completed",
+                "managerChanged": "Assigned Request"
             },
             "button": {
                 "clear": "Clear"
