@@ -63,6 +63,13 @@
                             {{request.fsn}}
                         </td>
                         <td data-title="'crs.request.list.tableHeader.ticketId' | translate" sortable="'jiraTicketId'" jira-link="request.jiraTicketId" filter="vm.filterRequests.jiraTicketId"></td>
+                          <td data-title="'crs.request.list.tableHeader.originator' | translate" sortable="'requestHeader.ogirinatorId'" style="min-width: 150px" filter="vm.filterRequests.ogirinatorId">
+                            <span ng-show="vm.loadingAuthors" class="md md-autorenew" ng-class="{'md-spin':vm.loadingAuthors}"></span>
+                            <div ng-if="!vm.loadingAuthors" ng-bind-html="(vm.getAuthorName(request.requestHeader.ogirinatorId))?vm.getAuthorName(request.requestHeader.ogirinatorId):request.requestHeader.ogirinatorId"></div>
+                        </td>
+                          <td data-title="'crs.request.list.tableHeader.createdDate' | translate" sortable="'requestHeader.requestDate'" filter="{requestDate: 'ng-table/datetime-picker-startdate.html'}" >
+                            {{request.requestHeader.requestDate | date:'yyyy-MM-dd'}}
+                        </td>
                         <td data-title="'crs.request.list.tableHeader.lastModified' | translate" sortable="'requestHeader.requestDate'" filter="{requestDate: 'ng-table/datetime-picker-startdate.html'}">
                             {{request.requestHeader.requestDate | date:'yyyy-MM-dd'}}
                         </td>
@@ -79,10 +86,7 @@
                             <span ng-show="vm.loadingAuthors" class="md md-autorenew" ng-class="{'md-spin':vm.loadingAuthors}"></span>
                             <div ng-bind-html="(vm.getStaffName(request.requestHeader.manager))?vm.getAuthorName(request.requestHeader.manager):request.requestHeader.manager"></div>
                         </td>
-                        <td data-title="'crs.request.list.tableHeader.originator' | translate" sortable="'requestHeader.ogirinatorId'" style="min-width: 150px" filter="vm.filterRequests.ogirinatorId">
-                            <span ng-show="vm.loadingAuthors" class="md md-autorenew" ng-class="{'md-spin':vm.loadingAuthors}"></span>
-                            <div ng-if="!vm.loadingAuthors" ng-bind-html="(vm.getAuthorName(request.requestHeader.ogirinatorId))?vm.getAuthorName(request.requestHeader.ogirinatorId):request.requestHeader.ogirinatorId"></div>
-                        </td>
+                      
                         <td data-title="'crs.request.list.tableHeader.project' | translate" sortable="'requestHeader.assignedProject'" style="min-width: 150px" filter="{project: 'ng-table/project-select.html'}">
                             {{request.requestHeader.assignedProject}}
                         </td>
