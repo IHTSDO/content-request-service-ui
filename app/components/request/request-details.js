@@ -2082,7 +2082,7 @@ angular
 
             //auto fill preferred term field
             $scope.$watch(function() {
-                if(vm.requestType === REQUEST_TYPE.NEW_CONCEPT && vm.request.proposedFSN){
+                if(vm.requestType === REQUEST_TYPE.NEW_CONCEPT && vm.request.proposedFSN && autoFillPreferredTerm){
                     return vm.request.proposedFSN;
                 }
             }, function(newVal) {
@@ -2101,11 +2101,11 @@ angular
 
             //auto fill new concept fsn field
             $scope.$watch(function() {
-                if(vm.requestType === REQUEST_TYPE.NEW_CONCEPT && vm.request.value){
+                if(vm.requestType === REQUEST_TYPE.NEW_CONCEPT && vm.request.value && autoFillPreferredTerm){
                     return vm.request.value;
                 }
             }, function(newVal) {
-                if(newVal && vm.requestType === REQUEST_TYPE.NEW_CONCEPT && vm.request.value){
+                if(newVal && vm.requestType === REQUEST_TYPE.NEW_CONCEPT && vm.request.value && autoFillPreferredTerm){
                     if(vm.request.proposedFSN){
                         var indexOfFSN = vm.request.proposedFSN.indexOf("(");
                         if(indexOfFSN !== -1){
