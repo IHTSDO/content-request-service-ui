@@ -77,7 +77,20 @@ angular.module('conceptRequestServiceApp.message')
                         msgItemHtml.push(message.details.ignoredItemsCount);
                         msgItemHtml.push('</div>');
                         msgItemHtml.push('<a class="message-detail-content" ng-click="openBulkActionDetailDirective()">Click to view details</a>');
+                        break;
+                    case MESSAGE_TYPE.MANAGER_CHANGED: 
+                        msgItemHtml.push('<div class="message-detail-content">');
+                        msgItemHtml.push('Request ');
+                        msgItemHtml.push(message.details.id);
+                        msgItemHtml.push(' has been assigned to you');
+                        msgItemHtml.push(message.details.topic);
+                        msgItemHtml.push('</div>');
 
+                        msgItemHtml.push('<div><span class="badge requestStatus ' + message.details.status + '">');
+                        msgItemHtml.push(translateFilter(requestStatusFilter(message.details.status)));
+                        msgItemHtml.push('</span></div>');
+
+                        targetUrl = '#/requests/view/' + message.details.id;
                         break;
                     default:
                         break;

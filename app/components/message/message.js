@@ -22,5 +22,9 @@ angular.module('conceptRequestServiceApp.message', [])
         BULK_ACTION_COMPLETED: {
             value: 'BULK_ACTION_COMPLETED',
             titleLangKey: 'crs.notification.message.bulkActionCompleted'
+        },
+        MANAGER_CHANGED: {
+            value: 'MANAGER_CHANGED',
+            titleLangKey: 'crs.notification.message.managerChanged'
         }
     });
