@@ -70,8 +70,8 @@
                           <td data-title="'crs.request.list.tableHeader.createdDate' | translate" sortable="'requestHeader.requestDate'" filter="{requestDate: 'ng-table/datetime-picker-startdate.html'}" >
                             {{request.requestHeader.requestDate | date:'yyyy-MM-dd'}}
                         </td>
-                        <td data-title="'crs.request.list.tableHeader.lastModified' | translate" sortable="'requestHeader.requestDate'" filter="{requestDate: 'ng-table/datetime-picker-startdate.html'}">
-                            {{request.requestHeader.requestDate | date:'yyyy-MM-dd'}}
+                        <td data-title="'crs.request.list.tableHeader.lastModified' | translate" sortable="'requestHeader.requestDate'" filter="{requestDate: 'ng-table/datetime-picker-last-modified.html'}">
+                            {{request.requestHeader.statusDate | date:'yyyy-MM-dd'}}
                         </td>
                         <td data-title="'crs.request.list.tableHeader.requestType' | translate" sortable="'requestType'" filter="{requestType: 'ng-table/request-type-select.html'}">
                             {{request.requestType | requestType | translate}}
@@ -113,6 +113,12 @@
     <div class="input-group select-filter">
         <span ng-if="(vm.daterange.startDate !== undefined && vm.daterange.endDate !== undefined) && (vm.daterange.startDate !== '' && vm.daterange.endDate !== '') && (vm.daterange.startDate !== null && vm.daterange.endDate !== null)" ng-click="vm.onDateRangeChange(true)" class="md md-remove-circle" style="color: red; float: right; margin-bottom: -16px; cursor: pointer"></span>
         <input type="text" class="" ng-change="vm.onDateRangeChange()" placeholder="Dates..." readonly="" options="vm.options" name="some_name" ng-model="vm.daterange" style="background: transparent; border: none; box-shadow: inset 0 -1px 0 #ddd; font-size: 13px;" date-range-picker />
+    </div>
+</script>
+<script type="text/ng-template" id="ng-table/datetime-picker-last-modified.html">
+    <div class="input-group select-filter">
+          <span ng-if="(vm.lastModifiedDateRange.startDate !== undefined && vm.lastModifiedDateRange.endDate !== undefined) && (vm.lastModifiedDateRange.startDate !== '' && vm.lastModifiedDateRange.endDate !== '') && (vm.lastModifiedDateRange.startDate !== null && vm.lastModifiedDateRange.endDate !== null)" ng-click="vm.onLastModifiedChange(true)" class="md md-remove-circle" style="color: red; float: right; margin-bottom: -16px; cursor: pointer"></span>
+        <input type="text" class="" ng-change="vm.onLastModifiedChange()" placeholder="Dates..." readonly="" options="vm.options" name="some_name" ng-model="vm.lastModifiedDateRange" style="background: transparent; border: none; box-shadow: inset 0 -1px 0 #ddd; font-size: 13px;" date-range-picker /> 
     </div>
 </script>
 <script type="text/ng-template" id="ng-table/manager-select.html">

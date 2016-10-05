@@ -242,11 +242,21 @@ angular
                             startDate: acceptedRequests.requestDateFrom,
                             endDate: acceptedRequests.requestDateTo
                         });
+                        changeAcceptedFilter('statusDate', {
+                            startDate: acceptedRequests.statusDateFrom,
+                            endDate: acceptedRequests.statusDateTo
+                        });
 
                         if(acceptedRequests.requestDateFrom !== 0 && acceptedRequests.requestDateTo !== 0){
                             vm.daterange = {
                                 startDate: new Date(acceptedRequests.requestDateFrom),
                                 endDate: new Date(acceptedRequests.requestDateTo)
+                            };
+                        }
+                        if(acceptedRequests.statusDateFrom !== 0 && acceptedRequests.statusDateTo !== 0){
+                            vm.lastModifiedDateRange = {
+                                startDate: new Date(acceptedRequests.statusDateFrom),
+                                endDate: new Date(acceptedRequests.statusDateFrom)
                             };
                         }
                     }
@@ -609,7 +619,7 @@ angular
             var isDateRangeFilteredFirstTime = false;
 
             var buildRequestFilterValues = function(typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, manager, status, author,
-                project, assignee, requestId, requestType, showUnassignedRequests){
+                project, assignee, requestId, requestType, showUnassignedRequests, statusDateFrom, statusDateTo){
                 var requestList = {};
                 requestList.batchRequest = batchRequest;
                 requestList.concept = fsn;
@@ -630,7 +640,8 @@ angular
                 requestList.requestId = requestId;
                 requestList.requestType = requestType;
                 requestList.showUnassignedOnly = showUnassignedRequests;
-                requestList.search = search;
+                requestList.statusDateFrom = convertDateToMilliseconds(statusDateFrom);
+                requestList.statusDateTo = convertDateToMilliseconds(statusDateTo);
                 return requestList;
             };
 
@@ -646,6 +657,10 @@ angular
                 sorting: { 'requestHeader.requestDate': 'desc', batchRequest: 'asc', id: 'asc' },
                 filter: {
                     requestDate: {
+                        startDate: null,
+                        endDate: null
+                    },
+                    statusDate: {
                         startDate: null,
                         endDate: null
                     }
@@ -689,7 +704,9 @@ angular
                         params.filter().assignee,
                         params.filter().requestId,
                         params.filter().requestType,
-                        vm.showUnassignedRequests
+                        vm.showUnassignedRequests,
+                        params.filter().statusDate.startDate,
+                        params.filter().statusDate.endDate
                     );
 
                     if(acceptedRequests === undefined){
@@ -727,6 +744,17 @@ angular
                 requestTableParams.filter().requestDate = vm.daterange;
             };
 
+            vm.onLastModifiedChange = function(action){
+                if(action){
+                    vm.lastModifiedDateRange = {
+                        startDate: null,
+                        endDate: null
+                    };
+                }
+                requestTableParams.reload();
+                requestTableParams.filter().statusDate = vm.lastModifiedDateRange;
+            };
+
             vm.tableParams = requestTableParams;
             vm.assignSelectedRequests = assignSelectedRequests;
             vm.assignSelectedRequestsToStaff = assignSelectedRequestsToStaff;
@@ -746,6 +774,10 @@ angular
             vm.staffs = [];
             vm.showFilter = false;
             vm.daterange = {
+                startDate: null,
+                endDate: null
+            };
+            vm.lastModifiedDateRange = {
                 startDate: null,
                 endDate: null
             };
