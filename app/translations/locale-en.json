@@ -271,7 +271,7 @@
                     "label": "Summary"
                 },
                 "button": {
-                    "assignRequest": "Assign Requests to an Authoring Task",
+                    "assignRequest": "Assign",
                     "cancel": "Cancel"
                 }
             },
