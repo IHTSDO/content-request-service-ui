@@ -226,7 +226,7 @@
                         "withdraw": "Withdraw Request",
                         "pendingForClarification": "Pending Clarification",
                         "acceptAndAssign": "Accept and Assign To Author",
-                        "assign": "Assign Request",
+                        "assign": "Assign Request to an Authoring Task",
                         "assignToStaff": "Assign To Manager",
                         "moveToInInceptionElaboration": "Move to In Inception/Elaboration",
                         "addNote": "Add Note",
@@ -259,7 +259,7 @@
                 }
             },
             "assignModal": {
-                "title": "Assign Requests to Authoring Task",
+                "title": "Assign Requests to an Authoring Task",
                 "assignToStaffTitle": "Assign Requests to Manager",
                 "project": {
                     "label": "Project"
@@ -271,7 +271,7 @@
                     "label": "Summary"
                 },
                 "button": {
-                    "assignRequest": "Assign Requests",
+                    "assignRequest": "Assign",
                     "cancel": "Cancel"
                 }
             },

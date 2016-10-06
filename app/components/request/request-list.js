@@ -236,10 +236,21 @@ angular
                                 startDate: subbmitedRequests.requestDateFrom,
                                 endDate: subbmitedRequests.requestDateTo
                             });
+                            changeSubmittedFilter('statusDate', {
+                                startDate: subbmitedRequests.statusDateFrom,
+                                endDate: subbmitedRequests.statusDateTo
+                            });
+
                             if(subbmitedRequests.requestDateFrom !== 0 && subbmitedRequests.requestDateTo !== 0){
                                 vm.daterangeSQ = {
                                     startDate: new Date(subbmitedRequests.requestDateFrom),
                                     endDate: new Date(subbmitedRequests.requestDateTo)
+                                };
+                            }
+                            if(subbmitedRequests.statusDateFrom !== 0 && subbmitedRequests.statusDateTo !== 0){
+                                vm.lastModifiedDateRangeSR = {
+                                    startDate: new Date(subbmitedRequests.statusDateFrom),
+                                    endDate: new Date(subbmitedRequests.statusDateTo)
                                 };
                             }
                         }
@@ -265,10 +276,20 @@ angular
                                 startDate: myRequests.requestDateFrom,
                                 endDate: myRequests.requestDateTo
                             });
+                            changeMyRequestFilter('statusDate', {
+                                startDate: myRequests.statusDateFrom,
+                                endDate: myRequests.statusDateTo
+                            });
                             if(myRequests.requestDateFrom !== 0 && myRequests.requestDateTo !== 0){
                                 vm.daterange = {
                                     startDate: new Date(myRequests.requestDateFrom),
                                     endDate: new Date(myRequests.requestDateTo)
+                                };
+                            }
+                            if(myRequests.statusDateFrom !== 0 && myRequests.statusDateTo !== 0){
+                                vm.lastModifiedDateRange = {
+                                    startDate: new Date(myRequests.statusDateFrom),
+                                    endDate: new Date(myRequests.statusDateTo)
                                 };
                             }
                         }
@@ -294,10 +315,20 @@ angular
                                 startDate: myAssignedRequests.requestDateFrom,
                                 endDate: myAssignedRequests.requestDateTo
                             });
+                            changeMyRequestFilter('statusDate', {
+                                startDate: myAssignedRequests.statusDateFrom,
+                                endDate: myAssignedRequests.statusDateTo
+                            });
                             if(myAssignedRequests.requestDateFrom !== 0 && myAssignedRequests.requestDateTo !== 0){
                                 vm.daterangeMAR = {
                                     startDate: new Date(myAssignedRequests.requestDateFrom),
                                     endDate: new Date(myAssignedRequests.requestDateTo)
+                                };
+                            }
+                            if(myAssignedRequests.statusDateFrom !== 0 && myAssignedRequests.statusDateTo !== 0){
+                                vm.lastModifiedDateRangeMAR = {
+                                    startDate: new Date(myAssignedRequests.statusDateFrom),
+                                    endDate: new Date(myAssignedRequests.statusDateTo)
                                 };
                             }
                         }
@@ -853,7 +884,7 @@ angular
                 return milliseconds.getTime();
             };
 
-            var buildRequestList = function(typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, manager, status, author, requestId, requestType, showClosedRequests){
+            var buildRequestList = function(typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, manager, status, author, requestId, requestType, showClosedRequests, statusDateFrom, statusDateTo){
                 var requestList = {};
                 requestList.batchRequest = batchRequest;
                 requestList.concept = fsn;
@@ -873,14 +904,12 @@ angular
                 requestList.requestType = requestType;
                 requestList.search = search;
                 requestList.showClosedRequests = showClosedRequests;
+                requestList.statusDateFrom = convertDateToMilliseconds(statusDateFrom);
+                requestList.statusDateTo = convertDateToMilliseconds(statusDateTo);
                 return requestList;
 
             };
 
-            vm.daterange = {
-                startDate: 'aa',
-                endDate: 'aa'
-            };
             var isDateRangeFilteredFirstTime = false;
 
             var requestTableParams = new NgTableParams({
@@ -894,7 +923,10 @@ angular
                             startDate: null,
                             endDate: null
                         },
-
+                        statusDate: {
+                            startDate: null,
+                            endDate: null
+                        }
                     }
                 },
                 {
@@ -932,7 +964,9 @@ angular
                             params.filter().author,
                             params.filter().requestId,
                             params.filter().requestType,
-                            vm.showClosedRequests
+                            vm.showClosedRequests,
+                            params.filter().statusDate.startDate,
+                            params.filter().statusDate.endDate
                         );
 
                         if(myRequests === undefined){
@@ -968,6 +1002,10 @@ angular
                         status: $routeParams.status,
                         manager: $routeParams.manager,
                         requestDate: {
+                            startDate: null,
+                            endDate: null
+                        },
+                        statusDate: {
                             startDate: null,
                             endDate: null
                         }
@@ -1008,7 +1046,9 @@ angular
                             params.filter().ogirinatorId,
                             params.filter().requestId,
                             params.filter().requestType,
-                            vm.showClosedRequests
+                            vm.showClosedRequests,
+                            params.filter().statusDate.startDate,
+                            params.filter().statusDate.endDate
                         );
 
                         if(myAssignedRequests === undefined){
@@ -1044,6 +1084,10 @@ angular
                         manager: $routeParams.manager,
 						author: $routeParams.ogirinatorId,
                         requestDate: {
+                            startDate: null,
+                            endDate: null
+                        },
+                        statusDate: {
                             startDate: null,
                             endDate: null
                         }
@@ -1086,7 +1130,9 @@ angular
                             params.filter().ogirinatorId,
                             params.filter().requestId,
                             params.filter().requestType,
-                            vm.showClosedRequests
+                            vm.showClosedRequests,
+                            params.filter().statusDate.startDate,
+                            params.filter().statusDate.endDate
                         );
                         if(subbmitedRequests === undefined){
                             subbmitedRequests = filterValues;
@@ -1141,6 +1187,17 @@ angular
                 assignedRequestTableParams.filter().requestDate = vm.daterangeMAR;
             };
 
+            var onLastModifiedChangeMAR = function(action){
+                if(action){
+                    vm.lastModifiedDateRangeMAR = {
+                        startDate: null,
+                        endDate: null
+                    };
+                }
+                assignedRequestTableParams.reload();
+                assignedRequestTableParams.filter().statusDate = vm.lastModifiedDateRangeMAR;
+            };
+
             var onDateRangeChangeSQ = function(action){
                 if(action){
                     vm.daterangeSQ = {
@@ -1152,6 +1209,17 @@ angular
                 submittedTableParams.filter().requestDate = vm.daterangeSQ;
             };
 
+            var onLastModifiedChangeSR = function(action){
+                if(action){
+                    vm.lastModifiedDateRangeSR = {
+                        startDate: null,
+                        endDate: null
+                    };
+                }
+                submittedTableParams.reload();
+                submittedTableParams.filter().statusDate = vm.lastModifiedDateRangeSR;
+            };
+
             var onDateRangeChange = function(action){
                 if(action){
                     vm.daterange = {
@@ -1161,6 +1229,17 @@ angular
                 }
                 requestTableParams.reload();
                 requestTableParams.filter().requestDate = vm.daterange;
+            };
+
+            var onLastModifiedChange = function(action){
+                if(action){
+                    vm.lastModifiedDateRange = {
+                        startDate: null,
+                        endDate: null
+                    };
+                }
+                requestTableParams.reload();
+                requestTableParams.filter().statusDate = vm.lastModifiedDateRange;
             };
 
             var toggleShowClosedRequests = function(list) {
@@ -1199,6 +1278,9 @@ angular
             vm.assignSelectedRequests = assignSelectedRequests;
             vm.acceptAndAssignSelectedRequests = acceptAndAssignSelectedRequests;
             vm.addNote = addNote;
+            vm.onLastModifiedChange = onLastModifiedChange;
+            vm.onLastModifiedChangeSR = onLastModifiedChangeSR;
+            vm.onLastModifiedChangeMAR = onLastModifiedChangeMAR;
             vm.daterange = {
                 startDate: null,
                 endDate: null
@@ -1208,6 +1290,18 @@ angular
                 endDate: null
             };
             vm.daterangeMAR = {
+                startDate: null,
+                endDate: null
+            };
+            vm.lastModifiedDateRange = {
+                startDate: null,
+                endDate: null
+            };
+            vm.lastModifiedDateRangeSR = {
+                startDate: null,
+                endDate: null
+            };
+            vm.lastModifiedDateRangeMAR = {
                 startDate: null,
                 endDate: null
             };
