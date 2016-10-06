@@ -122,16 +122,16 @@
                 <span class="md md-save blue darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.save"></span>
             </button>
-            <button ng-if="requestVM.pageMode.value === 'new' || requestVM.pageMode.value === 'edit'" ng-disabled="requestVM.request.requestHeader.status !== 'DRAFT'" class="btn btn-default pink1 darken-1 review" style="text-transform: none" ng-click="requestVM.saveAndSubmitRequest()" title="{{'tooltips.request.details.info.button.submit' | translate}}">
-                <span class="md md-send pink darken-2 iconbase"></span>
+            <button ng-if="requestVM.pageMode.value === 'new' || requestVM.pageMode.value === 'edit'" ng-disabled="requestVM.request.requestHeader.status !== 'DRAFT'" class="btn btn-default green darken-1 " style="text-transform: none" ng-click="requestVM.saveAndSubmitRequest()" title="{{'tooltips.request.details.info.button.submit' | translate}}">
+                <span class="md md-send green darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.submit"></span>
             </button>
             <button ng-if="requestVM.pageMode.value === 'edit' && requestVM.request.requestHeader.status === 'REJECTED'" class="btn btn-default brown darken-1 appeal" style="text-transform: none" ng-click="requestVM.appealRequest()" title="{{'tooltips.request.details.info.button.appeal' | translate}}">
                 <span class="md md-forum brown darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.appeal"></span>
             </button>
-            <button ng-if="requestVM.pageMode.value === 'edit' && (requestVM.request.requestHeader.status === 'NEW' || requestVM.request.requestHeader.status === 'ACCEPTED')" ng-disabled="requestVM.requestOwner !== requestVM.request.requestHeader.ogirinatorId && requestVM.requestOwner !== requestVM.request.requestHeader.requestorId" class="btn btn-default grey darken-1 withdraw" style="text-transform: none" ng-click="requestVM.withdrawRequest()" title="{{'tooltips.request.details.info.button.withdraw' | translate}}">
-                <span class="md md-backspace grey darken-2 iconbase"></span>
+            <button ng-if="requestVM.pageMode.value === 'edit' && (requestVM.request.requestHeader.status === 'NEW' || requestVM.request.requestHeader.status === 'ACCEPTED')" ng-disabled="requestVM.requestOwner !== requestVM.request.requestHeader.ogirinatorId && requestVM.requestOwner !== requestVM.request.requestHeader.requestorId" class="btn btn-default orange darken-1 withdraw" style="text-transform: none" ng-click="requestVM.withdrawRequest()" title="{{'tooltips.request.details.info.button.withdraw' | translate}}">
+                <span class="md md-backspace orange darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.withdraw"></span>
             </button>
             
