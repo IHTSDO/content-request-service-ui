@@ -157,6 +157,7 @@
                 <span class="md md-assignment-turned-in blue darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.acceptAndAssign"></span>
             </button>
+
             <button ng-if="requestVM.pageMode.value === 'preview' && requestVM.request.requestHeader.status === 'ACCEPTED' && !requestVM.request.authoringTaskTicket" ng-disabled="requestVM.loadingProjects || vm.loadingAuthors" ng-disabled="requestVM.request.requestHeader.assignedProject" class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.assignRequest()" title="{{'tooltips.request.details.info.button.assign' | translate}}">
                 <span class="md md-content-paste blue darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.assign"></span>
@@ -171,6 +172,12 @@
                 <span class="md md-dnd-forwardslash deep-purple darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.reject"></span>
             </button>
+
+            <button ng-if="requestVM.pageMode.value === 'preview' && requestVM.request.authoringTaskTicket" ng-disabled="requestVM.loadingProjects || vm.loadingAuthors" class="btn btn-default deep-purple darken-1 validate" ng-click="requestVM.unassignAndRejectRequest()" style="text-transform: none" title="{{'tooltips.request.details.info.button.unassignAndRejectRequest' | translate}}">
+                <span class="md md-dnd-forwardslash deep-purple darken-2 iconbase"></span>
+                <span class="button-link" translate="crs.request.details.info.button.unassignAndRejectRequest"></span>
+            </button>
+
             <button ng-if="requestVM.pageMode.value === 'preview' && requestVM.request.requestHeader.status === 'APPEAL'" ng-disabled="requestVM.request.requestHeader.status !== 'NEW' && requestVM.request.requestHeader.status !== 'APPEAL'" class="btn btn-default orange darken-1 appealReject" ng-click="requestVM.rejectAppeal()" style="text-transform: none" title="{{'tooltips.request.details.info.button.appealReject' | translate}}">
                 <span class="md md-dnd-forwardslash orange darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.appealReject"></span>

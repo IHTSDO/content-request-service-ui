@@ -1929,12 +1929,35 @@ angular
 
                 modalInstance.result.then(function(rejectComment) {
                     changeRequestStatus(vm.request.id, REQUEST_STATUS.REJECTED, { reason: rejectComment })
+                    .then(function() {
+                        notificationService.sendMessage('crs.request.message.requestRejected', 5000);
+                        $location.path(prevPage).search({});
+                    }, function(e) {
+                        showErrorMessage(e.message);
+                    });
+                });
+            };
+
+            var unassignAndRejectRequest = function(){
+                var modalInstance = openStatusCommentModal('unassignAndReject');
+
+                modalInstance.result.then(function(rejectComment) {
+                    notificationService.sendMessage('crs.request.message.requestUnassigningAndRejecting', 5000);
+                    return requestService.unassignRequest(vm.request.id).then(function() {
+                        changeRequestStatus(vm.request.id, REQUEST_STATUS.REJECTED, { reason: rejectComment })
                         .then(function() {
-                            notificationService.sendMessage('crs.request.message.requestRejected', 5000);
+                            notificationService.sendMessage('crs.request.message.requestUnassignedAndRejected', 5000);
                             $location.path(prevPage).search({});
                         }, function(e) {
                             showErrorMessage(e.message);
                         });
+                    }, function(e) {
+                        console.log(e);
+                        showErrorMessage(e.message);
+                    })
+                    .finally(function() {
+                        $rootScope.showAppLoading = false;
+                    });
                 });
             };
 
@@ -2196,6 +2219,7 @@ angular
             vm.authors = [];
             vm.loadSemanticTags = loadSemanticTags;
             vm.extractJustification = extractJustification;
+            vm.unassignAndRejectRequest = unassignAndRejectRequest;
             vm.isAdmin = false;
             vm.isViewer = false;
             vm.permissionChecked = false;

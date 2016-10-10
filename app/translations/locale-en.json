@@ -230,7 +230,8 @@
                         "assignToStaff": "Assign To Manager",
                         "moveToInInceptionElaboration": "Move to In Inception/Elaboration",
                         "addNote": "Add Note",
-                        "unassign": "Unassign Request"
+                        "unassign": "Unassign Request",
+                        "unassignAndRejectRequest": "Unassign And Reject"
                     },
                     "label": {
                         "batchId": "Batch ID",
@@ -281,7 +282,8 @@
                     "withdraw": "Withdraw Request",
                     "appeal": "Appeal Request Rejection",
                     "needClarify": "Pending for Clarification",
-                    "inInceptionElaboration": "In Inception/Elaboration"
+                    "inInceptionElaboration": "In Inception/Elaboration",
+                    "unassignAndReject": "Unassign And Reject Request"
                 },
                 "comment": {
                     "label": "Reason",
@@ -315,6 +317,8 @@
                 "requestRemoved": "Requests have been removed successfully",
                 "requestUnassigned": "Request has been unassigned successfully",
                 "requestUnassigning": "Unassigning request...",
+                "requestUnassigningAndRejecting": "Unassigning And Rejecting Request...",
+                "requestUnassignedAndRejected": "Request has been Unassigned And Rejected successfully",
 
                 "error": {
                     "requestTypeRequired": "Please select request type",
