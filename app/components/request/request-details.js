@@ -1585,6 +1585,13 @@ angular
                     }
                 }
 
+                // validate parent concept
+                if (vm.requestType !== REQUEST_TYPE.OTHER && vm.inputMode === REQUEST_INPUT_MODE.SIMPLE) {
+                    if (vm.request.parentConcept[0].conceptId === undefined || vm.request.parentConcept[0].conceptId === null) {
+                        error.parentConcept = fieldRequiredLangKey;
+                    }
+                }
+
                 // test general fields
                 if (!ignoreGeneralFields) {
                     if (!vm.request.additionalFields.topic ||
