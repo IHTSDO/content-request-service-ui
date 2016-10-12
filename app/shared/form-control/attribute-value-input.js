@@ -168,7 +168,7 @@ angular
                     var removeInactiveConcept = function(list){
                         var activeList = [];
                         for(var i in list){
-                            if(list[i].concept.active === true){
+                            if(list[i].active === true){
                                 activeList.push(list[i]);
                             }
                         }
