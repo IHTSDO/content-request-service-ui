@@ -1092,6 +1092,18 @@ angular
                                 obj.refType = 'EXISTING';
                                 item.proposedParents.push(obj);
                             }
+                        }else if(concept && vm.inputMode === REQUEST_INPUT_MODE.DIRECT){
+                            for(var j in concept.relationships){
+                                if(concept.relationships[j].type.conceptId === "116680003"){
+                                    if(concept.relationships[j].target.conceptId !== null){
+                                        var tmpObj = {};
+                                        tmpObj.conceptId = concept.relationships[j].target.conceptId;
+                                        tmpObj.fsn = concept.relationships[j].target.fsn;
+                                        tmpObj.refType = 'EXISTING';
+                                        item.proposedParents.push(tmpObj); 
+                                    }
+                                }
+                            }
                         }
                         if((definitionOfChanges.value === null || definitionOfChanges.value === undefined) && definitionOfChanges.currentFsn !== null){
                             var semanticTag;
@@ -1586,7 +1598,7 @@ angular
                 }
 
                 // validate parent concept
-                if (vm.requestType !== REQUEST_TYPE.OTHER && vm.inputMode === REQUEST_INPUT_MODE.SIMPLE) {
+                if (vm.requestType === REQUEST_TYPE.NEW_CONCEPT && vm.inputMode === REQUEST_INPUT_MODE.SIMPLE) {
                     if (vm.request.parentConcept[0].conceptId === undefined || vm.request.parentConcept[0].conceptId === null) {
                         error.parentConcept = fieldRequiredLangKey;
                     }
