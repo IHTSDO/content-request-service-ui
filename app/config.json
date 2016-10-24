@@ -1,10 +1,10 @@
 {
     "endpoint": {
-        "crs": "http://local.ihtsdotools.org/crs/",
-        "ims": "https://dev-ims.ihtsdotools.org/",
-        "snowowl": "https://dev-request.ihtsdotools.org/snowowl/",
-        "jira": "https://dev-jira.ihtsdotools.org/",
-        "ims-api": "https://dev-term.ihtsdotools.org/ims-api/"
+        "crs": "https://uat-request.ihtsdotools.org/ihtsdo-crs/",
+        "ims": "https://uat-ims.ihtsdotools.org/",
+        "snowowl": "https://uat-request.ihtsdotools.org/snowowl/",
+        "jira": "http://uat-jira.ihtsdotools.org:8080/",
+        "ims-api": "https://uat-term.ihtsdotools.org/ims-api/"
     },
     "xhrTimeout": 50000,
     "fileStatusPollingInterval": 5000,
@@ -37,9 +37,6 @@
     },
     "link": {
         "userGuide": "https://confluence.ihtsdotools.org/display/SCTCR/CRS+User+Guide",
-        "batchTemplate": "https://confluence.ihtsdotools.org/download/attachments/27594472/SIRS_Batch_Template-2016.xls",
-        "termOfService": "https://confluence.ihtsdotools.org/display/SCTCR/Content+Request+Service+Terms+of+Service",
-        "privacyPolicy": "https://confluence.ihtsdotools.org/display/TOOLS/IHTSDO+Tools+Privacy+Policy",
-        "contactUs": "http://www.ihtsdo.org/contact-us/"
+        "batchTemplate": "https://confluence.ihtsdotools.org/display/SCTCR/CRS+Template+File+For+Batch+Import"
     }
 }
