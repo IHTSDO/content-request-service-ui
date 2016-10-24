@@ -1586,7 +1586,7 @@ angular
                 }
 
                 // validate parent concept
-                if (vm.requestType !== REQUEST_TYPE.OTHER && vm.inputMode === REQUEST_INPUT_MODE.SIMPLE) {
+                if (vm.requestType === REQUEST_TYPE.NEW_CONCEPT && vm.inputMode === REQUEST_INPUT_MODE.SIMPLE) {
                     if (vm.request.parentConcept[0].conceptId === undefined || vm.request.parentConcept[0].conceptId === null) {
                         error.parentConcept = fieldRequiredLangKey;
                     }
