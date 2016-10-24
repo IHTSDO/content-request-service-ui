@@ -749,6 +749,18 @@ ul.batch-statistic.timeline {
 .dashboard-links .md{
   color:#848999
 }
+.dashboard-links:active{
+  background: #5cbaff;
+}
+.dashboard-links:visited{
+  background: #5cbaff;
+}
+.dashboard-links:hover{
+  background: #5cbaff;
+}
+.activeList {
+  background: #5cbaff !important;
+}
 .statistics-requests .badge {
   font-size: 11px;
   padding: 2px 3px;

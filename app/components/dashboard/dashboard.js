@@ -40,6 +40,7 @@ angular
         'requestService',
         function ($rootScope, $uibModal, $routeParams, $location, $route, accountService, notificationService, requestService) {
             var vm = this;
+            vm.activeList = $route.current.params.list;
 
             var initView = function () {
                 var list = $routeParams.list;

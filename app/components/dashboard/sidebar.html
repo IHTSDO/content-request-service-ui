@@ -2,31 +2,31 @@
     <ul class="dashboard-site-menu" ng-cloak style="padding: 0px; list-style: none;">
 
         <li ng-if="dashboard.permissionChecked && !dashboard.isViewer"><a class="dashboard-links" ng-href="#/requests">
-            <button type="button" class="btn grey darken-3 dashboard-links" title="{{'tooltips.dashboard.sidebar.myRequest' | translate}}">
+            <button type="button" class="btn grey darken-3 dashboard-links" ng-class="{'activeList': (dashboard.activeList === 'requests' || dashboard.activeList === undefined)}" title="{{'tooltips.dashboard.sidebar.myRequest' | translate}}">
                 <i class="md md-format-list-numbered"></i> {{'crs.dashboard.sidebar.myRequest' | translate}}
             </button>
         </a></li>
 
         <li ng-if="dashboard.permissionChecked && dashboard.isAdmin"><a class="dashboard-links" ng-href="#/my-assigned-requests">
-            <button type="button" class="btn grey darken-3 dashboard-links" title="{{'tooltips.dashboard.sidebar.myAssignedRequests' | translate}}">
+            <button type="button" class="btn grey darken-3 dashboard-links" ng-class="{'activeList': dashboard.activeList === 'my-assigned-requests'}" title="{{'tooltips.dashboard.sidebar.myAssignedRequests' | translate}}">
                 <i class="md md-format-list-numbered"></i> {{'crs.dashboard.sidebar.myAssignedRequests' | translate}}
             </button>
         </a></li>
 
         <li><a class="dashboard-links" ng-href="#/submitted-requests">
-            <button type="button" class="btn grey darken-3 dashboard-links" title="{{'tooltips.dashboard.sidebar.submittedRequest' | translate}}">
+            <button type="button" class="btn grey darken-3 dashboard-links" ng-class="{'activeList': (dashboard.activeList === 'submitted-requests' || (dashboard.isViewer && dashboard.activeList === undefined))}" title="{{'tooltips.dashboard.sidebar.submittedRequest' | translate}}">
                 <i class="md md-format-list-numbered"></i> {{'crs.dashboard.sidebar.submittedRequest' | translate}}
             </button>
         </a></li>
 
         <li ng-if="dashboard.permissionChecked && dashboard.isAdmin"><a class="dashboard-links" ng-href="#/accepted-requests">
-            <button type="button" class="btn grey darken-3 dashboard-links" title="{{'tooltips.dashboard.sidebar.acceptedRequest' | translate}}">
+            <button type="button" class="btn grey darken-3 dashboard-links" ng-class="{'activeList': dashboard.activeList === 'accepted-requests'}" title="{{'tooltips.dashboard.sidebar.acceptedRequest' | translate}}">
                 <i class="md md-format-list-numbered"></i> {{'crs.dashboard.sidebar.acceptedRequest' | translate}}
             </button>
         </a></li>
 
         <li ng-if="dashboard.permissionChecked && !dashboard.isViewer"><a class="dashboard-links" ng-href="#/batches">
-            <button type="button" class="btn grey darken-3 dashboard-links" title="{{'tooltips.dashboard.sidebar.myBatch' | translate}}">
+            <button type="button" class="btn grey darken-3 dashboard-links" ng-class="{'activeList': dashboard.activeList === 'batches'}" title="{{'tooltips.dashboard.sidebar.myBatch' | translate}}">
                 <i class="md md-folder"></i> {{'crs.dashboard.sidebar.myBatch' | translate}}
             </button>
         </a></li>
