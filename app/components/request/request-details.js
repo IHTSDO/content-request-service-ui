@@ -1092,6 +1092,16 @@ angular
                                 obj.refType = 'EXISTING';
                                 item.proposedParents.push(obj);
                             }
+                        }else if(concept && vm.inputMode === REQUEST_INPUT_MODE.DIRECT){
+                            for(var j in concept.relationships){
+                                if(concept.relationships[j].type.conceptId === "116680003"){
+                                    var tmpObj = {};
+                                    tmpObj.conceptId = concept.relationships[j].target.conceptId;
+                                    tmpObj.fsn = concept.relationships[j].target.fsn;
+                                    tmpObj.refType = 'EXISTING';
+                                    item.proposedParents.push(tmpObj);
+                                }
+                            }
                         }
                         if((definitionOfChanges.value === null || definitionOfChanges.value === undefined) && definitionOfChanges.currentFsn !== null){
                             var semanticTag;
