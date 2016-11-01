@@ -2,13 +2,13 @@
     <ul class="dashboard-site-menu" ng-cloak style="padding: 0px; list-style: none;">
 
         <li ng-if="dashboard.permissionChecked && !dashboard.isViewer"><a class="dashboard-links" ng-href="#/requests">
-            <button type="button" class="btn grey darken-3 dashboard-links" ng-class="{'activeList': (dashboard.activeList === 'requests' || dashboard.activeList === undefined)}" title="{{'tooltips.dashboard.sidebar.myRequest' | translate}}">
+            <button type="button" class="btn grey darken-3 dashboard-links" ng-class="{'activeList': (dashboard.activeList === 'requests' || ((!dashboard.isAdmin && !dashboard.isStaff) && dashboard.activeList === undefined))}" title="{{'tooltips.dashboard.sidebar.myRequest' | translate}}">
                 <i class="md md-format-list-numbered"></i> {{'crs.dashboard.sidebar.myRequest' | translate}}
             </button>
         </a></li>
 
         <li ng-if="dashboard.permissionChecked && dashboard.isAdmin"><a class="dashboard-links" ng-href="#/my-assigned-requests">
-            <button type="button" class="btn grey darken-3 dashboard-links" ng-class="{'activeList': dashboard.activeList === 'my-assigned-requests'}" title="{{'tooltips.dashboard.sidebar.myAssignedRequests' | translate}}">
+            <button type="button" class="btn grey darken-3 dashboard-links" ng-class="{'activeList': dashboard.activeList === 'my-assigned-requests' || ((dashboard.isAdmin || dashboard.isStaff) && dashboard.activeList === undefined)}" title="{{'tooltips.dashboard.sidebar.myAssignedRequests' | translate}}">
                 <i class="md md-format-list-numbered"></i> {{'crs.dashboard.sidebar.myAssignedRequests' | translate}}
             </button>
         </a></li>

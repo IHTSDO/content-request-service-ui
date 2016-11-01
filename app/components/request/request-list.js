@@ -938,7 +938,7 @@ angular
             var requestTableParams = new NgTableParams({
                     page: 1,
                     count: 10,
-                    sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'asc', id: 'asc'},
+                    sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'desc', id: 'desc'},
                     filter: {
                         status: $routeParams.status,
 						manager: $routeParams.manager,
@@ -1020,7 +1020,7 @@ angular
             var assignedRequestTableParams = new NgTableParams({
                     page: 1,
                     count: 10,
-                    sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'asc', id: 'asc'},
+                    sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'desc', id: 'desc'},
                     filter: {
                         status: $routeParams.status,
                         manager: $routeParams.manager,
@@ -1101,7 +1101,7 @@ angular
             var submittedTableParams = new NgTableParams({
                     page: 1,
                     count: 10,
-                    sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'asc', id: 'asc'},
+                    sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'desc', id: 'desc'},
                     filter: {
                         status: $routeParams.status,
                         manager: $routeParams.manager,

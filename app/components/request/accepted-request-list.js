@@ -681,7 +681,7 @@ angular
             var requestTableParams = new NgTableParams({
                 page: 1,
                 count: 10,
-                sorting: { 'requestHeader.requestDate': 'desc', batchRequest: 'asc', id: 'asc' },
+                sorting: { 'requestHeader.requestDate': 'desc', batchRequest: 'desc', id: 'desc' },
                 filter: {
                     requestDate: {
                         startDate: null,

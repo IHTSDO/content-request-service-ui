@@ -51,62 +51,74 @@ angular
                     vm.isViewer = (rs.isViewer === true);
                     vm.isStaff = (rs.isStaff === true);
                     vm.isRequester = (rs.isRequester === true);
-                    if(vm.isViewer){
-                        $rootScope.pageTitles = [
-                            {url: '#/submitted-requests', label: 'crs.request.list.title.submittedRequests'}
-                        ];
-                        vm.listView = 'components/request/submitted-request-list.html';
-                    }
+                    // if(vm.isViewer){
+                    //     $rootScope.pageTitles = [
+                    //         {url: '#/submitted-requests', label: 'crs.request.list.title.submittedRequests'}
+                    //     ];
+                    //     vm.listView = 'components/request/submitted-request-list.html';
+                    // }
                     getStatisticsRequests();
-                });
                 
-                switch (list) {
-                    case 'batches':
-                        $rootScope.pageTitles = [
-                            {url: '#/batches', label: 'crs.batch.list.title'}
-                        ];
-                        vm.listView = 'components/batch/batch-list.html';
-                        break;
-                    case 'my-assigned-requests':
-                        $rootScope.pageTitles = [
-                            {url: '#/my-assigned-requests', label: 'crs.request.list.title.myAssignedRequests'}
-                        ];
-                        vm.listView = 'components/request/my-assigned-requests.html';
-                        break;
-                    case 'accepted-requests':
-                        $rootScope.pageTitles = [
-                            {url: '#/accepted-requests', label: 'crs.request.list.title.acceptedRequests'}
-                        ];
-                        vm.listView = 'components/request/accepted-request-list.html';
-                        break;
-                    case 'submitted-requests':
-                        $rootScope.pageTitles = [
-                            {url: '#/submitted-requests', label: 'crs.request.list.title.submittedRequests'}
-                        ];
-                        vm.listView = 'components/request/submitted-request-list.html';
-                        break;
-                    case 'filter-requests':
-                        $rootScope.pageTitles = [
-                            {url: '#/submitted-requests', label: 'crs.request.list.title.submittedRequests'}
-                        ];
-                        vm.listView = 'components/request/filter-requests.html';
-                        break;
-                    case 'requests':
-                    /* falls through */
-                    default:
-                        // if(vm.isViewer){
-                        //     $rootScope.pageTitles = [
-                        //         {url: '#/submitted-requests', label: 'crs.request.list.title.submittedRequests'}
-                        //     ];
-                        //     vm.listView = 'components/request/submitted-request-list.html';
-                        //     break;
-                        // }
-                        $rootScope.pageTitles = [
-                            {url: '#/requests', label: 'crs.request.list.title.requests'}
-                        ];
-                        vm.listView = 'components/request/request-list.html';
-                        break;
-                }
+                    switch (list) {
+                        case 'batches':
+                            $rootScope.pageTitles = [
+                                {url: '#/batches', label: 'crs.batch.list.title'}
+                            ];
+                            vm.listView = 'components/batch/batch-list.html';
+                            break;
+                        case 'my-assigned-requests':
+                            $rootScope.pageTitles = [
+                                {url: '#/my-assigned-requests', label: 'crs.request.list.title.myAssignedRequests'}
+                            ];
+                            vm.listView = 'components/request/my-assigned-requests.html';
+                            break;
+                        case 'accepted-requests':
+                            $rootScope.pageTitles = [
+                                {url: '#/accepted-requests', label: 'crs.request.list.title.acceptedRequests'}
+                            ];
+                            vm.listView = 'components/request/accepted-request-list.html';
+                            break;
+                        case 'submitted-requests':
+                            $rootScope.pageTitles = [
+                                {url: '#/submitted-requests', label: 'crs.request.list.title.submittedRequests'}
+                            ];
+                            vm.listView = 'components/request/submitted-request-list.html';
+                            break;
+                        case 'filter-requests':
+                            $rootScope.pageTitles = [
+                                {url: '#/submitted-requests', label: 'crs.request.list.title.submittedRequests'}
+                            ];
+                            vm.listView = 'components/request/filter-requests.html';
+                            break;
+                        case 'requests':
+                            $rootScope.pageTitles = [
+                                {url: '#/requests', label: 'crs.request.list.title.requests'}
+                            ];
+                            vm.listView = 'components/request/request-list.html';
+                            break;
+                        /* falls through */
+                        default:
+                            if(vm.isViewer){
+                                $rootScope.pageTitles = [
+                                    {url: '#/submitted-requests', label: 'crs.request.list.title.submittedRequests'}
+                                ];
+                                vm.listView = 'components/request/submitted-request-list.html';
+                                break;
+                            }else if(vm.isAdmin || vm.isStaff){
+                                $rootScope.pageTitles = [
+                                    {url: '#/my-assigned-requests', label: 'crs.request.list.title.myAssignedRequests'}
+                                ];
+                                vm.listView = 'components/request/my-assigned-requests.html';
+                                break;
+                            }else{
+                                $rootScope.pageTitles = [
+                                    {url: '#/requests', label: 'crs.request.list.title.requests'}
+                                ];
+                                vm.listView = 'components/request/request-list.html';
+                                break;
+                            }
+                    }
+                });
             };
 
             var createRequest = function (rs) {
