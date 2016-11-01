@@ -232,6 +232,7 @@ angular
                             changeSubmittedFilter('status', subbmitedRequests.status);
                             changeSubmittedFilter('author', subbmitedRequests.ogirinatorId);
                             changeSubmittedFilter('requestId', subbmitedRequests.requestId);
+                            changeSubmittedFilter('summary', subbmitedRequests.summary);
                             changeSubmittedFilter('requestDate', {
                                 startDate: subbmitedRequests.requestDateFrom,
                                 endDate: subbmitedRequests.requestDateTo
@@ -311,6 +312,7 @@ angular
                             changeAssignedFilter('status', myAssignedRequests.status);
                             changeAssignedFilter('author', myAssignedRequests.ogirinatorId);
                             changeAssignedFilter('requestId', myAssignedRequests.requestId);
+                            changeAssignedFilter('summary', myAssignedRequests.summary);
                             changeAssignedFilter('requestDate', {
                                 startDate: myAssignedRequests.requestDateFrom,
                                 endDate: myAssignedRequests.requestDateTo
@@ -334,6 +336,26 @@ angular
                         }
                     }
                 });
+                vm.defaultEnabledColumns = {
+                    batchId: true,
+                    requestId: true,
+                    concept: true,
+                    jiraTicketId: true,
+                    requestor: true,
+                    createdDate: true,
+                    modifiedDate: true,
+                    type: true,
+                    topic: true,
+                    manager: false,
+                    status: true,
+                    summary: false,
+                };
+                
+                vm.enabledColumns = requestService.getSavedColumns();
+
+                if(vm.enabledColumns === null || vm.enabledColumns === undefined){
+                    vm.enabledColumns = vm.defaultEnabledColumns;
+                }
 
                 // load authors
                 loadAuthors();
@@ -884,7 +906,7 @@ angular
                 return milliseconds.getTime();
             };
 
-            var buildRequestList = function(typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, manager, status, author, requestId, requestType, showClosedRequests, statusDateFrom, statusDateTo){
+            var buildRequestList = function(typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, summary, manager, status, author, requestId, requestType, showClosedRequests, statusDateFrom, statusDateTo){
                 var requestList = {};
                 requestList.batchRequest = batchRequest;
                 requestList.concept = fsn;
@@ -906,6 +928,7 @@ angular
                 requestList.showClosedRequests = showClosedRequests;
                 requestList.statusDateFrom = convertDateToMilliseconds(statusDateFrom);
                 requestList.statusDateTo = convertDateToMilliseconds(statusDateTo);
+                requestList.summary = summary;
                 return requestList;
 
             };
@@ -958,7 +981,7 @@ angular
                             params.filter().requestDate.startDate,
                             params.filter().requestDate.endDate,
                             params.filter().topic,
-                            // params.filter().summary,
+                            null,
                             params.filter().manager,
                             params.filter().status,
                             params.filter().author,
@@ -1040,7 +1063,7 @@ angular
                             params.filter().requestDate.startDate,
                             params.filter().requestDate.endDate,
                             params.filter().topic,
-                            // params.filter().summary,
+                            params.filter().summary,
                             vm.assignee,
                             params.filter().status,
                             params.filter().ogirinatorId,
@@ -1124,7 +1147,7 @@ angular
                             params.filter().requestDate.startDate,
                             params.filter().requestDate.endDate,
                             params.filter().topic,
-                            // params.filter().summary,
+                            params.filter().summary,
                             params.filter().manager,
                             params.filter().status,
                             params.filter().ogirinatorId,
@@ -1256,10 +1279,17 @@ angular
                           vm.assignedRequestTableParams.reload();
                           break;
                 }
-                
             };
 
-            
+            $scope.$watch(function(){
+                return vm.enabledColumns;
+            }, function(newVal){
+                if(newVal){
+                    var list = $routeParams.list;
+                    requestService.setSavedColumns(list, newVal);
+                }
+            });
+
             vm.showFilter = false;
             vm.isAdmin = false;
             vm.isViewer = false;

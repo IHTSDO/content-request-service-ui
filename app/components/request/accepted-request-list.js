@@ -18,7 +18,8 @@ angular
         '$scope',
         'BULK_ACTION_STATUS',
         'BULK_ACTION',
-        function($filter, $sce, $uibModal, NgTableParams, requestService, notificationService, accountService, scaService, crsJiraService, jiraService, utilsService, $scope, BULK_ACTION_STATUS, BULK_ACTION) {
+        '$routeParams',
+        function($filter, $sce, $uibModal, NgTableParams, requestService, notificationService, accountService, scaService, crsJiraService, jiraService, utilsService, $scope, BULK_ACTION_STATUS, BULK_ACTION, $routeParams) {
             var vm = this;
             var maxSize;
 
@@ -204,6 +205,30 @@ angular
 				vm.requestTypes.sort(function(a, b) {
 						return utilsService.compareStrings(a.title, b.title);
 				});
+
+                vm.defaultEnabledColumns = {
+                    batchId: true,
+                    requestId: true,
+                    concept: true,
+                    jiraTicketId: true,
+                    requestor: true,
+                    createdDate: true,
+                    modifiedDate: true,
+                    type: true,
+                    topic: true,
+                    manager: false,
+                    status: true,
+                    summary: false,
+                    assignee: true,
+                    project: true
+                };
+                
+                vm.enabledColumns = requestService.getSavedColumns();
+
+                if(vm.enabledColumns === null || vm.enabledColumns === undefined){
+                    vm.enabledColumns = vm.defaultEnabledColumns;
+                }
+
 				
                 // load projects
                 loadProjects();
@@ -238,6 +263,7 @@ angular
                         changeAcceptedFilter('requestId', acceptedRequests.requestId);
                         changeAcceptedFilter('project', acceptedRequests.assignedProject);
                         changeAcceptedFilter('assignee', acceptedRequests.assignee);
+                        changeAcceptedFilter('summary', acceptedRequests.summary);
                         changeAcceptedFilter('requestDate', {
                             startDate: acceptedRequests.requestDateFrom,
                             endDate: acceptedRequests.requestDateTo
@@ -618,7 +644,7 @@ angular
 
             var isDateRangeFilteredFirstTime = false;
 
-            var buildRequestFilterValues = function(typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, manager, status, author,
+            var buildRequestFilterValues = function(typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, summary, manager, status, author,
                 project, assignee, requestId, requestType, showUnassignedRequests, statusDateFrom, statusDateTo){
                 var requestList = {};
                 requestList.batchRequest = batchRequest;
@@ -642,6 +668,7 @@ angular
                 requestList.showUnassignedOnly = showUnassignedRequests;
                 requestList.statusDateFrom = convertDateToMilliseconds(statusDateFrom);
                 requestList.statusDateTo = convertDateToMilliseconds(statusDateTo);
+                requestList.summary = summary;
                 return requestList;
             };
 
@@ -696,7 +723,7 @@ angular
                         params.filter().requestDate.startDate,
                         params.filter().requestDate.endDate,
                         params.filter().topic,
-                        // params.filter().summary,
+                        params.filter().summary,
                         params.filter().manager,
                         params.filter().status,
                         params.filter().ogirinatorId,
@@ -754,6 +781,16 @@ angular
                 requestTableParams.reload();
                 requestTableParams.filter().statusDate = vm.lastModifiedDateRange;
             };
+
+            //watch columns change
+            $scope.$watch(function(){
+                return vm.enabledColumns;
+            }, function(newVal){
+                if(newVal){
+                    var list = $routeParams.list;
+                    requestService.setSavedColumns(list, newVal);
+                }
+            });
 
             vm.tableParams = requestTableParams;
             vm.assignSelectedRequests = assignSelectedRequests;
