@@ -264,6 +264,9 @@ angular
                         changeAcceptedFilter('project', acceptedRequests.assignedProject);
                         changeAcceptedFilter('assignee', acceptedRequests.assignee);
                         changeAcceptedFilter('summary', acceptedRequests.summary);
+                        changeAcceptedRequestsPageSize(acceptedRequests.limit);
+                        changeAcceptedRequestsPage(acceptedRequests.offset);
+                        changeAcceptedRequestsSorting(acceptedRequests.sorting);
                         changeAcceptedFilter('requestDate', {
                             startDate: acceptedRequests.requestDateFrom,
                             endDate: acceptedRequests.requestDateTo
@@ -678,6 +681,18 @@ angular
                 angular.extend(requestTableParams.filter(), filter);
             }
 
+            function changeAcceptedRequestsSorting(sorting){
+                requestTableParams.sorting(sorting);
+            }
+
+            function changeAcceptedRequestsPage(page){
+                requestTableParams.page(page);
+            }
+
+            function changeAcceptedRequestsPageSize(pageSize){
+                requestTableParams.count(pageSize);
+            }
+
             var requestTableParams = new NgTableParams({
                 page: 1,
                 count: 10,
@@ -741,7 +756,7 @@ angular
                         }
 
                     //set filter values
-                    requestService.setAcceptedFilterValues(filterValues);
+                    requestService.setAcceptedFilterValues(filterValues, params.sorting());
 
                     return requestService.getRequests(acceptedRequests).then(function(requests) {
                         isDateRangeFilteredFirstTime = true;

@@ -233,6 +233,9 @@ angular
                             changeSubmittedFilter('author', subbmitedRequests.ogirinatorId);
                             changeSubmittedFilter('requestId', subbmitedRequests.requestId);
                             changeSubmittedFilter('summary', subbmitedRequests.summary);
+                            changeSubmitedRequestsPageSize(subbmitedRequests.limit);
+                            changeSubmittedRequestsPage(subbmitedRequests.offset);
+                            changeSubmittedRequestsSorting(subbmitedRequests.sorting);
                             changeSubmittedFilter('requestDate', {
                                 startDate: subbmitedRequests.requestDateFrom,
                                 endDate: subbmitedRequests.requestDateTo
@@ -273,6 +276,9 @@ angular
                             changeMyRequestFilter('status', myRequests.status);
                             changeMyRequestFilter('author', myRequests.ogirinatorId);
                             changeMyRequestFilter('requestId', myRequests.requestId);
+                            changeMyRequestsPageSize(myRequests.limit);
+                            changeMyRequestsPage(myRequests.offset);
+                            changeMyRequestsSorting(myRequests.sorting);
                             changeMyRequestFilter('requestDate', {
                                 startDate: myRequests.requestDateFrom,
                                 endDate: myRequests.requestDateTo
@@ -313,6 +319,10 @@ angular
                             changeAssignedFilter('author', myAssignedRequests.ogirinatorId);
                             changeAssignedFilter('requestId', myAssignedRequests.requestId);
                             changeAssignedFilter('summary', myAssignedRequests.summary);
+                            changeAssignedFilter('count', myAssignedRequests.count);
+                            changeAssignedRequestsPageSize(myAssignedRequests.limit);
+                            changeAssignedRequestsPage(myAssignedRequests.offset);
+                            changeAssignedRequestsSorting(myAssignedRequests.sorting);
                             changeAssignedFilter('requestDate', {
                                 startDate: myAssignedRequests.requestDateFrom,
                                 endDate: myAssignedRequests.requestDateTo
@@ -997,7 +1007,7 @@ angular
                         }
 
                         //set filter values
-                        requestService.setFilterValues(filterValues);
+                        requestService.setFilterValues(filterValues, params.sorting());
 
                         return requestService.getRequests(myRequests).then(function (requests) {
                             isDateRangeFilteredFirstTime = true;
@@ -1079,7 +1089,7 @@ angular
                         }
 
                         //set filter values
-                        requestService.setAssignedFilterValues(filterValues);
+                        requestService.setAssignedFilterValues(filterValues, params.sorting());
                         return requestService.getRequests(myAssignedRequests).then(function (requests) {
                             isDateRangeFilteredFirstTime = true;
                             notificationService.sendMessage('crs.request.message.listLoaded', 5000);
@@ -1161,7 +1171,7 @@ angular
                             subbmitedRequests = filterValues;
                         }
                         //set filter values
-                        requestService.setSubmittedFilterValues(filterValues);
+                        requestService.setSubmittedFilterValues(filterValues, params.sorting());
                         
                         return requestService.getRequests(subbmitedRequests).then(function (requests) {
                             isDateRangeFilteredFirstTime = true;
@@ -1180,6 +1190,43 @@ angular
                     }
                 }
             );
+
+            function changeMyRequestsSorting(sorting){
+                requestTableParams.sorting(sorting);
+            }
+
+            function changeSubmittedRequestsSorting(sorting){
+                submittedTableParams.sorting(sorting);
+            }
+
+            function changeAssignedRequestsSorting(sorting){
+                assignedRequestTableParams.sorting(sorting);
+            }
+
+            function changeMyRequestsPage(page){
+                requestTableParams.page(page + 1);
+            }
+
+            function changeSubmittedRequestsPage(page){
+                submittedTableParams.page(page + 1);
+            }
+
+            function changeAssignedRequestsPage(page){
+                assignedRequestTableParams.page(page + 1);
+            }
+
+
+            function changeMyRequestsPageSize(pageSize){
+                requestTableParams.count(pageSize);
+            }
+
+            function changeSubmitedRequestsPageSize(pageSize){
+                submittedTableParams.count(pageSize);
+            }
+
+            function changeAssignedRequestsPageSize(pageSize){
+                assignedRequestTableParams.count(pageSize);
+            }
 
             function changeAssignedFilter(field, value){
                 var filter = {};

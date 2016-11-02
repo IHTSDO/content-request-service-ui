@@ -236,8 +236,9 @@ angular.module('conceptRequestServiceApp.request')
 
             var savedFilterValues;
 
-            var setFilterValues = function(filterValues){
+            var setFilterValues = function(filterValues, sortingValues){
                savedFilterValues = filterValues;
+               savedFilterValues.sorting = sortingValues;
             };
 
             var getFilterValues = function(){
@@ -246,8 +247,9 @@ angular.module('conceptRequestServiceApp.request')
 
             var savedSubmittedFilterValues;
 
-            var setSubmittedFilterValues = function(filterValues){
+            var setSubmittedFilterValues = function(filterValues, sortingValues){
                savedSubmittedFilterValues = filterValues;
+               savedSubmittedFilterValues.sorting = sortingValues;
             };
 
             var getSubmittedFilterValues = function(){
@@ -256,8 +258,9 @@ angular.module('conceptRequestServiceApp.request')
 
             var savedAcceptedFilterValues;
 
-            var setAcceptedFilterValues = function(filterValues){
+            var setAcceptedFilterValues = function(filterValues, sortingValues){
                savedAcceptedFilterValues = filterValues;
+               savedAcceptedFilterValues.sorting = sortingValues;
             };
 
             var getAcceptedFilterValues = function(){
@@ -266,8 +269,9 @@ angular.module('conceptRequestServiceApp.request')
 
             var savedAssignedFilterValues;
 
-            var setAssignedFilterValues = function(filterValues){
+            var setAssignedFilterValues = function(filterValues, sortingValues){
                savedAssignedFilterValues = filterValues;
+               savedAssignedFilterValues.sorting = sortingValues;
             };
 
             var getAssignedFilterValues = function(){
