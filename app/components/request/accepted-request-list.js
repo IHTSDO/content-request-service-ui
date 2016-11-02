@@ -686,7 +686,7 @@ angular
             }
 
             function changeAcceptedRequestsPage(page){
-                requestTableParams.page(page);
+                requestTableParams.page(page + 1);
             }
 
             function changeAcceptedRequestsPageSize(pageSize){
