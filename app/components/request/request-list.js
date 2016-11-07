@@ -211,6 +211,20 @@ angular
                 accountService.checkUserPermission().then(function (rs) {
                     vm.isAdmin = (rs.isAdmin === true);
                     vm.isViewer = (rs.isViewer === true);
+                    vm.isStaff = (rs.isStaff === true);
+                    vm.isRequester = (rs.isRequester === true);
+
+                    var list = $routeParams.list;
+                    if(!list){
+                        if(vm.isStaff || vm.isAdmin){
+                            list = 'my-assigned-requests';
+                        }else if(vm.isRequester){
+                            list = 'requests';
+                        }else{
+                            list = 'submitted-requests'
+                        }
+                    }
+                    requestService.saveCurrentList(list);
 
                     if (!vm.isViewer) {
                         vm.tableParams = requestTableParams;
@@ -381,6 +395,7 @@ angular
 
                 //load max size
                 getMaxSize();
+
             };
 
             var loadProjects = function() {

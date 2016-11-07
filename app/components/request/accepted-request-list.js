@@ -245,6 +245,9 @@ angular
                 //load requestors
                 loadRequestors();
 
+                //save current list
+                saveCurrentList();
+
                 vm.requestTableParams = requestTableParams;
                 var acceptedRequests;
                 if(!isDateRangeFilteredFirstTime ){
@@ -290,6 +293,11 @@ angular
                         }
                     }
                 }
+            };
+
+            var saveCurrentList = function(){
+                var list = $routeParams.list;
+                requestService.saveCurrentList(list);
             };
 
             var getMaxSize = function(){

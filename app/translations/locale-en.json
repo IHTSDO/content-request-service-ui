@@ -231,7 +231,9 @@
                         "moveToInInceptionElaboration": "Move to In Inception/Elaboration",
                         "addNote": "Add Note",
                         "unassign": "Unassign Request",
-                        "unassignAndRejectRequest": "Unassign And Reject"
+                        "unassignAndRejectRequest": "Unassign And Reject",
+                        "nextRequest": "Next Request",
+                        "previousRequest": "Previous Request"
                     },
                     "label": {
                         "batchId": "Batch ID",

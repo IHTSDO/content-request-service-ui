@@ -368,6 +368,9 @@ angular
                 // load projects
                 loadProjects();
 
+                //check pre page
+                checkPrePage();
+
                 if (!isValid) {
                     showErrorMessage('crs.request.message.error.invalidPage');
                 } else {
@@ -493,6 +496,13 @@ angular
                             break;
                         }
                     }
+                }
+            };
+
+            var checkPrePage = function(){
+                var listObj = requestService.getCurrentList();
+                if(listObj){
+                    vm.isCameFromRequestList = true;
                 }
             };
 
@@ -2212,6 +2222,91 @@ angular
                 }
             });
 
+            var detectCurrentList = function(list){
+                var detectedCurrentList;
+                
+                switch(list){
+                    case 'requests':
+                        detectedCurrentList = requestService.getFilterValues();
+                        break;
+                    case 'my-assigned-requests':
+                        detectedCurrentList = requestService.getAssignedFilterValues();
+                        break;
+                    case 'submitted-requests':
+                        detectedCurrentList = requestService.getSubmittedFilterValues();
+                        break;
+                    case 'accepted-requests':
+                        detectedCurrentList = requestService.getAcceptedFilterValues();
+                        break;
+                    default:
+                        if(vm.isAdmin || isStaff){
+                            detectedCurrentList = requestService.getAssignedFilterValues();
+                        }else if(vm.isRequester){
+                            detectedCurrentList = requestService.getFilterValues();
+                        }else{
+                            detectedCurrentList = requestService.getSubmittedFilterValues();
+                        }
+                }
+
+                return detectedCurrentList;
+            };
+
+            var getNextRequest = function(){
+                notificationService.sendMessage('Loading...');
+                var list = requestService.getCurrentList();
+                var newList = false,
+                    isIdInCurrentList = true;
+                var currentList = detectCurrentList(list);
+                var currentIdList = requestService.getCurrentIdList(list);
+                var pageMode = $routeParams.mode;
+                var currentId = Number($routeParams.param);;
+                if(!currentIdList){
+                    getCurrentRequestIdList(currentList);
+                }else{
+                    if(currentId === currentIdList[currentIdList.length - 1]){
+                        newList = true;
+                        currentList.offset = currentList.offset + 1;
+                        getCurrentRequestIdList(currentList, newList);
+                    }else{
+                        for(var i = 0; i < currentIdList.length; i++){
+                            if(currentId === currentIdList[i]){
+                                $location.path('requests/' + pageMode + '/' + currentIdList[i + 1]).search();
+                            }else{
+                                isIdInCurrentList = false;
+                            }
+                        }
+                        if(isIdInCurrentList === false){
+                            getCurrentRequestIdList(currentList);
+                        }
+                    }
+                }
+            };
+
+            var getCurrentRequestIdList = function(currentList, newList){
+                var list = requestService.getCurrentList();
+                var currentRequestId = Number($routeParams.param);
+                var pageMode = $routeParams.mode;
+                requestService.getNextRequestList(currentList).then(function(response){
+                    if(response){
+                        requestService.setCurrentIdList(response, list);
+                        if(currentRequestId === response[response.length - 1]){
+                            var tmpCurrentList = currentList;
+                            tmpCurrentList.offset = currentList.offset + 1;
+                            var tmpNewList = true;
+                            getCurrentRequestIdList(tmpCurrentList, tmpNewList);
+                        }else{
+                            for(var i = 0; i < response.length; i++){
+                                if(currentRequestId === response[i]){
+                                    $location.path('requests/' + pageMode + '/' + response[i + 1]).search();
+                                }else if(newList){
+                                    $location.path('requests/' + pageMode + '/' + response[0]).search();
+                                }
+                            }
+                        }
+                    }
+                });
+            };
+
             vm.cancelEditing = cancelEditing;
             vm.saveRequest = saveRequest;
             vm.acceptRequest = acceptRequest;
@@ -2239,9 +2334,11 @@ angular
             vm.loadSemanticTags = loadSemanticTags;
             vm.extractJustification = extractJustification;
             vm.unassignAndRejectRequest = unassignAndRejectRequest;
+            vm.getNextRequest = getNextRequest;
             vm.isAdmin = false;
             vm.isViewer = false;
             vm.permissionChecked = false;
+            vm.isCameFromRequestList = false;
             vm.error = {};
             vm.conceptStatus = {
                 loading: false,

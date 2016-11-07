@@ -117,6 +117,11 @@
     <hr style="width:93%; border-color:#ddd">
     <div class="request-info">
         <div ng-if="requestVM.permissionChecked && (requestVM.pageMode.value === 'new' || requestVM.pageMode.value === 'edit' || (requestVM.pageMode.value === 'preview' && requestVM.isAdmin))" style="padding: 15px; width: 100%" class="classification-btn">
+            <!-- Next request -->
+            <button ng-disabled="!requestVM.isCameFromRequestList" class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.getNextRequest()" title="{{'tooltips.request.details.info.button.save' | translate}}">
+                <span class="md md-arrow-forward blue darken-2 iconbase"></span>
+                <span class="button-link" translate="crs.request.details.info.button.nextRequest"></span>
+            </button>
             <!-- Edit request -->
             <button ng-if="requestVM.pageMode.value === 'new' || requestVM.pageMode.value === 'edit'" ng-disabled="requestVM.request.requestHeader.status !== 'DRAFT'" class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.saveRequest()" title="{{'tooltips.request.details.info.button.save' | translate}}">
                 <span class="md md-save blue darken-2 iconbase"></span>

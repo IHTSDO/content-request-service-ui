@@ -127,11 +127,11 @@ angular
             };
 
             var editRequest = function (requestId) {
-                  $location.path('requests/edit/' + requestId).search({kb:true});
+                  $location.path('requests/edit/' + requestId).search();
             };
 
             var previewRequest = function (requestId) {
-                  $location.path('requests/preview/' + requestId).search({kb:true});
+                  $location.path('requests/preview/' + requestId).search();
             };
 
             var importBatchFile = function (response) {

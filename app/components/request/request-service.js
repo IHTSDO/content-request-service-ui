@@ -327,6 +327,49 @@ angular.module('conceptRequestServiceApp.request')
                 return crsService.sendGet(requestEndpoint + '/newConceptObject/' , params);
             };
 
+            var getNextRequestList = function(data){
+                var requestEndpoint = CRS_API_ENDPOINT.REQUEST_LIST;
+                return crsService.sendPost(requestEndpoint + '/id', null, data);
+            };
+
+            var savedCurrentList;
+
+            var saveCurrentList = function(list){
+                savedCurrentList = list;
+            };
+
+            var getCurrentList = function(){
+                return savedCurrentList
+            };
+
+            var savedCurrentMyRequestsIdList,
+                savedCurrentMyAssignedIdList,
+                savedCurrentSubmittedIdList,
+                savedCurrentAcceptedIdList
+
+            var getCurrentIdList = function(list){
+                switch(list){
+                    case 'requests': return savedCurrentMyRequestsIdList;
+                    case 'my-assigned-requests': return savedCurrentMyAssignedIdList;
+                    case 'submitted-requests': return savedCurrentSubmittedIdList;
+                    case 'accepted-requests': return savedCurrentAcceptedIdList;
+                }
+                return savedCurrentIdList;
+            };
+
+            var setCurrentIdList = function(data, list){
+                switch(list){
+                    case 'requests': return savedCurrentMyRequestsIdList = data;
+                    break;
+                    case 'my-assigned-requests': return savedCurrentMyAssignedIdList = data;
+                    break
+                    case 'submitted-requests': return savedCurrentSubmittedIdList = data;
+                    break
+                    case 'accepted-requests': return savedCurrentAcceptedIdList = data;
+                    break;
+                }
+            };
+
             return {
                 identifyRequestType: identifyRequestType,
                 identifyRequestStatus: identifyRequestStatus,
@@ -358,7 +401,12 @@ angular.module('conceptRequestServiceApp.request')
                 getBulkActionStatus: getBulkActionStatus,
                 unassignRequest: unassignRequest,
                 setSavedColumns: setSavedColumns,
-                getSavedColumns: getSavedColumns
+                getSavedColumns: getSavedColumns,
+                getNextRequestList: getNextRequestList,
+                saveCurrentList: saveCurrentList,
+                getCurrentList: getCurrentList,
+                getCurrentIdList: getCurrentIdList,
+                setCurrentIdList: setCurrentIdList
             };
 
         }]);
