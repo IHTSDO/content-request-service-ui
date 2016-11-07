@@ -880,6 +880,7 @@ input[type=checkbox].select-all-rqs {
 
 /* Dropdown Content (Hidden by Default) */
 .dropdown-content {
+    margin-top: 35px;
     display: none;
     position: absolute;
     background-color: #f9f9f9;
@@ -895,6 +896,18 @@ input[type=checkbox].select-all-rqs {
       line-height: 40px;
       width: 100%;
     }
+}
+
+.saveButton {
+  display: none;
+  position: absolute;
+  z-index: 999;
+  button{
+    min-width: 160px;
+    height: 35px;
+    background: #00a4e4;
+    color: white;
+  }
 }
 
 /* Links inside the dropdown */

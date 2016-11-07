@@ -3,7 +3,9 @@
         "message": {
             "unknownUser": "Logged in as unknown user",
             "profileTip":"display name will link to profile services in later updates",
-            "loading": "Loading..."
+            "loading": "Loading...",
+            "savingColumns": "Saving Columns...",
+            "savedColumns": "The Columns have been saved successfully"
         },
         "link": {
             "logout": "Logout",

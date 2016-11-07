@@ -420,6 +420,74 @@ angular
             langKey: 'crs.request.bulkAction.action.addNote'
         }
     })
+    .value('DEFAULT_COLUMNS',{
+        myRequests: {
+            columns:{
+                batchId: true,
+                requestId: true,
+                concept: true,
+                jiraTicketId: true,
+                requestor: true,
+                createdDate: true,
+                modifiedDate: true,
+                type: true,
+                topic: true,
+                manager: false,
+                status: true,
+                summary: false
+            }
+        },
+        myAssignedRequests: {
+            columns: {
+                batchId: true,
+                requestId: true,
+                concept: true,
+                jiraTicketId: true,
+                requestor: true,
+                createdDate: true,
+                modifiedDate: true,
+                type: true,
+                topic: true,
+                manager: false,
+                status: true,
+                summary: false
+            }
+        },
+        submittedRequests: {
+            columns: {
+                batchId: true,
+                requestId: true,
+                concept: true,
+                jiraTicketId: true,
+                requestor: true,
+                createdDate: true,
+                modifiedDate: true,
+                type: true,
+                topic: true,
+                manager: false,
+                status: true,
+                summary: false
+            }
+        },
+        acceptedRequests: {
+            columns: {
+                batchId: true,
+                requestId: true,
+                concept: true,
+                jiraTicketId: true,
+                requestor: true,
+                createdDate: true,
+                modifiedDate: true,
+                type: true,
+                topic: true,
+                manager: false,
+                status: true,
+                summary: false,
+                assignee: true,
+                project: true
+            }
+        }
+    })
     .config(function ($routeProvider) {
         $routeProvider
             .when('/requests/:mode/:param', {

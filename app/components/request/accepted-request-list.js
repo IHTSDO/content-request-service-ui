@@ -19,7 +19,8 @@ angular
         'BULK_ACTION_STATUS',
         'BULK_ACTION',
         '$routeParams',
-        function($filter, $sce, $uibModal, NgTableParams, requestService, notificationService, accountService, scaService, crsJiraService, jiraService, utilsService, $scope, BULK_ACTION_STATUS, BULK_ACTION, $routeParams) {
+        'DEFAULT_COLUMNS',
+        function($filter, $sce, $uibModal, NgTableParams, requestService, notificationService, accountService, scaService, crsJiraService, jiraService, utilsService, $scope, BULK_ACTION_STATUS, BULK_ACTION, $routeParams, DEFAULT_COLUMNS) {
             var vm = this;
             var maxSize;
 
@@ -205,30 +206,19 @@ angular
 				vm.requestTypes.sort(function(a, b) {
 						return utilsService.compareStrings(a.title, b.title);
 				});
-
-                vm.defaultEnabledColumns = {
-                    batchId: true,
-                    requestId: true,
-                    concept: true,
-                    jiraTicketId: true,
-                    requestor: true,
-                    createdDate: true,
-                    modifiedDate: true,
-                    type: true,
-                    topic: true,
-                    manager: false,
-                    status: true,
-                    summary: false,
-                    assignee: true,
-                    project: true
-                };
                 
                 vm.enabledColumns = requestService.getSavedColumns();
 
                 if(vm.enabledColumns === null || vm.enabledColumns === undefined){
-                    vm.enabledColumns = vm.defaultEnabledColumns;
+                    requestService.getUserPreferences().then(function(response){
+                        if(response){
+                            vm.enabledColumns = response;
+                        }else{
+                            vm.enabledColumns = DEFAULT_COLUMNS;
+                        }
+                        
+                    });
                 }
-
 				
                 // load projects
                 loadProjects();
@@ -797,6 +787,13 @@ angular
                 requestTableParams.filter().statusDate = vm.lastModifiedDateRange;
             };
 
+            var saveColumns = function(){
+                notificationService.sendMessage('crs.message.savingColumns', 5000);
+                requestService.saveUserPreferences(vm.enabledColumns).then(function(response){
+                    notificationService.sendMessage('crs.message.savedColumns', 5000);
+                });
+            }
+
             //watch columns change
             $scope.$watch(function(){
                 return vm.enabledColumns;
@@ -815,6 +812,7 @@ angular
             vm.getAuthorName = getAuthorName;
             vm.getStaffName = getStaffName;
             vm.toggleShowUnassignedRequests = toggleShowUnassignedRequests;
+            vm.saveColumns = saveColumns;
             vm.addNote = addNote;
             vm.isAdmin = false;
             vm.isViewer = false;

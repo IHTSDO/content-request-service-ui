@@ -19,7 +19,8 @@ angular
         'scaService',
         'BULK_ACTION_STATUS',
         'BULK_ACTION',
-        function ($filter, $sce, crsJiraService, NgTableParams, requestService, notificationService, accountService, jiraService, $routeParams, $uibModal, utilsService, $scope, scaService, BULK_ACTION_STATUS, BULK_ACTION) {
+        'DEFAULT_COLUMNS',
+        function ($filter, $sce, crsJiraService, NgTableParams, requestService, notificationService, accountService, jiraService, $routeParams, $uibModal, utilsService, $scope, scaService, BULK_ACTION_STATUS, BULK_ACTION, DEFAULT_COLUMNS) {
             var vm = this;
             var maxSize;
 
@@ -346,25 +347,18 @@ angular
                         }
                     }
                 });
-                vm.defaultEnabledColumns = {
-                    batchId: true,
-                    requestId: true,
-                    concept: true,
-                    jiraTicketId: true,
-                    requestor: true,
-                    createdDate: true,
-                    modifiedDate: true,
-                    type: true,
-                    topic: true,
-                    manager: false,
-                    status: true,
-                    summary: false,
-                };
                 
                 vm.enabledColumns = requestService.getSavedColumns();
 
                 if(vm.enabledColumns === null || vm.enabledColumns === undefined){
-                    vm.enabledColumns = vm.defaultEnabledColumns;
+                    requestService.getUserPreferences().then(function(response){
+                        if(response){
+                            vm.enabledColumns = response;
+                        }else{
+                            vm.enabledColumns = DEFAULT_COLUMNS;
+                        }
+                        
+                    });
                 }
 
                 // load authors
@@ -1328,6 +1322,13 @@ angular
                 }
             };
 
+            var saveColumns = function(){
+                notificationService.sendMessage('crs.message.savingColumns', 5000);
+                requestService.saveUserPreferences(vm.enabledColumns).then(function(response){
+                    notificationService.sendMessage('crs.message.savedColumns', 5000);
+                });
+            }
+
             $scope.$watch(function(){
                 return vm.enabledColumns;
             }, function(newVal){
@@ -1358,6 +1359,7 @@ angular
             vm.onLastModifiedChange = onLastModifiedChange;
             vm.onLastModifiedChangeSR = onLastModifiedChangeSR;
             vm.onLastModifiedChangeMAR = onLastModifiedChangeMAR;
+            vm.saveColumns = saveColumns;
             vm.daterange = {
                 startDate: null,
                 endDate: null

@@ -327,6 +327,16 @@ angular.module('conceptRequestServiceApp.request')
                 return crsService.sendGet(requestEndpoint + '/newConceptObject/' , params);
             };
 
+            var getUserPreferences = function(){
+                var requestEndpoint = CRS_API_ENDPOINT.USER_PREFERENCES;
+                return crsService.sendGet(requestEndpoint);
+            };
+
+            var saveUserPreferences = function(data){
+                var requestEndpoint = CRS_API_ENDPOINT.USER_PREFERENCES;
+                return crsService.sendPost(requestEndpoint, null, data);
+            };
+
             return {
                 identifyRequestType: identifyRequestType,
                 identifyRequestStatus: identifyRequestStatus,
@@ -358,7 +368,9 @@ angular.module('conceptRequestServiceApp.request')
                 getBulkActionStatus: getBulkActionStatus,
                 unassignRequest: unassignRequest,
                 setSavedColumns: setSavedColumns,
-                getSavedColumns: getSavedColumns
+                getSavedColumns: getSavedColumns,
+                getUserPreferences: getUserPreferences,
+                saveUserPreferences: saveUserPreferences
             };
 
         }]);

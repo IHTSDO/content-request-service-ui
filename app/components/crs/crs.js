@@ -16,5 +16,6 @@ angular
         BATCH_LIST: 'api/batch/list',
         MESSAGE: 'api/notification',
         MESSAGE_LIST: 'api/notification/list',
-        BULK_ACTION: 'api/request/bulkAction'
+        BULK_ACTION: 'api/request/bulkAction',
+        USER_PREFERENCES: 'api/userPreferences'
     });
