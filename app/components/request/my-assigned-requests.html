@@ -107,8 +107,8 @@
                         <td data-title="'crs.request.list.tableHeader.ticketId' | translate" sortable="'jiraTicketId'" filter="vm.filterRequests.jiraTicketId" jira-link="request.jiraTicketId" ng-if="vm.enabledColumns.myAssignedRequests.columns.jiraTicketId"></td>
                          
                         <td data-title="'crs.request.list.tableHeader.originator' | translate" sortable="'requestHeader.ogirinatorId'" style="min-width: 150px" filter="vm.filterRequests.ogirinatorId" ng-if="vm.enabledColumns.myAssignedRequests.columns.requestor">
-                            <span ng-show="vm.loadingAuthors" class="md md-autorenew" ng-class="{'md-spin':vm.loadingAuthors}"></span>
-                            <div ng-if="!vm.loadingAuthors" ng-bind-html="(vm.getAuthorName(request.requestHeader.ogirinatorId))?vm.getAuthorName(request.requestHeader.ogirinatorId):request.requestHeader.ogirinatorId"></div>
+                            <span ng-show="!vm.authors" class="md md-autorenew" ng-class="{'md-spin':!vm.authors}"></span>
+                            <div ng-if="vm.authors" ng-bind-html="(vm.getAuthorName(request.requestHeader.ogirinatorId))?vm.getAuthorName(request.requestHeader.ogirinatorId):request.requestHeader.ogirinatorId"></div>
                         </td>
                         <td data-title="'crs.request.list.tableHeader.createdDate' | translate" sortable="'requestHeader.requestDate'" filter="{requestDate: 'ng-table/datetime-picker-startdate.html'}" ng-if="vm.enabledColumns.myAssignedRequests.columns.createdDate">
                             {{request.requestHeader.requestDate | date:'yyyy-MM-dd'}}

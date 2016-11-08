@@ -107,8 +107,8 @@
                         </td>
                         <td data-title="'crs.request.list.tableHeader.ticketId' | translate" sortable="'jiraTicketId'" jira-link="request.jiraTicketId" filter="vm.filterRequests.jiraTicketId" ng-if="vm.enabledColumns.submittedRequests.columns.jiraTicketId"></td>
                         <td data-title="'crs.request.list.tableHeader.originator' | translate" sortable="'requestHeader.ogirinatorId'" style="min-width: 150px" filter="vm.filterRequests.ogirinatorId" ng-if="vm.enabledColumns.submittedRequests.columns.requestor">
-                            <span ng-show="vm.loadingAuthors" class="md md-autorenew" ng-class="{'md-spin':vm.loadingAuthors}"></span>
-                            <div ng-if="!vm.loadingAuthors" ng-bind-html="(vm.getAuthorName(request.requestHeader.ogirinatorId))?vm.getAuthorName(request.requestHeader.ogirinatorId):request.requestHeader.ogirinatorId"></div>
+                            <span ng-show="!vm.authors" class="md md-autorenew" ng-class="{'md-spin':!vm.authors}"></span>
+                            <div ng-if="vm.authors" ng-bind-html="(vm.getAuthorName(request.requestHeader.ogirinatorId))?vm.getAuthorName(request.requestHeader.ogirinatorId):request.requestHeader.ogirinatorId"></div>
                         </td>
                         <td data-title="'crs.request.list.tableHeader.createdDate' | translate" sortable="'requestHeader.requestDate'" filter="{requestDate: 'ng-table/datetime-picker-startdate.html'}" ng-if="vm.enabledColumns.submittedRequests.columns.createdDate">
                             {{request.requestHeader.requestDate | date:'yyyy-MM-dd'}}
@@ -127,7 +127,7 @@
                             {{(request.additionalFields)?request.additionalFields.summary:''}}
                         </td>
                         <td data-title="'crs.request.list.tableHeader.manager' | translate" sortable="'requestHeader.manager'" style="min-width: 150px" filter="{manager: 'ng-table/manager-select.html'}" ng-if="vm.enabledColumns.submittedRequests.columns.manager">
-                            <span ng-show="vm.loadingAuthors" class="md md-autorenew" ng-class="{'md-spin':vm.loadingAuthors}"></span>
+                            <span ng-show="!vm.staffs" class="md md-autorenew" ng-class="{'md-spin':!vm.staffs}"></span>
                             <div  ng-bind-html="(vm.getAuthorName(request.requestHeader.manager))?vm.getAuthorName(request.requestHeader.manager):request.requestHeader.manager"></div>
                         </td>
                       

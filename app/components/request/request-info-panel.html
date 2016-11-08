@@ -22,8 +22,8 @@
                         <div class="timeline-heading">
                             <label class="control-label" translate="crs.request.details.info.label.originator" title="{{'tooltips.request.details.info.label.originator' | translate}}"></label>
                             <h4 class="timeline-title">
-                                <span ng-show="requestVM.loadingAuthors" class="md md-autorenew" ng-class="{'md-spin':requestVM.loadingAuthors}"></span>
-                                <span class="author" ng-if="!requestVM.loadingAuthors" ng-bind-html="(requestVM.getAuthorName(requestVM.request.requestHeader.ogirinatorId))?requestVM.getAuthorName(requestVM.request.requestHeader.ogirinatorId):requestVM.request.requestHeader.ogirinatorId"></span>
+                                <span ng-show="!requestVM.authors" class="md md-autorenew" ng-class="{'md-spin':!requestVM.authors}"></span>
+                                <span class="author" ng-if="requestVM.authors" ng-bind-html="(requestVM.getAuthorName(requestVM.request.requestHeader.ogirinatorId))?requestVM.getAuthorName(requestVM.request.requestHeader.ogirinatorId):requestVM.request.requestHeader.ogirinatorId"></span>
                             </h4>
                         </div>
                     </div>
@@ -36,7 +36,7 @@
                         <div class="timeline-heading">
                             <label class="control-label" translate="crs.request.details.info.label.manager" title="{{'tooltips.request.details.info.label.manager' | translate}}"></label>
                             <h4 class="timeline-title">
-                                <span ng-show="requestVM.loadingAuthors" class="md md-autorenew" ng-class="{'md-spin':requestVM.loadingAuthors}"></span>
+                                <span ng-show="!requestVM.staffs" class="md md-autorenew" ng-class="{'md-spin':!requestVM.staffs}"></span>
                                 <span ng-bind-html="(requestVM.getStaffName(requestVM.request.requestHeader.manager))?requestVM.getStaffName(requestVM.request.requestHeader.manager):requestVM.request.requestHeader.manager"></span>
                             </h4>
                         </div>
