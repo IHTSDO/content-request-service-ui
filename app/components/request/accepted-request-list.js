@@ -218,7 +218,7 @@ angular
                         }else{
                             vm.enabledColumns = DEFAULT_COLUMNS;
                         }
-                        
+                        requestService.setSavedColumns(vm.enabledColumns);
                     });
                 }
 
@@ -244,6 +244,12 @@ angular
                 vm.projects = requestService.getProjectsList();
                 if(!vm.projects){
                     loadProjects();
+                }
+
+                //load max size
+                maxSize = requestService.getSavedMaxSize();
+                if(!maxSize){
+                    getMaxSize();
                 }
 
                 vm.requestTableParams = requestTableParams;
@@ -296,6 +302,7 @@ angular
             var getMaxSize = function(){
                 requestService.getMaxSize().then(function(result){
                     maxSize = result.maxSize;
+                    requestService.setMaxSize(maxSize);
                 }, function(error){
                     notificationService.sendMessage(error.message, 5000);
                 });
@@ -860,8 +867,7 @@ angular
                 return vm.enabledColumns;
             }, function(newVal){
                 if(newVal){
-                    var list = $routeParams.list;
-                    requestService.setSavedColumns(list, newVal);
+                    requestService.setSavedColumns(newVal);
                 }
             });
 

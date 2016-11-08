@@ -216,6 +216,7 @@ angular
                             }
                         }
                     }
+                    requestService.setSemanticTags(vm.semanticTags);
                     return semanticTags;
                 });
             };
@@ -479,10 +480,16 @@ angular
                             break;
                     }
                     //load semantic tag
-                    loadSemanticTags();
+                    vm.semanticTags = requestService.getSemanticTags();
+                    if(!vm.semanticTags){
+                        loadSemanticTags();
+                    }
 
                     //load topic options
-                    loadTopicOptions();
+                    vm.topicOptions = requestService.getTopics();
+                    if(!vm.topicOptions){
+                        loadTopicOptions();
+                    }
                     
                     loadRequestMetadata();
                 }
@@ -616,6 +623,7 @@ angular
                             vm.topicOptions.push(obj);
                         }
                     }
+                    requestService.setTopics(vm.topicOptions);
                 });
             };
 

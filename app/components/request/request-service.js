@@ -10,8 +10,7 @@ angular.module('conceptRequestServiceApp.request')
         'CRS_API_ENDPOINT',
         'STATISTICS_STATUS',
         'STATISTICS_LABEL',
-        '$routeParams',
-        function ($rootScope, $q, crsService, REQUEST_TYPE, REQUEST_STATUS, CRS_API_ENDPOINT, STATISTICS_STATUS, STATISTICS_LABEL, $routeParams) {
+        function ($rootScope, $q, crsService, REQUEST_TYPE, REQUEST_STATUS, CRS_API_ENDPOINT, STATISTICS_STATUS, STATISTICS_LABEL) {
 
             var identifyRequestType = function (value) {
                 for (var requestTypeKey in REQUEST_TYPE) {
@@ -278,35 +277,14 @@ angular.module('conceptRequestServiceApp.request')
                return savedAssignedFilterValues;
             };
 
-            var savedMyRequestsColumns,
-                savedMyAssignedRqsColumns,
-                savedSubmittedRqsColumns,
-                savedAcceptedRqsColumns;
+            var savedColumns;
 
-            var setSavedColumns = function(list, data){
-                switch(list){
-                    case 'requests': savedMyRequestsColumns = data;
-                    break;
-                    case 'my-assigned-requests': savedMyAssignedRqsColumns = data;
-                    break;
-                    case 'submitted-requests': savedSubmittedRqsColumns = data;
-                    break;
-                    case 'accepted-requests': savedAcceptedRqsColumns = data;
-                    break;
-                    default: savedMyRequestsColumns = data;
-                    break;
-                }
+            var setSavedColumns = function(data){
+                savedColumns = data;
             };
 
             var getSavedColumns = function(){
-                var list = $routeParams.list;
-                switch(list){
-                    case 'requests': return savedMyRequestsColumns;
-                    case 'my-assigned-requests': return savedMyAssignedRqsColumns;
-                    case 'submitted-requests': return savedSubmittedRqsColumns;
-                    case 'accepted-requests': return savedAcceptedRqsColumns;
-                    default: return savedMyRequestsColumns;
-                }
+                return savedColumns;
             };
 
             function getBatchConcept(requestId, conceptId) {
@@ -377,6 +355,36 @@ angular.module('conceptRequestServiceApp.request')
                 projects = list;
             };
 
+            var semanticTags;
+
+            var getSemanticTags = function(){
+                return semanticTags;
+            };
+
+            var setSemanticTags = function(list){
+                semanticTags = list;
+            };
+
+            var topics;
+
+            var getTopics = function(){
+                return topics;
+            };
+
+            var setTopics = function(list){
+                topics = list;
+            };
+
+            var maxSize;
+
+            var getSavedMaxSize = function(){
+                return maxSize;
+            };
+
+            var setMaxSize = function(size){
+                maxSize = size;
+            };
+
             return {
                 identifyRequestType: identifyRequestType,
                 identifyRequestStatus: identifyRequestStatus,
@@ -418,7 +426,13 @@ angular.module('conceptRequestServiceApp.request')
                 getRequestorsList: getRequestorsList,
                 setRequestorsList: setRequestorsList,
                 getProjectsList: getProjectsList,
-                setProjectsList: setProjectsList
+                setProjectsList: setProjectsList,
+                getSemanticTags: getSemanticTags,
+                setSemanticTags: setSemanticTags,
+                getTopics: getTopics,
+                setTopics: setTopics,
+                getSavedMaxSize: getSavedMaxSize,
+                setMaxSize: setMaxSize
             };
 
         }]);

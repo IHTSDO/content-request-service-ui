@@ -360,7 +360,7 @@ angular
                         }else{
                             vm.enabledColumns = DEFAULT_COLUMNS;
                         }
-                        
+                        requestService.setSavedColumns(vm.enabledColumns);
                     });
                 }
 
@@ -389,7 +389,10 @@ angular
                 }
 
                 //load max size
-                getMaxSize();
+                maxSize = requestService.getSavedMaxSize();
+                if(!maxSize){
+                    getMaxSize();
+                }
             };
 
             var loadProjects = function() {
@@ -950,6 +953,7 @@ angular
             var getMaxSize = function(){
                 requestService.getMaxSize().then(function(result){
                     maxSize = result.maxSize;
+                    requestService.setMaxSize(maxSize);
                 }, function(error){
                     notificationService.sendMessage(error.message, 5000);
                 });
@@ -1457,8 +1461,7 @@ angular
                 return vm.enabledColumns;
             }, function(newVal){
                 if(newVal){
-                    var list = $routeParams.list;
-                    requestService.setSavedColumns(list, newVal);
+                    requestService.setSavedColumns(newVal);
                 }
             });
 
