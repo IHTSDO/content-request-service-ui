@@ -43,6 +43,8 @@
                 "ASSIGN_MANAGER": "Assigned Requests(Manager)",
                 "ACCEPT_ASSIGN_AUTHOR": "Accepted And Assigned Requests",
                 "failedRequests": "Failed",
+                "REJECT": "Rjected Requests",
+                "WITHDRAW": "Withdrawed Requests",
                 "modalTitle": {
                     "UNASSIGN_AUTHOR": "Unassign Requests",
                     "ADD_NOTE": "Add Note",
@@ -50,7 +52,9 @@
                     "ACCEPT": "Accept Requests",
                     "ASSIGN_AUTHOR": "Assign Requests To Author",
                     "ASSIGN_MANAGER": "Assign Requests To Manager",
-                    "ACCEPT_ASSIGN_AUTHOR": "Accept And Assign Requests"
+                    "ACCEPT_ASSIGN_AUTHOR": "Accept And Assign Requests",
+                    "REJECT": "Rject Requests",
+                    "WITHDRAW": "Withdraw Requests"
                 }
             }
         },
@@ -114,7 +118,8 @@
                     "conceptFSN": "Click to open request editing view",
                     "filter": "Filter requests",
                     "submitRequests": "Submit Selected Requests",
-                    "unassignRequests": "Unassign Requests"
+                    "unassignRequests": "Unassign Requests",
+                    "withdrawRequests": "Withdraw Requests"
                 },
                 "searchPlaceHolder": {
                     "myRequests": "Search My Requests",
@@ -233,7 +238,8 @@
                         "moveToInInceptionElaboration": "Move to In Inception/Elaboration",
                         "addNote": "Add Note",
                         "unassign": "Unassign Request",
-                        "unassignAndRejectRequest": "Unassign And Reject"
+                        "unassignAndRejectRequest": "Unassign And Reject",
+                        "rejectSelectedRequests": "Reject Selected Requests"
                     },
                     "label": {
                         "batchId": "Batch ID",
@@ -393,7 +399,9 @@
                     "assignToStaff": "Assign Requests To Manager",
                     "accept": "Accept Requests",
                     "unassignAuthor": "Unassign Project",
-                    "addNote": "Add Note"
+                    "addNote": "Add Note",
+                    "withdraw": "Withdrawn",
+                    "reject": "Reject"
                 },
                 "button": {
                     "close": "Close",

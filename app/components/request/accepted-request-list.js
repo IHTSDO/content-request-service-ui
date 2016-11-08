@@ -188,7 +188,9 @@ angular
                 assignToAuthor: 'ACCEPT_ASSIGN_AUTHOR',
                 assignAuthor: 'ASSIGN_AUTHOR',
                 unassignAuthor: 'UNASSIGN_AUTHOR',
-                addNote: 'ADD_NOTE'
+                addNote: 'ADD_NOTE',
+                withdraw: 'WITHDRAW',
+                reject: 'REJECT'
             };
 
             var initView = function() {
@@ -533,6 +535,52 @@ angular
                 }
             };
 
+            var rejectSelectedRequests = function () {
+                var action = bulkAction.reject;
+                var selectedRequests = vm.selectedRequests,
+                    withdrawRequestIds = [];
+                if (selectedRequests &&
+                    selectedRequests.items) {
+                    angular.forEach(selectedRequests.items, function (isSelected, requestId) {
+                        if (isSelected) {
+                            withdrawRequestIds.push(requestId);
+                        }
+                    });
+                    if (withdrawRequestIds.length > 0) {
+                        var modalInstance = $uibModal.open({
+                            templateUrl: 'components/request/modal-withdraw-or-reject-requests.html',
+                            controller: 'ModalWithdrawOrRejectRequestsCtrl as vm',
+                            resolve: {
+                                number: function() {
+                                    return withdrawRequestIds.length;
+                                },
+                                langKey: function(){
+                                    return BULK_ACTION.REJECT.langKey;
+                                }
+                            }
+                        });
+
+                        modalInstance.result.then(function(rs) {
+                            var data = {
+                                data: {
+                                    additionalInfo:{
+                                        reason: rs.reason
+                                    }
+                                },
+                                requestIds: withdrawRequestIds
+                            };
+                            requestService.bulkAction(data, action).then(function(response) {
+                                if(response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value){
+                                    bulkActionRespondingModal(response.id, BULK_ACTION.REJECT.langKey);
+                                }
+                            });
+                        });
+                    }else {
+                        notificationService.sendMessage('Please select at least a request to reject.', 5000);
+                    }
+                }
+            };
+
             var addNote = function(){
                 var selectedRequests = vm.selectedRequests,
                     selectedRequestIds = [];
@@ -789,10 +837,10 @@ angular
 
             var saveColumns = function(){
                 notificationService.sendMessage('crs.message.savingColumns', 5000);
-                requestService.saveUserPreferences(vm.enabledColumns).then(function(response){
+                requestService.saveUserPreferences(vm.enabledColumns).then(function(){
                     notificationService.sendMessage('crs.message.savedColumns', 5000);
                 });
-            }
+            };
 
             //watch columns change
             $scope.$watch(function(){
@@ -819,6 +867,7 @@ angular
             vm.loadingProjects = true;
             vm.loadingAuthors = true;
             vm.showUnassignedRequests = false;
+            vm.rejectSelectedRequests = rejectSelectedRequests;
             vm.projects = [];
             vm.authors = [];
             vm.staffs = [];

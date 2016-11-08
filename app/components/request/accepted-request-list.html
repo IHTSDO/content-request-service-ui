@@ -6,7 +6,7 @@
                 <div class="col-md-3 no-padding">
                     <h3 class="table-title p-20" translate="crs.request.list.title.acceptedRequests"></h3>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <div class="p-t-20">
                         <button type="button" class="btn btn-round btn-info ng-scope " title="{{'crs.request.list.tip.count' | translate}}">
                             {{vm.tableParams.total()}}
@@ -28,9 +28,14 @@
                             <span class="md md-event-note"></span>
                             <span class="button-link"></span>
                         </button>
+
+                        <button type="button" class="btn btn-round btn-default " title="{{'tooltips.request.details.info.button.rejectSelectedRequests' | translate}}" ng-click="vm.rejectSelectedRequests()">
+                            <span class="md md-dnd-forwardslash darken-2 iconbase"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
                     </div>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-4">
                     <div class="selectColumns p-t-15">
                         <div id="dropbtn" onclick="myFunction()" class="dropbtn">
                             Columns

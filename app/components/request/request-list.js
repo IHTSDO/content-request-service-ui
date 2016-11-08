@@ -187,7 +187,9 @@ angular
                 assignToStaff: 'ASSIGN_MANAGER',
                 assignToAuthor: 'ACCEPT_ASSIGN_AUTHOR',
                 assignAuthor: 'ASSIGN_AUTHOR',
-                addNote: 'ADD_NOTE'
+                addNote: 'ADD_NOTE',
+                withdraw: 'WITHDRAW',
+                reject: 'REJECT'
             };
 
             var initView = function () {
@@ -212,6 +214,7 @@ angular
                 accountService.checkUserPermission().then(function (rs) {
                     vm.isAdmin = (rs.isAdmin === true);
                     vm.isViewer = (rs.isViewer === true);
+                    vm.isStaff = (rs.isStaff === true);
 
                     if (!vm.isViewer) {
                         vm.tableParams = requestTableParams;
@@ -823,6 +826,111 @@ angular
                 }
             };
 
+            var withdrawSelectedRequests = function () {
+                var action = bulkAction.withdraw;
+                var selectedRequests = vm.selectedRequests,
+                    withdrawRequestIds = [];
+                if (selectedRequests &&
+                    selectedRequests.items) {
+                    angular.forEach(selectedRequests.items, function (isSelected, requestId) {
+                        if (isSelected) {
+                            withdrawRequestIds.push(requestId);
+                        }
+                    });
+                    if (withdrawRequestIds.length > 0) {
+                        var modalInstance = $uibModal.open({
+                            templateUrl: 'components/request/modal-withdraw-or-reject-requests.html',
+                            controller: 'ModalWithdrawOrRejectRequestsCtrl as vm',
+                            resolve: {
+                                number: function() {
+                                    return withdrawRequestIds.length;
+                                },
+                                langKey: function(){
+                                    return BULK_ACTION.WITHDRAW.langKey;
+                                }
+                            }
+                        });
+
+                        modalInstance.result.then(function(rs) {
+                            var data = {
+                                data: {
+                                    additionalInfo:{
+                                        reason: rs.reason
+                                    }
+                                },
+                                requestIds: withdrawRequestIds
+                            };
+                            requestService.bulkAction(data, action).then(function(response) {
+                                if(response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value){
+                                    bulkActionRespondingModal(response.id, BULK_ACTION.WITHDRAW.langKey);
+                                }
+                            });
+                        });
+                    }else {
+                        notificationService.sendMessage('Please select at least a request to withdraw.', 5000);
+                    }
+                }
+            };
+
+            var rejectSelectedRequests = function () {
+                var action = bulkAction.reject;
+                var selectedRequests,
+                    withdrawRequestIds = [];
+                    if($routeParams.list === 'submitted-requests'){
+                        selectedRequests = vm.selectedSubmittedRequests;
+                    }else if($routeParams.list === 'my-assigned-requests'){
+                        selectedRequests = vm.selectedMyAssignedRequests;
+                    }else if($routeParams.list === 'requests'){
+                        selectedRequests = vm.selectedRequests;
+                    }else{
+                        if(vm.isAdmin || vm.isStaff){
+                            selectedRequests = vm.selectedMyAssignedRequests;
+                        }else{
+                            selectedRequests = vm.selectedRequests;
+                        }
+                    }
+                if (selectedRequests &&
+                    selectedRequests.items) {
+                    angular.forEach(selectedRequests.items, function (isSelected, requestId) {
+                        if (isSelected) {
+                            withdrawRequestIds.push(requestId);
+                        }
+                    });
+                    if (withdrawRequestIds.length > 0) {
+                        var modalInstance = $uibModal.open({
+                            templateUrl: 'components/request/modal-withdraw-or-reject-requests.html',
+                            controller: 'ModalWithdrawOrRejectRequestsCtrl as vm',
+                            resolve: {
+                                number: function() {
+                                    return withdrawRequestIds.length;
+                                },
+                                langKey: function(){
+                                    return BULK_ACTION.REJECT.langKey;
+                                }
+                            }
+                        });
+
+                        modalInstance.result.then(function(rs) {
+                            var data = {
+                                data: {
+                                    additionalInfo:{
+                                        reason: rs.reason
+                                    }
+                                },
+                                requestIds: withdrawRequestIds
+                            };
+                            requestService.bulkAction(data, action).then(function(response) {
+                                if(response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value){
+                                    bulkActionRespondingModal(response.id, BULK_ACTION.REJECT.langKey);
+                                }
+                            });
+                        });
+                    }else {
+                        notificationService.sendMessage('Please select at least a request to reject.', 5000);
+                    }
+                }
+            };
+
             var getMaxSize = function(){
                 requestService.getMaxSize().then(function(result){
                     maxSize = result.maxSize;
@@ -1324,10 +1432,10 @@ angular
 
             var saveColumns = function(){
                 notificationService.sendMessage('crs.message.savingColumns', 5000);
-                requestService.saveUserPreferences(vm.enabledColumns).then(function(response){
+                requestService.saveUserPreferences(vm.enabledColumns).then(function(){
                     notificationService.sendMessage('crs.message.savedColumns', 5000);
                 });
-            }
+            };
 
             $scope.$watch(function(){
                 return vm.enabledColumns;
@@ -1360,6 +1468,8 @@ angular
             vm.onLastModifiedChangeSR = onLastModifiedChangeSR;
             vm.onLastModifiedChangeMAR = onLastModifiedChangeMAR;
             vm.saveColumns = saveColumns;
+            vm.withdrawSelectedRequests = withdrawSelectedRequests;
+            vm.rejectSelectedRequests = rejectSelectedRequests;
             vm.daterange = {
                 startDate: null,
                 endDate: null

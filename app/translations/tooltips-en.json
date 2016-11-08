@@ -41,6 +41,8 @@
                 "ASSIGN_MANAGER": "Assign the selected requests to a Manager",
                 "ACCEPT_ASSIGN_AUTHOR": "Accept and assign the selected requests to a Manager",
                 "failedRequests": "Failed",
+                "REJECT": "Rjected Requests",
+                "WITHDRAW": "Withdrawed Requests",
                 "modalTitle": {
                     "UNASSIGN_AUTHOR": "Unassigned Requests",
                     "ADD_NOTE": "Add Note",
@@ -48,7 +50,9 @@
                     "ACCEPT": "Accept Request(s)",
                     "ASSIGN_AUTHOR": "Assign request(s) to authoing task in SCA",
                     "ASSIGN_MANAGER": "Assign request(s) to Manager",
-                    "ACCEPT_ASSIGN_AUTHOR": "Accept and assign request(s) to a Manager"
+                    "ACCEPT_ASSIGN_AUTHOR": "Accept and assign request(s) to a Manager",
+                    "REJECT": "Rject Requests",
+                    "WITHDRAW": "Withdraw Requests"
                 }
             }
         },
@@ -112,7 +116,8 @@
                     "conceptFSN": "Click to open request editing view",
                     "filter": "Filter requests",
                     "submitRequests": "Submit selected request(s)",
-                    "unassignRequests": "Unassign seleceted request(s)"
+                    "unassignRequests": "Unassign seleceted request(s)",
+                    "withdrawRequests": "Withdraw Request(s)"
                 },
                 "searchPlaceHolder": {
                     "myRequests": "Search my requests",
@@ -231,7 +236,8 @@
                         "moveToInInceptionElaboration": "Move request to In Inception/Elaboration status",
                         "addNote": "Add Note",
                         "unassign": "Unassign Request",
-                        "unassignAndRejectRequest": "Unassign And Reject"
+                        "unassignAndRejectRequest": "Unassign And Reject",
+                        "rejectSelectedRequests": "Reject Selected Requests"
                     },
                     "label": {
                         "batchId": "Batch ID",
@@ -391,7 +397,9 @@
                     "assignToStaff": "Assign to a Manager",
                     "accept": "Accept Requests",
                     "unassignAuthor": "Unassign from authoring tasks in SCA",
-                    "addNote": "Add Note"
+                    "addNote": "Add Note",
+                    "withdraw": "Withdrawn",
+                    "reject": "Reject"
                 },
                 "button": {
                     "close": "Close",

@@ -418,6 +418,14 @@ angular
         ADD_NOTE: {
             value: 'ADD_NOTE',
             langKey: 'crs.request.bulkAction.action.addNote'
+        },
+        WITHDRAW: {
+            value: 'WITHDRAW',
+            langKey: 'crs.request.bulkAction.action.withdraw'
+        },
+        REJECT: {
+            value: 'WITHDRAW',
+            langKey: 'crs.request.bulkAction.action.reject'
         }
     })
     .value('DEFAULT_COLUMNS',{

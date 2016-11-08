@@ -18,6 +18,16 @@
                             <div class="ripple-wrapper"></div>
                         </button>
 
+                        <button type="button" class="btn btn-round btn-default " title="{{'tooltips.request.list.tip.withdrawRequests' | translate}}" ng-click="vm.withdrawSelectedRequests()">
+                            <span class="md md-backspace darken-2 iconbase"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
+
+                        <button type="button" class="btn btn-round btn-default " title="{{'tooltips.request.details.info.button.rejectSelectedRequests' | translate}}" ng-click="vm.rejectSelectedRequests()">
+                            <span class="md md-dnd-forwardslash darken-2 iconbase"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
+
                         <button type="button" class="btn btn-round btn-info ng-scope " title="{{'crs.request.list.tip.count' | translate}}" >
                             {{vm.tableParams.total()}} <div class="ripple-wrapper"></div>
                         </button>
