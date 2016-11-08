@@ -221,21 +221,30 @@ angular
                         
                     });
                 }
-				
-                // load projects
-                loadProjects();
 
                 // load authors
-                loadAuthors();
-
+                vm.authors = requestService.getAuthorsList();
+                if(!vm.authors){
+                    loadAuthors();
+                }
+                
                 //load staffs
-                loadStaff();
-
-                //load max size
-                getMaxSize();
-
+                vm.staffs = requestService.getStaffsList();
+                if(!vm.staffs){
+                    loadStaff();
+                }
+                
                 //load requestors
-                loadRequestors();
+                vm.requestors = requestService.getRequestorsList();
+                if(!vm.requestors){
+                    loadRequestors();
+                }
+                
+                //load projects
+                vm.projects = requestService.getProjectsList();
+                if(!vm.projects){
+                    loadProjects();
+                }
 
                 vm.requestTableParams = requestTableParams;
                 var acceptedRequests;
@@ -302,6 +311,7 @@ angular
                     for(var i in vm.projects){
                         vm.projects[i].id = vm.projects[i].key;
                     }
+                    requestService.setProjectsList(vm.projects);
                 }).finally(function() {
                     vm.loadingProjects = false;
                 });
@@ -319,6 +329,7 @@ angular
                         vm.authors[i].title = vm.authors[i].displayName;
                         vm.authors[i].id = vm.authors[i].key;
                     }
+                    requestService.setAuthorsList(vm.authors);
                     return users;
                 }).finally(function() {
                     vm.loadingAuthors = false;
@@ -335,6 +346,7 @@ angular
                         vm.staffs[i].title = vm.staffs[i].displayName;
                         vm.staffs[i].id = vm.staffs[i].key;
                     }
+                    requestService.setStaffsList(vm.staffs);
                     return users;
                 }).finally(function() {
                     vm.loadingAuthors = false;
@@ -351,6 +363,7 @@ angular
                         vm.requestors[i].title = vm.requestors[i].displayName;
                         vm.requestors[i].id = vm.requestors[i].key;
                     }
+                    requestService.setRequestorsList(vm.requestors);
                     return users;
                 }).finally(function() {
                     vm.loadingAuthors = false;

@@ -12,19 +12,19 @@
                             {{vm.tableParams.total()}}
                             <div class="ripple-wrapper"></div>
                         </button>
-                        <button ng-disabled="vm.loadingProjects || vm.loadingAuthors" type="button" class="btn btn-round btn-default " title="{{'crs.request.list.tip.assignToStaff' | translate}}" ng-click="vm.assignSelectedRequestsToStaff()">
+                        <button type="button" class="btn btn-round btn-default " title="{{'crs.request.list.tip.assignToStaff' | translate}}" ng-click="vm.assignSelectedRequestsToStaff()">
                             <span class="md md-assignment-ind"></span>
                             <div class="ripple-wrapper"></div>
                         </button>
-                        <button ng-disabled="vm.loadingProjects || vm.loadingAuthors" type="button" class="btn btn-round btn-default " title="{{'crs.request.list.tip.assign' | translate}}" ng-click="vm.assignSelectedRequests()">
+                        <button type="button" class="btn btn-round btn-default " title="{{'crs.request.list.tip.assign' | translate}}" ng-click="vm.assignSelectedRequests()">
                             <span class="md md-content-paste"></span>
                             <div class="ripple-wrapper"></div>
                         </button>
-                        <button ng-disabled="vm.loadingProjects || vm.loadingAuthors" type="button" class="btn btn-round btn-default " title="{{'crs.request.list.tip.unassignRequests' | translate}}" ng-click="vm.unassignSelectedRequests()">
+                        <button type="button" class="btn btn-round btn-default " title="{{'crs.request.list.tip.unassignRequests' | translate}}" ng-click="vm.unassignSelectedRequests()">
                             <span class="md md-assignment-late"></span>
                             <div class="ripple-wrapper"></div>
                         </button>
-                        <button ng-if="dashboard.permissionChecked && dashboard.isAdmin" ng-disabled="vm.loadingProjects || vm.loadingAuthors" type="button" class="btn btn-round btn-default"  ng-click="vm.addNote()" title="{{'tooltips.request.details.info.button.addNote' | translate}}">
+                        <button ng-if="dashboard.permissionChecked && dashboard.isAdmin"  type="button" class="btn btn-round btn-default"  ng-click="vm.addNote()" title="{{'tooltips.request.details.info.button.addNote' | translate}}">
                             <span class="md md-event-note"></span>
                             <span class="button-link"></span>
                         </button>

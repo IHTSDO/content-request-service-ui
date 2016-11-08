@@ -150,6 +150,7 @@ angular
 						return utilsService.compareStrings(a.title, b.title);
 					});
                     vm.projects = response;
+                    requestService.setProjectsList(vm.projects);
                 }).finally(function() {
                     vm.loadingProjects = false;
                 });
@@ -161,7 +162,7 @@ angular
                 vm.loadingAuthors = true;
                 return crsJiraService.getAuthorUsers(0, 50, true, [], groupName).then(function(users) {
                     vm.authors = users;
-
+                    requestService.setAuthorsList(vm.authors);
                     return users;
                 }).finally(function() {
                     vm.loadingAuthors = false;
@@ -174,7 +175,7 @@ angular
                 vm.loadingAuthors = true;
                 return crsJiraService.getAuthorUsers(0, 50, true, [], groupName).then(function(users) {
                     vm.staffs = users;
-
+                    requestService.setStaffsList(vm.staffs);
                     return users;
                 }).finally(function() {
                     vm.loadingAuthors = false;
@@ -187,6 +188,7 @@ angular
                 vm.loadingAuthors = true;
                 return crsJiraService.getAuthorUsers(0, 50, true, [], groupName).then(function(users) {
                     vm.requestors = users;
+                    requestService.setRequestorsList(vm.requestors);
                     return users;
                 }).finally(function() {
                     vm.loadingAuthors = false;
@@ -357,16 +359,28 @@ angular
                 });
 
                 // load authors
-                loadAuthors();
-
+                vm.authors = requestService.getAuthorsList();
+                if(!vm.authors){
+                    loadAuthors();
+                }
+                
                 //load staffs
-                loadStaff();
-
+                vm.staffs = requestService.getStaffsList();
+                if(!vm.staffs){
+                    loadStaff();
+                }
+                
                 //load requestors
-                loadRequestors();
-
-                // load projects
-                loadProjects();
+                vm.requestors = requestService.getRequestorsList();
+                if(!vm.requestors){
+                    loadRequestors();
+                }
+                
+                //load projects
+                vm.projects = requestService.getProjectsList();
+                if(!vm.projects){
+                    loadProjects();
+                }
 
                 if (!isValid) {
                     showErrorMessage('crs.request.message.error.invalidPage');

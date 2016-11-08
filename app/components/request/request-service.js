@@ -337,6 +337,46 @@ angular.module('conceptRequestServiceApp.request')
                 return crsService.sendPost(requestEndpoint, null, data);
             };
 
+            var authors;
+
+            var getAuthorsList = function(){
+                return authors;
+            };
+
+            var setAuthorsList = function(list){
+                authors = list;
+            };
+
+            var staffs;
+
+            var getStaffsList = function(){
+                return staffs;
+            };
+
+            var setStaffsList = function(list){
+                staffs = list;
+            };
+
+            var requestors;
+
+            var getRequestorsList = function(){
+                return requestors;
+            };
+
+            var setRequestorsList = function(list){
+                requestors = list;
+            };
+
+            var projects;
+
+            var getProjectsList = function(){
+                return projects;
+            };
+
+            var setProjectsList = function(list){
+                projects = list;
+            };
+
             return {
                 identifyRequestType: identifyRequestType,
                 identifyRequestStatus: identifyRequestStatus,
@@ -370,7 +410,15 @@ angular.module('conceptRequestServiceApp.request')
                 setSavedColumns: setSavedColumns,
                 getSavedColumns: getSavedColumns,
                 getUserPreferences: getUserPreferences,
-                saveUserPreferences: saveUserPreferences
+                saveUserPreferences: saveUserPreferences,
+                getAuthorsList: getAuthorsList,
+                setAuthorsList: setAuthorsList,
+                getStaffsList: getStaffsList,
+                setStaffsList: setStaffsList,
+                getRequestorsList: getRequestorsList,
+                setRequestorsList: setRequestorsList,
+                getProjectsList: getProjectsList,
+                setProjectsList: setProjectsList
             };
 
         }]);
