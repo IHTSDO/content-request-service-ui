@@ -203,22 +203,29 @@ angular
                             return utilsService.compareStrings(a.value, b.value);
                         });
                         if(vm.pageMode !== REQUEST_MODE.NEW){
-                            var isNotInArr;
-                            for(var i in semanticTags){
-                                if(semanticTags[i].value !== vm.request.value){
-                                    isNotInArr = true;
-                                }
-                            }
-                            if(isNotInArr){
-                                var obj = {};
-                                obj.value = vm.request.value;
-                                vm.semanticTags.push(obj);
-                            }
+                            pushOtherSemanticTag(semanticTags);
                         }
                     }
                     requestService.setSemanticTags(vm.semanticTags);
                     return semanticTags;
                 });
+            };
+
+            var pushOtherSemanticTag = function(semanticTags){
+                if(semanticTags && vm.request){
+                    var isNotInArr;
+                    for(var i in semanticTags){
+                        if(semanticTags[i].value !== vm.request.value){
+                            isNotInArr = true;
+                        }
+                    }
+                    if(isNotInArr){
+                        var obj = {};
+                        obj.value = vm.request.value;
+                        vm.semanticTags.push(obj);
+                    }
+                    requestService.setSemanticTags(vm.semanticTags);
+                }
             };
 
             var getAuthorName = function(authorKey) {
@@ -483,12 +490,16 @@ angular
                     vm.semanticTags = requestService.getSemanticTags();
                     if(!vm.semanticTags){
                         loadSemanticTags();
+                    }else{
+                        pushOtherSemanticTag(vm.semanticTags);
                     }
 
                     //load topic options
                     vm.topicOptions = requestService.getTopics();
                     if(!vm.topicOptions){
                         loadTopicOptions();
+                    }else{
+                        pushOtherTopic(vm.topicOptions);
                     }
                     
                     loadRequestMetadata();
@@ -611,20 +622,27 @@ angular
                         return utilsService.compareStrings(a.value, b.value);
                     });
                     if(vm.pageMode !== REQUEST_MODE.NEW && vm.request){
-                        var isNotInArr;
-                        for(var i in topicOptions){
-                            if(topicOptions[i].value !== vm.request.additionalFields.topic){
-                                isNotInArr = true;
-                            }
-                        }
-                        if(isNotInArr){
-                            var obj = {};
-                            obj.value = vm.request.additionalFields.topic;
-                            vm.topicOptions.push(obj);
-                        }
+                        pushOtherTopic(topicOptions);
                     }
                     requestService.setTopics(vm.topicOptions);
                 });
+            };
+
+            var pushOtherTopic = function(topicOptions){
+                if(topicOptions && vm.request.additionalFields.topic){
+                    var isNotInArr;
+                    for(var i in topicOptions){
+                        if(topicOptions[i].value !== vm.request.additionalFields.topic){
+                            isNotInArr = true;
+                        }
+                    }
+                    if(isNotInArr){
+                        var obj = {};
+                        obj.value = vm.request.additionalFields.topic;
+                        vm.topicOptions.push(obj);
+                    }
+                    requestService.setTopics(vm.topicOptions);
+                }
             };
 
             var loadRequestMetadata = function() {
