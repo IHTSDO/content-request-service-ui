@@ -41,7 +41,7 @@
                 "ASSIGN_MANAGER": "Assign the selected requests to a Manager",
                 "ACCEPT_ASSIGN_AUTHOR": "Accept and assign the selected requests to a Manager",
                 "failedRequests": "Failed",
-                "REJECT": "Rjected Requests",
+                "REJECT": "Rejected Requests",
                 "WITHDRAW": "Withdrawed Requests",
                 "modalTitle": {
                     "UNASSIGN_AUTHOR": "Unassigned Requests",
@@ -51,7 +51,7 @@
                     "ASSIGN_AUTHOR": "Assign request(s) to authoing task in SCA",
                     "ASSIGN_MANAGER": "Assign request(s) to Manager",
                     "ACCEPT_ASSIGN_AUTHOR": "Accept and assign request(s) to a Manager",
-                    "REJECT": "Rject Requests",
+                    "REJECT": "Reject Requests",
                     "WITHDRAW": "Withdraw Requests"
                 }
             }
@@ -155,7 +155,8 @@
                 "button": {
                     "save": "Save Request",
                     "submit": "Save and Submit Request",
-                    "cancel": "Cancel"
+                    "cancel": "Cancel",
+                    "clearDropdownList": "Clear"
                 },
                 "label": {
                     "topic": "The category the request falls under",
@@ -399,7 +400,7 @@
                     "unassignAuthor": "Unassign from authoring tasks in SCA",
                     "addNote": "Add Note",
                     "withdraw": "Withdrawn",
-                    "reject": "Reject"
+                    "reject": "Reject Requests"
                 },
                 "button": {
                     "close": "Close",

@@ -923,3 +923,11 @@ input[type=checkbox].select-all-rqs {
 
 /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
 .show {display:block;}
+.clear-dropdown-value{
+  position: absolute;
+  right: 18px;
+  bottom: 3px;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}

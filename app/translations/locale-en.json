@@ -43,7 +43,7 @@
                 "ASSIGN_MANAGER": "Assigned Requests(Manager)",
                 "ACCEPT_ASSIGN_AUTHOR": "Accepted And Assigned Requests",
                 "failedRequests": "Failed",
-                "REJECT": "Rjected Requests",
+                "REJECT": "Rejected Requests",
                 "WITHDRAW": "Withdrawed Requests",
                 "modalTitle": {
                     "UNASSIGN_AUTHOR": "Unassign Requests",
@@ -53,7 +53,7 @@
                     "ASSIGN_AUTHOR": "Assign Requests To Author",
                     "ASSIGN_MANAGER": "Assign Requests To Manager",
                     "ACCEPT_ASSIGN_AUTHOR": "Accept And Assign Requests",
-                    "REJECT": "Rject Requests",
+                    "REJECT": "Reject Requests",
                     "WITHDRAW": "Withdraw Requests"
                 }
             }
@@ -401,7 +401,7 @@
                     "unassignAuthor": "Unassign Project",
                     "addNote": "Add Note",
                     "withdraw": "Withdrawn",
-                    "reject": "Reject"
+                    "reject": "Reject Requests"
                 },
                 "button": {
                     "close": "Close",
