@@ -197,31 +197,27 @@ angular
 
             var loadSemanticTags = function(){
                 return crsJiraService.getSemanticTags().then(function(semanticTags){
-                    if(semanticTags && vm.request){
-                        vm.semanticTags = semanticTags;
-                        vm.semanticTags.sort(function(a, b) {
-                            return utilsService.compareStrings(a.value, b.value);
-                        });
-                        if(vm.pageMode !== REQUEST_MODE.NEW){
-                            pushOtherSemanticTag(semanticTags);
-                        }
-                    }
+                    vm.semanticTags = semanticTags;
+                    vm.semanticTags.sort(function(a, b) {
+                        return utilsService.compareStrings(a.value, b.value);
+                    });
                     requestService.setSemanticTags(vm.semanticTags);
                     return semanticTags;
                 });
             };
 
-            var pushOtherSemanticTag = function(semanticTags){
-                if(semanticTags && vm.request){
+            var pushOtherSemanticTag = function(value){
+                if(vm.semanticTags){
                     var isNotInArr;
-                    for(var i in semanticTags){
-                        if(semanticTags[i].value !== vm.request.value){
+                    for(var i in vm.semanticTags){
+                        if(vm.
+                            semanticTags[i].value !== value){
                             isNotInArr = true;
                         }
                     }
                     if(isNotInArr){
                         var obj = {};
-                        obj.value = vm.request.value;
+                        obj.value = value;
                         vm.semanticTags.push(obj);
                     }
                     requestService.setSemanticTags(vm.semanticTags);
@@ -354,6 +350,13 @@ angular
             });
 
             var initView = function() {
+
+                //load semantic tag
+                vm.semanticTags = requestService.getSemanticTags();
+                if(!vm.semanticTags){
+                    loadSemanticTags();
+                }
+
                 var isValid = isValidViewParams();
                 var originConcept;
 
@@ -388,6 +391,12 @@ angular
                 vm.projects = requestService.getProjectsList();
                 if(!vm.projects){
                     loadProjects();
+                }
+
+                //load topic options
+                vm.topicOptions = requestService.getTopics();
+                if(!vm.topicOptions){
+                    loadTopicOptions();
                 }
 
                 if (!isValid) {
@@ -485,21 +494,6 @@ angular
                                 }
                             });
                             break;
-                    }
-                    //load semantic tag
-                    vm.semanticTags = requestService.getSemanticTags();
-                    if(!vm.semanticTags){
-                        loadSemanticTags();
-                    }else{
-                        pushOtherSemanticTag(vm.semanticTags);
-                    }
-
-                    //load topic options
-                    vm.topicOptions = requestService.getTopics();
-                    if(!vm.topicOptions){
-                        loadTopicOptions();
-                    }else{
-                        pushOtherTopic(vm.topicOptions);
                     }
                     
                     loadRequestMetadata();
@@ -621,24 +615,21 @@ angular
                     topicOptions.sort(function(a, b) {
                         return utilsService.compareStrings(a.value, b.value);
                     });
-                    if(vm.pageMode !== REQUEST_MODE.NEW && vm.request){
-                        pushOtherTopic(topicOptions);
-                    }
                     requestService.setTopics(vm.topicOptions);
                 });
             };
 
-            var pushOtherTopic = function(topicOptions){
-                if(topicOptions && vm.request.additionalFields.topic){
+            var pushOtherTopic = function(value){
+                if(vm.topicOptions){
                     var isNotInArr;
-                    for(var i in topicOptions){
-                        if(topicOptions[i].value !== vm.request.additionalFields.topic){
+                    for(var i in vm.topicOptions){
+                        if(vm.topicOptions[i].value !== value){
                             isNotInArr = true;
                         }
                     }
                     if(isNotInArr){
                         var obj = {};
-                        obj.value = vm.request.additionalFields.topic;
+                        obj.value = value;
                         vm.topicOptions.push(obj);
                     }
                     requestService.setTopics(vm.topicOptions);
@@ -1272,6 +1263,11 @@ angular
                 var requestItems = requestData.requestItems;
                 var mainItem = extractItemByRequestType(requestItems, requestService.identifyRequestType(request.requestType));
 
+                //display topic which is not in jira's topics
+                $timeout(function(){
+                    pushOtherTopic(mainItem.topic);
+                }, 2000);
+                
                 switch (request.requestType) {
                     case REQUEST_TYPE.NEW_CONCEPT.value:
                         //mainItem = requestItems[0];
@@ -1298,7 +1294,9 @@ angular
                         request.umlsCui = mainItem.umlsCui;
                         request.requestDescription = mainItem.requestDescription;
                         autoFillPreferredTerm = false;
-
+                        $timeout(function(){
+                            pushOtherSemanticTag(request.value);
+                        }, 1000);
                         break;
 
                     case REQUEST_TYPE.CHANGE_RETIRE_CONCEPT.value:
@@ -2276,7 +2274,6 @@ angular
             vm.loadingAuthors = true;
             vm.projects = [];
             vm.authors = [];
-            vm.loadSemanticTags = loadSemanticTags;
             vm.extractJustification = extractJustification;
             vm.unassignAndRejectRequest = unassignAndRejectRequest;
             vm.isAdmin = false;
