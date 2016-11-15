@@ -275,6 +275,7 @@ angular
                         }
                     }
                 }else{
+                    vm.disabledImportButton = true;
                     vm.selectedFiles.items = {};
                     vm.selectedFiles.files = {};
                 }
