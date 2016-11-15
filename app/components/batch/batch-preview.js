@@ -22,12 +22,14 @@ angular
             var fileStatusPollingInterval = configService.getFileStatusPollingInterval();
 
             var initView = function () {
+                vm.selectedFiles = { checked: false, items: {}, files: {} };
                 $rootScope.pageTitles = ['crs.batch.preview.title.pageTitle'];
 
                 vm.uploading = false;
                 vm.uploadingProgress = 0;
                 vm.uploadingFile = null;
                 vm.selectedFile = null;
+                vm.disabledImportButton = true;
 
                 //loadUploadedFiles();
             };
@@ -94,7 +96,7 @@ angular
 
             var filesTableParams = new NgTableParams({
                     page: 1,
-                    count: 5,
+                    count: 10,
                     sorting: {'uploadedTime': 'desc', fileName: 'asc'}
                 },
                 {
@@ -120,6 +122,7 @@ angular
                             .then(function (response) {
                                 var tmpSelectedFile,
                                     items = response.items;
+                                    vm.files = response;
 
                                 params.total(response.total);
 
@@ -190,47 +193,112 @@ angular
             );
 
             var openBatchImportModal = function () {
-                var modalInstance = $uibModal.open({
-                    templateUrl: 'components/batch/modal-batch-import-confirm.html',
-                    controller: 'ModalBatchImportConfirmCtrl as modal',
-                    resolve: {
-                        batchFile: vm.selectedFile
-                    }
-                });
+                angular.forEach(vm.selectedFiles.files, function(key) {
+                    var modalInstance = $uibModal.open({
+                        templateUrl: 'components/batch/modal-batch-import-confirm.html',
+                        controller: 'ModalBatchImportConfirmCtrl as modal',
+                        resolve: {
+                            batchFile: vm.selectedFiles.files[key.id]
+                        }
+                    });
 
-                modalInstance.result.then(function () {
-                    importRequests();
+                    modalInstance.result.then(function () {
+                        importRequests();
+                    });
                 });
             };
 
             var importRequests = function () {
-                if (vm.selectedFile &&
-                    vm.selectedFile.status === BATCH_IMPORT_STATUS.COMPLETED_UPLOAD.value) {
-                    // get all preview work items
-                    // run though to build concepts
-                    // submit import with the concepts
+                angular.forEach(vm.selectedFiles.files, function(key) {
+                    if(vm.selectedFiles.files[key.id].status === BATCH_IMPORT_STATUS.COMPLETED_UPLOAD.value){
+                        notificationService.sendMessage('Importing...');
+                        batchService.importBatch(key.id).then(function () {
+                            //loadUploadedFiles();
+                            notificationService.sendMessage('The Batch requests have been imported successfully');
+                            vm.disabledImportButton = true;
+                            filesTableParams.reload();
+                        });
+                    }
+                });
+                // if (vm.selectedFile &&
+                //     vm.selectedFile.status === BATCH_IMPORT_STATUS.COMPLETED_UPLOAD.value) {
+                //     // get all preview work items
+                //     // run though to build concepts
+                //     // submit import with the concepts
 
-                    vm.selectedFile.status = BATCH_IMPORT_STATUS.PROCESSING_IMPORT.value;
-                    batchService.importBatch(vm.selectedFile.id).then(function () {
-                        //loadUploadedFiles();
-                        filesTableParams.reload();
-                    });
-                }
+                //     vm.selectedFile.status = BATCH_IMPORT_STATUS.PROCESSING_IMPORT.value;
+                //     batchService.importBatch(vm.selectedFile.id).then(function () {
+                //         //loadUploadedFiles();
+                //         filesTableParams.reload();
+                //     });
+                // }
             };
 
             var removeSelectedRequest = function () {
-                if (vm.selectedFile &&
-                    vm.selectedFile.status === BATCH_IMPORT_STATUS.COMPLETED_UPLOAD.value ||
-                    vm.selectedFile.status === BATCH_IMPORT_STATUS.ERROR.value) {
+                var selectedFiles = vm.selectedFiles,
+                        selectedFileIds = [];
+                    if (selectedFiles &&
+                        selectedFiles.items) {
+                        angular.forEach(selectedFiles.items, function(isSelected, fileId) {
+                            if(fileId !== "undefined" && fileId !== null){
+                                selectedFileIds.push(fileId);
+                            }
+                        });
+                    }
+                if (selectedFileIds.length > 0) {
                     if (window.confirm('Are you sure you want to remove selected file?')) {
                         notificationService.sendMessage('Deleting batch file');
-                        batchService.removeBatchPreview(vm.selectedFile.id).then(function () {
+                        batchService.removeBatchPreview(selectedFileIds).then(function () {
                             //loadUploadedFiles();
-                            vm.selectedFile.removed = true;
+                            // vm.selectedFile.removed = true;
                             filesTableParams.reload();
                             notificationService.sendMessage('Batch file deleted', 5000);
                         });
                     }
+                }else{
+                    notificationService.sendMessage('Please select at least a batch file to remove.', 5000);
+                }
+            };
+
+            //watch for check all checkbox
+            $scope.$watch(function() {
+                return vm.selectedFiles.checked;
+            }, function(newVal) {
+                if(newVal){
+                    if(vm.files){
+                        for(var i in vm.files.items){
+                            if (vm.files.items[i].id !== undefined) {
+                                vm.disabledImportButton = true;
+                                vm.selectedFiles.items[vm.files.items[i].id] = newVal;
+                                vm.selectedFiles.files[vm.files.items[i].id] = vm.files.items[i];
+                            }
+                        }
+                    }
+                }else{
+                    vm.selectedFiles.items = {};
+                    vm.selectedFiles.files = {};
+                }
+                
+            });
+
+            var pushSelectedFile = function(event, file) {
+                if (event.target.checked && file) {
+                    vm.selectedFiles.files[file.id] = file;
+                } else {
+                    delete vm.selectedFiles.files[file.id];
+                }
+                //check length and status obj in vm.selectedRequests to disable button import
+                var keys = Object.keys(vm.selectedFiles.files);
+                if(keys.length === 1){
+                    angular.forEach(vm.selectedFiles.files, function(key) {
+                        if(vm.selectedFiles.files[key.id].status !== BATCH_IMPORT_STATUS.COMPLETED_UPLOAD.value){
+                            vm.disabledImportButton = true;
+                        }else{
+                            vm.disabledImportButton = false;
+                        }
+                    });
+                }else{
+                    vm.disabledImportButton = true;
                 }
             };
 
@@ -248,6 +316,7 @@ angular
             vm.importRequests = importRequests;
             vm.removeSelectedRequest = removeSelectedRequest;
             vm.openBatchImportModal = openBatchImportModal;
+            vm.pushSelectedFile = pushSelectedFile;
 
             initView();
         }
