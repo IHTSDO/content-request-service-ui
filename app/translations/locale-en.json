@@ -45,6 +45,7 @@
                 "failedRequests": "Failed",
                 "REJECT": "Rejected Requests",
                 "WITHDRAW": "Withdrawed Requests",
+                "UPDATE_REPORTER": "Changed Requestor",
                 "modalTitle": {
                     "UNASSIGN_AUTHOR": "Unassign Requests",
                     "ADD_NOTE": "Add Note",
@@ -54,7 +55,8 @@
                     "ASSIGN_MANAGER": "Assign Requests To Manager",
                     "ACCEPT_ASSIGN_AUTHOR": "Accept And Assign Requests",
                     "REJECT": "Reject Requests",
-                    "WITHDRAW": "Withdraw Requests"
+                    "WITHDRAW": "Withdraw Requests",
+                    "UPDATE_REPORTER": "Change Requestor"
                 }
             }
         },
@@ -114,6 +116,7 @@
                     "requestorInternalId": "Click to open request editing view",
                     "assign": "Assign requests to Authoring team",
                     "assignToStaff": "Assign requests to Manager",
+                    "reassignToRequestor": "Change Requestor",
                     "batchId": "Click to open batch details view",
                     "conceptFSN": "Click to open request editing view",
                     "filter": "Filter requests",
@@ -235,6 +238,7 @@
                         "acceptAndAssign": "Accept and Assign To Author",
                         "assign": "Assign Request to an Authoring Task",
                         "assignToStaff": "Assign To Manager",
+                        "reassignToRequestor": "Change Requestor",
                         "moveToInInceptionElaboration": "Move to In Inception/Elaboration",
                         "addNote": "Add Note",
                         "unassign": "Unassign Request",
@@ -270,6 +274,7 @@
             "assignModal": {
                 "title": "Assign Requests to an Authoring Task",
                 "assignToStaffTitle": "Assign Requests to Manager",
+                "reassignToRequestorTitle": "Change Requestor",
                 "project": {
                     "label": "Project"
                 },
@@ -397,6 +402,7 @@
                     "assignAuthor": "Assign Requests To Author",
                     "acceptAndAssign": "Accept And Assign Requests To Author",
                     "assignToStaff": "Assign Requests To Manager",
+                    "reassignToRequestor": "Change Requestor",
                     "accept": "Accept Requests",
                     "unassignAuthor": "Unassign Project",
                     "addNote": "Add Note",

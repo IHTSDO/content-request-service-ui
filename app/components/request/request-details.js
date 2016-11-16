@@ -1921,6 +1921,18 @@ angular
                 });
             };
 
+            var openReassignRequestToRequestorModal = function(){
+                return $uibModal.open({
+                    templateUrl: 'components/request/modal-reassign-request-to-requestor.html',
+                    controller: 'ModalAssignRequestToRequestorCtrl as modal',
+                    resolve: {
+                        requestors: function() {
+                            return vm.authors;
+                        }
+                    }
+                });
+            };
+
             var assignRequest = function() {
                 if (vm.authors.length > 0 && vm.projects.length > 0) {
                     var modalInstance = openAssignRequestModal();
@@ -1977,6 +1989,20 @@ angular
                                 $location.path(prevPage).search({});
                             });
                         }
+                    });
+                }
+            };
+
+            var reassignToRequestor = function() {
+                if (vm.staffs.length > 0) {
+                    var modalInstance = openReassignRequestToRequestorModal();
+                    modalInstance.result.then(function(rs) {
+                            notificationService.sendMessage('Changing requestor...', 5000);
+                            return requestService.reassignRequestToRequestor([vm.request.id], ((rs.assignee) ? rs.assignee.key : null))
+                            .then(function() {
+                                notificationService.sendMessage('Requestor has been changed successfully', 5000);
+                                $location.path(prevPage).search({});
+                            });
                     });
                 }
             };
@@ -2276,6 +2302,7 @@ angular
             vm.authors = [];
             vm.extractJustification = extractJustification;
             vm.unassignAndRejectRequest = unassignAndRejectRequest;
+            vm.reassignToRequestor = reassignToRequestor;
             vm.isAdmin = false;
             vm.isViewer = false;
             vm.permissionChecked = false;

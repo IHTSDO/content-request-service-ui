@@ -153,6 +153,12 @@
                 <span class="md md-assignment-ind blue darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.assignToStaff"></span>
             </button>
+
+            <button ng-if="requestVM.pageMode.value === 'preview' && requestVM.request.requestHeader.status !== 'RELEASED'" ng-disabled="!requestVM.projects || !requestVM.authors" class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.reassignToRequestor(requestVM.request.requestHeader.status)" title="{{'tooltips.request.details.info.button.reassignToRequestor' | translate}}">
+                <span class="md md-recent-actors blue darken-2 iconbase"></span>
+                <span class="button-link" translate="crs.request.details.info.button.reassignToRequestor"></span>
+            </button>
+
             <button ng-if="requestVM.pageMode.value === 'preview' && (requestVM.request.requestHeader.status === 'NEW' || requestVM.request.requestHeader.status === 'APPEAL' || requestVM.request.requestHeader.status === 'CLARIFICATION_NEEDED' || requestVM.request.requestHeader.status === 'IN_INCEPTION_ELABORATION') && !requestVM.request.authoringTaskTicket" ng-disabled="!requestVM.projects || !requestVM.authors" class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.acceptAndAssignRequest()" title="{{'tooltips.request.details.info.button.acceptAndAssign' | translate}}">
                 <span class="md md-assignment-turned-in blue darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.acceptAndAssign"></span>

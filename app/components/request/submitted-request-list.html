@@ -11,8 +11,12 @@
                         <button type="button" class="btn btn-round btn-info ng-scope " title="{{'crs.request.list.tip.count' | translate}}" >
                             {{vm.submittedTableParams.total()}} <div class="ripple-wrapper"></div>
                         </button>
-                        <button ng-if="dashboard.permissionChecked && dashboard.isAdmin" type="button" class="btn btn-round btn-default " title="{{'crs.request.list.tip.assignToStaff' | translate}}" ng-click="vm.assignSelectedRequestsToStaff()">
+                        <button ng-if="dashboard.permissionChecked && dashboard.isAdmin" type="button" class="btn btn-round btn-default " title="{{'tooltips.request.list.tip.assignToStaff' | translate}}" ng-click="vm.assignSelectedRequestsToStaff()">
                             <span class="md md-assignment-ind"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
+                        <button ng-if="dashboard.permissionChecked && dashboard.isAdmin" type="button" class="btn btn-round btn-default " title="{{'tooltips.request.list.tip.reassignToRequestor' | translate}}" ng-click="vm.reassignSelectedRequestsToRequestor()">
+                            <span class="md md-recent-actors"></span>
                             <div class="ripple-wrapper"></div>
                         </button>
                         <button ng-if="dashboard.permissionChecked && dashboard.isAdmin" type="button" class="btn btn-round btn-default"  ng-click="vm.acceptSelectedRequests()" title="{{'tooltips.request.details.info.button.accept' | translate}}">

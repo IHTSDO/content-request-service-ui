@@ -43,6 +43,7 @@
                 "failedRequests": "Failed",
                 "REJECT": "Rejected Requests",
                 "WITHDRAW": "Withdrawed Requests",
+                "bulkActionCompleted": "The Bulk Action has been completed",
                 "modalTitle": {
                     "UNASSIGN_AUTHOR": "Unassigned Requests",
                     "ADD_NOTE": "Add Note",
@@ -52,7 +53,8 @@
                     "ASSIGN_MANAGER": "Assign request(s) to Manager",
                     "ACCEPT_ASSIGN_AUTHOR": "Accept and assign request(s) to a Manager",
                     "REJECT": "Reject Requests",
-                    "WITHDRAW": "Withdraw Requests"
+                    "WITHDRAW": "Withdraw Requests",
+                    "UPDATE_REPORTER": "Change Requestor"
                 }
             }
         },
@@ -112,6 +114,7 @@
                     "requestorInternalId": "Click to open request editing view",
                     "assign": "Assign requests to an authoring task within SCA",
                     "assignToStaff": "Assign requests to a Manager",
+                    "reassignToRequestor": "Change Requestor",
                     "batchId": "Click to open batch details view",
                     "conceptFSN": "Click to open request editing view",
                     "filter": "Filter requests",
@@ -234,6 +237,7 @@
                         "acceptAndAssign": "Accept and assign to an authoring task in SCA",
                         "assign": "Assign request to an authoring task in SCA",
                         "assignToStaff": "Assign request to Manager",
+                        "reassignToRequestor": "Change Requestor",
                         "moveToInInceptionElaboration": "Move request to In Inception/Elaboration status",
                         "addNote": "Add Note",
                         "unassign": "Unassign Request",
@@ -269,6 +273,7 @@
             "assignModal": {
                 "title": "Assign Requests to a single authoring task in SCA",
                 "assignToStaffTitle": "Assign Requests to Manager",
+                "reassignToRequestorTitle": "Change Requestor",
                 "project": {
                     "label": "Project"
                 },
@@ -396,6 +401,7 @@
                     "assignAuthor": "Assign to an authoring task in SCA",
                     "acceptAndAssign": "Accept and assign to an authoring task in SCA",
                     "assignToStaff": "Assign to a Manager",
+                    "reassignToRequestor": "Change Requestor",
                     "accept": "Accept Requests",
                     "unassignAuthor": "Unassign from authoring tasks in SCA",
                     "addNote": "Add Note",

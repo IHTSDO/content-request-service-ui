@@ -315,6 +315,15 @@ angular.module('conceptRequestServiceApp.request')
                 return crsService.sendPost(requestEndpoint, null, data);
             };
 
+            var reassignRequestToRequestor = function(requestId, reporter){
+                var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
+                var params;
+                params = {
+                    reporter: reporter
+                };
+                return crsService.sendPut(requestEndpoint + '/' + requestId + '/reporter', params, null);
+            };
+
             var authors;
 
             var getAuthorsList = function(){
@@ -432,7 +441,8 @@ angular.module('conceptRequestServiceApp.request')
                 getTopics: getTopics,
                 setTopics: setTopics,
                 getSavedMaxSize: getSavedMaxSize,
-                setMaxSize: setMaxSize
+                setMaxSize: setMaxSize,
+                reassignRequestToRequestor: reassignRequestToRequestor
             };
 
         }]);

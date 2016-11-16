@@ -426,6 +426,10 @@ angular
         REJECT: {
             value: 'WITHDRAW',
             langKey: 'crs.request.bulkAction.action.reject'
+        },
+        CHANGE_REQUESTOR: {
+            value: 'CHANGE_REQUESTOR',
+            langKey: 'crs.request.bulkAction.action.reassignToRequestor'
         }
     })
     .value('DEFAULT_COLUMNS',{

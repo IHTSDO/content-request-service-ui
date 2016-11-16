@@ -189,7 +189,8 @@ angular
                 assignAuthor: 'ASSIGN_AUTHOR',
                 addNote: 'ADD_NOTE',
                 withdraw: 'WITHDRAW',
-                reject: 'REJECT'
+                reject: 'REJECT',
+                reassignToRequestor: 'UPDATE_REPORTER'
             };
 
             var initView = function () {
@@ -719,6 +720,58 @@ angular
                             openAssignRequestToStaffModal(selectedRequestIds);
                         }else {
                             notificationService.sendMessage('Please select at least a request to assign.', 5000);
+                        }
+                    }
+                }
+            };
+
+            var openReassignRequestsToRequestorModal = function(selectedRequestIds) {
+                var action = bulkAction.reassignToRequestor;
+                var modalInstance = $uibModal.open({
+                    templateUrl: 'components/request/modal-reassign-request-to-requestor.html',
+                    controller: 'ModalAssignRequestToRequestorCtrl as modal',
+                    resolve: {
+                        requestors: function() {
+                            return vm.authors;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function(rs) {
+                    // notificationService.sendMessage('Processing...');
+                    var data = {
+                        data: {
+                            reporter: rs.assignee? rs.assignee.key : null
+                        },
+                        requestIds: selectedRequestIds
+                    };
+                    requestService.bulkAction(data, action).then(function (response) {
+                        if(response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value){
+                            bulkActionRespondingModal(response.id, BULK_ACTION.CHANGE_REQUESTOR.langKey);
+                        }
+                    }, function(error){
+                        notificationService.sendMessage(error.message, 5000);
+                    });
+                });
+            };
+
+            var reassignSelectedRequestsToRequestor = function() {
+                if (vm.authors.length > 0) {
+                    var selectedRequests = vm.selectedSubmittedRequests,
+                        selectedRequestIds = [];
+                    if (selectedRequests && selectedRequests.items) {
+                        angular.forEach(selectedRequests.items, function(isSelected, requestId) {
+                            if (isSelected) {
+                                selectedRequestIds.push(requestId);
+                            }
+                        });
+
+                        if(selectedRequestIds.length > maxSize){
+                            notificationService.sendMessage('Cannot change requestor! The list cannot be longer than ' + maxSize + ' requests.', 5000);
+                        }else if (selectedRequestIds.length > 0) {
+                            openReassignRequestsToRequestorModal(selectedRequestIds);
+                        }else {
+                            notificationService.sendMessage('Please select at least a request to change requestor.', 5000);
                         }
                     }
                 }
@@ -1489,6 +1542,7 @@ angular
             vm.saveColumns = saveColumns;
             vm.withdrawSelectedRequests = withdrawSelectedRequests;
             vm.rejectSelectedRequests = rejectSelectedRequests;
+            vm.reassignSelectedRequestsToRequestor = reassignSelectedRequestsToRequestor;
             vm.daterange = {
                 startDate: null,
                 endDate: null
