@@ -214,7 +214,7 @@ angular
                         notificationService.sendMessage('Importing...');
                         batchService.importBatch(key.id).then(function () {
                             //loadUploadedFiles();
-                            notificationService.sendMessage('The Batch requests have been imported successfully');
+                            notificationService.sendMessage('The Batch requests have been imported successfully', 5000);
                             vm.disabledImportButton = true;
                             filesTableParams.reload();
                         });
