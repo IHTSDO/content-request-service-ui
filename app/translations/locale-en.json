@@ -240,6 +240,7 @@
                         "assignToStaff": "Assign To Manager",
                         "reassignToRequestor": "Change Requestor",
                         "moveToInInceptionElaboration": "Move to In Inception/Elaboration",
+                        "changeLocalCode": "Change Local Code",
                         "addNote": "Add Note",
                         "unassign": "Unassign Request",
                         "unassignAndRejectRequest": "Unassign And Reject",
@@ -275,6 +276,7 @@
                 "title": "Assign Requests to an Authoring Task",
                 "assignToStaffTitle": "Assign Requests to Manager",
                 "reassignToRequestorTitle": "Change Requestor",
+                "requestor": "Requestor",
                 "project": {
                     "label": "Project"
                 },
@@ -296,11 +298,13 @@
                     "appeal": "Appeal Request Rejection",
                     "needClarify": "Pending for Clarification",
                     "inInceptionElaboration": "In Inception/Elaboration",
+                    "changeLocalCode": "Change Local Code",
                     "unassignAndReject": "Unassign And Reject Request"
                 },
                 "comment": {
                     "label": "Reason",
-                    "inInceptionElaboration": "Content Request Project Url"
+                    "inInceptionElaboration": "Content Request Project Url",
+                    "changeLocalCode": "Local Code"
                 },
                 "button": {
                     "confirm": "Confirm",
@@ -308,7 +312,7 @@
                 },
                 "message": {
                     "error": {
-                        "commentRequired": "Please provide reason"
+                        "commentRequired": "Please enter required field(s)"
                     }
                 }
             },
@@ -514,7 +518,7 @@
                 },
                 "button": {
                     "import": "Import Requests",
-                    "remove": "Remove Request",
+                    "remove": "Remove Files",
                     "downloadTemplate": "Download batch template"
                 },
                 "requestList": {
