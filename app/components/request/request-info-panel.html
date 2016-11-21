@@ -140,6 +140,10 @@
                 <span class="md md-done blue darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.accept"></span>
             </button> -->
+            <button ng-if="requestVM.pageMode.value === 'preview' && requestVM.request.requestType === 'NEW_CONCEPT'" class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.changeLocalCode()" title="{{'tooltips.request.details.info.button.changeLocalCode' | translate}}">
+                <span class="md md-credit-card blue darken-2 iconbase"></span>
+                <span class="button-link" translate="crs.request.details.info.button.changeLocalCode"></span>
+            </button>
             <button ng-if="requestVM.pageMode.value === 'preview' && (requestVM.request.requestHeader.status === 'ACCEPTED' || requestVM.request.requestHeader.status === 'NEW' || requestVM.request.requestHeader.status === 'APPEAL' || requestVM.request.requestHeader.status === 'CLARIFICATION_NEEDED')" class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.moveToInInceptionElaboration()" title="{{'tooltips.request.details.info.button.moveToInInceptionElaboration' | translate}}">
                 <span class="md md-done blue darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.moveToInInceptionElaboration"></span>

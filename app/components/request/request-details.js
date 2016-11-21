@@ -2276,6 +2276,19 @@ angular
                 }
             });
 
+            var changeLocalCode = function(){
+                var modalInstance = openStatusCommentModal('changeLocalCode');
+                modalInstance.result.then(function(localCode) {
+                    notificationService.sendMessage('Changing Local Code...', 5000, null);
+                    requestService.changeLocalCode(vm.request.id, localCode).then(function(response){
+                        vm.request.requestorInternalId = response.requestorInternalId;
+                        notificationService.sendMessage('Local Code has been changed', 5000, null);
+                    }, function(error){
+                        console.log(error);
+                    });
+                });
+            };
+
             vm.cancelEditing = cancelEditing;
             vm.saveRequest = saveRequest;
             vm.acceptRequest = acceptRequest;
@@ -2303,6 +2316,7 @@ angular
             vm.extractJustification = extractJustification;
             vm.unassignAndRejectRequest = unassignAndRejectRequest;
             vm.reassignToRequestor = reassignToRequestor;
+            vm.changeLocalCode = changeLocalCode;
             vm.isAdmin = false;
             vm.isViewer = false;
             vm.permissionChecked = false;
