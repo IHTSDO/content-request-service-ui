@@ -131,7 +131,7 @@
                 },
                 "tableHeader": {
                     "batchId": "Batch ID",
-                    "requestorInternalId": "Local Code - International Id",
+                    "requestorInternalId": "Local SNOMED CT Code - International Id",
                     "ticketId": "Jira ID",
                     "requestId": "Request ID",
                     "description": "Description",
@@ -164,7 +164,7 @@
                 },
                 "label": {
                     "topic": "Topic",
-                    "requestorInternalId": "Local Code",
+                    "requestorInternalId": "Local SNOMED CT Code",
                     "proposedFSN": "New Concept FSN",
                     "parentConcept": "Parent Concept",
                     "concept": "Concept",
@@ -211,7 +211,8 @@
                     "umlsCui": "UMLS CUI",
                     "sourceTerminology": "Terminology",
                     "destinationTerminology": "Destination Terminology",
-                    "duplicateConcept": "Duplicated Concept"
+                    "duplicateConcept": "Duplicated Concept",
+                    "localCode": "Local Code"
                 },
                 "tip": {
                     "editConceptHint": "Edit a concept from Saved List or drag and drop concept here"
@@ -240,7 +241,7 @@
                         "assignToStaff": "Assign To Manager",
                         "reassignToRequestor": "Change Requestor",
                         "moveToInInceptionElaboration": "Move to In Inception/Elaboration",
-                        "changeLocalCode": "Change Local Code",
+                        "changeSNOMEDCode": "Change Local SNOMED CT Code",
                         "addNote": "Add Note",
                         "unassign": "Unassign Request",
                         "unassignAndRejectRequest": "Unassign And Reject",
@@ -298,13 +299,13 @@
                     "appeal": "Appeal Request Rejection",
                     "needClarify": "Pending for Clarification",
                     "inInceptionElaboration": "In Inception/Elaboration",
-                    "changeLocalCode": "Change Local Code",
+                    "changeSNOMEDCode": "Change Local SNOMED CT Code",
                     "unassignAndReject": "Unassign And Reject Request"
                 },
                 "comment": {
                     "label": "Reason",
                     "inInceptionElaboration": "Content Request Project Url",
-                    "changeLocalCode": "Local Code"
+                    "changeSNOMEDCode": "Local SNOMED CT Code"
                 },
                 "button": {
                     "confirm": "Confirm",
@@ -525,7 +526,7 @@
                     "tableHeader": {
                         "sourceTerminology": "Terminology",
                         "sourceTerminologyVersion": "Source Terminology Version",
-                        "requestorInternalId": "Local Code",
+                        "requestorInternalId": "Local SNOMED CT Code",
                         "reasonForChange": "Proposed Use Case",
                         "topic": "Topic",
                         "notes": "Notes",

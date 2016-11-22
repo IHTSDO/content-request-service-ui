@@ -1112,7 +1112,6 @@ angular
                         item.requestorInternalTerm = changedTarget.requestorInternalTerm;
                         item.proposedUse = changedTarget.proposedUse;
                         item.requestDescription = changedTarget.requestDescription;
-                        
                         item.umlsCui = changedTarget.umlsCui;
                         if (changedTarget.parentConcept) {
                             for (var i = 0; i < changedTarget.parentConcept.length; i++) {
@@ -1291,6 +1290,7 @@ angular
                         request.proposedUse = mainItem.proposedUse;
                         request.requestorInternalTerm = mainItem.requestorInternalTerm;
                         request.value = mainItem.semanticTag;
+                        request.localCode = requestData.localCode;
                         request.umlsCui = mainItem.umlsCui;
                         request.requestDescription = mainItem.requestDescription;
                         autoFillPreferredTerm = false;
@@ -1455,6 +1455,7 @@ angular
 
                 requestDetails.id = request.id;
                 requestDetails.requestorInternalId = request.requestorInternalId;
+                requestDetails.localCode = request.localCode;
                 requestDetails.requestItems = [];
                 requestDetails.concept = concept;
 
@@ -2277,7 +2278,7 @@ angular
             });
 
             var changeLocalCode = function(){
-                var modalInstance = openStatusCommentModal('changeLocalCode');
+                var modalInstance = openStatusCommentModal('changeSNOMEDCode');
                 modalInstance.result.then(function(localCode) {
                     notificationService.sendMessage('Changing Local Code...', 5000, null);
                     requestService.changeLocalCode(vm.request.id, localCode).then(function(response){

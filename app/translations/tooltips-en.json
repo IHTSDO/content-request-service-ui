@@ -210,7 +210,8 @@
                     "umlsCui": "UMLS CUI",
                     "sourceTerminology": "Terminology",
                     "destinationTerminology": "Destination Terminology",
-                    "duplicateConcept": "Duplicated Concept"
+                    "duplicateConcept": "Duplicated Concept",
+                    "localCode": "Local Code"
                 },
                 "tip": {
                     "editConceptHint": "Edit a concept from Saved List or drag and drop concept here"
@@ -239,7 +240,6 @@
                         "assignToStaff": "Assign request to Manager",
                         "reassignToRequestor": "Change Requestor",
                         "moveToInInceptionElaboration": "Move request to In Inception/Elaboration status",
-                        "changeLocalCode": "Change Local Code",
                         "addNote": "Add Note",
                         "unassign": "Unassign Request",
                         "unassignAndRejectRequest": "Unassign And Reject",
@@ -275,7 +275,6 @@
                 "title": "Assign Requests to a single authoring task in SCA",
                 "assignToStaffTitle": "Assign Requests to Manager",
                 "reassignToRequestorTitle": "Change Requestor",
-                "requestor": "Requestor",
                 "project": {
                     "label": "Project"
                 },
@@ -297,13 +296,11 @@
                     "appeal": "Appeal Request Rejection",
                     "needClarify": "Request Clarification",
                     "inInceptionElaboration": "Move to In Inception/Elaboration status",
-                    "changeLocalCode": "Change Local Code",
                     "unassignAndReject": "Unassign And Reject Request"
                 },
                 "comment": {
                     "label": "Reason",
-                    "inInceptionElaboration": "Content Tracker Url (where applicable)",
-                    "changeLocalCode": "Local Code"
+                    "inInceptionElaboration": "Content Tracker Url (where applicable)"
                 },
                 "button": {
                     "confirm": "Confirm",
@@ -517,7 +514,7 @@
                 },
                 "button": {
                     "import": "Import Requests",
-                    "remove": "Remove Files",
+                    "remove": "Remove Request",
                     "downloadTemplate": "Download batch template"
                 },
                 "requestList": {

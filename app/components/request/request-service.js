@@ -394,12 +394,12 @@ angular.module('conceptRequestServiceApp.request')
                 maxSize = size;
             };
 
-            var changeLocalCode = function(requestId, localCode){
+            var changeLocalCode = function(requestId, scid){
                 var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
                 var params = {
-                    localCode: localCode
+                    scid: scid
                 };
-                return crsService.sendPut(requestEndpoint + '/' + requestId + '/localCode', params, null);
+                return crsService.sendPut(requestEndpoint + '/' + requestId + '/scid', params, null);
             };
 
             return {

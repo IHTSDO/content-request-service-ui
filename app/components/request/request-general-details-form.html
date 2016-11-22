@@ -9,19 +9,19 @@
                       title="{{'tooltips.request.details.label.requestorInternalId' | translate}}"
                       error-model="requestVM.error.requestorInternalId"></form-control>
 
-        <!-- <form-control type="text"
-                      ng-if="requestVM.requestType.value === 'NEW_CONCEPT' && requestVM.request.requestHeader.status === 'DRAFT'"
-                      model="requestVM.request.requestorInternalTerm"
-                      label="crs.request.details.label.localTerm"
-                      title="{{'tooltips.request.details.label.localTerm' | translate}}"
-                      name="txtReference"></form-control> 
-
         <form-control type="text-readonly"
-                      ng-if="requestVM.request.requestHeader.status !== 'DRAFT' && requestVM.requestType.value === 'NEW_CONCEPT'"
-                      model="requestVM.request.requestorInternalTerm"
-                      label="crs.request.details.label.localTerm"
-                      title="{{'tooltips.request.details.label.localTerm' | translate}}"
-                      name="txtReference"></form-control> -->
+                      ng-if="requestVM.requestType.value === 'NEW_CONCEPT' && requestVM.request.requestHeader.status !== 'DRAFT'"
+                      model="requestVM.request.localCode"
+                      label="crs.request.details.label.localCode"
+                      title="{{'tooltips.request.details.label.localCode' | translate}}"
+                      name="txtReference"></form-control>
+
+        <form-control type="text"
+                      ng-if="requestVM.requestType.value === 'NEW_CONCEPT' && requestVM.request.requestHeader.status === 'DRAFT'"
+                      model="requestVM.request.localCode"
+                      label="crs.request.details.label.localCode"
+                      title="{{'tooltips.request.details.label.localCode' | translate}}"
+                      name="txtReference"></form-control>
 
         <form-control type="select"
                       model="requestVM.request.additionalFields.topic"
