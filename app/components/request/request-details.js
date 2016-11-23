@@ -2285,7 +2285,7 @@ angular
                         vm.request.requestorInternalId = response.requestorInternalId;
                         notificationService.sendMessage('Local Code has been changed', 5000, null);
                     }, function(error){
-                        console.log(error);
+                        notificationService.sendError(error.message, 5000, null, true);
                     });
                 });
             };
