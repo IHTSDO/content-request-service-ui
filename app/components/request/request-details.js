@@ -207,8 +207,7 @@ angular
                 if(vm.semanticTags){
                     var isNotInArr;
                     for(var i in vm.semanticTags){
-                        if(vm.
-                            semanticTags[i].value !== value){
+                        if(vm.semanticTags[i].value !== value){
                             isNotInArr = true;
                         }
                     }
@@ -2181,6 +2180,15 @@ angular
                 if (angular.isArray(newVal)) {
                     vm.request.relationshipId = selectedRelationshipsOutput();
                 }
+            });
+
+            //watch proposedStatus to set default History Attribute
+            $scope.$watch(function() {
+                return vm.request.proposedStatus;
+            }, function(newVal) {
+               if(newVal === vm.newConceptStatuses[1]){
+                    vm.request.historyAttribute = vm.historyAttributes[4];
+               }
             });
 
             //auto fill preferred term field
