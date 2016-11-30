@@ -281,6 +281,7 @@ angular
                             changeMyRequestFilter('status', myRequests.status);
                             changeMyRequestFilter('author', myRequests.ogirinatorId);
                             changeMyRequestFilter('requestId', myRequests.requestId);
+                            changeMyRequestFilter('summary', myRequests.summary);
                             changeMyRequestsPageSize(myRequests.limit);
                             changeMyRequestsPage(myRequests.offset);
                             changeMyRequestsSorting(myRequests.sorting);
@@ -1166,7 +1167,7 @@ angular
                             params.filter().requestDate.startDate,
                             params.filter().requestDate.endDate,
                             params.filter().topic,
-                            null,
+                            params.filter().summary,
                             params.filter().manager,
                             params.filter().status,
                             params.filter().author,
