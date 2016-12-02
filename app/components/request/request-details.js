@@ -29,8 +29,11 @@ angular
         'jiraService',
         '$timeout',
 		'utilsService',
-        function($scope, $rootScope, $routeParams, $location, $anchorScroll, $uibModal, $sce, $q, requestService, notificationService, requestMetadataService, objectService, snowowlService, snowowlMetadataService, crsJiraService, scaService, accountService, REQUEST_METADATA_KEY, REQUEST_TYPE, CONCEPT_EDIT_EVENT, REQUEST_STATUS, REQUEST_INPUT_MODE, jiraService, $timeout, utilsService) {
+        '$filter',
+        function($scope, $rootScope, $routeParams, $location, $anchorScroll, $uibModal, $sce, $q, requestService, notificationService, requestMetadataService, objectService, snowowlService, snowowlMetadataService, crsJiraService, scaService, accountService, REQUEST_METADATA_KEY, REQUEST_TYPE, CONCEPT_EDIT_EVENT, REQUEST_STATUS, REQUEST_INPUT_MODE, jiraService, $timeout, utilsService, $filter) {
             var vm = this;
+            var translateFilter = $filter('translate');
+            var translateRequestTypeFilter = $filter('requestType');
             var autoFillPreferredTerm = true;
 
             var REQUEST_MODE = {
@@ -1886,8 +1889,9 @@ angular
                 });
             };
 
-            var openAssignRequestModal = function() {               
-                var defaultSummary = vm.request.additionalFields.summary;
+            var openAssignRequestModal = function() {
+                var defaultSummaryRequestType = translateFilter(translateRequestTypeFilter(vm.request.requestType));               
+                var defaultSummary = '[' + defaultSummaryRequestType + '] ' + vm.request.additionalFields.summary;
                 return $uibModal.open({
                     templateUrl: 'components/request/modal-assign-request.html',
                     controller: 'ModalAssignRequestCtrl as modal',
