@@ -210,7 +210,8 @@
                     "umlsCui": "UMLS CUI",
                     "sourceTerminology": "Terminology",
                     "destinationTerminology": "Destination Terminology",
-                    "duplicateConcept": "Duplicated Concept"
+                    "duplicateConcept": "Duplicated Concept",
+                    "localCode": "Local Code"
                 },
                 "tip": {
                     "editConceptHint": "Edit a concept from Saved List or drag and drop concept here"

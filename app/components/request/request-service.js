@@ -394,6 +394,14 @@ angular.module('conceptRequestServiceApp.request')
                 maxSize = size;
             };
 
+            var changeLocalCode = function(requestId, sctid){
+                var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
+                var params = {
+                    sctid: sctid
+                };
+                return crsService.sendPut(requestEndpoint + '/' + requestId + '/sctid', params, null);
+            };
+
             return {
                 identifyRequestType: identifyRequestType,
                 identifyRequestStatus: identifyRequestStatus,
@@ -442,7 +450,8 @@ angular.module('conceptRequestServiceApp.request')
                 setTopics: setTopics,
                 getSavedMaxSize: getSavedMaxSize,
                 setMaxSize: setMaxSize,
-                reassignRequestToRequestor: reassignRequestToRequestor
+                reassignRequestToRequestor: reassignRequestToRequestor,
+                changeLocalCode: changeLocalCode
             };
 
         }]);

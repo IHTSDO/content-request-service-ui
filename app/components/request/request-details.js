@@ -29,11 +29,8 @@ angular
         'jiraService',
         '$timeout',
 		'utilsService',
-        '$filter',
-        function($scope, $rootScope, $routeParams, $location, $anchorScroll, $uibModal, $sce, $q, requestService, notificationService, requestMetadataService, objectService, snowowlService, snowowlMetadataService, crsJiraService, scaService, accountService, REQUEST_METADATA_KEY, REQUEST_TYPE, CONCEPT_EDIT_EVENT, REQUEST_STATUS, REQUEST_INPUT_MODE, jiraService, $timeout, utilsService, $filter) {
+        function($scope, $rootScope, $routeParams, $location, $anchorScroll, $uibModal, $sce, $q, requestService, notificationService, requestMetadataService, objectService, snowowlService, snowowlMetadataService, crsJiraService, scaService, accountService, REQUEST_METADATA_KEY, REQUEST_TYPE, CONCEPT_EDIT_EVENT, REQUEST_STATUS, REQUEST_INPUT_MODE, jiraService, $timeout, utilsService) {
             var vm = this;
-            var translateFilter = $filter('translate');
-            var translateRequestTypeFilter = $filter('requestType');
             var autoFillPreferredTerm = true;
 
             var REQUEST_MODE = {
@@ -210,8 +207,7 @@ angular
                 if(vm.semanticTags){
                     var isNotInArr;
                     for(var i in vm.semanticTags){
-                        if(vm.
-                            semanticTags[i].value !== value){
+                        if(vm.semanticTags[i].value !== value){
                             isNotInArr = true;
                         }
                     }
@@ -1112,7 +1108,6 @@ angular
                         item.requestorInternalTerm = changedTarget.requestorInternalTerm;
                         item.proposedUse = changedTarget.proposedUse;
                         item.requestDescription = changedTarget.requestDescription;
-                        
                         item.umlsCui = changedTarget.umlsCui;
                         if (changedTarget.parentConcept) {
                             for (var i = 0; i < changedTarget.parentConcept.length; i++) {
@@ -1291,6 +1286,7 @@ angular
                         request.proposedUse = mainItem.proposedUse;
                         request.requestorInternalTerm = mainItem.requestorInternalTerm;
                         request.value = mainItem.semanticTag;
+                        request.localCode = requestData.localCode;
                         request.umlsCui = mainItem.umlsCui;
                         request.requestDescription = mainItem.requestDescription;
                         autoFillPreferredTerm = false;
@@ -1455,6 +1451,7 @@ angular
 
                 requestDetails.id = request.id;
                 requestDetails.requestorInternalId = request.requestorInternalId;
+                requestDetails.localCode = request.localCode;
                 requestDetails.requestItems = [];
                 requestDetails.concept = concept;
 
@@ -1889,9 +1886,8 @@ angular
                 });
             };
 
-            var openAssignRequestModal = function() {
-                var defaultSummaryRequestType = translateFilter(translateRequestTypeFilter(vm.request.requestType));               
-                var defaultSummary = '[' + defaultSummaryRequestType + '] ' + vm.request.additionalFields.summary;
+            var openAssignRequestModal = function() {               
+                var defaultSummary = vm.request.additionalFields.summary;
                 return $uibModal.open({
                     templateUrl: 'components/request/modal-assign-request.html',
                     controller: 'ModalAssignRequestCtrl as modal',
@@ -2186,6 +2182,15 @@ angular
                 }
             });
 
+            //watch proposedStatus to set default History Attribute
+            $scope.$watch(function() {
+                return vm.request.proposedStatus;
+            }, function(newVal) {
+               if(newVal === vm.newConceptStatuses[1]){
+                    vm.request.historyAttribute = vm.historyAttributes[4];
+               }
+            });
+
             //auto fill preferred term field
             $scope.$watch(function() {
                 if(vm.requestType === REQUEST_TYPE.NEW_CONCEPT && vm.request.proposedFSN && autoFillPreferredTerm){
@@ -2276,6 +2281,19 @@ angular
                 }
             });
 
+            var changeLocalCode = function(){
+                var modalInstance = openStatusCommentModal('changeSNOMEDCode');
+                modalInstance.result.then(function(localCode) {
+                    notificationService.sendMessage('Changing Local Code...', 5000, null);
+                    requestService.changeLocalCode(vm.request.id, localCode).then(function(response){
+                        vm.request.requestorInternalId = response.requestorInternalId;
+                        notificationService.sendMessage('Local Code has been changed', 5000, null);
+                    }, function(error){
+                        notificationService.sendError(error.message, 5000, null, true);
+                    });
+                });
+            };
+
             vm.cancelEditing = cancelEditing;
             vm.saveRequest = saveRequest;
             vm.acceptRequest = acceptRequest;
@@ -2303,6 +2321,7 @@ angular
             vm.extractJustification = extractJustification;
             vm.unassignAndRejectRequest = unassignAndRejectRequest;
             vm.reassignToRequestor = reassignToRequestor;
+            vm.changeLocalCode = changeLocalCode;
             vm.isAdmin = false;
             vm.isViewer = false;
             vm.permissionChecked = false;

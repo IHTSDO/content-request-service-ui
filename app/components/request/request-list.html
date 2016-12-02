@@ -71,6 +71,9 @@
                                     <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.myRequests.columns.topic" /> {{'crs.request.list.tableHeader.topic' | translate}}
                                 </label>
                                 <label>
+                                    <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.myRequests.columns.summary" /> {{'crs.request.list.tableHeader.summary' | translate}}
+                                </label>
+                                <label>
                                     <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.myRequests.columns.manager" /> {{'crs.request.list.tableHeader.manager' | translate}}
                                 </label>
                                 <label>
@@ -134,11 +137,11 @@
                         <td data-title="'crs.request.list.tableHeader.topic' | translate" sortable="'additionalFields.topic'" filter="vm.filterRequests.topic" ng-if="vm.enabledColumns.myRequests.columns.topic">
                             {{(request.additionalFields)?request.additionalFields.topic:''}}
                         </td>
-                        <!--
-                        <td data-title="'crs.request.list.tableHeader.summary' | translate" sortable="'additionalFields.summary'" >
+
+                        <td data-title="'crs.request.list.tableHeader.summary' | translate" sortable="'additionalFields.summary'" filter="vm.filterRequests.summary" ng-if="vm.enabledColumns.myRequests.columns.summary">
                             {{(request.additionalFields)?request.additionalFields.summary:''}}
                         </td>
--->
+
                         <td data-title="'crs.request.list.tableHeader.manager' | translate" sortable="'requestHeader.manager'" filter="{manager: 'ng-table/manager-select.html'}" style="min-width: 150px" ng-if="vm.enabledColumns.myRequests.columns.manager">
                             <span ng-show="vm.loadingAuthors" class="md md-autorenew" ng-class="{'md-spin':vm.loadingAuthors}"></span>
                             <div  ng-bind-html="(vm.getAuthorName(request.requestHeader.manager))?vm.getAuthorName(request.requestHeader.manager):request.requestHeader.manager"></div>
