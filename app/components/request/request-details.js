@@ -201,25 +201,22 @@ angular
                     vm.semanticTags.sort(function(a, b) {
                         return utilsService.compareStrings(a.value, b.value);
                     });
-                    requestService.setSemanticTags(vm.semanticTags);
+                    requestService.setSemanticTags(semanticTags);
                     return semanticTags;
                 });
             };
 
             var pushOtherSemanticTag = function(value){
                 if(vm.semanticTags){
-                    var isNotInArr;
+                    var tmp = [];
                     for(var i in vm.semanticTags){
-                        if(vm.semanticTags[i].value !== value){
-                            isNotInArr = true;
-                        }
+                        tmp.push(vm.semanticTags[i].value);
                     }
-                    if(isNotInArr){
+                    if(tmp.indexOf(value) === -1) {
                         var obj = {};
                         obj.value = value;
                         vm.semanticTags.push(obj);
                     }
-                    requestService.setSemanticTags(vm.semanticTags);
                 }
             };
 
@@ -620,18 +617,15 @@ angular
 
             var pushOtherTopic = function(value){
                 if(vm.topicOptions){
-                    var isNotInArr;
+                    var tmp = [];
                     for(var i in vm.topicOptions){
-                        if(vm.topicOptions[i].value !== value){
-                            isNotInArr = true;
-                        }
+                        tmp.push(vm.topicOptions[i].value);
                     }
-                    if(isNotInArr){
+                    if(tmp.indexOf(value) === -1) {
                         var obj = {};
                         obj.value = value;
                         vm.topicOptions.push(obj);
                     }
-                    requestService.setTopics(vm.topicOptions);
                 }
             };
 
