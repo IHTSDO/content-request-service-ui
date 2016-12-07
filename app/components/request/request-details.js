@@ -1885,7 +1885,7 @@ angular
 
             var openAssignRequestModal = function() {
                 var defaultSummaryRequestType = translateFilter(translateRequestTypeFilter(vm.request.requestType));               
-                var defaultSummary = '[' + defaultSummaryRequestType + '] ' + vm.request.additionalFields.summary;
+                var defaultSummary = $filter('limitTo')('[' + defaultSummaryRequestType + '] ' + vm.request.additionalFields.summary, 255, 0);
                 return $uibModal.open({
                     templateUrl: 'components/request/modal-assign-request.html',
                     controller: 'ModalAssignRequestCtrl as modal',
