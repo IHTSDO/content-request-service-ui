@@ -2182,7 +2182,9 @@ angular
 
             //watch proposedStatus to set default History Attribute
             $scope.$watch(function() {
-                return vm.request.proposedStatus;
+                if(vm.requestType === REQUEST_TYPE.CHANGE_RETIRE_CONCEPT){
+                    return vm.request.proposedStatus;
+                }
             }, function(newVal) {
                if(newVal === vm.newConceptStatuses[1]){
                     vm.request.historyAttribute = vm.historyAttributes[4];
