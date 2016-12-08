@@ -446,7 +446,8 @@ angular
                 topic: true,
                 manager: false,
                 status: true,
-                summary: false
+                summary: false,
+                trackerId: false
             }
         },
         myAssignedRequests: {
@@ -462,7 +463,8 @@ angular
                 topic: true,
                 manager: false,
                 status: true,
-                summary: false
+                summary: false,
+                trackerId: false
             }
         },
         submittedRequests: {
@@ -478,7 +480,8 @@ angular
                 topic: true,
                 manager: false,
                 status: true,
-                summary: false
+                summary: false,
+                trackerId: false
             }
         },
         acceptedRequests: {
@@ -496,7 +499,8 @@ angular
                 status: true,
                 summary: false,
                 assignee: true,
-                project: true
+                project: true,
+                trackerId: false
             }
         }
     })

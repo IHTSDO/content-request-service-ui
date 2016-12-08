@@ -148,7 +148,8 @@
                     "createdDate": "Created",
                     "requestDescription": "Descripion of Request",
                     "manager": "Manager",
-                    "summary": "Summary"
+                    "summary": "Summary",
+                    "trackerId": "Tracker Id"
                 }
             },
             "details": {
@@ -256,6 +257,7 @@
                         "originator": "Created By",
                         "manager": "Manager",
                         "requestUrl": "Request Url",
+                        "trackerId": "Tracker Id",
                         "authoringTicket":"Authoring Ticket"
                     }
                 }
@@ -305,7 +307,8 @@
                 "comment": {
                     "label": "Reason",
                     "inInceptionElaboration": "Content Request Project Url",
-                    "changeSNOMEDCode": "Local SNOMED CT Code"
+                    "changeSNOMEDCode": "Local SNOMED CT Code",
+                    "trackerId": "Tracker Id"
                 },
                 "button": {
                     "confirm": "Confirm",
@@ -583,7 +586,8 @@
                         "newParentConceptId": "New Parent Concept Id",
                         "changeConceptToStatus": "Change Concept To Status",
                         "duplicateConceptId": "Duplicate Concept Id",
-                        "changeDescriptionStatusTo": "Change Description Status To"
+                        "changeDescriptionStatusTo": "Change Description Status To",
+                        "trackerId": "trackerId"
                     }
                 }
             }

@@ -1249,7 +1249,8 @@ angular
                     inputMode: requestData.inputMode,
                     requestHeader: requestData.requestHeader,
                     contentTrackerUrl: requestData.contentTrackerUrl,
-                    authoringTaskTicket: requestData.authoringTaskTicket
+                    authoringTaskTicket: requestData.authoringTaskTicket,
+                    trackerId: requestData.trackerId
                 };
                 $rootScope.newConceptRequestType = requestData.requestType;
                 var requestItems = requestData.requestItems;
@@ -1872,8 +1873,8 @@ angular
 
             var moveToInInceptionElaboration = function() {
                 var modalInstance = openStatusCommentModal('inInceptionElaboration');
-                modalInstance.result.then(function(contentRequestUrl) {
-                    changeRequestStatus(vm.request.id, REQUEST_STATUS.IN_INCEPTION_ELABORATION, { contentRequestUrl: contentRequestUrl})
+                modalInstance.result.then(function(response) {
+                    changeRequestStatus(vm.request.id, REQUEST_STATUS.IN_INCEPTION_ELABORATION, { contentRequestUrl: response.contentRequestUrl, trackerId: response.trackerId})
                         .then(function() {
                             notificationService.sendMessage('crs.request.message.requestAccepted', 5000);
                             $location.path(prevPage).search({});

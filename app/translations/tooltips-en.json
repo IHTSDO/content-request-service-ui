@@ -146,7 +146,8 @@
                     "createdDate": "Created On",
                     "requestDescription": "Request Description",
                     "manager": "Team member from Content team",
-                    "summary": "Request Summary"
+                    "summary": "Request Summary",
+                    "trackerId": "Tracker Id"
                 }
             },
             "details": {
@@ -254,6 +255,7 @@
                         "originator": "Created By",
                         "manager": "Manager",
                         "requestUrl": "Request Url",
+                        "trackerId": "Tracker Id",
                         "authoringTicket":"Authoring task ID"
                     }
                 }
@@ -300,7 +302,8 @@
                 },
                 "comment": {
                     "label": "Reason",
-                    "inInceptionElaboration": "Content Tracker Url (where applicable)"
+                    "inInceptionElaboration": "Content Tracker Url (where applicable)",
+                    "trackerId": "Tracker Id"
                 },
                 "button": {
                     "confirm": "Confirm",
@@ -578,7 +581,8 @@
                         "newParentConceptId": "New Parent Concept Id",
                         "changeConceptToStatus": "Change Concept To Status",
                         "duplicateConceptId": "Duplicate Concept Id",
-                        "changeDescriptionStatusTo": "Change Description Status To"
+                        "changeDescriptionStatusTo": "Change Description Status To",
+                        "trackerId": "trackerId"
                     }
                 }
             }

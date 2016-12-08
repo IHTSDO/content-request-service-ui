@@ -71,6 +71,10 @@
                                 <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.myAssignedRequests.columns.summary" /> {{'crs.request.list.tableHeader.summary' | translate}}
                             </label>
                             <label>
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.myAssignedRequests.columns.trackerId" /> {{'crs.request.list.tableHeader.trackerId' | translate}}
+                            </label>
+                            
+                            <label>
                                 <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.myAssignedRequests.columns.status" /> {{'crs.request.list.tableHeader.status' | translate}}
                             </label>
                         </div>
@@ -126,7 +130,10 @@
                         <td data-title="'crs.request.list.tableHeader.summary' | translate" sortable="'additionalFields.summary'" filter="vm.filterRequests.summary" ng-if="vm.enabledColumns.myAssignedRequests.columns.summary">
                             {{(request.additionalFields)?request.additionalFields.summary:''}}
                         </td>
-                     
+                        
+                        <td data-title="'crs.request.list.tableHeader.trackerId' | translate" sortable="'trackerId'" filter="vm.filterRequests.trackerId" ng-if="vm.enabledColumns.myAssignedRequests.columns.trackerId">
+                            {{request.trackerId}}
+                        </td>
 
                         <td data-title="'crs.request.list.tableHeader.status' | translate" sortable="'requestHeader.status'" filter="{status: 'ng-table/status-select.html'}" ng-if="vm.enabledColumns.myAssignedRequests.columns.status">
                             <span class="badge requestStatus {{request.requestHeader.status}}">{{request.requestHeader.status | requestStatus | translate}}</span>

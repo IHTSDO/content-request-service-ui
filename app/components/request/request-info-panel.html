@@ -86,6 +86,17 @@
                         </div>
                     </div>
                 </li>
+                <li ng-if="requestVM.request.trackerId">
+                    <div class="timeline-badge">
+                        <i class="icon-circle theme-border"></i>
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.request.details.info.label.trackerId" title="{{'tooltips.request.details.info.label.trackerId' | translate}}"></label>
+                            <h4 class="timeline-title comment-body">{{requestVM.request.trackerId}}</h4>
+                        </div>
+                    </div>
+                </li>
                 <li ng-if="requestVM.request.requestHeader.statusDate">
                     <div class="timeline-badge">
                         <i class="icon-circle theme-border"></i>

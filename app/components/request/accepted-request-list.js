@@ -65,6 +65,12 @@ angular
                         placeholder: "Filter summaries..."
                     }
                 },
+                trackerId: {
+                    trackerId: {
+                        id: "text",
+                        placeholder: "Ids..."
+                    }
+                },
                 requestId: {
                     requestId: {
                         id: "number",
@@ -271,6 +277,7 @@ angular
                         changeAcceptedFilter('project', acceptedRequests.assignedProject);
                         changeAcceptedFilter('assignee', acceptedRequests.assignee);
                         changeAcceptedFilter('summary', acceptedRequests.summary);
+                        changeAcceptedFilter('trackerId', acceptedRequests.trackerId);
                         changeAcceptedRequestsPageSize(acceptedRequests.limit);
                         changeAcceptedRequestsPage(acceptedRequests.offset);
                         changeAcceptedRequestsSorting(acceptedRequests.sorting);
@@ -705,7 +712,7 @@ angular
 
             var isDateRangeFilteredFirstTime = false;
 
-            var buildRequestFilterValues = function(typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, summary, manager, status, author,
+            var buildRequestFilterValues = function(typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, summary, trackerId, manager, status, author,
                 project, assignee, requestId, requestType, showUnassignedRequests, statusDateFrom, statusDateTo){
                 var requestList = {};
                 requestList.batchRequest = batchRequest;
@@ -730,6 +737,7 @@ angular
                 requestList.statusDateFrom = convertDateToMilliseconds(statusDateFrom);
                 requestList.statusDateTo = convertDateToMilliseconds(statusDateTo);
                 requestList.summary = summary;
+                requestList.trackerId = trackerId;
                 return requestList;
             };
 
@@ -797,6 +805,7 @@ angular
                         params.filter().requestDate.endDate,
                         params.filter().topic,
                         params.filter().summary,
+                        params.filter().trackerId,
                         params.filter().manager,
                         params.filter().status,
                         params.filter().ogirinatorId,
