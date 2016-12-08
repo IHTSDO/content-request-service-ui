@@ -237,6 +237,7 @@
                         "appeal": "Appeal Rejection",
                         "withdraw": "Withdraw Request",
                         "pendingForClarification": "Pending Clarification",
+                        "inAppealClarification": "In Appeal Clarification",
                         "acceptAndAssign": "Accept and Assign To Author",
                         "assign": "Assign Request to an Authoring Task",
                         "assignToStaff": "Assign To Manager",
@@ -302,6 +303,7 @@
                     "withdraw": "Withdraw Request",
                     "appeal": "Appeal Request Rejection",
                     "needClarify": "Pending for Clarification",
+                    "inAppealClarification": "In Appeal Clarification",
                     "inInceptionElaboration": "In Inception/Elaboration",
                     "changeSNOMEDCode": "Change Local SNOMED CT Code",
                     "unassignAndReject": "Unassign And Reject Request"
@@ -337,6 +339,7 @@
                 "requestAppealed": "Request has been appealed successfully",
                 "requestWithdrawn": "Request has been withdrawn successfully",
                 "requestClarification": "Request has been pended to clarification successfully",
+                "inAppealClarification": "Request has been in appeal clarification successfully",
                 "requestRemoved": "Requests have been removed successfully",
                 "requestUnassigned": "Request has been unassigned successfully",
                 "requestUnassigning": "Unassigning request...",
@@ -389,7 +392,8 @@
                 "approved": "Approved",
                 "inInceptionElaboration": "In Inception/Elaboration",
                 "readyForRelease": "Ready For Release",
-                "submitted": "Submitted"
+                "submitted": "Submitted",
+                "inAppealClarification": "In Appeal Clarification"
             },
             "bulkAction": {
                 "status": {

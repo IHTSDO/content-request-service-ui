@@ -145,6 +145,10 @@ angular
                 {
                     id: "READY_FOR_RELEASE",
                     title: "Ready For Release"
+                },
+                {
+                    id: "IN_APPEAL_CLARIFICATION",
+                    title: "In Appeal Clarification"
                 }
             ];
 

@@ -236,6 +236,7 @@
                         "appeal": "Appeal Rejection",
                         "withdraw": "Withdraw Request",
                         "pendingForClarification": "Request Clarification",
+                        "inAppealClarification": "In Appeal Clarification",
                         "acceptAndAssign": "Accept and assign to an authoring task in SCA",
                         "assign": "Assign request to an authoring task in SCA",
                         "assignToStaff": "Assign request to Manager",
@@ -299,6 +300,7 @@
                     "withdraw": "Withdraw Request",
                     "appeal": "Appeal Request Rejection",
                     "needClarify": "Request Clarification",
+                    "inAppealClarification": "In Appeal Clarification",
                     "inInceptionElaboration": "Move to In Inception/Elaboration status",
                     "unassignAndReject": "Unassign And Reject Request"
                 },
@@ -384,7 +386,8 @@
                 "approved": "The request has been approved",
                 "inInceptionElaboration": "The request is  in the Inception/Elaboration phase",
                 "readyForRelease": "The request has been authored and will be in the next International Release",
-                "submitted": "The request has been submitted but not yet reviewed by the IHTSDO team"
+                "submitted": "The request has been submitted but not yet reviewed by the IHTSDO team",
+                "inAppealClarification": "In Appeal Clarification"
             },
             "bulkAction": {
                 "status": {

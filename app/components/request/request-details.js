@@ -2055,6 +2055,21 @@ angular
                 });
             };
 
+            var requestInAppealClarification = function() {
+
+                var modalInstance = openStatusCommentModal('inAppealClarification');
+
+                modalInstance.result.then(function(comment) {
+                    changeRequestStatus(vm.request.id, REQUEST_STATUS.IN_APPEAL_CLARIFICATION, { reason: comment })
+                        .then(function() {
+                            notificationService.sendMessage('crs.request.message.inAppealClarification', 5000);
+                            $location.path(prevPage).search({});
+                        }, function(e) {
+                            showErrorMessage(e.message);
+                        });
+                });
+            };
+
             var requestClarification = function() {
 
                 var modalInstance = openStatusCommentModal('needClarify');
@@ -2307,6 +2322,7 @@ angular
             vm.rejectAppeal = rejectAppeal;
             vm.moveToInInceptionElaboration = moveToInInceptionElaboration;
             vm.requestClarification = requestClarification;
+            vm.requestInAppealClarification = requestInAppealClarification;
             vm.saveAndSubmitRequest = saveAndSubmitRequest;
             vm.startEditingConcept = startEditingConcept;
             vm.setInputMode = setInputMode;

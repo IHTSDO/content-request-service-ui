@@ -209,6 +209,10 @@ angular
         READY_FOR_RELEASE: {
             value: 'READY_FOR_RELEASE',
             langKey: 'crs.request.requestStatus.readyForRelease'
+        },
+        IN_APPEAL_CLARIFICATION: {
+            value: 'IN_APPEAL_CLARIFICATION',
+            langKey: 'crs.request.requestStatus.inAppealClarification'
         }
     })
     .value('STATISTICS_STATUS',{
