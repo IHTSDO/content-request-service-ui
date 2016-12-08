@@ -324,6 +324,7 @@ angular.module('conceptRequestServiceApp.request')
                 return crsService.sendPut(requestEndpoint + '/' + requestId + '/reporter', params, null);
             };
 
+            /*list in request detail*/
             var authors;
 
             var getAuthorsList = function(){
@@ -343,6 +344,29 @@ angular.module('conceptRequestServiceApp.request')
             var setStaffsList = function(list){
                 staffs = list;
             };
+            /*end*/
+
+            /*list in request list*/
+            var rlauthors;
+
+            var getRlAuthorsList = function(){
+                return rlauthors;
+            };
+
+            var setRlAuthorsList = function(list){
+                rlauthors = list;
+            };
+
+            var rlstaffs;
+
+            var getRlStaffsList = function(){
+                return rlstaffs;
+            };
+
+            var setRlStaffsList = function(list){
+                rlstaffs = list;
+            };
+            /*end*/
 
             var requestors;
 
@@ -451,7 +475,11 @@ angular.module('conceptRequestServiceApp.request')
                 getSavedMaxSize: getSavedMaxSize,
                 setMaxSize: setMaxSize,
                 reassignRequestToRequestor: reassignRequestToRequestor,
-                changeLocalCode: changeLocalCode
+                changeLocalCode: changeLocalCode,
+                getRlAuthorsList: getRlAuthorsList,
+                setRlAuthorsList: setRlAuthorsList,
+                getRlStaffsList: getRlStaffsList,
+                setRlStaffsList: setRlStaffsList
             };
 
         }]);

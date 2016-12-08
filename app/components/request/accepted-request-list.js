@@ -233,13 +233,13 @@ angular
                 }
 
                 // load authors
-                vm.authors = requestService.getAuthorsList();
+                vm.authors = requestService.getRlAuthorsList();
                 if(!vm.authors){
                     loadAuthors();
                 }
                 
                 //load staffs
-                vm.staffs = requestService.getStaffsList();
+                vm.staffs = requestService.getRlStaffsList();
                 if(!vm.staffs){
                     loadStaff();
                 }
@@ -347,7 +347,7 @@ angular
                         vm.authors[i].title = vm.authors[i].displayName;
                         vm.authors[i].id = vm.authors[i].key;
                     }
-                    requestService.setAuthorsList(vm.authors);
+                    requestService.setRlAuthorsList(vm.authors);
                     return users;
                 }).finally(function() {
                     vm.loadingAuthors = false;
@@ -364,7 +364,7 @@ angular
                         vm.staffs[i].title = vm.staffs[i].displayName;
                         vm.staffs[i].id = vm.staffs[i].key;
                     }
-                    requestService.setStaffsList(vm.staffs);
+                    requestService.setRlStaffsList(vm.staffs);
                     return users;
                 }).finally(function() {
                     vm.loadingAuthors = false;
