@@ -256,7 +256,9 @@
                         "manager": "Manager",
                         "requestUrl": "Request Url",
                         "trackerId": "Tracker Id",
-                        "authoringTicket":"Authoring task ID"
+                        "authoringTicket":"Authoring task ID",
+                        "impactedConceptId":"Impacted/New Concept ID",
+                        "newFSN": "New FSN"
                     }
                 }
             },

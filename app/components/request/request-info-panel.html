@@ -97,6 +97,28 @@
                         </div>
                     </div>
                 </li>
+                <li ng-if="requestVM.request.impactedConceptId">
+                    <div class="timeline-badge">
+                        <i class="icon-circle theme-border"></i>
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.request.details.info.label.impactedConceptId" title="{{'tooltips.request.details.info.label.impactedConceptId' | translate}}"></label>
+                            <h4 class="timeline-title comment-body">{{requestVM.request.impactedConceptId}}</h4>
+                        </div>
+                    </div>
+                </li>
+                <li ng-if="requestVM.request.newFSN">
+                    <div class="timeline-badge">
+                        <i class="icon-circle theme-border"></i>
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.request.details.info.label.newFSN" title="{{'tooltips.request.details.info.label.newFSN' | translate}}"></label>
+                            <h4 class="timeline-title comment-body">{{requestVM.request.newFSN}}</h4>
+                        </div>
+                    </div>
+                </li>
                 <li ng-if="requestVM.request.requestHeader.statusDate">
                     <div class="timeline-badge">
                         <i class="icon-circle theme-border"></i>

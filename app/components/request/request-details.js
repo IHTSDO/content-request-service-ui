@@ -1250,7 +1250,9 @@ angular
                     requestHeader: requestData.requestHeader,
                     contentTrackerUrl: requestData.contentTrackerUrl,
                     authoringTaskTicket: requestData.authoringTaskTicket,
-                    trackerId: requestData.trackerId
+                    trackerId: requestData.trackerId,
+                    impactedConceptId: requestData.impactedConceptId,
+                    newFSN: requestData.newFSN
                 };
                 $rootScope.newConceptRequestType = requestData.requestType;
                 var requestItems = requestData.requestItems;
