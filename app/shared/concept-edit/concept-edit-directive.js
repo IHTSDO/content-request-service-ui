@@ -845,7 +845,7 @@ angular
                     scope.getCaseSignificanceDisplayText = function (description) {
                         switch (description.caseSignificance) {
                             case 'INITIAL_CHARACTER_CASE_INSENSITIVE':
-                                return 'Cs';
+                                return 'cI';
                             case 'CASE_INSENSITIVE':
                                 return 'ci';
                             case 'ENTIRE_TERM_CASE_SENSITIVE':
