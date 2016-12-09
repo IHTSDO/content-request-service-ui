@@ -291,6 +291,10 @@ angular
         READY_FOR_RELEASE: {
             value: 'READY_FOR_RELEASE',
             langKey: 'crs.dashboard.sidebar.readyForRelease'
+        },
+        IN_APPEAL_CLARIFICATION: {
+            value: 'IN_APPEAL_CLARIFICATION',
+            langKey: 'crs.dashboard.sidebar.inAppealClarification'
         }
     })
     .value('STATISTICS_LABEL',{
@@ -365,6 +369,10 @@ angular
         My_Assigned: {
             value:'My_Assigned',
             langKey: 'tooltips.dashboard.sidebar.my_assigned'
+        },
+        IN_APPEAL_CLARIFICATION: {
+            value: 'IN_APPEAL_CLARIFICATION',
+            langKey: 'crs.dashboard.sidebar.inAppealClarification'
         }
     })
     .value('REQUEST_METADATA_KEY', {

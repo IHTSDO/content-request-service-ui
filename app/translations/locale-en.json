@@ -97,7 +97,8 @@
                 "clarificationNeeded": "Clarification Needed",
         		"in_inception_elaboration": "In Inception",
         		"my_assigned": "My Assigned",
-                "readyForRelease": "Ready For Release"
+                "readyForRelease": "Ready For Release",
+                "inAppealClarification": "In Appeal Clarification"
             }
         },
         "request": {
@@ -474,7 +475,8 @@
                         "clarificationNeeded": "Clarification Needed",
                         "inInception": "In Inception",
                         "complete": "Completed",
-                        "readyForRelease": "Ready For Release"
+                        "readyForRelease": "Ready For Release",
+                        "inAppealClarification": "In Appeal Clarification"
                     }
                 }
             },
