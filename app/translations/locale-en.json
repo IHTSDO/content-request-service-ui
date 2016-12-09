@@ -311,7 +311,7 @@
                 },
                 "comment": {
                     "label": "Reason",
-                    "inInceptionElaboration": "Content Request Project Url",
+                    "inInceptionElaboration": "Content Tracker URL",
                     "changeSNOMEDCode": "Local SNOMED CT Code",
                     "trackerId": "Tracker Id"
                 },

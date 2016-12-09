@@ -18,11 +18,11 @@
                           ng-if="modal.requestStatus !== 'inInceptionElaboration'"
                           model="modal.comment"
                           label="crs.request.requestStatusModal.comment.{{(modal.requestStatus === 'inInceptionElaboration' || modal.requestStatus === 'changeSNOMEDCode')?modal.requestStatus:'label'}}"></form-control>
-                    <form-control type="textarea"
+                    <form-control type="text"
                           ng-if="modal.requestStatus === 'inInceptionElaboration'"
                           model="modal.comment.contentRequestUrl"
                           label="crs.request.requestStatusModal.comment.{{modal.requestStatus}}"></form-control>
-                    <form-control type="textarea"
+                    <form-control type="text"
                           ng-if="modal.requestStatus === 'inInceptionElaboration'"
                           model="modal.comment.trackerId"
                           label="crs.request.requestStatusModal.comment.trackerId"></form-control>
