@@ -1,10 +1,10 @@
 {
     "endpoint": {
-        "crs": "https://uat-request.ihtsdotools.org/ihtsdo-crs/",
-        "ims": "https://uat-ims.ihtsdotools.org/",
-        "snowowl": "https://uat-request.ihtsdotools.org/snowowl/",
-        "jira": "http://uat-jira.ihtsdotools.org:8080/",
-        "ims-api": "https://uat-term.ihtsdotools.org/ims-api/"
+        "crs": "http://crs3.ihtsdotools.org/crs/",
+        "ims": "https://dev-ims.ihtsdotools.org/",
+        "snowowl": "http://crs3.ihtsdotools.org/snowowl/",
+        "jira": "http://dev-jira.ihtsdotools.org:8080/",
+        "ims-api": "https://dev-term.ihtsdotools.org/ims-api/"
     },
     "xhrTimeout": 50000,
     "fileStatusPollingInterval": 5000,

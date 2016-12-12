@@ -19,7 +19,8 @@ angular
         'BULK_ACTION_STATUS',
         'BULK_ACTION',
         '$routeParams',
-        function($filter, $sce, $uibModal, NgTableParams, requestService, notificationService, accountService, scaService, crsJiraService, jiraService, utilsService, $scope, BULK_ACTION_STATUS, BULK_ACTION, $routeParams) {
+        'DEFAULT_COLUMNS',
+        function($filter, $sce, $uibModal, NgTableParams, requestService, notificationService, accountService, scaService, crsJiraService, jiraService, utilsService, $scope, BULK_ACTION_STATUS, BULK_ACTION, $routeParams, DEFAULT_COLUMNS) {
             var vm = this;
             var maxSize;
 
@@ -62,6 +63,12 @@ angular
                     summary: {
                         id: "text",
                         placeholder: "Filter summaries..."
+                    }
+                },
+                trackerId: {
+                    trackerId: {
+                        id: "text",
+                        placeholder: "Ids..."
                     }
                 },
                 requestId: {
@@ -138,6 +145,10 @@ angular
                 {
                     id: "READY_FOR_RELEASE",
                     title: "Ready For Release"
+                },
+                {
+                    id: "IN_APPEAL_CLARIFICATION",
+                    title: "In Appeal Clarification"
                 }
             ];
 
@@ -187,7 +198,9 @@ angular
                 assignToAuthor: 'ACCEPT_ASSIGN_AUTHOR',
                 assignAuthor: 'ASSIGN_AUTHOR',
                 unassignAuthor: 'UNASSIGN_AUTHOR',
-                addNote: 'ADD_NOTE'
+                addNote: 'ADD_NOTE',
+                withdraw: 'WITHDRAW',
+                reject: 'REJECT'
             };
 
             var initView = function() {
@@ -205,45 +218,49 @@ angular
 				vm.requestTypes.sort(function(a, b) {
 						return utilsService.compareStrings(a.title, b.title);
 				});
-
-                vm.defaultEnabledColumns = {
-                    batchId: true,
-                    requestId: true,
-                    concept: true,
-                    jiraTicketId: true,
-                    requestor: true,
-                    createdDate: true,
-                    modifiedDate: true,
-                    type: true,
-                    topic: true,
-                    manager: false,
-                    status: true,
-                    summary: false,
-                    assignee: true,
-                    project: true
-                };
                 
                 vm.enabledColumns = requestService.getSavedColumns();
 
                 if(vm.enabledColumns === null || vm.enabledColumns === undefined){
-                    vm.enabledColumns = vm.defaultEnabledColumns;
+                    requestService.getUserPreferences().then(function(response){
+                        if(response){
+                            vm.enabledColumns = response;
+                        }else{
+                            vm.enabledColumns = DEFAULT_COLUMNS;
+                        }
+                        requestService.setSavedColumns(vm.enabledColumns);
+                    });
                 }
 
-				
-                // load projects
-                loadProjects();
-
                 // load authors
-                loadAuthors();
-
+                vm.authors = requestService.getRlAuthorsList();
+                if(!vm.authors){
+                    loadAuthors();
+                }
+                
                 //load staffs
-                loadStaff();
+                vm.staffs = requestService.getRlStaffsList();
+                if(!vm.staffs){
+                    loadStaff();
+                }
+                
+                //load requestors
+                vm.requestors = requestService.getRequestorsList();
+                if(!vm.requestors){
+                    loadRequestors();
+                }
+                
+                //load projects
+                vm.projects = requestService.getProjectsList();
+                if(!vm.projects){
+                    loadProjects();
+                }
 
                 //load max size
-                getMaxSize();
-
-                //load requestors
-                loadRequestors();
+                maxSize = requestService.getSavedMaxSize();
+                if(!maxSize){
+                    getMaxSize();
+                }
 
                 //save current list
                 saveCurrentList();
@@ -267,6 +284,7 @@ angular
                         changeAcceptedFilter('project', acceptedRequests.assignedProject);
                         changeAcceptedFilter('assignee', acceptedRequests.assignee);
                         changeAcceptedFilter('summary', acceptedRequests.summary);
+                        changeAcceptedFilter('trackerId', acceptedRequests.trackerId);
                         changeAcceptedRequestsPageSize(acceptedRequests.limit);
                         changeAcceptedRequestsPage(acceptedRequests.offset);
                         changeAcceptedRequestsSorting(acceptedRequests.sorting);
@@ -303,6 +321,7 @@ angular
             var getMaxSize = function(){
                 requestService.getMaxSize().then(function(result){
                     maxSize = result.maxSize;
+                    requestService.setMaxSize(maxSize);
                 }, function(error){
                     notificationService.sendMessage(error.message, 5000);
                 });
@@ -318,6 +337,7 @@ angular
                     for(var i in vm.projects){
                         vm.projects[i].id = vm.projects[i].key;
                     }
+                    requestService.setProjectsList(vm.projects);
                 }).finally(function() {
                     vm.loadingProjects = false;
                 });
@@ -335,6 +355,7 @@ angular
                         vm.authors[i].title = vm.authors[i].displayName;
                         vm.authors[i].id = vm.authors[i].key;
                     }
+                    requestService.setRlAuthorsList(vm.authors);
                     return users;
                 }).finally(function() {
                     vm.loadingAuthors = false;
@@ -351,6 +372,7 @@ angular
                         vm.staffs[i].title = vm.staffs[i].displayName;
                         vm.staffs[i].id = vm.staffs[i].key;
                     }
+                    requestService.setRlStaffsList(vm.staffs);
                     return users;
                 }).finally(function() {
                     vm.loadingAuthors = false;
@@ -367,6 +389,7 @@ angular
                         vm.requestors[i].title = vm.requestors[i].displayName;
                         vm.requestors[i].id = vm.requestors[i].key;
                     }
+                    requestService.setRequestorsList(vm.requestors);
                     return users;
                 }).finally(function() {
                     vm.loadingAuthors = false;
@@ -551,6 +574,52 @@ angular
                 }
             };
 
+            var rejectSelectedRequests = function () {
+                var action = bulkAction.reject;
+                var selectedRequests = vm.selectedRequests,
+                    withdrawRequestIds = [];
+                if (selectedRequests &&
+                    selectedRequests.items) {
+                    angular.forEach(selectedRequests.items, function (isSelected, requestId) {
+                        if (isSelected) {
+                            withdrawRequestIds.push(requestId);
+                        }
+                    });
+                    if (withdrawRequestIds.length > 0) {
+                        var modalInstance = $uibModal.open({
+                            templateUrl: 'components/request/modal-withdraw-or-reject-requests.html',
+                            controller: 'ModalWithdrawOrRejectRequestsCtrl as vm',
+                            resolve: {
+                                number: function() {
+                                    return withdrawRequestIds.length;
+                                },
+                                langKey: function(){
+                                    return BULK_ACTION.REJECT.langKey;
+                                }
+                            }
+                        });
+
+                        modalInstance.result.then(function(rs) {
+                            var data = {
+                                data: {
+                                    additionalInfo:{
+                                        reason: rs.reason
+                                    }
+                                },
+                                requestIds: withdrawRequestIds
+                            };
+                            requestService.bulkAction(data, action).then(function(response) {
+                                if(response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value){
+                                    bulkActionRespondingModal(response.id, BULK_ACTION.REJECT.langKey);
+                                }
+                            });
+                        });
+                    }else {
+                        notificationService.sendMessage('Please select at least a request to reject.', 5000);
+                    }
+                }
+            };
+
             var addNote = function(){
                 var selectedRequests = vm.selectedRequests,
                     selectedRequestIds = [];
@@ -655,7 +724,7 @@ angular
 
             var isDateRangeFilteredFirstTime = false;
 
-            var buildRequestFilterValues = function(typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, summary, manager, status, author,
+            var buildRequestFilterValues = function(typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, summary, trackerId, manager, status, author,
                 project, assignee, requestId, requestType, showUnassignedRequests, statusDateFrom, statusDateTo){
                 var requestList = {};
                 requestList.batchRequest = batchRequest;
@@ -680,6 +749,7 @@ angular
                 requestList.statusDateFrom = convertDateToMilliseconds(statusDateFrom);
                 requestList.statusDateTo = convertDateToMilliseconds(statusDateTo);
                 requestList.summary = summary;
+                requestList.trackerId = trackerId;
                 return requestList;
             };
 
@@ -747,6 +817,7 @@ angular
                         params.filter().requestDate.endDate,
                         params.filter().topic,
                         params.filter().summary,
+                        params.filter().trackerId,
                         params.filter().manager,
                         params.filter().status,
                         params.filter().ogirinatorId,
@@ -805,13 +876,19 @@ angular
                 requestTableParams.filter().statusDate = vm.lastModifiedDateRange;
             };
 
+            var saveColumns = function(){
+                notificationService.sendMessage('crs.message.savingColumns', 5000);
+                requestService.saveUserPreferences(vm.enabledColumns).then(function(){
+                    notificationService.sendMessage('crs.message.savedColumns', 5000);
+                });
+            };
+
             //watch columns change
             $scope.$watch(function(){
                 return vm.enabledColumns;
             }, function(newVal){
                 if(newVal){
-                    var list = $routeParams.list;
-                    requestService.setSavedColumns(list, newVal);
+                    requestService.setSavedColumns(newVal);
                 }
             });
 
@@ -823,12 +900,14 @@ angular
             vm.getAuthorName = getAuthorName;
             vm.getStaffName = getStaffName;
             vm.toggleShowUnassignedRequests = toggleShowUnassignedRequests;
+            vm.saveColumns = saveColumns;
             vm.addNote = addNote;
             vm.isAdmin = false;
             vm.isViewer = false;
             vm.loadingProjects = true;
             vm.loadingAuthors = true;
             vm.showUnassignedRequests = false;
+            vm.rejectSelectedRequests = rejectSelectedRequests;
             vm.projects = [];
             vm.authors = [];
             vm.staffs = [];

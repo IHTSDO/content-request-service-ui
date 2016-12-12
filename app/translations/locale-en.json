@@ -3,7 +3,9 @@
         "message": {
             "unknownUser": "Logged in as unknown user",
             "profileTip":"display name will link to profile services in later updates",
-            "loading": "Loading..."
+            "loading": "Loading...",
+            "savingColumns": "Saving Columns...",
+            "savedColumns": "The Columns have been saved successfully"
         },
         "link": {
             "logout": "Logout",
@@ -41,6 +43,9 @@
                 "ASSIGN_MANAGER": "Assigned Requests(Manager)",
                 "ACCEPT_ASSIGN_AUTHOR": "Accepted And Assigned Requests",
                 "failedRequests": "Failed",
+                "REJECT": "Rejected Requests",
+                "WITHDRAW": "Withdrawed Requests",
+                "UPDATE_REPORTER": "Changed Requestor",
                 "modalTitle": {
                     "UNASSIGN_AUTHOR": "Unassign Requests",
                     "ADD_NOTE": "Add Note",
@@ -48,7 +53,10 @@
                     "ACCEPT": "Accept Requests",
                     "ASSIGN_AUTHOR": "Assign Requests To Author",
                     "ASSIGN_MANAGER": "Assign Requests To Manager",
-                    "ACCEPT_ASSIGN_AUTHOR": "Accept And Assign Requests"
+                    "ACCEPT_ASSIGN_AUTHOR": "Accept And Assign Requests",
+                    "REJECT": "Reject Requests",
+                    "WITHDRAW": "Withdraw Requests",
+                    "UPDATE_REPORTER": "Change Requestor"
                 }
             }
         },
@@ -89,7 +97,8 @@
                 "clarificationNeeded": "Clarification Needed",
         		"in_inception_elaboration": "In Inception",
         		"my_assigned": "My Assigned",
-                "readyForRelease": "Ready For Release"
+                "readyForRelease": "Ready For Release",
+                "inAppealClarification": "In Appeal Clarification"
             }
         },
         "request": {
@@ -108,11 +117,13 @@
                     "requestorInternalId": "Click to open request editing view",
                     "assign": "Assign requests to Authoring team",
                     "assignToStaff": "Assign requests to Manager",
+                    "reassignToRequestor": "Change Requestor",
                     "batchId": "Click to open batch details view",
                     "conceptFSN": "Click to open request editing view",
                     "filter": "Filter requests",
                     "submitRequests": "Submit Selected Requests",
-                    "unassignRequests": "Unassign Requests"
+                    "unassignRequests": "Unassign Requests",
+                    "withdrawRequests": "Withdraw Requests"
                 },
                 "searchPlaceHolder": {
                     "myRequests": "Search My Requests",
@@ -121,7 +132,7 @@
                 },
                 "tableHeader": {
                     "batchId": "Batch ID",
-                    "requestorInternalId": "Local Code - International Id",
+                    "requestorInternalId": "Local SNOMED CT Code - International Id",
                     "ticketId": "Jira ID",
                     "requestId": "Request ID",
                     "description": "Description",
@@ -138,7 +149,8 @@
                     "createdDate": "Created",
                     "requestDescription": "Descripion of Request",
                     "manager": "Manager",
-                    "summary": "Summary"
+                    "summary": "Summary",
+                    "trackerId": "Tracker Id"
                 }
             },
             "details": {
@@ -154,7 +166,7 @@
                 },
                 "label": {
                     "topic": "Topic",
-                    "requestorInternalId": "Local Code",
+                    "requestorInternalId": "Local SNOMED CT Code",
                     "proposedFSN": "New Concept FSN",
                     "parentConcept": "Parent Concept",
                     "concept": "Concept",
@@ -201,7 +213,8 @@
                     "umlsCui": "UMLS CUI",
                     "sourceTerminology": "Terminology",
                     "destinationTerminology": "Destination Terminology",
-                    "duplicateConcept": "Duplicated Concept"
+                    "duplicateConcept": "Duplicated Concept",
+                    "localCode": "Local Code"
                 },
                 "tip": {
                     "editConceptHint": "Edit a concept from Saved List or drag and drop concept here"
@@ -225,15 +238,19 @@
                         "appeal": "Appeal Rejection",
                         "withdraw": "Withdraw Request",
                         "pendingForClarification": "Pending Clarification",
+                        "inAppealClarification": "In Appeal Clarification",
                         "acceptAndAssign": "Accept and Assign To Author",
                         "assign": "Assign Request to an Authoring Task",
                         "assignToStaff": "Assign To Manager",
+                        "reassignToRequestor": "Change Requestor",
                         "moveToInInceptionElaboration": "Move to In Inception/Elaboration",
+                        "changeSNOMEDCode": "Change Local SNOMED CT Code",
                         "addNote": "Add Note",
                         "unassign": "Unassign Request",
                         "unassignAndRejectRequest": "Unassign And Reject",
                         "nextRequest": "Next Request",
-                        "previousRequest": "Previous Request"
+                        "previousRequest": "Previous Request",
+                        "rejectSelectedRequests": "Reject Selected Requests"
                     },
                     "label": {
                         "batchId": "Batch ID",
@@ -244,7 +261,10 @@
                         "originator": "Created By",
                         "manager": "Manager",
                         "requestUrl": "Request Url",
-                        "authoringTicket":"Authoring Ticket"
+                        "trackerId": "Tracker Id",
+                        "authoringTicket":"Authoring Ticket",
+                        "impactedConceptId":"Impacted/New Concept ID",
+                        "newFSN": "New FSN"
                     }
                 }
             },
@@ -264,6 +284,8 @@
             "assignModal": {
                 "title": "Assign Requests to an Authoring Task",
                 "assignToStaffTitle": "Assign Requests to Manager",
+                "reassignToRequestorTitle": "Change Requestor",
+                "requestor": "Requestor",
                 "project": {
                     "label": "Project"
                 },
@@ -284,12 +306,16 @@
                     "withdraw": "Withdraw Request",
                     "appeal": "Appeal Request Rejection",
                     "needClarify": "Pending for Clarification",
+                    "inAppealClarification": "In Appeal Clarification",
                     "inInceptionElaboration": "In Inception/Elaboration",
+                    "changeSNOMEDCode": "Change Local SNOMED CT Code",
                     "unassignAndReject": "Unassign And Reject Request"
                 },
                 "comment": {
                     "label": "Reason",
-                    "inInceptionElaboration": "Content Request Project Url"
+                    "inInceptionElaboration": "Content Tracker URL",
+                    "changeSNOMEDCode": "Local SNOMED CT Code",
+                    "trackerId": "Tracker Id"
                 },
                 "button": {
                     "confirm": "Confirm",
@@ -297,7 +323,7 @@
                 },
                 "message": {
                     "error": {
-                        "commentRequired": "Please provide reason"
+                        "commentRequired": "Please enter required field(s)"
                     }
                 }
             },
@@ -316,6 +342,7 @@
                 "requestAppealed": "Request has been appealed successfully",
                 "requestWithdrawn": "Request has been withdrawn successfully",
                 "requestClarification": "Request has been pended to clarification successfully",
+                "inAppealClarification": "Request has been in appeal clarification successfully",
                 "requestRemoved": "Requests have been removed successfully",
                 "requestUnassigned": "Request has been unassigned successfully",
                 "requestUnassigning": "Unassigning request...",
@@ -368,7 +395,8 @@
                 "approved": "Approved",
                 "inInceptionElaboration": "In Inception/Elaboration",
                 "readyForRelease": "Ready For Release",
-                "submitted": "Submitted"
+                "submitted": "Submitted",
+                "inAppealClarification": "In Appeal Clarification"
             },
             "bulkAction": {
                 "status": {
@@ -391,9 +419,12 @@
                     "assignAuthor": "Assign Requests To Author",
                     "acceptAndAssign": "Accept And Assign Requests To Author",
                     "assignToStaff": "Assign Requests To Manager",
+                    "reassignToRequestor": "Change Requestor",
                     "accept": "Accept Requests",
                     "unassignAuthor": "Unassign Project",
-                    "addNote": "Add Note"
+                    "addNote": "Add Note",
+                    "withdraw": "Withdrawn",
+                    "reject": "Reject Requests"
                 },
                 "button": {
                     "close": "Close",
@@ -446,7 +477,8 @@
                         "clarificationNeeded": "Clarification Needed",
                         "inInception": "In Inception",
                         "complete": "Completed",
-                        "readyForRelease": "Ready For Release"
+                        "readyForRelease": "Ready For Release",
+                        "inAppealClarification": "In Appeal Clarification"
                     }
                 }
             },
@@ -500,14 +532,14 @@
                 },
                 "button": {
                     "import": "Import Requests",
-                    "remove": "Remove Request",
+                    "remove": "Remove Files",
                     "downloadTemplate": "Download batch template"
                 },
                 "requestList": {
                     "tableHeader": {
                         "sourceTerminology": "Terminology",
                         "sourceTerminologyVersion": "Source Terminology Version",
-                        "requestorInternalId": "Local Code",
+                        "requestorInternalId": "Local SNOMED CT Code",
                         "reasonForChange": "Proposed Use Case",
                         "topic": "Topic",
                         "notes": "Notes",
@@ -564,7 +596,8 @@
                         "newParentConceptId": "New Parent Concept Id",
                         "changeConceptToStatus": "Change Concept To Status",
                         "duplicateConceptId": "Duplicate Concept Id",
-                        "changeDescriptionStatusTo": "Change Description Status To"
+                        "changeDescriptionStatusTo": "Change Description Status To",
+                        "trackerId": "trackerId"
                     }
                 }
             }

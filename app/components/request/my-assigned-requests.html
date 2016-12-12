@@ -19,9 +19,14 @@
                             <span class="md md-assignment-turned-in"></span>
                             <span class="button-link"></span>
                         </button>
-                        <button ng-if="dashboard.permissionChecked && dashboard.isAdmin" ng-disabled="vm.loadingProjects || vm.loadingAuthors" type="button" class="btn btn-round btn-default"  ng-click="vm.addNote()" title="{{'tooltips.request.details.info.button.addNote' | translate}}">
+                        <button ng-if="dashboard.permissionChecked && dashboard.isAdmin"  type="button" class="btn btn-round btn-default"  ng-click="vm.addNote()" title="{{'tooltips.request.details.info.button.addNote' | translate}}">
                             <span class="md md-event-note"></span>
                             <span class="button-link"></span>
+                        </button>
+
+                        <button ng-if="dashboard.permissionChecked && dashboard.isAdmin" type="button" class="btn btn-round btn-default " title="{{'tooltips.request.details.info.button.rejectSelectedRequests' | translate}}" ng-click="vm.rejectSelectedRequests()">
+                            <span class="md md-dnd-forwardslash darken-2 iconbase"></span>
+                            <div class="ripple-wrapper"></div>
                         </button>
                     </div>
                 </div>
@@ -31,39 +36,46 @@
                             Columns
                             <span class="md md-keyboard-arrow-down"></span>
                         </div>
+                        <div id="saveButton" class="saveButton" ng-click="vm.saveColumns()">
+                            <button>Save</button>
+                        </div>
                         <div id="myDropdown" class="dropdown-content">
                             <label>
-                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.batchId" /> {{'crs.request.list.tableHeader.batchId' | translate}}
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.myAssignedRequests.columns.batchId" /> {{'crs.request.list.tableHeader.batchId' | translate}}
                             </label>
                             <label>
-                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.requestId" /> {{'crs.request.list.tableHeader.requestId' | translate}}
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.myAssignedRequests.columns.requestId" /> {{'crs.request.list.tableHeader.requestId' | translate}}
                             </label>
                             <label>
-                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.concept" /> {{'crs.request.list.tableHeader.conceptFSN' | translate}}
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.myAssignedRequests.columns.concept" /> {{'crs.request.list.tableHeader.conceptFSN' | translate}}
                             </label>
                             <label>
-                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.jiraTicketId" /> {{'crs.request.list.tableHeader.ticketId' | translate}}
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.myAssignedRequests.columns.jiraTicketId" /> {{'crs.request.list.tableHeader.ticketId' | translate}}
                             </label>
                             <label>
-                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.requestor" /> {{'crs.request.list.tableHeader.originator' | translate}}
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.myAssignedRequests.columns.requestor" /> {{'crs.request.list.tableHeader.originator' | translate}}
                             </label>
                             <label>
-                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.createdDate" /> {{'crs.request.list.tableHeader.createdDate' | translate}}
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.myAssignedRequests.columns.createdDate" /> {{'crs.request.list.tableHeader.createdDate' | translate}}
                             </label>
                             <label>
-                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.modifiedDate" /> {{'crs.request.list.tableHeader.lastModified' | translate}}
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.myAssignedRequests.columns.modifiedDate" /> {{'crs.request.list.tableHeader.lastModified' | translate}}
                             </label>
                             <label>
-                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.type" /> {{'crs.request.list.tableHeader.requestType' | translate}}
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.myAssignedRequests.columns.type" /> {{'crs.request.list.tableHeader.requestType' | translate}}
                             </label>
                             <label>
-                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.topic" /> {{'crs.request.list.tableHeader.topic' | translate}}
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.myAssignedRequests.columns.topic" /> {{'crs.request.list.tableHeader.topic' | translate}}
                             </label>
                             <label>
-                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.summary" /> {{'crs.request.list.tableHeader.summary' | translate}}
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.myAssignedRequests.columns.summary" /> {{'crs.request.list.tableHeader.summary' | translate}}
                             </label>
                             <label>
-                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.status" /> {{'crs.request.list.tableHeader.status' | translate}}
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.myAssignedRequests.columns.trackerId" /> {{'crs.request.list.tableHeader.trackerId' | translate}}
+                            </label>
+                            
+                            <label>
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.myAssignedRequests.columns.status" /> {{'crs.request.list.tableHeader.status' | translate}}
                             </label>
                         </div>
                     </div>
@@ -83,44 +95,47 @@
                             <input type="checkbox" class="small-checkbox" ng-model="vm.selectedMyAssignedRequests.items[request.id]">
                         </td>
 
-                        <td data-title="'crs.request.list.tableHeader.batchId' | translate" sortable="'batchRequest'" filter="vm.filterRequests.batchRequest" ng-if="vm.enabledColumns.batchId">
+                        <td data-title="'crs.request.list.tableHeader.batchId' | translate" sortable="'batchRequest'" filter="vm.filterRequests.batchRequest" ng-if="vm.enabledColumns.myAssignedRequests.columns.batchId">
                             <!--<a class="tooltips-right" ng-href="#/batches/view/{{request.batchRequest}}">{{request.batchRequest}} <span translate="crs.request.list.tip.batchId"></span></a>-->
                             {{request.batchRequest}}
                         </td>
 
-                        <td data-title="'crs.request.list.tableHeader.requestId' | translate" sortable="'id'" filter="vm.filterRequests.requestId" ng-if="vm.enabledColumns.requestId">
+                        <td data-title="'crs.request.list.tableHeader.requestId' | translate" sortable="'id'" filter="vm.filterRequests.requestId" ng-if="vm.enabledColumns.myAssignedRequests.columns.requestId">
                             {{request.id}}
                         </td>
                         
-                        <td data-title="'crs.request.list.tableHeader.conceptFSN' | translate" sortable="'fsn'" filter="vm.filterRequests.fsn" ng-if="vm.enabledColumns.concept">
+                        <td data-title="'crs.request.list.tableHeader.conceptFSN' | translate" sortable="'fsn'" filter="vm.filterRequests.fsn" ng-if="vm.enabledColumns.myAssignedRequests.columns.concept">
                             <!--<a class="tooltips-right" ng-href="#/requests/edit/{{request.id}}">{{request.fsn}} <span translate="crs.request.list.tip.conceptFSN"></span></a>-->
                             {{request.fsn}}
                         </td>
-                        <td data-title="'crs.request.list.tableHeader.ticketId' | translate" sortable="'jiraTicketId'" filter="vm.filterRequests.jiraTicketId" jira-link="request.jiraTicketId" ng-if="vm.enabledColumns.jiraTicketId"></td>
+                        <td data-title="'crs.request.list.tableHeader.ticketId' | translate" sortable="'jiraTicketId'" filter="vm.filterRequests.jiraTicketId" jira-link="request.jiraTicketId" ng-if="vm.enabledColumns.myAssignedRequests.columns.jiraTicketId"></td>
                          
-                         <td data-title="'crs.request.list.tableHeader.originator' | translate" sortable="'requestHeader.ogirinatorId'" style="min-width: 150px" filter="vm.filterRequests.ogirinatorId" ng-if="vm.enabledColumns.requestor">
-                            <span ng-show="vm.loadingAuthors" class="md md-autorenew" ng-class="{'md-spin':vm.loadingAuthors}"></span>
-                            <div ng-if="!vm.loadingAuthors" ng-bind-html="(vm.getAuthorName(request.requestHeader.ogirinatorId))?vm.getAuthorName(request.requestHeader.ogirinatorId):request.requestHeader.ogirinatorId"></div>
+                        <td data-title="'crs.request.list.tableHeader.originator' | translate" sortable="'requestHeader.ogirinatorId'" style="min-width: 150px" filter="vm.filterRequests.ogirinatorId" ng-if="vm.enabledColumns.myAssignedRequests.columns.requestor">
+                            <span ng-show="!vm.authors" class="md md-autorenew" ng-class="{'md-spin':!vm.authors}"></span>
+                            <div ng-if="vm.authors" ng-bind-html="(vm.getAuthorName(request.requestHeader.ogirinatorId))?vm.getAuthorName(request.requestHeader.ogirinatorId):request.requestHeader.ogirinatorId"></div>
                         </td>
-                        <td data-title="'crs.request.list.tableHeader.createdDate' | translate" sortable="'requestHeader.requestDate'" filter="{requestDate: 'ng-table/datetime-picker-startdate.html'}" ng-if="vm.enabledColumns.createdDate">
+                        <td data-title="'crs.request.list.tableHeader.createdDate' | translate" sortable="'requestHeader.requestDate'" filter="{requestDate: 'ng-table/datetime-picker-startdate.html'}" ng-if="vm.enabledColumns.myAssignedRequests.columns.createdDate">
                             {{request.requestHeader.requestDate | date:'yyyy-MM-dd'}}
                         </td>
-                        <td data-title="'crs.request.list.tableHeader.lastModified' | translate" sortable="'requestHeader.statusDate'" filter="{requestDate: 'ng-table/datetime-picker-last-modified.html'}" ng-if="vm.enabledColumns.modifiedDate">
+                        <td data-title="'crs.request.list.tableHeader.lastModified' | translate" sortable="'requestHeader.statusDate'" filter="{requestDate: 'ng-table/datetime-picker-last-modified.html'}" ng-if="vm.enabledColumns.myAssignedRequests.columns.modifiedDate">
                             {{request.requestHeader.statusDate | date:'yyyy-MM-dd'}}
                         </td>
                       
-                        <td data-title="'crs.request.list.tableHeader.requestType' | translate" sortable="'requestType'" filter="{requestType: 'ng-table/request-type-select.html'}" ng-if="vm.enabledColumns.type">
+                        <td data-title="'crs.request.list.tableHeader.requestType' | translate" sortable="'requestType'" filter="{requestType: 'ng-table/request-type-select.html'}" ng-if="vm.enabledColumns.myAssignedRequests.columns.type">
                             {{request.requestType | requestType | translate}}
                         </td>
-                        <td data-title="'crs.request.list.tableHeader.topic' | translate" sortable="'additionalFields.topic'" filter="vm.filterRequests.topic" ng-if="vm.enabledColumns.topic">
+                        <td data-title="'crs.request.list.tableHeader.topic' | translate" sortable="'additionalFields.topic'" filter="vm.filterRequests.topic" ng-if="vm.enabledColumns.myAssignedRequests.columns.topic">
                             {{(request.additionalFields)?request.additionalFields.topic:''}}
                         </td>
-                        <td data-title="'crs.request.list.tableHeader.summary' | translate" sortable="'additionalFields.summary'" filter="vm.filterRequests.summary" ng-if="vm.enabledColumns.summary">
+                        <td data-title="'crs.request.list.tableHeader.summary' | translate" sortable="'additionalFields.summary'" filter="vm.filterRequests.summary" ng-if="vm.enabledColumns.myAssignedRequests.columns.summary">
                             {{(request.additionalFields)?request.additionalFields.summary:''}}
                         </td>
-                     
+                        
+                        <td data-title="'crs.request.list.tableHeader.trackerId' | translate" sortable="'trackerId'" filter="vm.filterRequests.trackerId" ng-if="vm.enabledColumns.myAssignedRequests.columns.trackerId">
+                            {{request.trackerId}}
+                        </td>
 
-                        <td data-title="'crs.request.list.tableHeader.status' | translate" sortable="'requestHeader.status'" filter="{status: 'ng-table/status-select.html'}" ng-if="vm.enabledColumns.status">
+                        <td data-title="'crs.request.list.tableHeader.status' | translate" sortable="'requestHeader.status'" filter="{status: 'ng-table/status-select.html'}" ng-if="vm.enabledColumns.myAssignedRequests.columns.status">
                             <span class="badge requestStatus {{request.requestHeader.status}}">{{request.requestHeader.status | requestStatus | translate}}</span>
                         </td>
                     </tr>
@@ -165,6 +180,7 @@
 /* When the user clicks on the button,
 toggle between hiding and showing the dropdown content */
 function myFunction() {
+    document.getElementById("saveButton").classList.toggle("show");
     document.getElementById("myDropdown").classList.toggle("show");
     document.getElementById("dropbtn").classList.toggle("btn-active");
 }

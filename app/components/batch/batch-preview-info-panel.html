@@ -14,7 +14,9 @@
                         <table ng-table="batchPreviewVM.filesTableParams" template-pagination="layout/template/small-data-table-pager.html"
                                class="table table-full table-full-small">
                             <tr ng-repeat="file in $data" class="clickable-row" ng-click="batchPreviewVM.selectFile(file)" ng-class="{'file-selected':batchPreviewVM.selectedFile.id === file.id}">
-
+                                <td class="col-checkbox" header="'ng-table/headers/checkbox.html'" ng-click="$event.stopPropagation()">
+                                    <input type="checkbox" class="small-checkbox" ng-model="batchPreviewVM.selectedFiles.items[file.id]" ng-click="batchPreviewVM.pushSelectedFile($event, file)">
+                                </td>
                                 <td data-title="'crs.batch.preview.fileList.tableHeader.name' | translate" sortable="'fileName'" >
                                     {{file.fileName}}
                                 </td>
@@ -54,13 +56,13 @@
     <div class="request-info" style="margin-top: 5px">
 
         <div style="padding: 15px; width: 100%" class="classification-btn">
-            <button ng-disabled="batchPreviewVM.selectedFile.status !== 'COMPLETED_UPLOAD'"
+            <button ng-disabled="batchPreviewVM.disabledImportButton"
                     class="btn btn-default green darken-1 import" style="text-transform: none"
                     ng-click="batchPreviewVM.openBatchImportModal()">
                 <span class="md md-system-update-tv green darken-2 iconbase" style="line-height: initial;padding-top:10px"></span>
                 <span class="button-link" translate="crs.batch.preview.button.import"></span>
             </button>
-            <button ng-disabled="batchPreviewVM.selectedFile.status !== 'COMPLETED_UPLOAD' && batchPreviewVM.selectedFile.status !== 'ERROR'"
+            <button 
                     class="btn btn-default red darken-1 import" style="text-transform: none"
                     ng-click="batchPreviewVM.removeSelectedRequest()">
                 <span class="md md-highlight-remove red darken-2 iconbase" style="line-height: initial;padding-top:10px"></span>
@@ -69,3 +71,6 @@
         </div>
     </div>
 </div>
+<script type="text/ng-template" id="ng-table/headers/checkbox.html">
+    <input type="checkbox" ng-model="batchPreviewVM.selectedFiles.checked" class="select-all-rqs" />
+</script>
