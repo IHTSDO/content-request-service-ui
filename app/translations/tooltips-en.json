@@ -93,9 +93,10 @@
                 "appealRejected": "Reqeusts whose appeal has been rejected",
                 "appeal": "Appeal",
                 "clarificationNeeded": "Where insufficient information is provided to proceed with a request, the request manager will incorporate questions to be resolved into the comments text field",
-        	"in_inception_elaboration": "Where a new request aligns with an ongoing content project, the request will be placed on hold until editorial policy is available to support the requested change or addition",
-        	"my_assigned": "My Assigned Requests",
-		"readyForRelease": "Ready For Release"
+            	"in_inception_elaboration": "Where a new request aligns with an ongoing content project, the request will be placed on hold until editorial policy is available to support the requested change or addition",
+            	"my_assigned": "My Assigned Requests",
+    		    "readyForRelease": "Ready For Release",
+                "inAppealClarification": "In Appeal Clarification"
             }
         },
         "request": {
@@ -146,7 +147,8 @@
                     "createdDate": "Created On",
                     "requestDescription": "Request Description",
                     "manager": "Team member from Content team",
-                    "summary": "Request Summary"
+                    "summary": "Request Summary",
+                    "trackerId": "Tracker Id"
                 }
             },
             "details": {
@@ -235,6 +237,7 @@
                         "appeal": "Appeal Rejection",
                         "withdraw": "Withdraw Request",
                         "pendingForClarification": "Request Clarification",
+                        "inAppealClarification": "In Appeal Clarification",
                         "acceptAndAssign": "Accept and assign to an authoring task in SCA",
                         "assign": "Assign request to an authoring task in SCA",
                         "assignToStaff": "Assign request to Manager",
@@ -254,7 +257,10 @@
                         "originator": "Created By",
                         "manager": "Manager",
                         "requestUrl": "Request Url",
-                        "authoringTicket":"Authoring task ID"
+                        "trackerId": "Tracker Id",
+                        "authoringTicket":"Authoring task ID",
+                        "impactedConceptId":"Impacted/New Concept ID",
+                        "newFSN": "New FSN"
                     }
                 }
             },
@@ -295,12 +301,14 @@
                     "withdraw": "Withdraw Request",
                     "appeal": "Appeal Request Rejection",
                     "needClarify": "Request Clarification",
+                    "inAppealClarification": "In Appeal Clarification",
                     "inInceptionElaboration": "Move to In Inception/Elaboration status",
                     "unassignAndReject": "Unassign And Reject Request"
                 },
                 "comment": {
                     "label": "Reason",
-                    "inInceptionElaboration": "Content Tracker Url (where applicable)"
+                    "inInceptionElaboration": "Content Tracker Url (where applicable)",
+                    "trackerId": "Tracker Id"
                 },
                 "button": {
                     "confirm": "Confirm",
@@ -379,7 +387,8 @@
                 "approved": "The request has been approved",
                 "inInceptionElaboration": "The request is  in the Inception/Elaboration phase",
                 "readyForRelease": "The request has been authored and will be in the next International Release",
-                "submitted": "The request has been submitted but not yet reviewed by the IHTSDO team"
+                "submitted": "The request has been submitted but not yet reviewed by the IHTSDO team",
+                "inAppealClarification": "In Appeal Clarification"
             },
             "bulkAction": {
                 "status": {
@@ -460,7 +469,8 @@
                         "clarificationNeeded": "Requests wherer clarification is needed",
                         "inInception": "Requests in the Inception/Elbaoration phase",
                         "complete": "Completed requests",
-			"readyForRelease": "Ready For Release"
+			            "readyForRelease": "Ready For Release",
+                        "inAppealClarification": "In Appeal Clarification"
                     }
                 }
             },
@@ -578,7 +588,8 @@
                         "newParentConceptId": "New Parent Concept Id",
                         "changeConceptToStatus": "Change Concept To Status",
                         "duplicateConceptId": "Duplicate Concept Id",
-                        "changeDescriptionStatusTo": "Change Description Status To"
+                        "changeDescriptionStatusTo": "Change Description Status To",
+                        "trackerId": "trackerId"
                     }
                 }
             }

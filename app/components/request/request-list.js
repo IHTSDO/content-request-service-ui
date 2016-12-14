@@ -65,6 +65,12 @@ angular
                         placeholder: "Summaries..."
                     }
                 },
+                trackerId: {
+                    trackerId: {
+                        id: "text",
+                        placeholder: "Ids..."
+                    }
+                },
                 requestId: {
                     requestId: {
                         id: "number",
@@ -139,6 +145,10 @@ angular
                 {
                     id: "READY_FOR_RELEASE",
                     title: "Ready For Release"
+                },
+                {
+                    id: "IN_APPEAL_CLARIFICATION",
+                    title: "In Appeal Clarification"
                 }
             ];
 
@@ -216,6 +226,19 @@ angular
                     vm.isAdmin = (rs.isAdmin === true);
                     vm.isViewer = (rs.isViewer === true);
                     vm.isStaff = (rs.isStaff === true);
+                    vm.isRequester = (rs.isRequester === true);
+
+                    var list = $routeParams.list;
+                    if(!list){
+                        if(vm.isStaff || vm.isAdmin){
+                            list = 'my-assigned-requests';
+                        }else if(vm.isRequester){
+                            list = 'requests';
+                        }else{
+                            list = 'submitted-requests';
+                        }
+                    }
+                    requestService.saveCurrentList(list);
 
                     if (!vm.isViewer) {
                         vm.tableParams = requestTableParams;
@@ -238,6 +261,7 @@ angular
                             changeSubmittedFilter('author', subbmitedRequests.ogirinatorId);
                             changeSubmittedFilter('requestId', subbmitedRequests.requestId);
                             changeSubmittedFilter('summary', subbmitedRequests.summary);
+                            changeSubmittedFilter('trackerId', subbmitedRequests.trackerId);
                             changeSubmitedRequestsPageSize(subbmitedRequests.limit);
                             changeSubmittedRequestsPage(subbmitedRequests.offset);
                             changeSubmittedRequestsSorting(subbmitedRequests.sorting);
@@ -282,6 +306,7 @@ angular
                             changeMyRequestFilter('author', myRequests.ogirinatorId);
                             changeMyRequestFilter('requestId', myRequests.requestId);
                             changeMyRequestFilter('summary', myRequests.summary);
+                            changeMyRequestFilter('trackerId', myRequests.trackerId);
                             changeMyRequestsPageSize(myRequests.limit);
                             changeMyRequestsPage(myRequests.offset);
                             changeMyRequestsSorting(myRequests.sorting);
@@ -325,6 +350,7 @@ angular
                             changeAssignedFilter('author', myAssignedRequests.ogirinatorId);
                             changeAssignedFilter('requestId', myAssignedRequests.requestId);
                             changeAssignedFilter('summary', myAssignedRequests.summary);
+                            changeAssignedFilter('trackerId', myAssignedRequests.trackerId);
                             changeAssignedFilter('count', myAssignedRequests.count);
                             changeAssignedRequestsPageSize(myAssignedRequests.limit);
                             changeAssignedRequestsPage(myAssignedRequests.offset);
@@ -367,13 +393,13 @@ angular
                 }
 
                 // load authors
-                vm.authors = requestService.getAuthorsList();
+                vm.authors = requestService.getRlAuthorsList();
                 if(!vm.authors){
                     loadAuthors();
                 }
                 
                 //load staffs
-                vm.staffs = requestService.getStaffsList();
+                vm.staffs = requestService.getRlStaffsList();
                 if(!vm.staffs){
                     loadStaff();
                 }
@@ -423,7 +449,7 @@ angular
                         vm.authors[i].title = vm.authors[i].displayName;
                         vm.authors[i].id = vm.authors[i].key;
                     }
-                    requestService.setAuthorsList(vm.authors);
+                    requestService.setRlAuthorsList(vm.authors);
                     return users;
                 }).finally(function () {
                     vm.loadingAuthors = false;
@@ -440,7 +466,7 @@ angular
                         vm.staffs[i].title = vm.staffs[i].displayName;
                         vm.staffs[i].id = vm.staffs[i].key;
                     }
-                    requestService.setStaffsList(vm.staffs);
+                    requestService.setRlStaffsList(vm.staffs);
                     return users;
                 }).finally(function() {
                     vm.loadingAuthors = false;
@@ -1092,7 +1118,7 @@ angular
                 return milliseconds.getTime();
             };
 
-            var buildRequestList = function(typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, summary, manager, status, author, requestId, requestType, showClosedRequests, statusDateFrom, statusDateTo){
+            var buildRequestList = function(typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, summary, trackerId, manager, status, author, requestId, requestType, showClosedRequests, statusDateFrom, statusDateTo){
                 var requestList = {};
                 requestList.batchRequest = batchRequest;
                 requestList.concept = fsn;
@@ -1115,6 +1141,7 @@ angular
                 requestList.statusDateFrom = convertDateToMilliseconds(statusDateFrom);
                 requestList.statusDateTo = convertDateToMilliseconds(statusDateTo);
                 requestList.summary = summary;
+                requestList.trackerId = trackerId;
                 return requestList;
 
             };
@@ -1168,6 +1195,7 @@ angular
                             params.filter().requestDate.endDate,
                             params.filter().topic,
                             params.filter().summary,
+                            params.filter().trackerId,
                             params.filter().manager,
                             params.filter().status,
                             params.filter().author,
@@ -1250,6 +1278,7 @@ angular
                             params.filter().requestDate.endDate,
                             params.filter().topic,
                             params.filter().summary,
+                            params.filter().trackerId,
                             vm.assignee,
                             params.filter().status,
                             params.filter().ogirinatorId,
@@ -1334,6 +1363,7 @@ angular
                             params.filter().requestDate.endDate,
                             params.filter().topic,
                             params.filter().summary,
+                            params.filter().trackerId,
                             params.filter().manager,
                             params.filter().status,
                             params.filter().ogirinatorId,

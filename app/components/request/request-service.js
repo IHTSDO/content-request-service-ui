@@ -305,6 +305,52 @@ angular.module('conceptRequestServiceApp.request')
                 return crsService.sendGet(requestEndpoint + '/newConceptObject/' , params);
             };
 
+            var getNextRequestList = function(data){
+                var requestEndpoint = CRS_API_ENDPOINT.REQUEST_LIST;
+                return crsService.sendPost(requestEndpoint + '/id', null, data);
+            };
+
+            var savedCurrentList;
+
+            var saveCurrentList = function(list){
+                savedCurrentList = list;
+            };
+
+            var getCurrentList = function(){
+                return savedCurrentList;
+            };
+
+            var savedCurrentMyRequestsIdList,
+                savedCurrentMyAssignedIdList,
+                savedCurrentSubmittedIdList,
+                savedCurrentAcceptedIdList;
+
+            var getCurrentIdList = function(list){
+                switch(list){
+                    case 'requests': return savedCurrentMyRequestsIdList;
+                    case 'my-assigned-requests': return savedCurrentMyAssignedIdList;
+                    case 'submitted-requests': return savedCurrentSubmittedIdList;
+                    case 'accepted-requests': return savedCurrentAcceptedIdList;
+                }
+            };
+
+            var setCurrentIdList = function(data, list){
+                switch(list){
+                    case 'requests': 
+                        savedCurrentMyRequestsIdList = data;
+                        return savedCurrentMyRequestsIdList;
+                    case 'my-assigned-requests': 
+                        savedCurrentMyAssignedIdList = data;
+                        return savedCurrentMyAssignedIdList;
+                    case 'submitted-requests': 
+                        savedCurrentSubmittedIdList = data;
+                        return savedCurrentSubmittedIdList;
+                    case 'accepted-requests': 
+                        savedCurrentAcceptedIdList = data;
+                        return savedCurrentAcceptedIdList;
+                }
+            };
+
             var getUserPreferences = function(){
                 var requestEndpoint = CRS_API_ENDPOINT.USER_PREFERENCES;
                 return crsService.sendGet(requestEndpoint);
@@ -324,6 +370,7 @@ angular.module('conceptRequestServiceApp.request')
                 return crsService.sendPut(requestEndpoint + '/' + requestId + '/reporter', params, null);
             };
 
+            /*list in request detail*/
             var authors;
 
             var getAuthorsList = function(){
@@ -343,6 +390,29 @@ angular.module('conceptRequestServiceApp.request')
             var setStaffsList = function(list){
                 staffs = list;
             };
+            /*end*/
+
+            /*list in request list*/
+            var rlauthors;
+
+            var getRlAuthorsList = function(){
+                return rlauthors;
+            };
+
+            var setRlAuthorsList = function(list){
+                rlauthors = list;
+            };
+
+            var rlstaffs;
+
+            var getRlStaffsList = function(){
+                return rlstaffs;
+            };
+
+            var setRlStaffsList = function(list){
+                rlstaffs = list;
+            };
+            /*end*/
 
             var requestors;
 
@@ -434,6 +504,11 @@ angular.module('conceptRequestServiceApp.request')
                 unassignRequest: unassignRequest,
                 setSavedColumns: setSavedColumns,
                 getSavedColumns: getSavedColumns,
+                getNextRequestList: getNextRequestList,
+                saveCurrentList: saveCurrentList,
+                getCurrentList: getCurrentList,
+                getCurrentIdList: getCurrentIdList,
+                setCurrentIdList: setCurrentIdList,
                 getUserPreferences: getUserPreferences,
                 saveUserPreferences: saveUserPreferences,
                 getAuthorsList: getAuthorsList,
@@ -451,7 +526,11 @@ angular.module('conceptRequestServiceApp.request')
                 getSavedMaxSize: getSavedMaxSize,
                 setMaxSize: setMaxSize,
                 reassignRequestToRequestor: reassignRequestToRequestor,
-                changeLocalCode: changeLocalCode
+                changeLocalCode: changeLocalCode,
+                getRlAuthorsList: getRlAuthorsList,
+                setRlAuthorsList: setRlAuthorsList,
+                getRlStaffsList: getRlStaffsList,
+                setRlStaffsList: setRlStaffsList
             };
 
         }]);

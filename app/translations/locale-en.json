@@ -97,7 +97,8 @@
                 "clarificationNeeded": "Clarification Needed",
         		"in_inception_elaboration": "In Inception",
         		"my_assigned": "My Assigned",
-                "readyForRelease": "Ready For Release"
+                "readyForRelease": "Ready For Release",
+                "inAppealClarification": "In Appeal Clarification"
             }
         },
         "request": {
@@ -148,7 +149,8 @@
                     "createdDate": "Created",
                     "requestDescription": "Descripion of Request",
                     "manager": "Manager",
-                    "summary": "Summary"
+                    "summary": "Summary",
+                    "trackerId": "Tracker Id"
                 }
             },
             "details": {
@@ -236,6 +238,7 @@
                         "appeal": "Appeal Rejection",
                         "withdraw": "Withdraw Request",
                         "pendingForClarification": "Pending Clarification",
+                        "inAppealClarification": "In Appeal Clarification",
                         "acceptAndAssign": "Accept and Assign To Author",
                         "assign": "Assign Request to an Authoring Task",
                         "assignToStaff": "Assign To Manager",
@@ -245,6 +248,8 @@
                         "addNote": "Add Note",
                         "unassign": "Unassign Request",
                         "unassignAndRejectRequest": "Unassign And Reject",
+                        "nextRequest": "Next Request",
+                        "previousRequest": "Previous Request",
                         "rejectSelectedRequests": "Reject Selected Requests"
                     },
                     "label": {
@@ -256,7 +261,10 @@
                         "originator": "Created By",
                         "manager": "Manager",
                         "requestUrl": "Request Url",
-                        "authoringTicket":"Authoring Ticket"
+                        "trackerId": "Tracker Id",
+                        "authoringTicket":"Authoring Ticket",
+                        "impactedConceptId":"Impacted/New Concept ID",
+                        "newFSN": "New FSN"
                     }
                 }
             },
@@ -298,14 +306,16 @@
                     "withdraw": "Withdraw Request",
                     "appeal": "Appeal Request Rejection",
                     "needClarify": "Pending for Clarification",
+                    "inAppealClarification": "In Appeal Clarification",
                     "inInceptionElaboration": "In Inception/Elaboration",
                     "changeSNOMEDCode": "Change Local SNOMED CT Code",
                     "unassignAndReject": "Unassign And Reject Request"
                 },
                 "comment": {
                     "label": "Reason",
-                    "inInceptionElaboration": "Content Request Project Url",
-                    "changeSNOMEDCode": "Local SNOMED CT Code"
+                    "inInceptionElaboration": "Content Tracker URL",
+                    "changeSNOMEDCode": "Local SNOMED CT Code",
+                    "trackerId": "Tracker Id"
                 },
                 "button": {
                     "confirm": "Confirm",
@@ -332,6 +342,7 @@
                 "requestAppealed": "Request has been appealed successfully",
                 "requestWithdrawn": "Request has been withdrawn successfully",
                 "requestClarification": "Request has been pended to clarification successfully",
+                "inAppealClarification": "Request has been in appeal clarification successfully",
                 "requestRemoved": "Requests have been removed successfully",
                 "requestUnassigned": "Request has been unassigned successfully",
                 "requestUnassigning": "Unassigning request...",
@@ -384,7 +395,8 @@
                 "approved": "Approved",
                 "inInceptionElaboration": "In Inception/Elaboration",
                 "readyForRelease": "Ready For Release",
-                "submitted": "Submitted"
+                "submitted": "Submitted",
+                "inAppealClarification": "In Appeal Clarification"
             },
             "bulkAction": {
                 "status": {
@@ -465,7 +477,8 @@
                         "clarificationNeeded": "Clarification Needed",
                         "inInception": "In Inception",
                         "complete": "Completed",
-                        "readyForRelease": "Ready For Release"
+                        "readyForRelease": "Ready For Release",
+                        "inAppealClarification": "In Appeal Clarification"
                     }
                 }
             },
@@ -583,7 +596,8 @@
                         "newParentConceptId": "New Parent Concept Id",
                         "changeConceptToStatus": "Change Concept To Status",
                         "duplicateConceptId": "Duplicate Concept Id",
-                        "changeDescriptionStatusTo": "Change Description Status To"
+                        "changeDescriptionStatusTo": "Change Description Status To",
+                        "trackerId": "trackerId"
                     }
                 }
             }
