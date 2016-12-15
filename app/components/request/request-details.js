@@ -201,25 +201,22 @@ angular
                     vm.semanticTags.sort(function(a, b) {
                         return utilsService.compareStrings(a.value, b.value);
                     });
-                    requestService.setSemanticTags(vm.semanticTags);
+                    requestService.setSemanticTags(semanticTags);
                     return semanticTags;
                 });
             };
 
             var pushOtherSemanticTag = function(value){
                 if(vm.semanticTags){
-                    var isNotInArr;
+                    var tmp = [];
                     for(var i in vm.semanticTags){
-                        if(vm.semanticTags[i].value !== value){
-                            isNotInArr = true;
-                        }
+                        tmp.push(vm.semanticTags[i].value);
                     }
-                    if(isNotInArr){
+                    if(tmp.indexOf(value) === -1) {
                         var obj = {};
                         obj.value = value;
                         vm.semanticTags.push(obj);
                     }
-                    requestService.setSemanticTags(vm.semanticTags);
                 }
             };
 
@@ -398,6 +395,9 @@ angular
                     loadTopicOptions();
                 }
 
+                //check pre page
+                checkPrePage();
+
                 if (!isValid) {
                     showErrorMessage('crs.request.message.error.invalidPage');
                 } else {
@@ -521,6 +521,13 @@ angular
                 }
             };
 
+            var checkPrePage = function(){
+                var listObj = requestService.getCurrentList();
+                if(listObj){
+                    vm.isCameFromRequestList = true;
+                }
+            };
+
             var loadRequest = function() {
                 var originConcept;
 
@@ -620,18 +627,15 @@ angular
 
             var pushOtherTopic = function(value){
                 if(vm.topicOptions){
-                    var isNotInArr;
+                    var tmp = [];
                     for(var i in vm.topicOptions){
-                        if(vm.topicOptions[i].value !== value){
-                            isNotInArr = true;
-                        }
+                        tmp.push(vm.topicOptions[i].value);
                     }
-                    if(isNotInArr){
+                    if(tmp.indexOf(value) === -1) {
                         var obj = {};
                         obj.value = value;
                         vm.topicOptions.push(obj);
                     }
-                    requestService.setTopics(vm.topicOptions);
                 }
             };
 
@@ -1255,7 +1259,10 @@ angular
                     inputMode: requestData.inputMode,
                     requestHeader: requestData.requestHeader,
                     contentTrackerUrl: requestData.contentTrackerUrl,
-                    authoringTaskTicket: requestData.authoringTaskTicket
+                    authoringTaskTicket: requestData.authoringTaskTicket,
+                    trackerId: requestData.trackerId,
+                    impactedConceptId: requestData.impactedConceptId,
+                    newFSN: requestData.newFSN
                 };
                 $rootScope.newConceptRequestType = requestData.requestType;
                 var requestItems = requestData.requestItems;
@@ -1878,8 +1885,8 @@ angular
 
             var moveToInInceptionElaboration = function() {
                 var modalInstance = openStatusCommentModal('inInceptionElaboration');
-                modalInstance.result.then(function(contentRequestUrl) {
-                    changeRequestStatus(vm.request.id, REQUEST_STATUS.IN_INCEPTION_ELABORATION, { contentRequestUrl: contentRequestUrl})
+                modalInstance.result.then(function(response) {
+                    changeRequestStatus(vm.request.id, REQUEST_STATUS.IN_INCEPTION_ELABORATION, { contentRequestUrl: response.contentRequestUrl, trackerId: response.trackerId})
                         .then(function() {
                             notificationService.sendMessage('crs.request.message.requestAccepted', 5000);
                             $location.path(prevPage).search({});
@@ -1891,7 +1898,7 @@ angular
 
             var openAssignRequestModal = function() {
                 var defaultSummaryRequestType = translateFilter(translateRequestTypeFilter(vm.request.requestType));               
-                var defaultSummary = '[' + defaultSummaryRequestType + '] ' + vm.request.additionalFields.summary;
+                var defaultSummary = $filter('limitTo')('[' + defaultSummaryRequestType + '] ' + vm.request.additionalFields.summary, 255, 0);
                 return $uibModal.open({
                     templateUrl: 'components/request/modal-assign-request.html',
                     controller: 'ModalAssignRequestCtrl as modal',
@@ -2058,6 +2065,21 @@ angular
                 });
             };
 
+            var requestInAppealClarification = function() {
+
+                var modalInstance = openStatusCommentModal('inAppealClarification');
+
+                modalInstance.result.then(function(comment) {
+                    changeRequestStatus(vm.request.id, REQUEST_STATUS.IN_APPEAL_CLARIFICATION, { reason: comment })
+                        .then(function() {
+                            notificationService.sendMessage('crs.request.message.inAppealClarification', 5000);
+                            $location.path(prevPage).search({});
+                        }, function(e) {
+                            showErrorMessage(e.message);
+                        });
+                });
+            };
+
             var requestClarification = function() {
 
                 var modalInstance = openStatusCommentModal('needClarify');
@@ -2188,7 +2210,9 @@ angular
 
             //watch proposedStatus to set default History Attribute
             $scope.$watch(function() {
-                return vm.request.proposedStatus;
+                if(vm.requestType === REQUEST_TYPE.CHANGE_RETIRE_CONCEPT){
+                    return vm.request.proposedStatus;
+                }
             }, function(newVal) {
                if(newVal === vm.newConceptStatuses[1]){
                     vm.request.historyAttribute = vm.historyAttributes[4];
@@ -2285,6 +2309,90 @@ angular
                 }
             });
 
+            var detectCurrentList = function(list){
+                var detectedCurrentList;
+                
+                switch(list){
+                    case 'requests':
+                        detectedCurrentList = requestService.getFilterValues();
+                        break;
+                    case 'my-assigned-requests':
+                        detectedCurrentList = requestService.getAssignedFilterValues();
+                        break;
+                    case 'submitted-requests':
+                        detectedCurrentList = requestService.getSubmittedFilterValues();
+                        break;
+                    case 'accepted-requests':
+                        detectedCurrentList = requestService.getAcceptedFilterValues();
+                        break;
+                    default:
+                        if(vm.isAdmin || vm.isStaff){
+                            detectedCurrentList = requestService.getAssignedFilterValues();
+                        }else if(vm.isRequester){
+                            detectedCurrentList = requestService.getFilterValues();
+                        }else{
+                            detectedCurrentList = requestService.getSubmittedFilterValues();
+                        }
+                }
+
+                return detectedCurrentList;
+            };
+
+            var getNextRequest = function(){
+                notificationService.sendMessage('Loading...');
+                var list = requestService.getCurrentList();
+                var newList = false,
+                    isIdInCurrentList = true;
+                var currentList = detectCurrentList(list);
+                var currentIdList = requestService.getCurrentIdList(list);
+                var pageMode = $routeParams.mode;
+                var currentId = Number($routeParams.param);
+                if(!currentIdList){
+                    getCurrentRequestIdList(currentList);
+                }else{
+                    if(currentId === currentIdList[currentIdList.length - 1]){
+                        newList = true;
+                        currentList.offset = currentList.offset + 1;
+                        getCurrentRequestIdList(currentList, newList);
+                    }else{
+                        for(var i = 0; i < currentIdList.length; i++){
+                            if(currentId === currentIdList[i]){
+                                $location.path('requests/' + pageMode + '/' + currentIdList[i + 1]).search();
+                            }else{
+                                isIdInCurrentList = false;
+                            }
+                        }
+                        if(isIdInCurrentList === false){
+                            getCurrentRequestIdList(currentList);
+                        }
+                    }
+                }
+            };
+
+            var getCurrentRequestIdList = function(currentList, newList){
+                var list = requestService.getCurrentList();
+                var currentRequestId = Number($routeParams.param);
+                var pageMode = $routeParams.mode;
+                requestService.getNextRequestList(currentList).then(function(response){
+                    if(response){
+                        requestService.setCurrentIdList(response, list);
+                        if(currentRequestId === response[response.length - 1]){
+                            var tmpCurrentList = currentList;
+                            tmpCurrentList.offset = currentList.offset + 1;
+                            var tmpNewList = true;
+                            getCurrentRequestIdList(tmpCurrentList, tmpNewList);
+                        }else{
+                            for(var i = 0; i < response.length; i++){
+                                if(currentRequestId === response[i]){
+                                    $location.path('requests/' + pageMode + '/' + response[i + 1]).search();
+                                }else if(newList){
+                                    $location.path('requests/' + pageMode + '/' + response[0]).search();
+                                }
+                            }
+                        }
+                    }
+                });
+            };
             var changeLocalCode = function(){
                 var modalInstance = openStatusCommentModal('changeSNOMEDCode');
                 modalInstance.result.then(function(localCode) {
@@ -2308,6 +2416,7 @@ angular
             vm.rejectAppeal = rejectAppeal;
             vm.moveToInInceptionElaboration = moveToInInceptionElaboration;
             vm.requestClarification = requestClarification;
+            vm.requestInAppealClarification = requestInAppealClarification;
             vm.saveAndSubmitRequest = saveAndSubmitRequest;
             vm.startEditingConcept = startEditingConcept;
             vm.setInputMode = setInputMode;
@@ -2324,11 +2433,13 @@ angular
             vm.authors = [];
             vm.extractJustification = extractJustification;
             vm.unassignAndRejectRequest = unassignAndRejectRequest;
+            vm.getNextRequest = getNextRequest;
             vm.reassignToRequestor = reassignToRequestor;
             vm.changeLocalCode = changeLocalCode;
             vm.isAdmin = false;
             vm.isViewer = false;
             vm.permissionChecked = false;
+            vm.isCameFromRequestList = false;
             vm.error = {};
             vm.conceptStatus = {
                 loading: false,
