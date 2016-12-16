@@ -20,7 +20,8 @@ angular
         'BULK_ACTION',
         '$routeParams',
         'DEFAULT_COLUMNS',
-        function($filter, $sce, $uibModal, NgTableParams, requestService, notificationService, accountService, scaService, crsJiraService, jiraService, utilsService, $scope, BULK_ACTION_STATUS, BULK_ACTION, $routeParams, DEFAULT_COLUMNS) {
+        '$timeout',
+        function($filter, $sce, $uibModal, NgTableParams, requestService, notificationService, accountService, scaService, crsJiraService, jiraService, utilsService, $scope, BULK_ACTION_STATUS, BULK_ACTION, $routeParams, DEFAULT_COLUMNS, $timeout) {
             var vm = this;
             var maxSize;
 
@@ -842,6 +843,9 @@ angular
                         notificationService.sendMessage('crs.request.message.listLoaded', 5000);
                         params.total(requests.total);
                         vm.requests = requests;
+                        $timeout(function() {
+                            angular.element('.pager li button').removeClass('ng-hide');
+                        });
                         vm.selectedRequests = { checked: false, items: {}, requests: {} };
                         if (requests.items && requests.items.length > 0) {
                             return requests.items;
