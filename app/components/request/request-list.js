@@ -20,7 +20,8 @@ angular
         'BULK_ACTION_STATUS',
         'BULK_ACTION',
         'DEFAULT_COLUMNS',
-        function ($filter, $sce, crsJiraService, NgTableParams, requestService, notificationService, accountService, jiraService, $routeParams, $uibModal, utilsService, $scope, scaService, BULK_ACTION_STATUS, BULK_ACTION, DEFAULT_COLUMNS) {
+        '$timeout',
+        function ($filter, $sce, crsJiraService, NgTableParams, requestService, notificationService, accountService, jiraService, $routeParams, $uibModal, utilsService, $scope, scaService, BULK_ACTION_STATUS, BULK_ACTION, DEFAULT_COLUMNS, $timeout) {
             var vm = this;
             var maxSize;
 
@@ -1218,6 +1219,9 @@ angular
                             notificationService.sendMessage('crs.request.message.listLoaded', 5000);
                             params.total(requests.total);
                             vm.requests = requests;
+                            $timeout(function() {
+                                angular.element('.pager li button').removeClass('ng-hide');
+                            });
                             vm.selectedRequests = { checked: false, items: {}, requests: {} };
                             if (requests.items && requests.items.length > 0) {
                                 return requests.items;
@@ -1300,6 +1304,9 @@ angular
                             notificationService.sendMessage('crs.request.message.listLoaded', 5000);
                             params.total(requests.total);
                             vm.requests = requests;
+                            $timeout(function() {
+                                angular.element('.pager li button').removeClass('ng-hide');
+                            });
                             vm.selectedMyAssignedRequests = { checked: false, items: {}, requests: {} };
                             if (requests.items && requests.items.length > 0) {
                                 return requests.items;
@@ -1384,6 +1391,9 @@ angular
                             notificationService.sendMessage('crs.request.message.listLoaded', 5000);
                             params.total(requests.total);
                             vm.requests = requests;
+                            $timeout(function() {
+                                angular.element('.pager li button').removeClass('ng-hide');
+                            });
                             vm.selectedSubmittedRequests = { checked: false, items: {}, requests: {} };
                             if (requests.items && requests.items.length > 0) {
                                 return requests.items;

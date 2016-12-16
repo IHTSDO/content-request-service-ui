@@ -663,7 +663,7 @@ angular
             };
 
             var cancelEditing = function() {
-                $location.path(prevPage).search({});
+                goBackToPreviousList();
             };
 
             var identifyParentConcept = function(concept) {
@@ -1838,7 +1838,7 @@ angular
                     })
                     .then(function() {
                         notificationService.sendMessage('crs.request.message.requestSubmitted', 5000);
-                        $location.path(prevPage).search({});
+                        goBackToPreviousList();
                     }, function(e) {
                         console.log(e);
                         showErrorMessage(e.message);
@@ -1852,7 +1852,7 @@ angular
                 notificationService.sendMessage('crs.request.message.requestUnassigning', 5000);
                 return requestService.unassignRequest(vm.request.id).then(function() {
                     notificationService.sendMessage('crs.request.message.requestUnassigned', 5000);
-                    $location.path(prevPage).search({});
+                    goBackToPreviousList();
                 }, function(e) {
                     console.log(e);
                     showErrorMessage(e.message);
@@ -1877,7 +1877,7 @@ angular
                 changeRequestStatus(vm.request.id, REQUEST_STATUS.ACCEPTED)
                     .then(function() {
                         notificationService.sendMessage('crs.request.message.requestAccepted', 5000);
-                        $location.path(prevPage).search({});
+                        goBackToPreviousList();
                     }, function(e) {
                         showErrorMessage(e.message);
                     });
@@ -1889,7 +1889,7 @@ angular
                     changeRequestStatus(vm.request.id, REQUEST_STATUS.IN_INCEPTION_ELABORATION, { contentRequestUrl: response.contentRequestUrl, trackerId: response.trackerId})
                         .then(function() {
                             notificationService.sendMessage('crs.request.message.requestAccepted', 5000);
-                            $location.path(prevPage).search({});
+                            goBackToPreviousList();
                         }, function(e) {
                             showErrorMessage(e.message);
                         });
@@ -1948,7 +1948,7 @@ angular
                         notificationService.sendMessage('Assigning requests');
                         requestService.assignRequests([vm.request.id], rs.project.key, ((rs.assignee) ? rs.assignee.key : null), rs.summary).then(function() {
                             notificationService.sendMessage('Request assigned successfully', 5000);
-                            $location.path(prevPage).search({});
+                            goBackToPreviousList();
                         });
                     });
                 }
@@ -1967,7 +1967,7 @@ angular
                             })
                             .then(function() {
                                 notificationService.sendMessage('Request accepted and assigned successfully', 5000);
-                                $location.path(prevPage).search({});
+                                goBackToPreviousList();
                             });
                     });
                 }
@@ -1987,13 +1987,13 @@ angular
                             })
                             .then(function() {
                                 notificationService.sendMessage('Request accepted and assigned successfully', 5000);
-                                $location.path(prevPage).search({});
+                                goBackToPreviousList();
                             });
                         }else{
                             notificationService.sendMessage('Assigning requests');
                             requestService.assignRequestsToStaff([vm.request.id], ((rs.assignee) ? rs.assignee.key : null)).then(function() {
                                 notificationService.sendMessage('Request assigned successfully', 5000);
-                                $location.path(prevPage).search({});
+                                goBackToPreviousList();
                             });
                         }
                     });
@@ -2008,7 +2008,7 @@ angular
                             return requestService.reassignRequestToRequestor([vm.request.id], ((rs.assignee) ? rs.assignee.key : null))
                             .then(function() {
                                 notificationService.sendMessage('Requestor has been changed successfully', 5000);
-                                $location.path(prevPage).search({});
+                                goBackToPreviousList();
                             });
                     });
                 }
@@ -2021,7 +2021,7 @@ angular
                     changeRequestStatus(vm.request.id, REQUEST_STATUS.REJECTED, { reason: rejectComment })
                     .then(function() {
                         notificationService.sendMessage('crs.request.message.requestRejected', 5000);
-                        $location.path(prevPage).search({});
+                        goBackToPreviousList();
                     }, function(e) {
                         showErrorMessage(e.message);
                     });
@@ -2037,7 +2037,7 @@ angular
                         changeRequestStatus(vm.request.id, REQUEST_STATUS.REJECTED, { reason: rejectComment })
                         .then(function() {
                             notificationService.sendMessage('crs.request.message.requestUnassignedAndRejected', 5000);
-                            $location.path(prevPage).search({});
+                            goBackToPreviousList();
                         }, function(e) {
                             showErrorMessage(e.message);
                         });
@@ -2058,7 +2058,7 @@ angular
                     changeRequestStatus(vm.request.id, REQUEST_STATUS.APPEAL_REJECTED, { reason: rejectComment })
                         .then(function() {
                             notificationService.sendMessage('crs.request.message.requestRejected', 5000);
-                            $location.path(prevPage).search({});
+                            goBackToPreviousList();
                         }, function(e) {
                             showErrorMessage(e.message);
                         });
@@ -2073,7 +2073,7 @@ angular
                     changeRequestStatus(vm.request.id, REQUEST_STATUS.IN_APPEAL_CLARIFICATION, { reason: comment })
                         .then(function() {
                             notificationService.sendMessage('crs.request.message.inAppealClarification', 5000);
-                            $location.path(prevPage).search({});
+                            goBackToPreviousList();
                         }, function(e) {
                             showErrorMessage(e.message);
                         });
@@ -2088,7 +2088,7 @@ angular
                     changeRequestStatus(vm.request.id, REQUEST_STATUS.CLARIFICATION_NEEDED, { reason: rejectComment })
                         .then(function() {
                             notificationService.sendMessage('crs.request.message.requestClarification', 5000);
-                            $location.path(prevPage).search({});
+                            goBackToPreviousList();
                         }, function(e) {
                             showErrorMessage(e.message);
                         });
@@ -2102,7 +2102,7 @@ angular
                     changeRequestStatus(vm.request.id, REQUEST_STATUS.APPEAL, { reason: appealComment })
                         .then(function() {
                             notificationService.sendMessage('crs.request.message.requestAppealed', 5000);
-                            $location.path(prevPage).search({});
+                            goBackToPreviousList();
                         }, function(e) {
                             showErrorMessage(e.message);
                         });
@@ -2116,7 +2116,7 @@ angular
                     changeRequestStatus(vm.request.id, REQUEST_STATUS.WITHDRAWN, { reason: withdrawComment })
                         .then(function() {
                             notificationService.sendMessage('crs.request.message.requestWithdrawn', 5000);
-                            $location.path(prevPage).search({});
+                            goBackToPreviousList();
                         }, function(e) {
                             showErrorMessage(e.message);
                         });
@@ -2367,6 +2367,11 @@ angular
                         }
                     }
                 }
+            };
+
+            var goBackToPreviousList = function(){
+                var list = requestService.getCurrentList();
+                $location.path('/' + list).search({});
             };
 
             var getCurrentRequestIdList = function(currentList, newList){
