@@ -132,6 +132,22 @@ angular
 
             var showErrorMessage = function(msg) {
                 hideSuccessMessage();
+                var splitMsg = msg.split(": ");
+                
+                if(splitMsg[1]){
+                    var substringMsg = splitMsg[1].substring(1, splitMsg[1].indexOf("]"));
+                    if(substringMsg){
+                        var listId = substringMsg.split(", ");
+                        if(listId){
+                           vm.listMsgHtml = [];
+                            for(var i in listId){
+                                var htmlTemplate = '<div class="alert alert-danger">' + splitMsg[0] + '&nbsp; <a style="color: #00a6e5" href="/#/requests/preview/' + listId[i] + '">' + listId[i] + '</a></div>';
+                                vm.listMsgHtml.push(htmlTemplate);
+                            }  
+                        }
+                    }
+                }
+                
                 vm.msgError = msg;
 
                 $anchorScroll('messagePaneLocation');
@@ -1840,7 +1856,6 @@ angular
                         notificationService.sendMessage('crs.request.message.requestSubmitted', 5000);
                         goBackToPreviousList();
                     }, function(e) {
-                        console.log(e);
                         showErrorMessage(e.message);
                     })
                     .finally(function() {
