@@ -35,6 +35,7 @@ angular
             var translateFilter = $filter('translate');
             var translateRequestTypeFilter = $filter('requestType');
             var autoFillPreferredTerm = true;
+            var CLEAR_NOTIFICATION_EVENT = 'crs:clearNotifications';
 
             var REQUEST_MODE = {
                 NEW: { value: 'new', langKey: 'crs.request.requestMode.newRequest' },
@@ -1857,6 +1858,8 @@ angular
                         goBackToPreviousList();
                     }, function(e) {
                         showErrorMessage(e.message);
+                        $rootScope.$broadcast(CLEAR_NOTIFICATION_EVENT);
+                        
                     })
                     .finally(function() {
                         $rootScope.showAppLoading = false;
