@@ -141,7 +141,7 @@ angular
                         if(listId){
                            vm.listMsgHtml = [];
                             for(var i in listId){
-                                var htmlTemplate = '<div class="alert alert-danger">' + splitMsg[0] + '&nbsp; <a style="color: #00a6e5" href="/#/requests/preview/' + listId[i] + '">' + listId[i] + '</a></div>';
+                                var htmlTemplate = '<div class="alert alert-danger">' + splitMsg[0] + '&nbsp; <a class="alert-primary" href="/#/requests/preview/' + listId[i] + '">' + listId[i] + '</a></div>';
                                 vm.listMsgHtml.push(htmlTemplate);
                             }  
                         }
