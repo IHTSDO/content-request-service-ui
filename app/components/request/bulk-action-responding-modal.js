@@ -61,6 +61,9 @@ angular.module('conceptRequestServiceApp.request')
                                     }  
                                 }
                             }
+                        }else if(splitMsg[1]){
+                            var htmlTemplate1 = '<span style="display: table; margin-left: 30px; margin-top: -28px; margin-bottom: 28px">' + splitMsg[0] + ': ' + splitMsg[1] +'</span>';
+                            vm.listMsgHtml.push(htmlTemplate1);
                         }
                     }
                 }
