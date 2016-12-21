@@ -37,6 +37,7 @@
     },
     "link": {
         "userGuide": "https://confluence.ihtsdotools.org/display/SCTCR/CRS+User+Guide",
-        "batchTemplate": "https://confluence.ihtsdotools.org/display/SCTCR/CRS+Template+File+For+Batch+Import"
+        "batchTemplate": "https://confluence.ihtsdotools.org/display/SCTCR/CRS+Template+File+For+Batch+Import",
+        "snomedInfo": "http://snomed.info/id/"
     }
 }
