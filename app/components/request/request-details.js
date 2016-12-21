@@ -35,6 +35,7 @@ angular
             var translateFilter = $filter('translate');
             var translateRequestTypeFilter = $filter('requestType');
             var autoFillPreferredTerm = true;
+            var CLEAR_NOTIFICATION_EVENT = 'crs:clearNotifications';
 
             var REQUEST_MODE = {
                 NEW: { value: 'new', langKey: 'crs.request.requestMode.newRequest' },
@@ -132,6 +133,27 @@ angular
 
             var showErrorMessage = function(msg) {
                 hideSuccessMessage();
+                var splitMsg = msg.split(": ");
+                
+                if(splitMsg[1]){
+                    var substringMsg = splitMsg[1].substring(1, splitMsg[1].indexOf("]"));
+                    if(substringMsg){
+                        var listId = substringMsg.split(", ");
+                        if(listId){
+                           vm.listMsgHtml = [];
+                            for(var i in listId){
+                                var htmlTemplate;
+                                    if(splitMsg[0].indexOf("request") !== -1){
+                                        htmlTemplate = '<div class="alert alert-danger">' + splitMsg[0] + '&nbsp; <a class="alert-primary" href="/#/requests/preview/' + listId[i] + '">' + listId[i] + '</a></div>';
+                                    }else{
+                                        htmlTemplate = '<div class="alert alert-danger">' + splitMsg[0] + '&nbsp; <a class="alert-primary" href="' + ($rootScope.link.snomedInfo? $rootScope.link.snomedInfo:"http://snomed.info/id/") + listId[i] + '">' + listId[i] + '</a></div>';
+                                    }
+                                    vm.listMsgHtml.push(htmlTemplate);
+                            }  
+                        }
+                    }
+                }
+                
                 vm.msgError = msg;
 
                 $anchorScroll('messagePaneLocation');
@@ -1840,8 +1862,9 @@ angular
                         notificationService.sendMessage('crs.request.message.requestSubmitted', 5000);
                         goBackToPreviousList();
                     }, function(e) {
-                        console.log(e);
                         showErrorMessage(e.message);
+                        $rootScope.$broadcast(CLEAR_NOTIFICATION_EVENT);
+                        
                     })
                     .finally(function() {
                         $rootScope.showAppLoading = false;

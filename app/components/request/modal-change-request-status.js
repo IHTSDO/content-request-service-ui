@@ -33,7 +33,11 @@ angular.module('conceptRequestServiceApp.request')
             var changeRequestStatus = function () {
                 if (vm.comment) {
                     $uibModalInstance.close(vm.comment);
-                } else {
+                } else if(vm.requestStatus === 'changeSNOMEDCode'){
+                    if(window.confirm("Are you sure to change Local SNOMED CT Code to blank value?")){
+                        $uibModalInstance.close(vm.comment);
+                    }
+                }else{
                     showErrorMessage('crs.request.requestStatusModal.message.error.commentRequired');
                 }
             };
