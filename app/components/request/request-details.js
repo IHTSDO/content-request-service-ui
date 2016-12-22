@@ -144,9 +144,9 @@ angular
                             for(var i in listId){
                                 var htmlTemplate;
                                     if(splitMsg[0].indexOf("request") !== -1){
-                                        htmlTemplate = '<div class="alert alert-danger">' + splitMsg[0] + '&nbsp; <a class="alert-primary" href="/#/requests/preview/' + listId[i] + '">' + listId[i] + '</a></div>';
+                                        htmlTemplate = '<div class="alert alert-danger">' + splitMsg[0] + '&nbsp; <a class="alert-primary" href="/#/requests/preview/' + listId[i] + '" target="_blank">' + listId[i] + '</a></div>';
                                     }else{
-                                        htmlTemplate = '<div class="alert alert-danger">' + splitMsg[0] + '&nbsp; <a class="alert-primary" href="' + ($rootScope.link.snomedInfo? $rootScope.link.snomedInfo:"http://snomed.info/id/") + listId[i] + '">' + listId[i] + '</a></div>';
+                                        htmlTemplate = '<div class="alert alert-danger">' + splitMsg[0] + '&nbsp; <a class="alert-primary" href="' + ($rootScope.link.snomedInfo? $rootScope.link.snomedInfo:"http://snomed.info/id/") + listId[i] + '" target="_blank">' + listId[i] + '</a></div>';
                                     }
                                     vm.listMsgHtml.push(htmlTemplate);
                             }  
