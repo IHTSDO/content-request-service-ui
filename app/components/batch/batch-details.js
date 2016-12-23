@@ -10,13 +10,16 @@ angular
         '$location',
         'NgTableParams',
         'batchService',
-        function ($rootScope, $filter, $routeParams, $location, NgTableParams, batchService) {
+        'requestService',
+        function ($rootScope, $filter, $routeParams, $location, NgTableParams, batchService, requestService) {
             var vm = this;
 
             var initView = function () {
                 //$rootScope.pageTitles = ['Batch Details', $routeParams.batchId];
                 initBreadcrumb();
-
+                console.log($location);
+                var list = $location.path();
+                requestService.saveCurrentList(list.substring(1));
                 loadBatchSummary($routeParams.batchId);
             };
 
@@ -58,7 +61,6 @@ angular
             var loadBatchSummary = function (batchId) {
                 batchService.getBatchSummary(batchId).then(function (response) {
                     vm.batchSummary = response;
-                    console.log(vm.batchSummary);
                 });
             };
 
