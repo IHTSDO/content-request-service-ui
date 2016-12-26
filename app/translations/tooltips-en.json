@@ -346,7 +346,8 @@
                     "invalidPage": "The page you have requested is not available",
                     "invalidInput": "Please correct request data before saving or generating the request",
                     "fieldRequired": "required",
-                    "fieldInvalid": "invalid"
+                    "fieldInvalid": "invalid",
+                    "conceptError": "Invalid Concept"
                 }
 
             },
