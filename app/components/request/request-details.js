@@ -140,16 +140,15 @@ angular
                     if(substringMsg){
                         var listId = substringMsg.split(", ");
                         if(listId){
-                           vm.listMsgHtml = [];
+                            var htmlTemplate;
                             for(var i in listId){
-                                var htmlTemplate;
-                                    if(splitMsg[0].indexOf("request") !== -1){
-                                        htmlTemplate = '<div class="alert alert-danger">' + splitMsg[0] + '&nbsp; <a class="alert-primary" href="/#/requests/preview/' + listId[i] + '" target="_blank">' + listId[i] + '</a></div>';
-                                    }else{
-                                        htmlTemplate = '<div class="alert alert-danger">' + splitMsg[0] + '&nbsp; <a class="alert-primary" href="' + ($rootScope.link.snomedInfo? $rootScope.link.snomedInfo:"http://snomed.info/id/") + listId[i] + '" target="_blank">' + listId[i] + '</a></div>';
-                                    }
-                                    vm.listMsgHtml.push(htmlTemplate);
+                                if(splitMsg[0].indexOf("request") !== -1){
+                                    htmlTemplate = (htmlTemplate? htmlTemplate + ', ':'') + '<a class="alert-primary" href="/#/requests/preview/' + listId[i] + '" target="_blank">' + listId[i] + '</a>';
+                                }else{
+                                    htmlTemplate = (htmlTemplate? htmlTemplate + ', ':'') + '<a class="alert-primary" href="' + ($rootScope.link.snomedInfo? $rootScope.link.snomedInfo:"http://snomed.info/id/") + listId[i] + '" target="_blank">' + listId[i] + '</a>';
+                                }
                             }  
+                            vm.errorTemplate = '<div class="alert alert-danger">' + splitMsg[0] + '&nbsp;' + htmlTemplate + ' </div>';
                         }
                     }
                 }
