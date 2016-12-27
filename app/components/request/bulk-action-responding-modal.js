@@ -50,15 +50,17 @@ angular.module('conceptRequestServiceApp.request')
                             if(substringMsg){
                                 var listId = substringMsg.split(", ");
                                 if(listId){
+                                    var htmlTemplate;
                                     for(var j in listId){
-                                        var htmlTemplate;
                                         if(splitMsg[1].indexOf("request") !== -1){
-                                            htmlTemplate = '<span style="display: table; margin-left: 30px; margin-top: -28px; margin-bottom: 28px">' + splitMsg[0] + ': ' + splitMsg[1] + '&nbsp; <a class="alert-primary" href="/#/requests/preview/' + listId[j] + '" target="_blank">' + listId[j] + '</a>]</span>';
+                                            htmlTemplate = (htmlTemplate? htmlTemplate + ', ':'') + '<a class="alert-primary" href="/#/requests/preview/' + listId[j] + '" target="_blank">' + listId[j] + '</a>';
                                         }else{
-                                            htmlTemplate = '<span style="display: table; margin-left: 30px; margin-top: -28px; margin-bottom: 28px">' + splitMsg[0] + ': ' + splitMsg[1] + '&nbsp; <a class="alert-primary" href="' + ($rootScope.link.snomedInfo? $rootScope.link.snomedInfo:"http://snomed.info/id/") + listId[j] + '" target="_blank">' + listId[j] + '</a>]</span>';
+                                            htmlTemplate = (htmlTemplate? htmlTemplate + ', ':'') + '<a class="alert-primary" href="' + ($rootScope.link.snomedInfo? $rootScope.link.snomedInfo:"http://snomed.info/id/") + listId[j] + '" target="_blank">' + listId[j] + '</a>';
                                         }
-                                        vm.listMsgHtml.push(htmlTemplate);
-                                    }  
+                                    } 
+                                    htmlTemplate = '<span style="display: table; margin-left: 30px; margin-top: -28px; margin-bottom: 28px">' + splitMsg[0] + ': ' + splitMsg[1] + '&nbsp;' + htmlTemplate + ']</span>';
+                                    vm.listMsgHtml.push(htmlTemplate);
+                                    htmlTemplate = '';
                                 }
                             }
                         }else if(splitMsg[1]){
