@@ -53,9 +53,9 @@ angular.module('conceptRequestServiceApp.request')
                                     for(var j in listId){
                                         var htmlTemplate;
                                         if(splitMsg[1].indexOf("request") !== -1){
-                                            htmlTemplate = '<span style="display: table; margin-left: 30px; margin-top: -28px; margin-bottom: 28px">' + splitMsg[0] + ': ' + splitMsg[1] + '&nbsp; <a class="alert-primary" href="/#/requests/preview/' + listId[j] + '">' + listId[j] + '</a>]</span>';
+                                            htmlTemplate = '<span style="display: table; margin-left: 30px; margin-top: -28px; margin-bottom: 28px">' + splitMsg[0] + ': ' + splitMsg[1] + '&nbsp; <a class="alert-primary" href="/#/requests/preview/' + listId[j] + '" target="_blank">' + listId[j] + '</a>]</span>';
                                         }else{
-                                            htmlTemplate = '<span style="display: table; margin-left: 30px; margin-top: -28px; margin-bottom: 28px">' + splitMsg[0] + ': ' + splitMsg[1] + '&nbsp; <a class="alert-primary" href="' + ($rootScope.link.snomedInfo? $rootScope.link.snomedInfo:"http://snomed.info/id/") + listId[j] + '">' + listId[j] + '</a>]</span>';
+                                            htmlTemplate = '<span style="display: table; margin-left: 30px; margin-top: -28px; margin-bottom: 28px">' + splitMsg[0] + ': ' + splitMsg[1] + '&nbsp; <a class="alert-primary" href="' + ($rootScope.link.snomedInfo? $rootScope.link.snomedInfo:"http://snomed.info/id/") + listId[j] + '" target="_blank">' + listId[j] + '</a>]</span>';
                                         }
                                         vm.listMsgHtml.push(htmlTemplate);
                                     }  

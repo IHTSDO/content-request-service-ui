@@ -378,6 +378,13 @@ angular
                             }
                         }
                     }
+                    if(!vm.isViewer && !vm.isRequester){
+                    //load projects
+                        vm.projects = requestService.getProjectsList();
+                        if(!vm.projects){
+                            loadProjects();
+                        }
+                    }
                 });
                 
                 vm.enabledColumns = requestService.getSavedColumns();
@@ -392,7 +399,7 @@ angular
                         requestService.setSavedColumns(vm.enabledColumns);
                     });
                 }
-
+                
                 // load authors
                 vm.authors = requestService.getRlAuthorsList();
                 if(!vm.authors){
@@ -411,12 +418,6 @@ angular
                     loadRequestors();
                 }
                 
-                //load projects
-                vm.projects = requestService.getProjectsList();
-                if(!vm.projects){
-                    loadProjects();
-                }
-
                 //load max size
                 maxSize = requestService.getSavedMaxSize();
                 if(!maxSize){

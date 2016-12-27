@@ -29,7 +29,8 @@
                 "batchImportSuccess": "The Batch requests have been imported successfully",
                 "commentAdded": "The Comment has been added",
                 "bulkActionCompleted": "The Bulk Action has been completed",
-                "managerChanged": "Assigned Request"
+                "managerChanged": "Assigned Request",
+                "conceptReleased": "Concept Release"
             },
             "button": {
                 "clear": "Clear"
