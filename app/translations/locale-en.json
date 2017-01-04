@@ -18,7 +18,7 @@
         },
         "app": {
             "name": "Content Request Service",
-            "copyright": "Copyright IHTSDO 2016"
+            "copyright": "Copyright 2017 SNOMED International"
         },
         "notification": {
             "title": "Notifications",
