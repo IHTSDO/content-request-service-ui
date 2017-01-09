@@ -1,17 +1,15 @@
 'use strict';
 angular.module('conceptRequestServiceApp.request')
-    .controller('ModalAssignRequestCtrl', [
+    .controller('ModalAssignRequestToRequestorCtrl', [
         '$rootScope',
         '$scope',
         '$uibModalInstance',
         'scaService',
-        'projects',
-        'authors',
-        'defaultSummary',
-        function ($rootScope, $scope, $uibModalInstance, scaService, projects, authors, defaultSummary) {
+        'requestors',
+        function($rootScope, $scope, $uibModalInstance, scaService, requestors) {
             var vm = this;
 
-            var initView = function () {
+            var initView = function() {
                 vm.msgSuccess = null;
                 vm.msgError = null;
 
@@ -27,11 +25,11 @@ angular.module('conceptRequestServiceApp.request')
                 vm.msgError = null;
             };*/
 
-            var hideSuccessMessage = function () {
+            var hideSuccessMessage = function() {
                 vm.msgSuccess = null;
             };
 
-            var showErrorMessage = function (msg) {
+            var showErrorMessage = function(msg) {
                 hideSuccessMessage();
                 vm.msgError = msg;
             };
@@ -41,33 +39,25 @@ angular.module('conceptRequestServiceApp.request')
                 vm.msgSuccess = msg;
             };*/
 
-            var closeModal = function () {
+            var closeModal = function() {
                 $uibModalInstance.dismiss('cancel');
             };
 
-            var assignRequests = function () {
+            var assignRequestsToStaff = function() {
                 //console.log(vm.selectedProject);
-                if (vm.selectedProject &&
-                    vm.summary && vm.assignee) {
+                if (vm.assignee) {
                     $uibModalInstance.close({
-                        project: vm.selectedProject,
-                        assignee: vm.assignee,
-                        summary: vm.summary
+                        assignee: vm.assignee
                     });
                 } else {
                     showErrorMessage('Please enter required fields');
                 }
             };
 
-            vm.assignRequests = assignRequests;
+            vm.assignRequestsToStaff = assignRequestsToStaff;
             vm.closeModal = closeModal;
-            vm.projects = projects;
-            vm.authors = authors;
-            vm.summary = defaultSummary;
-            vm.selectedProject = null;
-            vm.assignee = null;
-            vm.loadingProjectMsg = null;
+            vm.requestors = requestors;
 
             initView();
-        }]
-    );
+        }
+    ]);

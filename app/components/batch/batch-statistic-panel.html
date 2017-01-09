@@ -57,6 +57,15 @@
                 <li>
                     <div class="timeline-panel">
                         <div class="timeline-heading">
+                            <label class="control-label" translate="crs.batch.details.statistic.label.inAppealClarification"></label>
+                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['IN_APPEAL_CLARIFICATION'] || '0'):'0'}}</span>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
                             <label class="control-label" translate="crs.batch.details.statistic.label.appealReject"></label>
                             <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['APPEAL_REJECTED'] || '0'):'0'}}</span>
                         </div>

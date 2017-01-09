@@ -92,6 +92,27 @@ angular.module('conceptRequestServiceApp.message')
 
                         targetUrl = '#/requests/view/' + message.details.id;
                         break;
+                    case MESSAGE_TYPE.CONCEPT_RELEASED: 
+                        msgItemHtml.push('<div class="message-detail-content">');
+                        msgItemHtml.push('Request ');
+                        msgItemHtml.push(message.details.id);
+                        msgItemHtml.push('\'s new concept has been added for the next international release');
+                        msgItemHtml.push('</div>');
+                        msgItemHtml.push('<div class="message-detail-content">');
+                        msgItemHtml.push('New FSN: ');
+                        msgItemHtml.push(message.details.newFSN);
+                        msgItemHtml.push('</div>');
+                        msgItemHtml.push('<div class="message-detail-content">');
+                        msgItemHtml.push('Impacted Concept: ');
+                        msgItemHtml.push(message.details.impactedConcept);
+                        msgItemHtml.push('</div>');
+
+                        msgItemHtml.push('<div><span class="badge requestStatus ' + message.details.status + '">');
+                        msgItemHtml.push(translateFilter(requestStatusFilter(message.details.status)));
+                        msgItemHtml.push('</span></div>');
+
+                        targetUrl = '#/requests/view/' + message.details.id;
+                        break;
                     default:
                         break;
                 }

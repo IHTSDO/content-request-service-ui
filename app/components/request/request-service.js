@@ -235,8 +235,9 @@ angular.module('conceptRequestServiceApp.request')
 
             var savedFilterValues;
 
-            var setFilterValues = function(filterValues){
+            var setFilterValues = function(filterValues, sortingValues){
                savedFilterValues = filterValues;
+               savedFilterValues.sorting = sortingValues;
             };
 
             var getFilterValues = function(){
@@ -245,8 +246,9 @@ angular.module('conceptRequestServiceApp.request')
 
             var savedSubmittedFilterValues;
 
-            var setSubmittedFilterValues = function(filterValues){
+            var setSubmittedFilterValues = function(filterValues, sortingValues){
                savedSubmittedFilterValues = filterValues;
+               savedSubmittedFilterValues.sorting = sortingValues;
             };
 
             var getSubmittedFilterValues = function(){
@@ -255,8 +257,9 @@ angular.module('conceptRequestServiceApp.request')
 
             var savedAcceptedFilterValues;
 
-            var setAcceptedFilterValues = function(filterValues){
+            var setAcceptedFilterValues = function(filterValues, sortingValues){
                savedAcceptedFilterValues = filterValues;
+               savedAcceptedFilterValues.sorting = sortingValues;
             };
 
             var getAcceptedFilterValues = function(){
@@ -265,12 +268,23 @@ angular.module('conceptRequestServiceApp.request')
 
             var savedAssignedFilterValues;
 
-            var setAssignedFilterValues = function(filterValues){
+            var setAssignedFilterValues = function(filterValues, sortingValues){
                savedAssignedFilterValues = filterValues;
+               savedAssignedFilterValues.sorting = sortingValues;
             };
 
             var getAssignedFilterValues = function(){
                return savedAssignedFilterValues;
+            };
+
+            var savedColumns;
+
+            var setSavedColumns = function(data){
+                savedColumns = data;
+            };
+
+            var getSavedColumns = function(){
+                return savedColumns;
             };
 
             function getBatchConcept(requestId, conceptId) {
@@ -289,6 +303,173 @@ angular.module('conceptRequestServiceApp.request')
                     localCode: localCode
                 };
                 return crsService.sendGet(requestEndpoint + '/newConceptObject/' , params);
+            };
+
+            var getNextRequestList = function(data){
+                var requestEndpoint = CRS_API_ENDPOINT.REQUEST_LIST;
+                return crsService.sendPost(requestEndpoint + '/id', null, data);
+            };
+
+            var savedCurrentList;
+
+            var saveCurrentList = function(list){
+                savedCurrentList = list;
+            };
+
+            var getCurrentList = function(){
+                return savedCurrentList;
+            };
+
+            var savedCurrentMyRequestsIdList,
+                savedCurrentMyAssignedIdList,
+                savedCurrentSubmittedIdList,
+                savedCurrentAcceptedIdList;
+
+            var getCurrentIdList = function(list){
+                switch(list){
+                    case 'requests': return savedCurrentMyRequestsIdList;
+                    case 'my-assigned-requests': return savedCurrentMyAssignedIdList;
+                    case 'submitted-requests': return savedCurrentSubmittedIdList;
+                    case 'accepted-requests': return savedCurrentAcceptedIdList;
+                }
+            };
+
+            var setCurrentIdList = function(data, list){
+                switch(list){
+                    case 'requests': 
+                        savedCurrentMyRequestsIdList = data;
+                        return savedCurrentMyRequestsIdList;
+                    case 'my-assigned-requests': 
+                        savedCurrentMyAssignedIdList = data;
+                        return savedCurrentMyAssignedIdList;
+                    case 'submitted-requests': 
+                        savedCurrentSubmittedIdList = data;
+                        return savedCurrentSubmittedIdList;
+                    case 'accepted-requests': 
+                        savedCurrentAcceptedIdList = data;
+                        return savedCurrentAcceptedIdList;
+                }
+            };
+
+            var getUserPreferences = function(){
+                var requestEndpoint = CRS_API_ENDPOINT.USER_PREFERENCES;
+                return crsService.sendGet(requestEndpoint);
+            };
+
+            var saveUserPreferences = function(data){
+                var requestEndpoint = CRS_API_ENDPOINT.USER_PREFERENCES;
+                return crsService.sendPost(requestEndpoint, null, data);
+            };
+
+            var reassignRequestToRequestor = function(requestId, reporter){
+                var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
+                var params;
+                params = {
+                    reporter: reporter
+                };
+                return crsService.sendPut(requestEndpoint + '/' + requestId + '/reporter', params, null);
+            };
+
+            /*list in request detail*/
+            var authors;
+
+            var getAuthorsList = function(){
+                return authors;
+            };
+
+            var setAuthorsList = function(list){
+                authors = list;
+            };
+
+            var staffs;
+
+            var getStaffsList = function(){
+                return staffs;
+            };
+
+            var setStaffsList = function(list){
+                staffs = list;
+            };
+            /*end*/
+
+            /*list in request list*/
+            var rlauthors;
+
+            var getRlAuthorsList = function(){
+                return rlauthors;
+            };
+
+            var setRlAuthorsList = function(list){
+                rlauthors = list;
+            };
+
+            var rlstaffs;
+
+            var getRlStaffsList = function(){
+                return rlstaffs;
+            };
+
+            var setRlStaffsList = function(list){
+                rlstaffs = list;
+            };
+            /*end*/
+
+            var requestors;
+
+            var getRequestorsList = function(){
+                return requestors;
+            };
+
+            var setRequestorsList = function(list){
+                requestors = list;
+            };
+
+            var projects;
+
+            var getProjectsList = function(){
+                return projects;
+            };
+
+            var setProjectsList = function(list){
+                projects = list;
+            };
+
+            var semanticTags;
+
+            var getSemanticTags = function(){
+                return semanticTags;
+            };
+
+            var setSemanticTags = function(list){
+                semanticTags = list;
+            };
+
+            var topics;
+
+            var getTopics = function(){
+                return topics;
+            };
+
+            var setTopics = function(list){
+                topics = list;
+            };
+
+            var maxSize;
+
+            var getSavedMaxSize = function(){
+                return maxSize;
+            };
+
+            var setMaxSize = function(size){
+                maxSize = size;
+            };
+
+            var changeLocalCode = function(requestId, sctid){
+                var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
+                var params = {
+                    sctid: sctid
+                };
+                return crsService.sendPut(requestEndpoint + '/' + requestId + '/sctid', params, null);
             };
 
             return {
@@ -320,7 +501,36 @@ angular.module('conceptRequestServiceApp.request')
                 getMaxSize: getMaxSize,
                 bulkAction: bulkAction,
                 getBulkActionStatus: getBulkActionStatus,
-                unassignRequest: unassignRequest
+                unassignRequest: unassignRequest,
+                setSavedColumns: setSavedColumns,
+                getSavedColumns: getSavedColumns,
+                getNextRequestList: getNextRequestList,
+                saveCurrentList: saveCurrentList,
+                getCurrentList: getCurrentList,
+                getCurrentIdList: getCurrentIdList,
+                setCurrentIdList: setCurrentIdList,
+                getUserPreferences: getUserPreferences,
+                saveUserPreferences: saveUserPreferences,
+                getAuthorsList: getAuthorsList,
+                setAuthorsList: setAuthorsList,
+                getStaffsList: getStaffsList,
+                setStaffsList: setStaffsList,
+                getRequestorsList: getRequestorsList,
+                setRequestorsList: setRequestorsList,
+                getProjectsList: getProjectsList,
+                setProjectsList: setProjectsList,
+                getSemanticTags: getSemanticTags,
+                setSemanticTags: setSemanticTags,
+                getTopics: getTopics,
+                setTopics: setTopics,
+                getSavedMaxSize: getSavedMaxSize,
+                setMaxSize: setMaxSize,
+                reassignRequestToRequestor: reassignRequestToRequestor,
+                changeLocalCode: changeLocalCode,
+                getRlAuthorsList: getRlAuthorsList,
+                setRlAuthorsList: setRlAuthorsList,
+                getRlStaffsList: getRlStaffsList,
+                setRlStaffsList: setRlStaffsList
             };
 
         }]);

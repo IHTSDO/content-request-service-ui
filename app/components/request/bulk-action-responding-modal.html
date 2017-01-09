@@ -24,8 +24,16 @@
             <div class="col-md-12 value no-padding">
                 <label>{{'crs.request.bulkAction.title.totalFailed' | translate}}:</label> <span>{{modal.bulkActionRespondingData.ignoredItemsCount? modal.bulkActionRespondingData.ignoredItemsCount: '0'}}</span>
             </div>
-            <div class="col-md-12 no-padding" ng-if="modal.bulkActionRespondingData.errorMessages">
+            <div class="col-md-12 no-padding" ng-if="modal.bulkActionRespondingData.errorMessages && !modal.listMsgHtml">
                 <label>{{'crs.request.bulkAction.title.error' | translate}}:</label> <span ng-repeat="error in modal.splitErrorMessage" style="display: table; margin-left: 30px; margin-top: -28px; margin-bottom: 28px">{{error}}</span>
+            </div>
+            <div class="col-md-12 no-padding" ng-if="modal.listMsgHtml">
+                <label>{{'crs.request.bulkAction.title.error' | translate}}:</label>
+                <div ng-repeat="error in modal.listMsgHtml">
+                    <div ng-bind-html="error">
+                        
+                    </div>
+                </div>
             </div>
         </div>
     </div>

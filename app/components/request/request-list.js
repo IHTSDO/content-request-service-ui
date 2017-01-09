@@ -19,7 +19,9 @@ angular
         'scaService',
         'BULK_ACTION_STATUS',
         'BULK_ACTION',
-        function ($filter, $sce, crsJiraService, NgTableParams, requestService, notificationService, accountService, jiraService, $routeParams, $uibModal, utilsService, $scope, scaService, BULK_ACTION_STATUS, BULK_ACTION) {
+        'DEFAULT_COLUMNS',
+        '$timeout',
+        function ($filter, $sce, crsJiraService, NgTableParams, requestService, notificationService, accountService, jiraService, $routeParams, $uibModal, utilsService, $scope, scaService, BULK_ACTION_STATUS, BULK_ACTION, DEFAULT_COLUMNS, $timeout) {
             var vm = this;
             var maxSize;
 
@@ -62,6 +64,12 @@ angular
                     summary: {
                         id: "text",
                         placeholder: "Summaries..."
+                    }
+                },
+                trackerId: {
+                    trackerId: {
+                        id: "text",
+                        placeholder: "Ids..."
                     }
                 },
                 requestId: {
@@ -138,6 +146,10 @@ angular
                 {
                     id: "READY_FOR_RELEASE",
                     title: "Ready For Release"
+                },
+                {
+                    id: "IN_APPEAL_CLARIFICATION",
+                    title: "In Appeal Clarification"
                 }
             ];
 
@@ -186,7 +198,10 @@ angular
                 assignToStaff: 'ASSIGN_MANAGER',
                 assignToAuthor: 'ACCEPT_ASSIGN_AUTHOR',
                 assignAuthor: 'ASSIGN_AUTHOR',
-                addNote: 'ADD_NOTE'
+                addNote: 'ADD_NOTE',
+                withdraw: 'WITHDRAW',
+                reject: 'REJECT',
+                reassignToRequestor: 'UPDATE_REPORTER'
             };
 
             var initView = function () {
@@ -211,6 +226,20 @@ angular
                 accountService.checkUserPermission().then(function (rs) {
                     vm.isAdmin = (rs.isAdmin === true);
                     vm.isViewer = (rs.isViewer === true);
+                    vm.isStaff = (rs.isStaff === true);
+                    vm.isRequester = (rs.isRequester === true);
+
+                    var list = $routeParams.list;
+                    if(!list){
+                        if(vm.isStaff || vm.isAdmin){
+                            list = 'my-assigned-requests';
+                        }else if(vm.isRequester){
+                            list = 'requests';
+                        }else{
+                            list = 'submitted-requests';
+                        }
+                    }
+                    requestService.saveCurrentList(list);
 
                     if (!vm.isViewer) {
                         vm.tableParams = requestTableParams;
@@ -232,6 +261,11 @@ angular
                             changeSubmittedFilter('status', subbmitedRequests.status);
                             changeSubmittedFilter('author', subbmitedRequests.ogirinatorId);
                             changeSubmittedFilter('requestId', subbmitedRequests.requestId);
+                            changeSubmittedFilter('summary', subbmitedRequests.summary);
+                            changeSubmittedFilter('trackerId', subbmitedRequests.trackerId);
+                            changeSubmitedRequestsPageSize(subbmitedRequests.limit);
+                            changeSubmittedRequestsPage(subbmitedRequests.offset);
+                            changeSubmittedRequestsSorting(subbmitedRequests.sorting);
                             changeSubmittedFilter('requestDate', {
                                 startDate: subbmitedRequests.requestDateFrom,
                                 endDate: subbmitedRequests.requestDateTo
@@ -272,6 +306,11 @@ angular
                             changeMyRequestFilter('status', myRequests.status);
                             changeMyRequestFilter('author', myRequests.ogirinatorId);
                             changeMyRequestFilter('requestId', myRequests.requestId);
+                            changeMyRequestFilter('summary', myRequests.summary);
+                            changeMyRequestFilter('trackerId', myRequests.trackerId);
+                            changeMyRequestsPageSize(myRequests.limit);
+                            changeMyRequestsPage(myRequests.offset);
+                            changeMyRequestsSorting(myRequests.sorting);
                             changeMyRequestFilter('requestDate', {
                                 startDate: myRequests.requestDateFrom,
                                 endDate: myRequests.requestDateTo
@@ -311,6 +350,12 @@ angular
                             changeAssignedFilter('status', myAssignedRequests.status);
                             changeAssignedFilter('author', myAssignedRequests.ogirinatorId);
                             changeAssignedFilter('requestId', myAssignedRequests.requestId);
+                            changeAssignedFilter('summary', myAssignedRequests.summary);
+                            changeAssignedFilter('trackerId', myAssignedRequests.trackerId);
+                            changeAssignedFilter('count', myAssignedRequests.count);
+                            changeAssignedRequestsPageSize(myAssignedRequests.limit);
+                            changeAssignedRequestsPage(myAssignedRequests.offset);
+                            changeAssignedRequestsSorting(myAssignedRequests.sorting);
                             changeAssignedFilter('requestDate', {
                                 startDate: myAssignedRequests.requestDateFrom,
                                 endDate: myAssignedRequests.requestDateTo
@@ -333,22 +378,51 @@ angular
                             }
                         }
                     }
+                    if(!vm.isViewer && !vm.isRequester){
+                    //load projects
+                        vm.projects = requestService.getProjectsList();
+                        if(!vm.projects){
+                            loadProjects();
+                        }
+                    }
                 });
+                
+                vm.enabledColumns = requestService.getSavedColumns();
 
+                if(vm.enabledColumns === null || vm.enabledColumns === undefined){
+                    requestService.getUserPreferences().then(function(response){
+                        if(response){
+                            vm.enabledColumns = response;
+                        }else{
+                            vm.enabledColumns = DEFAULT_COLUMNS;
+                        }
+                        requestService.setSavedColumns(vm.enabledColumns);
+                    });
+                }
+                
                 // load authors
-                loadAuthors();
-
+                vm.authors = requestService.getRlAuthorsList();
+                if(!vm.authors){
+                    loadAuthors();
+                }
+                
                 //load staffs
-                loadStaff();
-
+                vm.staffs = requestService.getRlStaffsList();
+                if(!vm.staffs){
+                    loadStaff();
+                }
+                
                 //load requestors
-                loadRequestors();
-
-                //load projects
-                loadProjects();
-
+                vm.requestors = requestService.getRequestorsList();
+                if(!vm.requestors){
+                    loadRequestors();
+                }
+                
                 //load max size
-                getMaxSize();
+                maxSize = requestService.getSavedMaxSize();
+                if(!maxSize){
+                    getMaxSize();
+                }
             };
 
             var loadProjects = function() {
@@ -361,6 +435,7 @@ angular
                     for(var i in vm.projects){
                         vm.projects[i].id = vm.projects[i].key;
                     }
+                    requestService.setProjectsList(vm.projects);
                 }).finally(function() {
                     vm.loadingProjects = false;
                 });
@@ -376,6 +451,7 @@ angular
                         vm.authors[i].title = vm.authors[i].displayName;
                         vm.authors[i].id = vm.authors[i].key;
                     }
+                    requestService.setRlAuthorsList(vm.authors);
                     return users;
                 }).finally(function () {
                     vm.loadingAuthors = false;
@@ -392,6 +468,7 @@ angular
                         vm.staffs[i].title = vm.staffs[i].displayName;
                         vm.staffs[i].id = vm.staffs[i].key;
                     }
+                    requestService.setRlStaffsList(vm.staffs);
                     return users;
                 }).finally(function() {
                     vm.loadingAuthors = false;
@@ -408,6 +485,7 @@ angular
                         vm.requestors[i].title = vm.requestors[i].displayName;
                         vm.requestors[i].id = vm.requestors[i].key;
                     }
+                    requestService.setRequestorsList(vm.requestors);
                     return users;
                 }).finally(function() {
                     vm.loadingAuthors = false;
@@ -676,6 +754,58 @@ angular
                 }
             };
 
+            var openReassignRequestsToRequestorModal = function(selectedRequestIds) {
+                var action = bulkAction.reassignToRequestor;
+                var modalInstance = $uibModal.open({
+                    templateUrl: 'components/request/modal-reassign-request-to-requestor.html',
+                    controller: 'ModalAssignRequestToRequestorCtrl as modal',
+                    resolve: {
+                        requestors: function() {
+                            return vm.authors;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function(rs) {
+                    // notificationService.sendMessage('Processing...');
+                    var data = {
+                        data: {
+                            reporter: rs.assignee? rs.assignee.key : null
+                        },
+                        requestIds: selectedRequestIds
+                    };
+                    requestService.bulkAction(data, action).then(function (response) {
+                        if(response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value){
+                            bulkActionRespondingModal(response.id, BULK_ACTION.CHANGE_REQUESTOR.langKey);
+                        }
+                    }, function(error){
+                        notificationService.sendMessage(error.message, 5000);
+                    });
+                });
+            };
+
+            var reassignSelectedRequestsToRequestor = function() {
+                if (vm.authors.length > 0) {
+                    var selectedRequests = vm.selectedSubmittedRequests,
+                        selectedRequestIds = [];
+                    if (selectedRequests && selectedRequests.items) {
+                        angular.forEach(selectedRequests.items, function(isSelected, requestId) {
+                            if (isSelected) {
+                                selectedRequestIds.push(requestId);
+                            }
+                        });
+
+                        if(selectedRequestIds.length > maxSize){
+                            notificationService.sendMessage('Cannot change requestor! The list cannot be longer than ' + maxSize + ' requests.', 5000);
+                        }else if (selectedRequestIds.length > 0) {
+                            openReassignRequestsToRequestorModal(selectedRequestIds);
+                        }else {
+                            notificationService.sendMessage('Please select at least a request to change requestor.', 5000);
+                        }
+                    }
+                }
+            };
+
             var acceptSelectedRequests = function(){
                 if (vm.staffs.length > 0) {
                     var selectedRequests = vm.selectedSubmittedRequests,
@@ -797,9 +927,115 @@ angular
                 }
             };
 
+            var withdrawSelectedRequests = function () {
+                var action = bulkAction.withdraw;
+                var selectedRequests = vm.selectedRequests,
+                    withdrawRequestIds = [];
+                if (selectedRequests &&
+                    selectedRequests.items) {
+                    angular.forEach(selectedRequests.items, function (isSelected, requestId) {
+                        if (isSelected) {
+                            withdrawRequestIds.push(requestId);
+                        }
+                    });
+                    if (withdrawRequestIds.length > 0) {
+                        var modalInstance = $uibModal.open({
+                            templateUrl: 'components/request/modal-withdraw-or-reject-requests.html',
+                            controller: 'ModalWithdrawOrRejectRequestsCtrl as vm',
+                            resolve: {
+                                number: function() {
+                                    return withdrawRequestIds.length;
+                                },
+                                langKey: function(){
+                                    return BULK_ACTION.WITHDRAW.langKey;
+                                }
+                            }
+                        });
+
+                        modalInstance.result.then(function(rs) {
+                            var data = {
+                                data: {
+                                    additionalInfo:{
+                                        reason: rs.reason
+                                    }
+                                },
+                                requestIds: withdrawRequestIds
+                            };
+                            requestService.bulkAction(data, action).then(function(response) {
+                                if(response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value){
+                                    bulkActionRespondingModal(response.id, BULK_ACTION.WITHDRAW.langKey);
+                                }
+                            });
+                        });
+                    }else {
+                        notificationService.sendMessage('Please select at least a request to withdraw.', 5000);
+                    }
+                }
+            };
+
+            var rejectSelectedRequests = function () {
+                var action = bulkAction.reject;
+                var selectedRequests,
+                    withdrawRequestIds = [];
+                    if($routeParams.list === 'submitted-requests'){
+                        selectedRequests = vm.selectedSubmittedRequests;
+                    }else if($routeParams.list === 'my-assigned-requests'){
+                        selectedRequests = vm.selectedMyAssignedRequests;
+                    }else if($routeParams.list === 'requests'){
+                        selectedRequests = vm.selectedRequests;
+                    }else{
+                        if(vm.isAdmin || vm.isStaff){
+                            selectedRequests = vm.selectedMyAssignedRequests;
+                        }else{
+                            selectedRequests = vm.selectedRequests;
+                        }
+                    }
+                if (selectedRequests &&
+                    selectedRequests.items) {
+                    angular.forEach(selectedRequests.items, function (isSelected, requestId) {
+                        if (isSelected) {
+                            withdrawRequestIds.push(requestId);
+                        }
+                    });
+                    if (withdrawRequestIds.length > 0) {
+                        var modalInstance = $uibModal.open({
+                            templateUrl: 'components/request/modal-withdraw-or-reject-requests.html',
+                            controller: 'ModalWithdrawOrRejectRequestsCtrl as vm',
+                            resolve: {
+                                number: function() {
+                                    return withdrawRequestIds.length;
+                                },
+                                langKey: function(){
+                                    return BULK_ACTION.REJECT.langKey;
+                                }
+                            }
+                        });
+
+                        modalInstance.result.then(function(rs) {
+                            var data = {
+                                data: {
+                                    additionalInfo:{
+                                        reason: rs.reason
+                                    }
+                                },
+                                requestIds: withdrawRequestIds
+                            };
+                            requestService.bulkAction(data, action).then(function(response) {
+                                if(response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value){
+                                    bulkActionRespondingModal(response.id, BULK_ACTION.REJECT.langKey);
+                                }
+                            });
+                        });
+                    }else {
+                        notificationService.sendMessage('Please select at least a request to reject.', 5000);
+                    }
+                }
+            };
+
             var getMaxSize = function(){
                 requestService.getMaxSize().then(function(result){
                     maxSize = result.maxSize;
+                    requestService.setMaxSize(maxSize);
                 }, function(error){
                     notificationService.sendMessage(error.message, 5000);
                 });
@@ -884,7 +1120,7 @@ angular
                 return milliseconds.getTime();
             };
 
-            var buildRequestList = function(typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, manager, status, author, requestId, requestType, showClosedRequests, statusDateFrom, statusDateTo){
+            var buildRequestList = function(typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, summary, trackerId, manager, status, author, requestId, requestType, showClosedRequests, statusDateFrom, statusDateTo){
                 var requestList = {};
                 requestList.batchRequest = batchRequest;
                 requestList.concept = fsn;
@@ -906,6 +1142,8 @@ angular
                 requestList.showClosedRequests = showClosedRequests;
                 requestList.statusDateFrom = convertDateToMilliseconds(statusDateFrom);
                 requestList.statusDateTo = convertDateToMilliseconds(statusDateTo);
+                requestList.summary = summary;
+                requestList.trackerId = trackerId;
                 return requestList;
 
             };
@@ -915,7 +1153,7 @@ angular
             var requestTableParams = new NgTableParams({
                     page: 1,
                     count: 10,
-                    sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'asc', id: 'asc'},
+                    sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'desc', id: 'desc'},
                     filter: {
                         status: $routeParams.status,
 						manager: $routeParams.manager,
@@ -958,7 +1196,8 @@ angular
                             params.filter().requestDate.startDate,
                             params.filter().requestDate.endDate,
                             params.filter().topic,
-                            // params.filter().summary,
+                            params.filter().summary,
+                            params.filter().trackerId,
                             params.filter().manager,
                             params.filter().status,
                             params.filter().author,
@@ -974,13 +1213,16 @@ angular
                         }
 
                         //set filter values
-                        requestService.setFilterValues(filterValues);
+                        requestService.setFilterValues(filterValues, params.sorting());
 
                         return requestService.getRequests(myRequests).then(function (requests) {
                             isDateRangeFilteredFirstTime = true;
                             notificationService.sendMessage('crs.request.message.listLoaded', 5000);
                             params.total(requests.total);
                             vm.requests = requests;
+                            $timeout(function() {
+                                angular.element('.pager li button').removeClass('ng-hide');
+                            });
                             vm.selectedRequests = { checked: false, items: {}, requests: {} };
                             if (requests.items && requests.items.length > 0) {
                                 return requests.items;
@@ -997,7 +1239,7 @@ angular
             var assignedRequestTableParams = new NgTableParams({
                     page: 1,
                     count: 10,
-                    sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'asc', id: 'asc'},
+                    sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'desc', id: 'desc'},
                     filter: {
                         status: $routeParams.status,
                         manager: $routeParams.manager,
@@ -1040,7 +1282,8 @@ angular
                             params.filter().requestDate.startDate,
                             params.filter().requestDate.endDate,
                             params.filter().topic,
-                            // params.filter().summary,
+                            params.filter().summary,
+                            params.filter().trackerId,
                             vm.assignee,
                             params.filter().status,
                             params.filter().ogirinatorId,
@@ -1056,12 +1299,15 @@ angular
                         }
 
                         //set filter values
-                        requestService.setAssignedFilterValues(filterValues);
+                        requestService.setAssignedFilterValues(filterValues, params.sorting());
                         return requestService.getRequests(myAssignedRequests).then(function (requests) {
                             isDateRangeFilteredFirstTime = true;
                             notificationService.sendMessage('crs.request.message.listLoaded', 5000);
                             params.total(requests.total);
                             vm.requests = requests;
+                            $timeout(function() {
+                                angular.element('.pager li button').removeClass('ng-hide');
+                            });
                             vm.selectedMyAssignedRequests = { checked: false, items: {}, requests: {} };
                             if (requests.items && requests.items.length > 0) {
                                 return requests.items;
@@ -1078,7 +1324,7 @@ angular
             var submittedTableParams = new NgTableParams({
                     page: 1,
                     count: 10,
-                    sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'asc', id: 'asc'},
+                    sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'desc', id: 'desc'},
                     filter: {
                         status: $routeParams.status,
                         manager: $routeParams.manager,
@@ -1124,7 +1370,8 @@ angular
                             params.filter().requestDate.startDate,
                             params.filter().requestDate.endDate,
                             params.filter().topic,
-                            // params.filter().summary,
+                            params.filter().summary,
+                            params.filter().trackerId,
                             params.filter().manager,
                             params.filter().status,
                             params.filter().ogirinatorId,
@@ -1138,13 +1385,16 @@ angular
                             subbmitedRequests = filterValues;
                         }
                         //set filter values
-                        requestService.setSubmittedFilterValues(filterValues);
+                        requestService.setSubmittedFilterValues(filterValues, params.sorting());
                         
                         return requestService.getRequests(subbmitedRequests).then(function (requests) {
                             isDateRangeFilteredFirstTime = true;
                             notificationService.sendMessage('crs.request.message.listLoaded', 5000);
                             params.total(requests.total);
                             vm.requests = requests;
+                            $timeout(function() {
+                                angular.element('.pager li button').removeClass('ng-hide');
+                            });
                             vm.selectedSubmittedRequests = { checked: false, items: {}, requests: {} };
                             if (requests.items && requests.items.length > 0) {
                                 return requests.items;
@@ -1157,6 +1407,43 @@ angular
                     }
                 }
             );
+
+            function changeMyRequestsSorting(sorting){
+                requestTableParams.sorting(sorting);
+            }
+
+            function changeSubmittedRequestsSorting(sorting){
+                submittedTableParams.sorting(sorting);
+            }
+
+            function changeAssignedRequestsSorting(sorting){
+                assignedRequestTableParams.sorting(sorting);
+            }
+
+            function changeMyRequestsPage(page){
+                requestTableParams.page(page + 1);
+            }
+
+            function changeSubmittedRequestsPage(page){
+                submittedTableParams.page(page + 1);
+            }
+
+            function changeAssignedRequestsPage(page){
+                assignedRequestTableParams.page(page + 1);
+            }
+
+
+            function changeMyRequestsPageSize(pageSize){
+                requestTableParams.count(pageSize);
+            }
+
+            function changeSubmitedRequestsPageSize(pageSize){
+                submittedTableParams.count(pageSize);
+            }
+
+            function changeAssignedRequestsPageSize(pageSize){
+                assignedRequestTableParams.count(pageSize);
+            }
 
             function changeAssignedFilter(field, value){
                 var filter = {};
@@ -1256,10 +1543,23 @@ angular
                           vm.assignedRequestTableParams.reload();
                           break;
                 }
-                
             };
 
-            
+            var saveColumns = function(){
+                notificationService.sendMessage('crs.message.savingColumns', 5000);
+                requestService.saveUserPreferences(vm.enabledColumns).then(function(){
+                    notificationService.sendMessage('crs.message.savedColumns', 5000);
+                });
+            };
+
+            $scope.$watch(function(){
+                return vm.enabledColumns;
+            }, function(newVal){
+                if(newVal){
+                    requestService.setSavedColumns(newVal);
+                }
+            });
+
             vm.showFilter = false;
             vm.isAdmin = false;
             vm.isViewer = false;
@@ -1281,6 +1581,10 @@ angular
             vm.onLastModifiedChange = onLastModifiedChange;
             vm.onLastModifiedChangeSR = onLastModifiedChangeSR;
             vm.onLastModifiedChangeMAR = onLastModifiedChangeMAR;
+            vm.saveColumns = saveColumns;
+            vm.withdrawSelectedRequests = withdrawSelectedRequests;
+            vm.rejectSelectedRequests = rejectSelectedRequests;
+            vm.reassignSelectedRequestsToRequestor = reassignSelectedRequestsToRequestor;
             vm.daterange = {
                 startDate: null,
                 endDate: null
