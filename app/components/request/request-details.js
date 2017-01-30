@@ -814,7 +814,7 @@ angular
                 if (sourceRelationship) {
                     newRelaionship = angular.copy(sourceRelationship);
 
-                    // if (destinationConcept) {
+                     if (destinationConcept) {
                         newRelaionship.target = {
                             active: destinationConcept? destinationConcept.active: concept.active,
                             conceptId: destinationConcept? destinationConcept.conceptId: concept.conceptId ,
@@ -823,7 +823,7 @@ angular
                             fsn: destinationConcept? destinationConcept.fsn: concept.fsn,
                             moduleId: destinationConcept? destinationConcept.moduleId: concept.moduleId
                         };
-                    // }
+                     }
 
                     if (relationshipType) {
                         newRelaionship.type = relationshipType;
