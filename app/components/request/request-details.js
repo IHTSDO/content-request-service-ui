@@ -1538,7 +1538,7 @@ angular
                 concept.definitionOfChanges.reasonForChange = request.additionalFields.reasonForChange;
                 concept.definitionOfChanges.namespace = request.additionalFields.namespace;
                 concept.definitionOfChanges.currentFsn = concept.fsn;
-				if(null !== request.requestorInternalId && '' !== request.requestorInternalId && REQUEST_TYPE.NEW_CONCEPT.value === request.requestType){
+				if(null !== request.requestorInternalId && '' !== request.requestorInternalId && REQUEST_TYPE.NEW_CONCEPT.value === vm.requestType.value){
 					concept.conceptId = request.requestorInternalId;
 				}
             };
