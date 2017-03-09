@@ -782,8 +782,8 @@ angular
                 return descriptions;
             };
 
-            var injectConceptDescription = function(concept, descriptionTerm, applyChanges) {
-                var desc = objectService.getNewDescription(concept.conceptId);
+            var injectConceptDescription = function(concept, descriptionTerm, applyChanges, caseSignificance) {
+                var desc = objectService.getNewDescription(concept.conceptId, caseSignificance);
                 desc.term = descriptionTerm;
                 if (!angular.isArray(concept.descriptions)) {
                     concept.descriptions = [];
@@ -814,7 +814,7 @@ angular
                 if (sourceRelationship) {
                     newRelaionship = angular.copy(sourceRelationship);
 
-                    // if (destinationConcept) {
+                     if (destinationConcept) {
                         newRelaionship.target = {
                             active: destinationConcept? destinationConcept.active: concept.active,
                             conceptId: destinationConcept? destinationConcept.conceptId: concept.conceptId ,
@@ -823,7 +823,7 @@ angular
                             fsn: destinationConcept? destinationConcept.fsn: concept.fsn,
                             moduleId: destinationConcept? destinationConcept.moduleId: concept.moduleId
                         };
-                    // }
+                     }
 
                     if (relationshipType) {
                         newRelaionship.type = relationshipType;
@@ -996,8 +996,8 @@ angular
                 return null;
             };
 
-            var injectConceptPT = function(concept, conceptPT, applyChanges) {
-                var preferredTerm = objectService.getNewPt(concept.conceptId);
+            var injectConceptPT = function(concept, conceptPT, applyChanges, caseSignificance) {
+                var preferredTerm = objectService.getNewPt(concept.conceptId, caseSignificance);
                 if (!angular.isArray(concept.descriptions)) {
                     concept.descriptions = [];
                 }
@@ -1538,7 +1538,7 @@ angular
                 concept.definitionOfChanges.reasonForChange = request.additionalFields.reasonForChange;
                 concept.definitionOfChanges.namespace = request.additionalFields.namespace;
                 concept.definitionOfChanges.currentFsn = concept.fsn;
-				if(null !== request.requestorInternalId && '' !== request.requestorInternalId && REQUEST_TYPE.NEW_CONCEPT.value === request.requestType){
+				if(null !== request.requestorInternalId && '' !== request.requestorInternalId && REQUEST_TYPE.NEW_CONCEPT.value === vm.requestType.value){
 					concept.conceptId = request.requestorInternalId;
 				}
             };
@@ -1597,9 +1597,9 @@ angular
 
                         case REQUEST_TYPE.NEW_DESCRIPTION:
                             if (request.descriptionIsPT === true) {
-                                injectConceptPT(concept, request.proposedDescription, true);
+                                injectConceptPT(concept, request.proposedDescription, true, request.proposedCaseSignificance);
                             } else {
-                                injectConceptDescription(concept, request.proposedDescription, true);
+                                injectConceptDescription(concept, request.proposedDescription, true, request.proposedCaseSignificance);
                             }
                             break;
 
@@ -2166,7 +2166,6 @@ angular
                         if (!validateRequest(true)) {
                             return;
                         }
-
                         vm.concept = buildConceptFromRequest(vm.request);
                     }
 

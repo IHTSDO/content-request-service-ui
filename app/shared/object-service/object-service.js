@@ -17,14 +17,14 @@ angular
              *   acceptabilityMap: {900000000000509007: string, 900000000000508004:
              *   string}}}
              */
-            function getNewDescription(conceptId) {
+            function getNewDescription(conceptId, caseSignificance) {
                 return {
                     'active': true,
                     'moduleId': '900000000000207008',
                     'type': 'SYNONYM',
                     'term': null,
                     'lang': 'en',
-                    'caseSignificance': 'INITIAL_CHARACTER_CASE_INSENSITIVE',
+                    'caseSignificance': !caseSignificance ? 'CASE_INSENSITIVE': caseSignificance ,
                     'conceptId': conceptId,
                     'acceptabilityMap': {
                         '900000000000509007': 'ACCEPTABLE',
@@ -57,9 +57,9 @@ angular
              * @returns {{active, moduleId, type, term, lang, caseSignificance,
      *   conceptId, acceptabilityMap}|*}
              */
-            function getNewPt(conceptId) {
+            function getNewPt(conceptId, caseSignificance) {
                 // add PT acceptability and type
-                var desc = getNewDescription(conceptId);
+                var desc = getNewDescription(conceptId, caseSignificance);
                 desc.type = 'SYNONYM';
                 desc.acceptabilityMap = {
                     '900000000000509007': 'PREFERRED',
@@ -73,7 +73,7 @@ angular
                 // add PT acceptability and type
                 var desc = getNewDescription(conceptId);
                 desc.type = 'TEXT_DEFINITION';
-                desc.caseSignificance = 'ENTIRE_TERM_CASE_SENSITIVE';
+                desc.caseSignificance = 'CASE_INSENSITIVE';
                 desc.acceptabilityMap = {
                     '900000000000509007': 'PREFERRED',
                     '900000000000508004': 'PREFERRED'
