@@ -101,10 +101,10 @@ angular
                 var elementHtml = '';
 
                 if (isMulti) {
-                    elementHtml += '<multi-input models="' + model + '" ' + ((readonlyExp)?'readonly="' + readonlyExp +'"':'') + ' readonly=""></multi-input>';
+                    elementHtml += '<multi-input models="' + model + '" ' + ((readonlyExp)?'readonly="' + readonlyExp +'"':'') + ' readonly="" drop-disable></multi-input>';
                 } else {
-                    elementHtml += '<input type="text" class="form-control" name="' + name +
-                        '" ng-model="' + model + '" maxlength="255" ' + ((readonlyExp)?'ng-readonly="' + readonlyExp +'"':'') + ' ></input>';
+                    elementHtml += '<input id="dropAble" type="text" class="form-control" name="' + name +
+                        '" ng-model="' + model + '" maxlength="255" ' + ((readonlyExp)?'ng-readonly="' + readonlyExp +'"':'') + ' drop-disable></input>';
                 }
 
                 return elementHtml;
@@ -120,10 +120,10 @@ angular
                 var elementHtml = '';
                 if (isMulti) {
                     elementHtml += '<multi-textarea name="' + name +
-                    '" models="' + model + '" ' + ((readonlyExp)?'ng-readonly="' + readonlyExp +'"':'') + ' ></textarea>';
+                    '" models="' + model + '" ' + ((readonlyExp)?'ng-readonly="' + readonlyExp +'"':'') + ' drop-disable></textarea>';
                 }else{
                     elementHtml += '<textarea  class="form-control animate msd-elastic: \n;" name="' + name +
-                    '" ng-model="' + model + '" maxlength="4000" ' + ((readonlyExp)?'ng-readonly="' + readonlyExp +'"':'') + ' ></textarea>';
+                    '" ng-model="' + model + '" maxlength="4000" ' + ((readonlyExp)?'ng-readonly="' + readonlyExp +'"':'') + ' drop-disable></textarea>';
                 }
                 return elementHtml;
             };
@@ -131,7 +131,8 @@ angular
             var buildDropdownControl = function (name, model, options, readonlyExp) {
                 return '<select class="form-control" name="' + name +
                     '" ng-model="' + model +
-                    '" ng-options="' + options+ '" ' + ((readonlyExp)?'ng-disabled="' + readonlyExp +'"':'') + ' ></select>';
+                    '" ng-options="' + options+ '" ' + ((readonlyExp)?'ng-disabled="' + readonlyExp +'"':'') + ' ></select>' +
+                    '<span ng-if="' + model + ' !== null &&' + model + ' !== undefined && requestVM.request.requestHeader.status === \'DRAFT\'" ' + ((readonlyExp)?'ng-disabled="' + readonlyExp +'"':'') + ' class="clear-dropdown-value md md-close" title="{{ \'tooltips.request.details.button.clearDropdownList\' | translate}}" ng-click="' + model + ' = null">';
             };
 
             var buildControlLabel = function (controlElement, label, required, errorModel, loadingMsg) {

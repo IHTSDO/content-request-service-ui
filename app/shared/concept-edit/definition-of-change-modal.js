@@ -11,7 +11,8 @@ angular.module('conceptRequestServiceApp.conceptEdit')
         'REQUEST_METADATA_KEY',
         function ($scope, $uibModalInstance, requestMetadataService, changeType, changeTarget, isStatic, REQUEST_METADATA_KEY) {
             var vm = this;
-
+            var requestMetadata = {};
+            
             if (changeTarget && changeTarget.definitionOfChanges) {
                 $scope.definitionOfChanges = angular.copy(changeTarget.definitionOfChanges);
             } else {
@@ -19,8 +20,6 @@ angular.module('conceptRequestServiceApp.conceptEdit')
             }
 
             var loadRequestMetadata = function () {
-                var requestMetadata = {};
-
                 requestMetadataService.getMetadata([
                     REQUEST_METADATA_KEY.RELATIONSHIP_TYPE,
                     REQUEST_METADATA_KEY.CHARACTERISTIC_TYPE,
@@ -44,6 +43,15 @@ angular.module('conceptRequestServiceApp.conceptEdit')
                         $scope.requestMetadata = requestMetadata;
                     });
             };
+
+            //watch proposedStatus to set default History Attribute
+            $scope.$watch(function() {
+                return $scope.definitionOfChanges.proposedStatus;
+            }, function(newVal) {
+               if(newVal === requestMetadata.newConceptStatuses[1]){
+                    $scope.definitionOfChanges.historyAttribute = requestMetadata.historyAttributes[4];
+               }
+            });
 
             var selectDefinitionOfChanges = function () {
                 $uibModalInstance.close($scope.definitionOfChanges);

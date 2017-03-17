@@ -91,15 +91,25 @@ angular.module('conceptRequestServiceApp.batch')
                 return crsService.sendGet(batchPreviewEndpoint + '/' + batchFileId + '/' + requestType, null, null);
             };
 
-            var removeBatchPreview = function (batchFileId) {
+            var removeBatchPreview = function (batchFileIds) {
                 var batchPreviewEndpoint = CRS_API_ENDPOINT.BATCH_UPLOADED_PREVIEW;
 
-                return crsService.sendDelete(batchPreviewEndpoint + '/' + batchFileId, null, null);
+                return crsService.sendDelete(batchPreviewEndpoint + '/?ids=' + batchFileIds, null, null);
             };
 
             var removeBatchRequest= function (batchId) {
                 var requestEndpoint = CRS_API_ENDPOINT.BATCH;
                 return crsService.sendDelete(requestEndpoint + '/' + batchId, null, null);
+            };
+
+            var savedSelectedFiles;
+
+            var setSelectedFiles = function(selectedFiles){
+                savedSelectedFiles = selectedFiles;
+            };
+
+            var getSelectedFiles = function(){
+                return savedSelectedFiles;
             };
 
             return {
@@ -113,7 +123,9 @@ angular.module('conceptRequestServiceApp.batch')
                 identifyBatchImportStatus: identifyBatchImportStatus,
                 getImportingRequests: getImportingRequests,
                 removeBatchPreview: removeBatchPreview,
-                removeBatchRequest: removeBatchRequest
+                removeBatchRequest: removeBatchRequest,
+                setSelectedFiles: setSelectedFiles,
+                getSelectedFiles: getSelectedFiles
             };
 
         }]);

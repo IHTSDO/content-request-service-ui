@@ -9,7 +9,6 @@ angular.module('conceptRequestServiceApp.message', [])
         REQUEST_STATUS_CHANGE: {
             value: 'REQUEST_STATUS_CHANGE',
             titleLangKey: 'crs.notification.message.requestStatusChange'
-
         },
         BATCH_IMPORT_SUCCESS: {
             value: 'BATCH_IMPORT_SUCCESS',
@@ -26,5 +25,9 @@ angular.module('conceptRequestServiceApp.message', [])
         MANAGER_CHANGED: {
             value: 'MANAGER_CHANGED',
             titleLangKey: 'crs.notification.message.managerChanged'
+        },
+        CONCEPT_RELEASED: {
+            value: 'CONCEPT_RELEASED',
+            titleLangKey: 'crs.notification.message.conceptReleased'
         }
     });

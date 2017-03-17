@@ -16,7 +16,7 @@
         },
         "app": {
             "name": "Content Request Service",
-            "copyright": "Copyright IHTSDO 2016"
+            "copyright": "Copyright SNOMED International 2017"
         },
         "notification": {
             "title": "Notifications",
@@ -41,6 +41,9 @@
                 "ASSIGN_MANAGER": "Assign the selected requests to a Manager",
                 "ACCEPT_ASSIGN_AUTHOR": "Accept and assign the selected requests to a Manager",
                 "failedRequests": "Failed",
+                "REJECT": "Rejected Requests",
+                "WITHDRAW": "Withdrawed Requests",
+                "bulkActionCompleted": "The Bulk Action has been completed",
                 "modalTitle": {
                     "UNASSIGN_AUTHOR": "Unassigned Requests",
                     "ADD_NOTE": "Add Note",
@@ -48,7 +51,10 @@
                     "ACCEPT": "Accept Request(s)",
                     "ASSIGN_AUTHOR": "Assign request(s) to authoing task in SCA",
                     "ASSIGN_MANAGER": "Assign request(s) to Manager",
-                    "ACCEPT_ASSIGN_AUTHOR": "Accept and assign request(s) to a Manager"
+                    "ACCEPT_ASSIGN_AUTHOR": "Accept and assign request(s) to a Manager",
+                    "REJECT": "Reject Requests",
+                    "WITHDRAW": "Withdraw Requests",
+                    "UPDATE_REPORTER": "Change Requestor"
                 }
             }
         },
@@ -77,7 +83,7 @@
                 "clarificationRequested": "Requests where clarification has been requested",
                 "completed": "Completed requests that should appear in an International release",
                 "forwarded": "Forwarded requests",
-                "new": "The request has been submitted and is waiting to be triaged by a member of IHTSDO staff",
+                "new": "The request has been submitted and is waiting to be triaged by a member of SNOMED International staff",
                 "notAccepted": "Requests that have not been accepted",
                 "withdraw": "Requests that have been withdrawn",
                 "underAppeal": "Rquests which are under appeal",
@@ -87,9 +93,10 @@
                 "appealRejected": "Reqeusts whose appeal has been rejected",
                 "appeal": "Appeal",
                 "clarificationNeeded": "Where insufficient information is provided to proceed with a request, the request manager will incorporate questions to be resolved into the comments text field",
-        	"in_inception_elaboration": "Where a new request aligns with an ongoing content project, the request will be placed on hold until editorial policy is available to support the requested change or addition",
-        	"my_assigned": "My Assigned Requests",
-		"readyForRelease": "Ready For Release"
+            	"in_inception_elaboration": "Where a new request aligns with an ongoing content project, the request will be placed on hold until editorial policy is available to support the requested change or addition",
+            	"my_assigned": "My Assigned Requests",
+    		    "readyForRelease": "Ready For Release",
+                "inAppealClarification": "In Appeal Clarification"
             }
         },
         "request": {
@@ -108,11 +115,13 @@
                     "requestorInternalId": "Click to open request editing view",
                     "assign": "Assign requests to an authoring task within SCA",
                     "assignToStaff": "Assign requests to a Manager",
+                    "reassignToRequestor": "Change Requestor",
                     "batchId": "Click to open batch details view",
                     "conceptFSN": "Click to open request editing view",
                     "filter": "Filter requests",
                     "submitRequests": "Submit selected request(s)",
-                    "unassignRequests": "Unassign seleceted request(s)"
+                    "unassignRequests": "Unassign seleceted request(s)",
+                    "withdrawRequests": "Withdraw Request(s)"
                 },
                 "searchPlaceHolder": {
                     "myRequests": "Search my requests",
@@ -138,7 +147,8 @@
                     "createdDate": "Created On",
                     "requestDescription": "Request Description",
                     "manager": "Team member from Content team",
-                    "summary": "Request Summary"
+                    "summary": "Request Summary",
+                    "trackerId": "Tracker Id"
                 }
             },
             "details": {
@@ -150,7 +160,8 @@
                 "button": {
                     "save": "Save Request",
                     "submit": "Save and Submit Request",
-                    "cancel": "Cancel"
+                    "cancel": "Cancel",
+                    "clearDropdownList": "Clear"
                 },
                 "label": {
                     "topic": "The category the request falls under",
@@ -201,7 +212,8 @@
                     "umlsCui": "UMLS CUI",
                     "sourceTerminology": "Terminology",
                     "destinationTerminology": "Destination Terminology",
-                    "duplicateConcept": "Duplicated Concept"
+                    "duplicateConcept": "Duplicated Concept",
+                    "localCode": "Local Code"
                 },
                 "tip": {
                     "editConceptHint": "Edit a concept from Saved List or drag and drop concept here"
@@ -225,13 +237,16 @@
                         "appeal": "Appeal Rejection",
                         "withdraw": "Withdraw Request",
                         "pendingForClarification": "Request Clarification",
+                        "inAppealClarification": "In Appeal Clarification",
                         "acceptAndAssign": "Accept and assign to an authoring task in SCA",
                         "assign": "Assign request to an authoring task in SCA",
                         "assignToStaff": "Assign request to Manager",
+                        "reassignToRequestor": "Change Requestor",
                         "moveToInInceptionElaboration": "Move request to In Inception/Elaboration status",
                         "addNote": "Add Note",
                         "unassign": "Unassign Request",
-                        "unassignAndRejectRequest": "Unassign And Reject"
+                        "unassignAndRejectRequest": "Unassign And Reject",
+                        "rejectSelectedRequests": "Reject Selected Requests"
                     },
                     "label": {
                         "batchId": "Batch ID",
@@ -242,7 +257,10 @@
                         "originator": "Created By",
                         "manager": "Manager",
                         "requestUrl": "Request Url",
-                        "authoringTicket":"Authoring task ID"
+                        "trackerId": "Tracker Id",
+                        "authoringTicket":"Authoring task ID",
+                        "impactedConceptId":"Impacted/New Concept ID",
+                        "newFSN": "New FSN"
                     }
                 }
             },
@@ -262,6 +280,7 @@
             "assignModal": {
                 "title": "Assign Requests to a single authoring task in SCA",
                 "assignToStaffTitle": "Assign Requests to Manager",
+                "reassignToRequestorTitle": "Change Requestor",
                 "project": {
                     "label": "Project"
                 },
@@ -282,12 +301,14 @@
                     "withdraw": "Withdraw Request",
                     "appeal": "Appeal Request Rejection",
                     "needClarify": "Request Clarification",
+                    "inAppealClarification": "In Appeal Clarification",
                     "inInceptionElaboration": "Move to In Inception/Elaboration status",
                     "unassignAndReject": "Unassign And Reject Request"
                 },
                 "comment": {
                     "label": "Reason",
-                    "inInceptionElaboration": "Content Tracker Url (where applicable)"
+                    "inInceptionElaboration": "Content Tracker Url (where applicable)",
+                    "trackerId": "Tracker Id"
                 },
                 "button": {
                     "confirm": "Confirm",
@@ -325,7 +346,8 @@
                     "invalidPage": "The page you have requested is not available",
                     "invalidInput": "Please correct request data before saving or generating the request",
                     "fieldRequired": "required",
-                    "fieldInvalid": "invalid"
+                    "fieldInvalid": "invalid",
+                    "conceptError": "Invalid Concept"
                 }
 
             },
@@ -359,14 +381,15 @@
                 "appeal": "The requested is under appeal",
                 "appealRejected": "The appeal has been rejected",
                 "withdraw": "The rquest has been withdrawn",
-                "underAuthoring": "The request is currently being authored by IHTSDO",
+                "underAuthoring": "The request is currently being authored by SNOMED International",
                 "released": "The request has been released in the International Edition",
                 "onHold": "The request is on hold",
                 "forwarded": "The request has been forwarded",
                 "approved": "The request has been approved",
                 "inInceptionElaboration": "The request is  in the Inception/Elaboration phase",
                 "readyForRelease": "The request has been authored and will be in the next International Release",
-                "submitted": "The request has been submitted but not yet reviewed by the IHTSDO team"
+                "submitted": "The request has been submitted but not yet reviewed by the SNOMED International team",
+                "inAppealClarification": "In Appeal Clarification"
             },
             "bulkAction": {
                 "status": {
@@ -389,9 +412,12 @@
                     "assignAuthor": "Assign to an authoring task in SCA",
                     "acceptAndAssign": "Accept and assign to an authoring task in SCA",
                     "assignToStaff": "Assign to a Manager",
+                    "reassignToRequestor": "Change Requestor",
                     "accept": "Accept Requests",
                     "unassignAuthor": "Unassign from authoring tasks in SCA",
-                    "addNote": "Add Note"
+                    "addNote": "Add Note",
+                    "withdraw": "Withdrawn",
+                    "reject": "Reject Requests"
                 },
                 "button": {
                     "close": "Close",
@@ -430,13 +456,13 @@
                 },
                 "statistic": {
                     "label": {
-                        "submitted": "Requests submitted but not yet reviewed by the IHTSDO team",
+                        "submitted": "Requests submitted but not yet reviewed by the SNOMED International team",
                         "accepted": "Following initial review, requests ssigned to a manager from the Content Team",
                         "rejected": "Requests that have been Rejected",
-                        "underAuthoring": "Requests currently being authored by IHTSDO",
+                        "underAuthoring": "Requests currently being authored by SNOMED International",
                         "approved": "Approved requests",
                         "draft": "Requests which have been saved but not yet submitted",
-                        "new": "Requests submitted but not yet reviewed by the IHTSDO team",
+                        "new": "Requests submitted but not yet reviewed by the SNOMED International team",
                         "appeal": "Requests under appeal",
                         "appealReject": "Requests whose appeals have been rejected",
                         "forwarded": "Forwarded Requests",
@@ -444,7 +470,8 @@
                         "clarificationNeeded": "Requests wherer clarification is needed",
                         "inInception": "Requests in the Inception/Elbaoration phase",
                         "complete": "Completed requests",
-			"readyForRelease": "Ready For Release"
+			            "readyForRelease": "Ready For Release",
+                        "inAppealClarification": "In Appeal Clarification"
                     }
                 }
             },
@@ -562,7 +589,8 @@
                         "newParentConceptId": "New Parent Concept Id",
                         "changeConceptToStatus": "Change Concept To Status",
                         "duplicateConceptId": "Duplicate Concept Id",
-                        "changeDescriptionStatusTo": "Change Description Status To"
+                        "changeDescriptionStatusTo": "Change Description Status To",
+                        "trackerId": "trackerId"
                     }
                 }
             }

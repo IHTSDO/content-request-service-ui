@@ -209,6 +209,10 @@ angular
         READY_FOR_RELEASE: {
             value: 'READY_FOR_RELEASE',
             langKey: 'crs.request.requestStatus.readyForRelease'
+        },
+        IN_APPEAL_CLARIFICATION: {
+            value: 'IN_APPEAL_CLARIFICATION',
+            langKey: 'crs.request.requestStatus.inAppealClarification'
         }
     })
     .value('STATISTICS_STATUS',{
@@ -287,6 +291,10 @@ angular
         READY_FOR_RELEASE: {
             value: 'READY_FOR_RELEASE',
             langKey: 'crs.dashboard.sidebar.readyForRelease'
+        },
+        IN_APPEAL_CLARIFICATION: {
+            value: 'IN_APPEAL_CLARIFICATION',
+            langKey: 'crs.dashboard.sidebar.inAppealClarification'
         }
     })
     .value('STATISTICS_LABEL',{
@@ -361,6 +369,10 @@ angular
         My_Assigned: {
             value:'My_Assigned',
             langKey: 'tooltips.dashboard.sidebar.my_assigned'
+        },
+        IN_APPEAL_CLARIFICATION: {
+            value: 'IN_APPEAL_CLARIFICATION',
+            langKey: 'crs.dashboard.sidebar.inAppealClarification'
         }
     })
     .value('REQUEST_METADATA_KEY', {
@@ -418,6 +430,90 @@ angular
         ADD_NOTE: {
             value: 'ADD_NOTE',
             langKey: 'crs.request.bulkAction.action.addNote'
+        },
+        WITHDRAW: {
+            value: 'WITHDRAW',
+            langKey: 'crs.request.bulkAction.action.withdraw'
+        },
+        REJECT: {
+            value: 'WITHDRAW',
+            langKey: 'crs.request.bulkAction.action.reject'
+        },
+        CHANGE_REQUESTOR: {
+            value: 'CHANGE_REQUESTOR',
+            langKey: 'crs.request.bulkAction.action.reassignToRequestor'
+        }
+    })
+    .value('DEFAULT_COLUMNS',{
+        myRequests: {
+            columns:{
+                batchId: true,
+                requestId: true,
+                concept: true,
+                jiraTicketId: true,
+                requestor: true,
+                createdDate: true,
+                modifiedDate: true,
+                type: true,
+                topic: true,
+                manager: false,
+                status: true,
+                summary: false,
+                trackerId: false
+            }
+        },
+        myAssignedRequests: {
+            columns: {
+                batchId: true,
+                requestId: true,
+                concept: true,
+                jiraTicketId: true,
+                requestor: true,
+                createdDate: true,
+                modifiedDate: true,
+                type: true,
+                topic: true,
+                manager: false,
+                status: true,
+                summary: false,
+                trackerId: false
+            }
+        },
+        submittedRequests: {
+            columns: {
+                batchId: true,
+                requestId: true,
+                concept: true,
+                jiraTicketId: true,
+                requestor: true,
+                createdDate: true,
+                modifiedDate: true,
+                type: true,
+                topic: true,
+                manager: false,
+                status: true,
+                summary: false,
+                trackerId: false
+            }
+        },
+        acceptedRequests: {
+            columns: {
+                batchId: true,
+                requestId: true,
+                concept: true,
+                jiraTicketId: true,
+                requestor: true,
+                createdDate: true,
+                modifiedDate: true,
+                type: true,
+                topic: true,
+                manager: false,
+                status: true,
+                summary: false,
+                assignee: true,
+                project: true,
+                trackerId: false
+            }
         }
     })
     .config(function ($routeProvider) {

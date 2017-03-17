@@ -41,8 +41,35 @@ angular.module('conceptRequestServiceApp.request')
 
             var extractError = function(error){
                 vm.splitErrorMessage = error.split(";");
+                if(vm.actionLangKey === "crs.request.bulkAction.action.submit"){
+                    vm.listMsgHtml = [];
+                    for(var i in vm.splitErrorMessage){
+                        var splitMsg = vm.splitErrorMessage[i].split(": ");
+                        if(splitMsg[2]){
+                            var substringMsg = splitMsg[2].substring(1, splitMsg[2].indexOf("]"));
+                            if(substringMsg){
+                                var listId = substringMsg.split(", ");
+                                if(listId){
+                                    var htmlTemplate;
+                                    for(var j in listId){
+                                        if(splitMsg[1].indexOf("request") !== -1){
+                                            htmlTemplate = (htmlTemplate? htmlTemplate + ', ':'') + '<a class="alert-primary" href="/#/requests/preview/' + listId[j] + '" target="_blank">' + listId[j] + '</a>';
+                                        }else{
+                                            htmlTemplate = (htmlTemplate? htmlTemplate + ', ':'') + '<a class="alert-primary" href="' + ($rootScope.link.snomedInfo? $rootScope.link.snomedInfo:"http://snomed.info/id/") + listId[j] + '" target="_blank">' + listId[j] + '</a>';
+                                        }
+                                    } 
+                                    htmlTemplate = '<span style="display: table; margin-left: 30px; margin-top: -28px; margin-bottom: 28px">' + splitMsg[0] + ': ' + splitMsg[1] + '&nbsp;' + htmlTemplate + ']</span>';
+                                    vm.listMsgHtml.push(htmlTemplate);
+                                    htmlTemplate = '';
+                                }
+                            }
+                        }else if(splitMsg[1]){
+                            var htmlTemplate1 = '<span style="display: table; margin-left: 30px; margin-top: -28px; margin-bottom: 28px">' + splitMsg[0] + ': ' + splitMsg[1] +'</span>';
+                            vm.listMsgHtml.push(htmlTemplate1);
+                        }
+                    }
+                }
             };
-
             getBulkActionStatus();
 
             vm.actionLangKey = actionLangKey;
