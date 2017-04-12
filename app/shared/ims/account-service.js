@@ -58,7 +58,12 @@ angular
 
                 return $http.get(imsApiEndpoint + getAccountAPI, {withCredentials: true})
                     .then(function (response) {
-                        accountDetails = response.data;
+                        var responseData = response.data;
+                        if(responseData  && typeof responseData === "object" && responseData.login) {
+                            accountDetails = responseData;
+                        } else {
+                            accountDetails = null;
+                        }
                         return response.data;
                     }, function () {
                         accountDetails = null;
