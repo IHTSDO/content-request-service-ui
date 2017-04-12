@@ -3,6 +3,7 @@
         "crs": "http://crs3.ihtsdotools.org/crs/",
         "ims": "https://dev-ims.ihtsdotools.org/",
         "snowowl": "http://crs3.ihtsdotools.org/snowowl/",
+        "authoring": "/authoring-services",
         "jira": "http://dev-jira.ihtsdotools.org:8080/",
         "ims-api": "https://dev-term.ihtsdotools.org/ims-api/"
     },

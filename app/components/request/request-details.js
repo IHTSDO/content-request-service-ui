@@ -166,7 +166,7 @@ angular
 
             var loadProjects = function() {
                 vm.loadingProjects = true;
-                scaService.getProjects().then(function(response) {
+                requestService.getProjects().then(function(response) {
 					response.sort(function(a, b) {
 						return utilsService.compareStrings(a.title, b.title);
 					});
