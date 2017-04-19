@@ -79,6 +79,15 @@ angular.module('conceptRequestServiceApp.request')
                 return crsService.sendPost(listEndpoint, null, requestList);
             };
 
+            var getProjects = function () {
+                var endPointUrl = CRS_API_ENDPOINT.PROJECT;
+                return crsService.authoringSendGet(endPointUrl, null, null)
+                    .then(function (response) {
+                        var data = response.data;
+                        return data;
+                    });
+            };
+
             var getSubmittedRequests = function (page, pageCount, searchStr, sortFields, sortDirections) {
                 var listEndpoint = CRS_API_ENDPOINT.SUBMITTED_REQUEST_LIST;
                 var params = {
@@ -530,7 +539,8 @@ angular.module('conceptRequestServiceApp.request')
                 getRlAuthorsList: getRlAuthorsList,
                 setRlAuthorsList: setRlAuthorsList,
                 getRlStaffsList: getRlStaffsList,
-                setRlStaffsList: setRlStaffsList
+                setRlStaffsList: setRlStaffsList,
+                getProjects: getProjects
             };
 
         }]);

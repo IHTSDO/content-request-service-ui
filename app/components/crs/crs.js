@@ -17,5 +17,6 @@ angular
         MESSAGE: 'api/notification',
         MESSAGE_LIST: 'api/notification/list',
         BULK_ACTION: 'api/request/bulkAction',
-        USER_PREFERENCES: 'api/userPreferences'
+        USER_PREFERENCES: 'api/userPreferences',
+        PROJECT: 'projects'
     });
