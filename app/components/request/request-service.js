@@ -83,7 +83,7 @@ angular.module('conceptRequestServiceApp.request')
                 var endPointUrl = CRS_API_ENDPOINT.PROJECT;
                 return crsService.authoringSendGet(endPointUrl, null, null)
                     .then(function (response) {
-                        var data = response.data;
+                        var data = response.data ? response.data : response;
                         return data;
                     });
             };
