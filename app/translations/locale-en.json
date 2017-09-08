@@ -17,6 +17,7 @@
             "feedback": "Feedback"
         },
         "app": {
+            "title": "SNOMED International CRS (Content Request Service)",
             "name": "Content Request Service",
             "copyright": "Copyright 2017 SNOMED International"
         },

@@ -106,13 +106,20 @@ angular
         'accountService',
         'crsService',
         '$http',
-        function ($rootScope, $location, configService, accountService, crsService, $http) {
+        '$translate',
+        function ($rootScope, $location, configService, accountService, crsService, $http, $translate) {
             var config = configService.getConfig();
             $http.get('version.json', { cache: true })
                 .then(function (response) {
                     $rootScope.clientVersion = response.data.version;
                 });
-
+            
+            $translate('crs.app.title').then(function (value) {
+                document.querySelector('head > title').innerHTML = value;
+            }, function () {
+                document.querySelector('head > title').innerHTML = 'SNOMED International CRS (Content Request Service)';
+            });
+            
             $rootScope.showAppLoading = false;
             $rootScope.showSplash = true;
             $rootScope.pageTitles = [];

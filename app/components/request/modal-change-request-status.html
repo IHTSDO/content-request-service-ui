@@ -14,7 +14,7 @@
                           model="modal.appealComment"
                           label="crs.request.appealModal.comment.label"
                           ta-toolbar="[['bold','italics', 'ul', 'ol', 'createLink']]"></form-control>-->
-                    <form-control type="text"
+                    <form-control type="textarea"
                           ng-if="modal.requestStatus !== 'inInceptionElaboration'"
                           model="modal.comment"
                           label="crs.request.requestStatusModal.comment.{{(modal.requestStatus === 'inInceptionElaboration' || modal.requestStatus === 'changeSNOMEDCode')?modal.requestStatus:'label'}}"></form-control>
