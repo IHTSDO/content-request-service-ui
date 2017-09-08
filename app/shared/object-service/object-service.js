@@ -20,7 +20,7 @@ angular
             function getNewDescription(conceptId, caseSignificance) {
                 return {
                     'active': true,
-                    'moduleId': '900000000000207008',
+                    'moduleId': null,
                     'type': 'SYNONYM',
                     'term': null,
                     'lang': 'en',
@@ -90,7 +90,7 @@ angular
                     'effectiveTime': null,
                     'groupId': 0,
                     'modifier': 'EXISTENTIAL',
-                    'moduleId': '900000000000207008',
+                    'moduleId': null,
                     'sourceId': conceptId,
                     'target': {
                         'conceptId': null
@@ -111,7 +111,7 @@ angular
                     'effectiveTime': null,
                     'groupId': 0,
                     'modifier': 'EXISTENTIAL',
-                    'moduleId': '900000000000207008',
+                    'moduleId': null,
                     'sourceId': conceptId,
                     'target': {
                         'conceptId': null
@@ -132,7 +132,7 @@ angular
                     'fsn': null,
                     'definitionStatus': 'PRIMITIVE',
                     'active': true,
-                    'moduleId': '900000000000207008'
+                    'moduleId': null
                 };
 
                 // add FSN description
