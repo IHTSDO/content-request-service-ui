@@ -1661,9 +1661,11 @@ angular
                 // validate concept
                 if (vm.requestType !== REQUEST_TYPE.OTHER) {
                     if (vm.originalConcept === undefined || vm.originalConcept === null ||
-                        (vm.originalConcept && !vm.originalConcept.moduleId && !vm.originalConcept.conceptId && !vm.originalConcept.fsn)) {
-                        error.concept = fieldRequiredLangKey;
-                    } else if (vm.originalConcept && !vm.originalConcept.moduleId && !vm.originalConcept.conceptId && vm.originalConcept.fsn) {
+                        (vm.originalConcept && !vm.originalConcept.conceptId && !vm.originalConcept.fsn)) {
+                        if(vm.requestType !== REQUEST_TYPE.NEW_CONCEPT) {
+                           error.concept = fieldRequiredLangKey;
+                        }
+                    } else if (vm.originalConcept  && !vm.originalConcept.conceptId && vm.originalConcept.fsn) {
                         error.concept = fieldInvalidLangKey;
                     }
                 }
