@@ -114,7 +114,7 @@ angular
                     $rootScope.clientVersion = response.data.version;
                 });
             
-            $translate('crs.app.title').then(function (value) {
+            $translate(config.app.title).then(function (value) {
                 document.querySelector('head > title').innerHTML = value;
             }, function () {
                 document.querySelector('head > title').innerHTML = 'SNOMED International CRS (Content Request Service)';

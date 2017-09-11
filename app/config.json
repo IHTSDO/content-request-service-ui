@@ -1,4 +1,7 @@
 {
+    "app": {
+        "title": "crs.app.title"
+    },
     "endpoint": {
         "crs": "http://crs3.ihtsdotools.org/crs/",
         "ims": "https://dev-ims.ihtsdotools.org/",
