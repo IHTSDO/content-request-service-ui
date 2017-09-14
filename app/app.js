@@ -106,13 +106,16 @@ angular
         'accountService',
         'crsService',
         '$http',
-        function ($rootScope, $location, configService, accountService, crsService, $http) {
+        '$translate',
+        function ($rootScope, $location, configService, accountService, crsService, $http, $translate) {
             var config = configService.getConfig();
             $http.get('version.json', { cache: true })
                 .then(function (response) {
                     $rootScope.clientVersion = response.data.version;
                 });
-
+            
+            document.querySelector('head > title').innerHTML = config.app.title;
+            
             $rootScope.showAppLoading = false;
             $rootScope.showSplash = true;
             $rootScope.pageTitles = [];

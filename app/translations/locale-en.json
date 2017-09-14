@@ -138,6 +138,7 @@
                     "requestId": "Request ID",
                     "description": "Description",
                     "lastModified": "Modified",
+                    "lastStatusModifier": "Modified By",
                     "requestType": "Type",
                     "status": "Status",
                     "conceptFSN": "Concept",

@@ -15,11 +15,13 @@ angular
             };
 
             var loadComments = function () {
-                vm.loadingComment = true;
-                jiraCommentService.getComments($scope.request.id).then(function (response) {
-                    vm.loadingComment = false;
-                    vm.comments = response;
-                });
+                if ($scope.request) {
+                    vm.loadingComment = true;
+                    jiraCommentService.getComments($scope.request.id).then(function (response) {
+                        vm.loadingComment = false;
+                        vm.comments = response;
+                    });
+                }
             };
 
             $scope.$on('ngRepeatFinished', function () {
@@ -43,7 +45,7 @@ angular
                 }else{
                     isInternal = false;
                 }
-                if (vm.message && vm.message.trim()) {
+                if (vm.message && vm.message.trim() && $scope.request) {
                     vm.postingComment = true;
                     jiraCommentService.postComments($scope.request.id, vm.message, isInternal).then(function () {
                         vm.message = null;

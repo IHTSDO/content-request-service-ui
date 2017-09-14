@@ -166,10 +166,15 @@ angular
 
             var loadProjects = function() {
                 vm.loadingProjects = true;
-                requestService.getProjects().then(function(response) {
-					response.sort(function(a, b) {
-						return utilsService.compareStrings(a.title, b.title);
-					});
+                requestService.getProjects().then(function (response) {
+                    if (response !== undefined ) {
+                        response.sort(function (a, b) {
+                            return utilsService.compareStrings(a.title, b.title);
+                        });
+                    } else {
+                        response = [];
+                    }
+					
                     vm.projects = response;
                     requestService.setProjectsList(vm.projects);
                 }).finally(function() {
