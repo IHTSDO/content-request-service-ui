@@ -17,7 +17,6 @@
             "feedback": "Feedback"
         },
         "app": {
-            "title": "SNOMED International CRS (Content Request Service)",
             "name": "Content Request Service",
             "copyright": "Copyright 2017 SNOMED International"
         },
@@ -139,6 +138,7 @@
                     "requestId": "Request ID",
                     "description": "Description",
                     "lastModified": "Modified",
+                    "lastStatusModifier": "Modified By",
                     "requestType": "Type",
                     "status": "Status",
                     "conceptFSN": "Concept",
