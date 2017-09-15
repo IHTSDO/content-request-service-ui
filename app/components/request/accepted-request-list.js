@@ -72,6 +72,12 @@ angular
                         placeholder: "Ids..."
                     }
                 },
+                lastStatusModifier: {
+                    lastStatusModifier: {
+                        id: "text",
+                        placeholder: "Modifier..."
+                    }
+                },
                 requestId: {
                     requestId: {
                         id: "number",
@@ -286,6 +292,7 @@ angular
                         changeAcceptedFilter('assignee', acceptedRequests.assignee);
                         changeAcceptedFilter('summary', acceptedRequests.summary);
                         changeAcceptedFilter('trackerId', acceptedRequests.trackerId);
+                        changeAcceptedFilter('lastStatusModifier', acceptedRequests.lastStatusModifier);
                         changeAcceptedRequestsPageSize(acceptedRequests.limit);
                         changeAcceptedRequestsPage(acceptedRequests.offset);
                         changeAcceptedRequestsSorting(acceptedRequests.sorting);
@@ -726,7 +733,7 @@ angular
             var isDateRangeFilteredFirstTime = false;
 
             var buildRequestFilterValues = function(typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, summary, trackerId, manager, status, author,
-                project, assignee, requestId, requestType, showUnassignedRequests, statusDateFrom, statusDateTo){
+                project, assignee, requestId, requestType, showUnassignedRequests, statusDateFrom, statusDateTo, lastStatusModifier){
                 var requestList = {};
                 requestList.batchRequest = batchRequest;
                 requestList.concept = fsn;
@@ -749,8 +756,10 @@ angular
                 requestList.showUnassignedOnly = showUnassignedRequests;
                 requestList.statusDateFrom = convertDateToMilliseconds(statusDateFrom);
                 requestList.statusDateTo = convertDateToMilliseconds(statusDateTo);
-                requestList.summary = summary;
+                requestList.summary = summary; 
                 requestList.trackerId = trackerId;
+                requestList.lastStatusModifier = lastStatusModifier;
+                requestList.search = search;
                 return requestList;
             };
 
@@ -826,9 +835,10 @@ angular
                         params.filter().assignee,
                         params.filter().requestId,
                         params.filter().requestType,
-                        vm.showUnassignedRequests,
+                        vm.showUnassignedRequests, 
                         params.filter().statusDate.startDate,
-                        params.filter().statusDate.endDate
+                        params.filter().statusDate.endDate,
+                        params.filter().lastStatusModifier
                     );
 
                     if(acceptedRequests === undefined){

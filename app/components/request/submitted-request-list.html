@@ -6,6 +6,12 @@
                 <div class="col-md-3 no-padding">
                     <h3 class="table-title p-20" translate="crs.request.list.title.submittedRequests"></h3>
                 </div>
+                <div class="col-md-5">
+                     <div class="table-search">
+                        <input type="text" ng-model="vm.submittedTableParams.filter()['search']" class="form-control"
+                               placeholder="{{'crs.request.list.searchPlaceHolder.submittedRequests' | translate}}" autofocus/>
+                    </div> 
+                </div>
                 <div class="col-md-3">
                     <div class="p-t-20">
                         <button type="button" class="btn btn-round btn-info ng-scope " title="{{'crs.request.list.tip.count' | translate}}" >
@@ -66,6 +72,9 @@
                                 <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.submittedRequests.columns.modifiedDate" /> {{'crs.request.list.tableHeader.lastModified' | translate}}
                             </label>
                             <label>
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.submittedRequests.columns.lastStatusModifier" /> {{'crs.request.list.tableHeader.lastStatusModifier' | translate}}
+                            </label>
+                            <label>
                                 <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.submittedRequests.columns.type" /> {{'crs.request.list.tableHeader.requestType' | translate}}
                             </label>
                             <label>
@@ -122,6 +131,10 @@
                         </td>
                         <td data-title="'crs.request.list.tableHeader.lastModified' | translate" sortable="'requestHeader.statusDate'" filter="{requestDate: 'ng-table/datetime-picker-last-modified.html'}" ng-if="vm.enabledColumns.submittedRequests.columns.modifiedDate">
                             {{request.requestHeader.statusDate | date:'yyyy-MM-dd'}}
+                        </td>
+                        <td data-title="'crs.request.list.tableHeader.lastStatusModifier' | translate" sortable="'requestHeader.lastStatusModifier'"
+                            style="min-width: 150px" filter="vm.filterRequests.lastStatusModifier" ng-if="vm.enabledColumns.submittedRequests.columns.lastStatusModifier">
+                            {{request.requestHeader.lastStatusModifier}}
                         </td>
                         <td data-title="'crs.request.list.tableHeader.requestType' | translate" sortable="'requestType'" filter="{requestType: 'ng-table/request-type-select.html'}" ng-if="vm.enabledColumns.submittedRequests.columns.type">
                             {{request.requestType | requestType | translate}}

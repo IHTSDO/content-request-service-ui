@@ -72,6 +72,12 @@ angular
                         placeholder: "Ids..."
                     }
                 },
+                lastStatusModifier: {
+                    lastStatusModifier: {
+                        id: "text",
+                        placeholder: "Modifier..."
+                    }
+                },
                 requestId: {
                     requestId: {
                         id: "number",
@@ -266,6 +272,7 @@ angular
                             changeSubmitedRequestsPageSize(subbmitedRequests.limit);
                             changeSubmittedRequestsPage(subbmitedRequests.offset);
                             changeSubmittedRequestsSorting(subbmitedRequests.sorting);
+                            changeSubmittedFilter('lastStatusModifier', subbmitedRequests.lastStatusModifier);
                             changeSubmittedFilter('requestDate', {
                                 startDate: subbmitedRequests.requestDateFrom,
                                 endDate: subbmitedRequests.requestDateTo
@@ -308,6 +315,7 @@ angular
                             changeMyRequestFilter('requestId', myRequests.requestId);
                             changeMyRequestFilter('summary', myRequests.summary);
                             changeMyRequestFilter('trackerId', myRequests.trackerId);
+                            changeMyRequestFilter('lastStatusModifier', myRequests.lastStatusModifier);
                             changeMyRequestsPageSize(myRequests.limit);
                             changeMyRequestsPage(myRequests.offset);
                             changeMyRequestsSorting(myRequests.sorting);
@@ -353,6 +361,7 @@ angular
                             changeAssignedFilter('summary', myAssignedRequests.summary);
                             changeAssignedFilter('trackerId', myAssignedRequests.trackerId);
                             changeAssignedFilter('count', myAssignedRequests.count);
+                            changeAssignedFilter('lastStatusModifier', myAssignedRequests.lastStatusModifier);
                             changeAssignedRequestsPageSize(myAssignedRequests.limit);
                             changeAssignedRequestsPage(myAssignedRequests.offset);
                             changeAssignedRequestsSorting(myAssignedRequests.sorting);
@@ -1120,7 +1129,7 @@ angular
                 return milliseconds.getTime();
             };
 
-            var buildRequestList = function(typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, summary, trackerId, manager, status, author, requestId, requestType, showClosedRequests, statusDateFrom, statusDateTo){
+            var buildRequestList = function (typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, summary, trackerId, manager, status, author, requestId, requestType, showClosedRequests, statusDateFrom, statusDateTo, lastStatusModifier){
                 var requestList = {};
                 requestList.batchRequest = batchRequest;
                 requestList.concept = fsn;
@@ -1144,6 +1153,7 @@ angular
                 requestList.statusDateTo = convertDateToMilliseconds(statusDateTo);
                 requestList.summary = summary;
                 requestList.trackerId = trackerId;
+                requestList.lastStatusModifier = lastStatusModifier;
                 return requestList;
 
             };
@@ -1205,7 +1215,8 @@ angular
                             params.filter().requestType,
                             vm.showClosedRequests,
                             params.filter().statusDate.startDate,
-                            params.filter().statusDate.endDate
+                            params.filter().statusDate.endDate,
+                            params.filter().lastStatusModifier
                         );
 
                         if(myRequests === undefined){
@@ -1291,7 +1302,8 @@ angular
                             params.filter().requestType,
                             vm.showClosedRequests,
                             params.filter().statusDate.startDate,
-                            params.filter().statusDate.endDate
+                            params.filter().statusDate.endDate,
+                            params.filter().lastStatusModifier
                         );
 
                         if(myAssignedRequests === undefined){
@@ -1379,7 +1391,8 @@ angular
                             params.filter().requestType,
                             vm.showClosedRequests,
                             params.filter().statusDate.startDate,
-                            params.filter().statusDate.endDate
+                            params.filter().statusDate.endDate,
+                            params.filter().lastStatusModifier
                         );
                         if(subbmitedRequests === undefined){
                             subbmitedRequests = filterValues;
