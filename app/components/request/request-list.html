@@ -14,6 +14,9 @@
                 </div>
                  <div class="col-md-2 ">
                     <div class=" p-t-15">
+                        <button type="button" class="btn btn-round btn-info" title="{{'crs.request.list.tip.count' | translate}}">
+                            {{vm.tableParams.total()}} <div class="ripple-wrapper"></div>
+                        </button>
                         <button type="button" class="btn btn-round btn-default " title="{{'crs.request.list.tip.create' | translate}}" ng-click="dashboard.openCreateRequestModal()">
                             <span class="md md-add"></span>
                             <div class="ripple-wrapper"></div>
@@ -27,10 +30,6 @@
                         <button type="button" class="btn btn-round btn-default " title="{{'tooltips.request.list.tip.withdrawRequests' | translate}}" ng-click="vm.withdrawSelectedRequests()">
                             <span class="md md-backspace darken-2 iconbase"></span>
                             <div class="ripple-wrapper"></div>
-                        </button>
-
-                        <button type="button" class="btn btn-round btn-info ng-scope " title="{{'crs.request.list.tip.count' | translate}}" >
-                            {{vm.tableParams.total()}} <div class="ripple-wrapper"></div>
                         </button>
                     </div>
                 </div>
