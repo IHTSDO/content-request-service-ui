@@ -706,7 +706,8 @@ angular
                             snowowlMetadataService.isIsaRelationship(relationship.type.conceptId)) {
                             parentConcept = {
                                 id: (relationship.target && relationship.target.conceptId) ? relationship.target.conceptId : null,
-                                fsn: (relationship.target && relationship.target.fsn) ? relationship.target.fsn : null
+                                fsn: (relationship.target && relationship.target.fsn) ? relationship.target.fsn : null,
+                                moduleId: (relationship.target && relationship.target.moduleId) ? relationship.target.moduleId : null
                             };
 
                             break;
@@ -729,6 +730,7 @@ angular
                         var obj = angular.copy(isaRelationship);
                         obj.target.conceptId = parentConcept[i].conceptId;
                         obj.target.fsn = parentConcept[i].fsn;
+                        obj.target.moduleId = parentConcept[i].moduleId;
                         arr.push(obj);
                     }
                     concept.relationships = concept.relationships.concat(arr);
