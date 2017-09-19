@@ -1,6 +1,7 @@
 {
     "app": {
-        "title": "SNOMED International CRS (Content Request Service)"
+        "title": "SNOMED International CRS (Content Request Service)",
+        "header": "Content Request Service"
     },
     "endpoint": {
         "crs": "http://crs3.ihtsdotools.org/crs/",
