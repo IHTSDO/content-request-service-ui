@@ -242,10 +242,12 @@
                         "pendingForClarification": "Pending Clarification",
                         "inAppealClarification": "In Appeal Clarification",
                         "acceptAndAssign": "Accept and Assign To Author",
-                        "assign": "Assign Request to an Authoring Task",
+                        "assign": "Assign Request To an Authoring Task",
                         "assignToStaff": "Assign To Manager",
                         "reassignToRequestor": "Change Requestor",
-                        "moveToInInceptionElaboration": "Move to In Inception/Elaboration",
+                        "moveToInInceptionElaboration": "Move To In Inception/Elaboration",
+                        "moveToOnHold": "Move To On Hold",
+                        "moveToWaitingForInternalInput": "Move To Waiting For Internal Input",
                         "changeSNOMEDCode": "Change Local SNOMED CT Code",
                         "addNote": "Add Note",
                         "unassign": "Unassign Request",
@@ -311,7 +313,9 @@
                     "inAppealClarification": "In Appeal Clarification",
                     "inInceptionElaboration": "In Inception/Elaboration",
                     "changeSNOMEDCode": "Change Local SNOMED CT Code",
-                    "unassignAndReject": "Unassign And Reject Request"
+                    "unassignAndReject": "Unassign And Reject Request",
+                    "ON_HOLD": "On Hold Request",
+                    "WAITING_FOR_INTERNAL_INPUT": "Waiting For Internal Input"
                 },
                 "comment": {
                     "label": "Reason",
@@ -350,6 +354,8 @@
                 "requestUnassigning": "Unassigning request...",
                 "requestUnassigningAndRejecting": "Unassigning And Rejecting Request...",
                 "requestUnassignedAndRejected": "Request has been Unassigned And Rejected successfully",
+                "requestOnHold": "Request has been on hold successfully",
+                "requestWaitingForInternalInput": "Request has been waiting for internal input successfully",
 
                 "error": {
                     "requestTypeRequired": "Please select request type",
@@ -398,7 +404,8 @@
                 "inInceptionElaboration": "In Inception/Elaboration",
                 "readyForRelease": "Ready For Release",
                 "submitted": "Submitted",
-                "inAppealClarification": "In Appeal Clarification"
+                "inAppealClarification": "In Appeal Clarification",
+                "waitingForInternalInput": "Waiting For Internal Input"
             },
             "bulkAction": {
                 "status": {

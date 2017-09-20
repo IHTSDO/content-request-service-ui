@@ -154,6 +154,16 @@ footer {
     color: black;
   }
 
+  &.ON_HOLD {
+    background-color: #F3CB67;
+    color: white;
+  }
+
+  &.WAITING_FOR_INTERNAL_INPUT {
+    background-color: #F3CB67;
+    color: white;
+  }
+
   &.NEW {
     background-color: #F3CB67;
     color: white;

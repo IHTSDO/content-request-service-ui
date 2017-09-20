@@ -156,6 +156,10 @@ angular
                 {
                     id: "IN_APPEAL_CLARIFICATION",
                     title: "In Appeal Clarification"
+                },
+                {
+                    id: "WAITING_FOR_INTERNAL_INPUT",
+                    title: "Waiting For Internal Input"
                 }
             ];
 

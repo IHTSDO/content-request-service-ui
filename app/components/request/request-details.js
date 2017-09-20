@@ -30,7 +30,8 @@ angular
         '$timeout',
 		'utilsService',
         '$filter',
-        function($scope, $rootScope, $routeParams, $location, $anchorScroll, $uibModal, $sce, $q, requestService, notificationService, requestMetadataService, objectService, snowowlService, snowowlMetadataService, crsJiraService, scaService, accountService, REQUEST_METADATA_KEY, REQUEST_TYPE, CONCEPT_EDIT_EVENT, REQUEST_STATUS, REQUEST_INPUT_MODE, jiraService, $timeout, utilsService, $filter) {
+        'STATISTICS_STATUS',
+        function ($scope, $rootScope, $routeParams, $location, $anchorScroll, $uibModal, $sce, $q, requestService, notificationService, requestMetadataService, objectService, snowowlService, snowowlMetadataService, crsJiraService, scaService, accountService, REQUEST_METADATA_KEY, REQUEST_TYPE, CONCEPT_EDIT_EVENT, REQUEST_STATUS, REQUEST_INPUT_MODE, jiraService, $timeout, utilsService, $filter, STATISTICS_STATUS) {
             var vm = this;
             var translateFilter = $filter('translate');
             var translateRequestTypeFilter = $filter('requestType');
@@ -487,7 +488,7 @@ angular
                             initBreadcrumb(requestId);
 
                             vm.disableSimpleMode = true;
-                            loadRequest().then(function(requestData) {
+                            loadRequest().then(function (requestData) {
                                 var requestType = requestService.identifyRequestType(vm.request.requestType);
                                 var inputMode = identifyInputMode(vm.request.inputMode);
 
@@ -561,7 +562,7 @@ angular
 
                 vm.request = null;
 
-                return requestService.getRequest(requestId).then(function(requestData) {
+                return requestService.getRequest(requestId).then(function (requestData) {
                     // build request
                     vm.request = buildRequestFromRequestData(requestData);
                     vm.request.showRel = vm.request.relationshipCharacteristicType;
@@ -2441,6 +2442,44 @@ angular
                 });
             };
 
+            var canOnHoldAction = function () {
+                return (vm.request && vm.request !== undefined && (vm.request.requestHeader.status === STATISTICS_STATUS.NEW.value || vm.request.requestHeader.status === STATISTICS_STATUS.ACCEPTED.value));
+            };
+
+            var moveToOnHoldRequest = function () {
+                var modalInstance = openStatusCommentModal(STATISTICS_STATUS.ON_HOLD.value);
+                modalInstance.result.then(function (response) {
+                    changeRequestStatus(vm.request.id, REQUEST_STATUS.ON_HOLD, response)
+                        .then(function () {
+                            notificationService.sendMessage('crs.request.message.requestOnHold', 5000);
+                            goBackToPreviousList();
+                        }, function (e) {
+                            showErrorMessage(e.message);
+                        });
+                });
+            };
+
+            var canWaitingForInternalInputAction = function () {
+                return (vm.request && vm.request !== undefined && (vm.request.requestHeader.status === STATISTICS_STATUS.UNDER_AUTHORING.value || vm.request.requestHeader.status === STATISTICS_STATUS.ACCEPTED.value));
+            };
+
+            var moveWaitingForInternalInputRequest = function () {
+                var modalInstance = openStatusCommentModal(STATISTICS_STATUS.WAITING_FOR_INTERNAL_INPUT.value);
+                modalInstance.result.then(function (response) {
+                    changeRequestStatus(vm.request.id, REQUEST_STATUS.WAITING_FOR_INTERNAL_INPUT, response)
+                        .then(function () {
+                            notificationService.sendMessage('crs.request.message.requestWaitingForInternalInput', 5000);
+                            goBackToPreviousList();
+                        }, function (e) {
+                            showErrorMessage(e.message);
+                        });
+                });
+            };
+
+            vm.moveWaitingForInternalInputRequest = moveWaitingForInternalInputRequest;
+            vm.canWaitingForInternalInputAction = canWaitingForInternalInputAction;
+            vm.moveToOnHoldRequest = moveToOnHoldRequest;
+            vm.canOnHoldAction = canOnHoldAction;
             vm.cancelEditing = cancelEditing;
             vm.saveRequest = saveRequest;
             vm.acceptRequest = acceptRequest;
