@@ -17,7 +17,8 @@ angular
             var vm = this;
             var timeout = null;
             var messagePoller;
-            var messagePollingInterval = configService.getMessagePollingInterval();
+            var messagePollingInterval = configService.getMessagePollingInterval(),
+                appName = configService.getConfig().app.header;
 
             var initView = function () {
                 checkNewMessages();
@@ -209,6 +210,7 @@ angular
             vm.loadingMessages = false;
             vm.loadMoreMessages = loadMoreMessages;
             vm.clearMessages = clearMessages;
+            vm.appName = appName;
 
             initView();
         }
