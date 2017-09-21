@@ -315,7 +315,7 @@
                     "changeSNOMEDCode": "Change Local SNOMED CT Code",
                     "unassignAndReject": "Unassign And Reject Request",
                     "ON_HOLD": "On Hold Request",
-                    "WAITING_FOR_INTERNAL_INPUT": "Waiting For Internal Input"
+                    "INTERNAL_INPUT_NEEDED": "Waiting For Internal Input"
                 },
                 "comment": {
                     "label": "Reason",
@@ -433,7 +433,9 @@
                     "unassignAuthor": "Unassign Project",
                     "addNote": "Add Note",
                     "withdraw": "Withdrawn",
-                    "reject": "Reject Requests"
+                    "reject": "Reject Requests",
+                    "onHold": "On Hold Requests",
+                    "waitingInternalInput": "Waiting Internal Input Requests"
                 },
                 "button": {
                     "close": "Close",

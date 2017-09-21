@@ -2464,9 +2464,9 @@ angular
             };
 
             var moveWaitingForInternalInputRequest = function () {
-                var modalInstance = openStatusCommentModal(STATISTICS_STATUS.WAITING_FOR_INTERNAL_INPUT.value);
+                var modalInstance = openStatusCommentModal(STATISTICS_STATUS.INTERNAL_INPUT_NEEDED.value);
                 modalInstance.result.then(function (response) {
-                    changeRequestStatus(vm.request.id, REQUEST_STATUS.WAITING_FOR_INTERNAL_INPUT, response)
+                    changeRequestStatus(vm.request.id, REQUEST_STATUS.INTERNAL_INPUT_NEEDED, response)
                         .then(function () {
                             notificationService.sendMessage('crs.request.message.requestWaitingForInternalInput', 5000);
                             goBackToPreviousList();

@@ -32,7 +32,7 @@ angular.module('conceptRequestServiceApp.request')
             };
 
             var changeRequestStatus = function () {
-                if (vm.requestStatus === STATISTICS_STATUS.ON_HOLD.value || vm.requestStatus === STATISTICS_STATUS.WAITING_FOR_INTERNAL_INPUT.value){
+                if (vm.requestStatus === STATISTICS_STATUS.ON_HOLD.value || vm.requestStatus === STATISTICS_STATUS.INTERNAL_INPUT_NEEDED.value){
                     $uibModalInstance.close({
                         reason: vm.comment,
                         internal: vm.internal

@@ -38,6 +38,17 @@
                             <span class="md md-dnd-forwardslash darken-2 iconbase"></span>
                             <div class="ripple-wrapper"></div>
                         </button>
+                        <button ng-if="dashboard.permissionChecked && dashboard.isAdmin" type="button" class="btn btn-round btn-default " title="{{'tooltips.request.details.info.button.moveToOnHold' | translate}}"
+                            ng-click="vm.onHoldSelectedRequests()">
+                            <span class="md md-pause darken-2 iconbase"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
+
+                        <button ng-if="dashboard.permissionChecked && dashboard.isAdmin" type="button" class="btn btn-round btn-default " title="{{'tooltips.request.details.info.button.moveToWaitingForInternalInput' | translate}}"
+                            ng-click="vm.waitingForInternalInputSelectedRequests()">
+                            <span class="md md-input darken-2 iconbase"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
                     </div>
                 </div>
                 <div class="col-md-4">

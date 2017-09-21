@@ -214,8 +214,8 @@ angular
             value: 'IN_APPEAL_CLARIFICATION',
             langKey: 'crs.request.requestStatus.inAppealClarification'
         },
-        WAITING_FOR_INTERNAL_INPUT: {
-            value: 'WAITING_FOR_INTERNAL_INPUT',
+        INTERNAL_INPUT_NEEDED: {
+            value: 'INTERNAL_INPUT_NEEDED',
             langKey: 'crs.request.requestStatus.waitingForInternalInput'
         }
     })
@@ -304,8 +304,8 @@ angular
             value: 'ON_HOLD',
             langKey: 'crs.request.requestStatus.onHold'
         },
-        WAITING_FOR_INTERNAL_INPUT: {
-            value: 'WAITING_FOR_INTERNAL_INPUT',
+        INTERNAL_INPUT_NEEDED: {
+            value: 'INTERNAL_INPUT_NEEDED',
             langKey: 'crs.request.requestStatus.waitingForInternalInput'
         }
     })
@@ -390,8 +390,8 @@ angular
             value: 'ON_HOLD',
             langKey: 'crs.request.requestStatus.onHold'
         },
-        WAITING_FOR_INTERNAL_INPUT: {
-            value: 'WAITING_FOR_INTERNAL_INPUT',
+        INTERNAL_INPUT_NEEDED: {
+            value: 'INTERNAL_INPUT_NEEDED',
             langKey: 'crs.request.requestStatus.waitingForInternalInput'
         }
     })
@@ -462,6 +462,14 @@ angular
         CHANGE_REQUESTOR: {
             value: 'CHANGE_REQUESTOR',
             langKey: 'crs.request.bulkAction.action.reassignToRequestor'
+        },
+        ON_HOLD: {
+            value: 'ON_HOLD',
+            langKey: 'crs.request.bulkAction.action.onHold'
+        },
+        INTERNAL_INPUT_NEEDED: {
+            value: 'INTERNAL_INPUT_NEEDED',
+            langKey: 'crs.request.bulkAction.action.waitingInternalInput'
         }
     })
     .value('DEFAULT_COLUMNS',{
