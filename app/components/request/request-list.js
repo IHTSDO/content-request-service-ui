@@ -1565,6 +1565,26 @@ angular
                 });
             };
 
+            var searchTask = function ($event, list) {
+                var keyCode = $event.which || $event.keyCode;
+                if (keyCode === 13) {
+                    switch (list) {
+                        case 'my-requests':
+                            vm.tableParams.filter().search = vm.searchText;    
+                            vm.tableParams.reload();
+                            break;
+                        case 'submitted-requests':
+                            vm.submittedTableParams.filter().search = vm.searchText;    
+                            vm.submittedTableParams.reload();
+                            break;
+                        case 'my-assigned-requests':
+                            vm.assignedRequestTableParams.filter().search = vm.searchText;    
+                            vm.assignedRequestTableParams.reload();
+                            break;
+                    }
+                }
+            };
+
             $scope.$watch(function(){
                 return vm.enabledColumns;
             }, function(newVal){
@@ -1598,6 +1618,7 @@ angular
             vm.withdrawSelectedRequests = withdrawSelectedRequests;
             vm.rejectSelectedRequests = rejectSelectedRequests;
             vm.reassignSelectedRequestsToRequestor = reassignSelectedRequestsToRequestor;
+            vm.searchTask = searchTask;
             vm.daterange = {
                 startDate: null,
                 endDate: null
@@ -1627,6 +1648,7 @@ angular
               showDropdowns: true,
               type: 'moment'
             };
+            vm.searchText = '';
             
             initView();
         }

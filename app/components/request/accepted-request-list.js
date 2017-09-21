@@ -897,6 +897,14 @@ angular
                 });
             };
 
+            var searchTask = function ($event) {
+                var keyCode = $event.which || $event.keyCode;
+                if (keyCode === 13) {
+                    vm.requestTableParams.filter().search = vm.searchText;
+                    vm.requestTableParams.reload();
+                }
+            };
+            
             //watch columns change
             $scope.$watch(function(){
                 return vm.enabledColumns;
@@ -906,6 +914,7 @@ angular
                 }
             });
 
+            vm.searchTask = searchTask;
             vm.tableParams = requestTableParams;
             vm.assignSelectedRequests = assignSelectedRequests;
             vm.assignSelectedRequestsToStaff = assignSelectedRequestsToStaff;
