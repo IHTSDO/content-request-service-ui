@@ -31,7 +31,8 @@ angular
 		'utilsService',
         '$filter',
         'STATISTICS_STATUS',
-        function ($scope, $rootScope, $routeParams, $location, $anchorScroll, $uibModal, $sce, $q, requestService, notificationService, requestMetadataService, objectService, snowowlService, snowowlMetadataService, crsJiraService, scaService, accountService, REQUEST_METADATA_KEY, REQUEST_TYPE, CONCEPT_EDIT_EVENT, REQUEST_STATUS, REQUEST_INPUT_MODE, jiraService, $timeout, utilsService, $filter, STATISTICS_STATUS) {
+        'configService',
+        function ($scope, $rootScope, $routeParams, $location, $anchorScroll, $uibModal, $sce, $q, requestService, notificationService, requestMetadataService, objectService, snowowlService, snowowlMetadataService, crsJiraService, scaService, accountService, REQUEST_METADATA_KEY, REQUEST_TYPE, CONCEPT_EDIT_EVENT, REQUEST_STATUS, REQUEST_INPUT_MODE, jiraService, $timeout, utilsService, $filter, STATISTICS_STATUS, configService) {
             var vm = this;
             var translateFilter = $filter('translate');
             var translateRequestTypeFilter = $filter('requestType');
@@ -2476,6 +2477,31 @@ angular
                 });
             };
 
+            var canForwardAction = function () {
+                return (vm.request && vm.request !== undefined && canForwardRequest() && (vm.request.requestHeader.status === STATISTICS_STATUS.NEW.value || vm.request.requestHeader.status === STATISTICS_STATUS.ACCEPTED.value));
+            };
+
+            var moveForwardRequest = function () {
+                var modalInstance = openStatusCommentModal(STATISTICS_STATUS.FORWARDED.value);
+                modalInstance.result.then(function (response) {
+                    changeRequestStatus(vm.request.id, REQUEST_STATUS.FORWARDED, { reason: response })
+                        .then(function () {
+                            notificationService.sendMessage('crs.request.message.requestForwarded', 5000);
+                            goBackToPreviousList();
+                        }, function (e) {
+                            showErrorMessage(e.message);
+                        });
+                });
+            };
+
+            var canForwardRequest = function () {
+                var config = configService.getConfigFromServer();
+                return (config && config !== undefined && config.forwardAllowed);
+            };
+
+            vm.canForwardRequest = canForwardRequest;
+            vm.canForwardAction = canForwardAction;
+            vm.moveForwardRequest = moveForwardRequest;
             vm.moveWaitingForInternalInputRequest = moveWaitingForInternalInputRequest;
             vm.canWaitingForInternalInputAction = canWaitingForInternalInputAction;
             vm.moveToOnHoldRequest = moveToOnHoldRequest;
