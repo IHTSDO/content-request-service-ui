@@ -434,8 +434,8 @@
                     "addNote": "Add Note",
                     "withdraw": "Withdrawn",
                     "reject": "Reject Requests",
-                    "onHold": "On Hold Requests",
-                    "waitingInternalInput": "Waiting Internal Input Requests"
+                    "onHold": "On Hold",
+                    "waitingInternalInput": "Pending Internal Input"
                 },
                 "button": {
                     "close": "Close",
