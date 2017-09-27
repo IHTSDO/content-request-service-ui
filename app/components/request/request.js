@@ -470,6 +470,10 @@ angular
         INTERNAL_INPUT_NEEDED: {
             value: 'INTERNAL_INPUT_NEEDED',
             langKey: 'crs.request.bulkAction.action.waitingInternalInput'
+        },
+        FORWARDED: {
+            value: 'FORWARDED',
+            langKey: 'crs.request.bulkAction.action.forwarded'
         }
     })
     .value('DEFAULT_COLUMNS',{

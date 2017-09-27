@@ -49,6 +49,12 @@
                             <span class="md md-input darken-2 iconbase"></span>
                             <div class="ripple-wrapper"></div>
                         </button>
+
+                        <button ng-if="dashboard.permissionChecked && dashboard.isAdmin && vm.canForwardRequest()" type="button" class="btn btn-round btn-default " title="{{'tooltips.request.details.info.button.moveToForward' | translate}}"
+                            ng-click="vm.forwardSelectedRequests()">
+                            <span class="md md-forward darken-2 iconbase"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
                     </div>
                 </div>
                 <div class="col-md-4">

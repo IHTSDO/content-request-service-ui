@@ -22,7 +22,8 @@ angular
         'DEFAULT_COLUMNS',
         '$timeout',
         'STATISTICS_STATUS',
-        function ($filter, $sce, crsJiraService, NgTableParams, requestService, notificationService, accountService, jiraService, $routeParams, $uibModal, utilsService, $scope, scaService, BULK_ACTION_STATUS, BULK_ACTION, DEFAULT_COLUMNS, $timeout, STATISTICS_STATUS) {
+        'configService',
+        function ($filter, $sce, crsJiraService, NgTableParams, requestService, notificationService, accountService, jiraService, $routeParams, $uibModal, utilsService, $scope, scaService, BULK_ACTION_STATUS, BULK_ACTION, DEFAULT_COLUMNS, $timeout, STATISTICS_STATUS, configService) {
             var vm = this;
             var maxSize;
 
@@ -214,7 +215,8 @@ angular
                 reject: 'REJECT',
                 reassignToRequestor: 'UPDATE_REPORTER',
                 onHold: 'ON_HOLD',
-                waitingForInternalInput: 'INTERNAL_INPUT_NEEDED'
+                waitingForInternalInput: 'INTERNAL_INPUT_NEEDED',
+                forward: 'FORWARDED'
             };
 
             var initView = function () {
@@ -1709,6 +1711,69 @@ angular
                 }
             };
 
+            var forwardSelectedRequests = function () {
+                var action = bulkAction.forward;
+                var selectedRequests = vm.selectedRequests,
+                    forwardRequestIds = [];
+                if ($routeParams.list === 'submitted-requests') {
+                    selectedRequests = vm.selectedSubmittedRequests;
+                } else if ($routeParams.list === 'my-assigned-requests') {
+                    selectedRequests = vm.selectedMyAssignedRequests;
+                } else if ($routeParams.list === 'requests') {
+                    selectedRequests = vm.selectedRequests;
+                } else {
+                    if (vm.isAdmin || vm.isStaff) {
+                        selectedRequests = vm.selectedMyAssignedRequests;
+                    } else {
+                        selectedRequests = vm.selectedRequests;
+                    }
+                }
+                if (selectedRequests &&
+                    selectedRequests.items) {
+                    angular.forEach(selectedRequests.items, function (isSelected, requestId) {
+                        if (isSelected) {
+                            forwardRequestIds.push(requestId);
+                        }
+                    });
+                    if (forwardRequestIds.length > 0) {
+                        var modalInstance = $uibModal.open({
+                            templateUrl: 'components/request/modal-change-request-status.html',
+                            controller: 'ModalChangeRequestStatusCtrl as modal',
+                            resolve: {
+                                requestStatus: function () {
+                                    return STATISTICS_STATUS.FORWARDED.value;
+                                }
+                            }
+                        });
+
+                        modalInstance.result.then(function (rs) {
+                            var data = {
+                                data: {
+                                    additionalInfo: {
+                                        reason: rs
+                                    }
+                                },
+                                requestIds: forwardRequestIds
+                            };
+                            requestService.bulkAction(data, action).then(function (response) {
+                                if (response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value) {
+                                    bulkActionRespondingModal(response.id, BULK_ACTION.FORWARDED.langKey);
+                                }
+                            });
+                        });
+                    } else {
+                        notificationService.sendMessage('Please select at least a request to move to forward.', 5000);
+                    }
+                }
+            };
+
+            var canForwardRequest = function () {
+                var config = configService.getConfigFromServer();
+                return (config && config !== undefined && config.forwardAllowed);
+            };
+
+            vm.canForwardRequest = canForwardRequest;
+            vm.forwardSelectedRequests = forwardSelectedRequests;
             vm.onHoldSelectedRequests = onHoldSelectedRequests;
             vm.waitingForInternalInputSelectedRequests = waitingForInternalInputSelectedRequests;
             vm.showFilter = false;

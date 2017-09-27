@@ -247,6 +247,7 @@
                         "reassignToRequestor": "Change Requestor",
                         "moveToInInceptionElaboration": "Move To In Inception/Elaboration",
                         "moveToOnHold": "Move To On Hold",
+                        "moveToForward": "Move To Forward",
                         "moveToWaitingForInternalInput": "Move To Pending Internal Input",
                         "changeSNOMEDCode": "Change Local SNOMED CT Code",
                         "addNote": "Add Note",
@@ -315,6 +316,7 @@
                     "changeSNOMEDCode": "Change Local SNOMED CT Code",
                     "unassignAndReject": "Unassign And Reject Request",
                     "ON_HOLD": "On Hold Request",
+                    "FORWARDED": "Forward Request",
                     "INTERNAL_INPUT_NEEDED": "Pending Internal Input"
                 },
                 "comment": {
@@ -355,6 +357,7 @@
                 "requestUnassigningAndRejecting": "Unassigning And Rejecting Request...",
                 "requestUnassignedAndRejected": "Request has been Unassigned And Rejected successfully",
                 "requestOnHold": "Request has been on hold successfully",
+                "requestForwarded": "Request has been forwarded successfully",
                 "requestWaitingForInternalInput": "Request has been moved to pending internal input successfully",
 
                 "error": {
@@ -435,7 +438,9 @@
                     "withdraw": "Withdrawn",
                     "reject": "Reject Requests",
                     "onHold": "On Hold",
-                    "waitingInternalInput": "Pending Internal Input"
+                    "waitingInternalInput": "Pending Internal Input",
+                    "forward": "Forward Requests"
+
                 },
                 "button": {
                     "close": "Close",
