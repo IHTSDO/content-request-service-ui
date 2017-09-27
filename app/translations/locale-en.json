@@ -247,8 +247,8 @@
                         "reassignToRequestor": "Change Requestor",
                         "moveToInInceptionElaboration": "Move To In Inception/Elaboration",
                         "moveToOnHold": "Move To On Hold",
-                        "moveToWaitingForInternalInput": "Move To Waiting For Internal Input",
                         "moveToForward": "Move To Forward",
+                        "moveToWaitingForInternalInput": "Move To Pending Internal Input",
                         "changeSNOMEDCode": "Change Local SNOMED CT Code",
                         "addNote": "Add Note",
                         "unassign": "Unassign Request",
@@ -316,8 +316,8 @@
                     "changeSNOMEDCode": "Change Local SNOMED CT Code",
                     "unassignAndReject": "Unassign And Reject Request",
                     "ON_HOLD": "On Hold Request",
-                    "INTERNAL_INPUT_NEEDED": "Waiting For Internal Input",
-                    "FORWARDED": "Forward Request"
+                    "FORWARDED": "Forward Request",
+                    "INTERNAL_INPUT_NEEDED": "Pending Internal Input"
                 },
                 "comment": {
                     "label": "Reason",
@@ -357,8 +357,8 @@
                 "requestUnassigningAndRejecting": "Unassigning And Rejecting Request...",
                 "requestUnassignedAndRejected": "Request has been Unassigned And Rejected successfully",
                 "requestOnHold": "Request has been on hold successfully",
-                "requestWaitingForInternalInput": "Request has been waiting for internal input successfully",
                 "requestForwarded": "Request has been forwarded successfully",
+                "requestWaitingForInternalInput": "Request has been moved to pending internal input successfully",
 
                 "error": {
                     "requestTypeRequired": "Please select request type",
@@ -408,7 +408,7 @@
                 "readyForRelease": "Ready For Release",
                 "submitted": "Submitted",
                 "inAppealClarification": "In Appeal Clarification",
-                "waitingForInternalInput": "Waiting For Internal Input"
+                "waitingForInternalInput": "Pending Internal Input"
             },
             "bulkAction": {
                 "status": {
