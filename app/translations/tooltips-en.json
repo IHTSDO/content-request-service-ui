@@ -246,6 +246,8 @@
                         "moveToOnHold": "Move to On Hold",
                         "moveToWaitingForInternalInput": "Move to Waiting For Internal Input",
                         "moveToForward": "Move to Forward",
+                        "moveToClarification": "Move to Clarification",
+                        "moveToInception": "Move to Inception/Elaboration",
                         "addNote": "Add Note",
                         "unassign": "Unassign Request",
                         "unassignAndRejectRequest": "Unassign And Reject",

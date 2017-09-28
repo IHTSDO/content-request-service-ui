@@ -317,7 +317,9 @@
                     "unassignAndReject": "Unassign And Reject Request",
                     "ON_HOLD": "On Hold Request",
                     "FORWARDED": "Forward Request",
-                    "INTERNAL_INPUT_NEEDED": "Pending Internal Input"
+                    "INTERNAL_INPUT_NEEDED": "Pending Internal Input",
+                    "CLARIFICATION_NEEDED": "Pending for Clarification",
+                    "IN_INCEPTION_ELABORATION": "Inception/Elaboration"
                 },
                 "comment": {
                     "label": "Reason",
@@ -439,7 +441,9 @@
                     "reject": "Reject Requests",
                     "onHold": "On Hold Requests",
                     "waitingInternalInput": "Waiting Internal Input Requests",
-                    "forward": "Forward Requests"
+                    "forward": "Forward Requests",
+                    "clarification": "Clarification Needed",
+                    "inInceptionElaboration": "In Inception/Elaboration"
                 },
                 "button": {
                     "close": "Close",

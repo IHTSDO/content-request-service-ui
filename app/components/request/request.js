@@ -474,6 +474,14 @@ angular
         FORWARDED: {
             value: 'FORWARDED',
             langKey: 'crs.request.bulkAction.action.forwarded'
+        },
+        CLARIFICATION_NEEDED: {
+            value: 'CLARIFICATION_NEEDED',
+            langKey: 'crs.request.bulkAction.action.clarification'
+        },
+        IN_INCEPTION_ELABORATION: {
+            value: 'IN_INCEPTION_ELABORATION',
+            langKey: 'crs.request.bulkAction.action.inInceptionElaboration'
         }
     })
     .value('DEFAULT_COLUMNS',{

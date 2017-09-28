@@ -12,7 +12,7 @@
                                placeholder="{{'crs.request.list.searchPlaceHolder.myRequests' | translate}}" autofocus/>
                     </div> 
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="p-t-20">
                         <button type="button" class="btn btn-round btn-info ng-scope " title="{{'crs.request.list.tip.count' | translate}}" >
                             {{vm.assignedRequestTableParams.total()}} <div class="ripple-wrapper"></div>
@@ -50,6 +50,18 @@
                         <button ng-if="dashboard.permissionChecked && dashboard.isAdmin && vm.canForwardRequest()" type="button" class="btn btn-round btn-default " title="{{'tooltips.request.details.info.button.moveToForward' | translate}}"
                             ng-click="vm.forwardSelectedRequests()">
                             <span class="md md-forward darken-2 iconbase"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
+
+                        <button ng-if="dashboard.permissionChecked && dashboard.isAdmin" type="button" class="btn btn-round btn-default " title="{{'tooltips.request.details.info.button.moveToClarification' | translate}}"
+                            ng-click="vm.pendingClarificationSelectedRequests()">
+                            <span class="md md-info darken-2 iconbase"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
+
+                        <button ng-if="dashboard.permissionChecked && dashboard.isAdmin" type="button" class="btn btn-round btn-default " title="{{'tooltips.request.details.info.button.moveToInception' | translate}}"
+                            ng-click="vm.inceptionElaborationSelectedRequests()">
+                            <span class="md md-launch darken-2 iconbase"></span>
                             <div class="ripple-wrapper"></div>
                         </button>
                     </div>
@@ -150,7 +162,8 @@
 
                         <td data-title="'crs.request.list.tableHeader.lastStatusModifier' | translate" sortable="'requestHeader.lastStatusModifier'" style="min-width: 150px"
                             filter="vm.filterRequests.lastStatusModifier" ng-if="vm.enabledColumns.myAssignedRequests.columns.lastStatusModifier">
-                             {{request.requestHeader.lastStatusModifier}}
+                            <span ng-show="!vm.authors" class="md md-autorenew" ng-class="{'md-spin':!vm.authors}"></span>
+                            <div ng-if="vm.authors" ng-bind-html="(vm.getAuthorName(request.requestHeader.lastStatusModifier))?vm.getAuthorName(request.requestHeader.lastStatusModifier):request.requestHeader.lastStatusModifier"></div>
                         </td>
                       
                         <td data-title="'crs.request.list.tableHeader.requestType' | translate" sortable="'requestType'" filter="{requestType: 'ng-table/request-type-select.html'}" ng-if="vm.enabledColumns.myAssignedRequests.columns.type">

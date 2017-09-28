@@ -216,7 +216,9 @@ angular
                 reassignToRequestor: 'UPDATE_REPORTER',
                 onHold: 'ON_HOLD',
                 waitingForInternalInput: 'INTERNAL_INPUT_NEEDED',
-                forward: 'FORWARDED'
+                forward: 'FORWARDED',
+                clarification: 'PENDING_CLARIFICATION',
+                inceptionElaboration: 'INCEPTION_ELABORATION'
             };
 
             var initView = function () {
@@ -1772,6 +1774,121 @@ angular
                 return (config && config !== undefined && config.forwardAllowed);
             };
 
+            var pendingClarificationSelectedRequests = function () {
+                var action = bulkAction.clarification;
+                var selectedRequests = vm.selectedRequests,
+                    pendingClarificationRequestIds = [];
+                if ($routeParams.list === 'submitted-requests') {
+                    selectedRequests = vm.selectedSubmittedRequests;
+                } else if ($routeParams.list === 'my-assigned-requests') {
+                    selectedRequests = vm.selectedMyAssignedRequests;
+                } else if ($routeParams.list === 'requests') {
+                    selectedRequests = vm.selectedRequests;
+                } else {
+                    if (vm.isAdmin || vm.isStaff) {
+                        selectedRequests = vm.selectedMyAssignedRequests;
+                    } else {
+                        selectedRequests = vm.selectedRequests;
+                    }
+                }
+                if (selectedRequests &&
+                    selectedRequests.items) {
+                    angular.forEach(selectedRequests.items, function (isSelected, requestId) {
+                        if (isSelected) {
+                            pendingClarificationRequestIds.push(requestId);
+                        }
+                    });
+                    if (pendingClarificationRequestIds.length > 0) {
+                        var modalInstance = $uibModal.open({
+                            templateUrl: 'components/request/modal-change-request-status.html',
+                            controller: 'ModalChangeRequestStatusCtrl as modal',
+                            resolve: {
+                                requestStatus: function () {
+                                    return STATISTICS_STATUS.CLARIFICATION_NEEDED.value;
+                                }
+                            }
+                        });
+
+                        modalInstance.result.then(function (rs) {
+                            var data = {
+                                data: {
+                                    additionalInfo: {
+                                        reason: rs
+                                    }
+                                },
+                                requestIds: pendingClarificationRequestIds
+                            };
+                            requestService.bulkAction(data, action).then(function (response) {
+                                if (response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value) {
+                                    bulkActionRespondingModal(response.id, BULK_ACTION.CLARIFICATION_NEEDED.langKey);
+                                }
+                            });
+                        });
+                    } else {
+                        notificationService.sendMessage('Please select at least a request to move to clarification.', 5000);
+                    }
+                }
+            };
+
+            var inceptionElaborationSelectedRequests = function () {
+                var action = bulkAction.inceptionElaboration;
+                var selectedRequests = vm.selectedRequests,
+                    inceptionElaborationRequestIds = [];
+                if ($routeParams.list === 'submitted-requests') {
+                    selectedRequests = vm.selectedSubmittedRequests;
+                } else if ($routeParams.list === 'my-assigned-requests') {
+                    selectedRequests = vm.selectedMyAssignedRequests;
+                } else if ($routeParams.list === 'requests') {
+                    selectedRequests = vm.selectedRequests;
+                } else {
+                    if (vm.isAdmin || vm.isStaff) {
+                        selectedRequests = vm.selectedMyAssignedRequests;
+                    } else {
+                        selectedRequests = vm.selectedRequests;
+                    }
+                }
+                if (selectedRequests &&
+                    selectedRequests.items) {
+                    angular.forEach(selectedRequests.items, function (isSelected, requestId) {
+                        if (isSelected) {
+                            inceptionElaborationRequestIds.push(requestId);
+                        }
+                    });
+                    if (inceptionElaborationRequestIds.length > 0) {
+                        var modalInstance = $uibModal.open({
+                            templateUrl: 'components/request/modal-change-request-status.html',
+                            controller: 'ModalChangeRequestStatusCtrl as modal',
+                            resolve: {
+                                requestStatus: function () {
+                                    return 'inInceptionElaboration';
+                                }
+                            }
+                        });
+
+                        modalInstance.result.then(function (rs) {
+                            var data = {
+                                data: {
+                                    additionalInfo: {
+                                        contentRequestUrl: rs.contentRequestUrl,
+                                        trackerId: rs.trackerId
+                                    }
+                                },
+                                requestIds: inceptionElaborationRequestIds
+                            };
+                            requestService.bulkAction(data, action).then(function (response) {
+                                if (response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value) {
+                                    bulkActionRespondingModal(response.id, BULK_ACTION.IN_INCEPTION_ELABORATION.langKey);
+                                }
+                            });
+                        });
+                    } else {
+                        notificationService.sendMessage('Please select at least a request to move to inception/elaboration.', 5000);
+                    }
+                }
+            };
+
+            vm.inceptionElaborationSelectedRequests = inceptionElaborationSelectedRequests;
+            vm.pendingClarificationSelectedRequests = pendingClarificationSelectedRequests;
             vm.canForwardRequest = canForwardRequest;
             vm.forwardSelectedRequests = forwardSelectedRequests;
             vm.onHoldSelectedRequests = onHoldSelectedRequests;
