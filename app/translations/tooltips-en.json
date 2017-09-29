@@ -243,6 +243,11 @@
                         "assignToStaff": "Assign request to Manager",
                         "reassignToRequestor": "Change Requestor",
                         "moveToInInceptionElaboration": "Move request to In Inception/Elaboration status",
+                        "moveToOnHold": "Move to On Hold",
+                        "moveToWaitingForInternalInput": "Move to Waiting For Internal Input",
+                        "moveToForward": "Move to Forward",
+                        "moveToClarification": "Move to Clarification",
+                        "moveToInception": "Move to Inception/Elaboration",
                         "addNote": "Add Note",
                         "unassign": "Unassign Request",
                         "unassignAndRejectRequest": "Unassign And Reject",
@@ -259,6 +264,8 @@
                         "requestUrl": "Request Url",
                         "trackerId": "Tracker Id",
                         "authoringTicket":"Authoring task ID",
+                        "forwardTicket": "Forwarding request ID",
+                        "forwardTicketStatus": "Forwarding request status",
                         "impactedConceptId":"Impacted/New Concept ID",
                         "newFSN": "New FSN"
                     }
