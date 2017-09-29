@@ -84,7 +84,9 @@
                     <div class="timeline-panel">
                         <div class="timeline-heading">
                             <label class="control-label" translate="crs.request.details.info.label.forwardTicketStatus" title="{{'tooltips.request.details.info.label.forwardTicketStatus' | translate}}"></label>
-                            <h4 class="timeline-title">{{requestVM.forwardDestinationStatus}}</h4>
+                            <h4 class="timeline-title">
+                                <span class="badge requestStatus {{requestVM.forwardDestinationStatus}}" title="{{requestVM.forwardDestinationStatus | requestStatus | translate}}">{{requestVM.forwardDestinationStatus | requestStatus | translate}}</span>
+                            </h4>
                         </div>
                     </div>
                 </li>
