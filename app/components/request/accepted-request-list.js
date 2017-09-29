@@ -216,7 +216,7 @@ angular
                 reject: 'REJECT',
                 onHold: 'ON_HOLD',
                 waitingForInternalInput: 'INTERNAL_INPUT_NEEDED',
-                forward: 'FORWARDED',
+                forward: 'FORWARD',
                 clarification: 'PENDING_CLARIFICATION',
                 inceptionElaboration: 'INCEPTION_ELABORATION'
             };

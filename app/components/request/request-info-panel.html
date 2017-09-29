@@ -64,6 +64,30 @@
                         </div>
                     </div>
                 </li>
+                <li ng-if="requestVM.request.forwardDestinationId">
+                    <div class="timeline-badge">
+                        <i class="icon-circle theme-border"></i>
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.request.details.info.label.forwardTicket" title="{{'tooltips.request.details.info.label.forwardTicket' | translate}}"></label>
+                            <h4 class="timeline-title">
+                                <a target="blank" href="{{requestVM.request.forwardDestinationBrowserUrl}}">{{requestVM.request.forwardDestinationId}}</a>
+                            </h4>
+                        </div>
+                    </div>
+                </li>
+                <li ng-if="requestVM.request.forwardDestinationId">
+                    <div class="timeline-badge">
+                        <i class="icon-circle theme-border"></i>
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.request.details.info.label.forwardTicketStatus" title="{{'tooltips.request.details.info.label.forwardTicketStatus' | translate}}"></label>
+                            <h4 class="timeline-title">{{requestVM.forwardDestinationStatus}}</h4>
+                        </div>
+                    </div>
+                </li>
                 <li ng-if="requestVM.request.jiraTicketId">
                     <div class="timeline-badge">
                         <i class="icon-circle theme-border"></i>

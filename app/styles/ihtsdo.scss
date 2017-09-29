@@ -7393,6 +7393,9 @@ input[type=checkbox]:not(:disabled) ~ .lever:active:after {
   margin: 0;
   font-weight: 400;
   color:#444;
+  a {
+    color:#444 !important;
+  }
 }
 .timeline-body {
   line-height: 17px;

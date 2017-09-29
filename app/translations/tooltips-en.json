@@ -264,6 +264,8 @@
                         "requestUrl": "Request Url",
                         "trackerId": "Tracker Id",
                         "authoringTicket":"Authoring task ID",
+                        "forwardTicket": "Forwarding request ID",
+                        "forwardTicketStatus": "Forwarding request status",
                         "impactedConceptId":"Impacted/New Concept ID",
                         "newFSN": "New FSN"
                     }

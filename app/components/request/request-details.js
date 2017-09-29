@@ -556,6 +556,12 @@ angular
                 }
             };
 
+            var getNewForwardingRequestStatus = function (forwardDestinationId) {
+                requestService.getNewForwardingRequestStatus(forwardDestinationId).then(function (data) {
+                    vm.forwardDestinationStatus = data;
+                });
+            }
+
             var loadRequest = function() {
                 var originConcept;
 
@@ -564,6 +570,7 @@ angular
                 vm.request = null;
 
                 return requestService.getRequest(requestId).then(function (requestData) {
+                    getNewForwardingRequestStatus(requestData.forwardDestinationId);
                     // build request
                     vm.request = buildRequestFromRequestData(requestData);
                     vm.request.showRel = vm.request.relationshipCharacteristicType;
@@ -1292,7 +1299,9 @@ angular
                     authoringTaskTicket: requestData.authoringTaskTicket,
                     trackerId: requestData.trackerId,
                     impactedConceptId: requestData.impactedConceptId,
-                    newFSN: requestData.newFSN
+                    newFSN: requestData.newFSN,
+                    forwardDestinationId: requestData.forwardDestinationId,
+                    forwardDestinationBrowserUrl: requestData.forwardDestinationBrowserUrl + '/' + requestData.forwardDestinationId
                 };
                 $rootScope.newConceptRequestType = requestData.requestType;
                 var requestItems = requestData.requestItems;
@@ -2499,6 +2508,7 @@ angular
                 return (config && config !== undefined && config.forwardAllowed);
             };
 
+            vm.forwardDestinationStatus = '';
             vm.canForwardRequest = canForwardRequest;
             vm.canForwardAction = canForwardAction;
             vm.moveForwardRequest = moveForwardRequest;
