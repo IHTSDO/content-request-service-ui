@@ -570,7 +570,10 @@ angular
                 vm.request = null;
 
                 return requestService.getRequest(requestId).then(function (requestData) {
-                    getNewForwardingRequestStatus(requestData.forwardDestinationId);
+                    if (requestData.forwardDestinationId && requestData.forwardDestinationId !== undefined) {
+                        var url = requestData.forwardDestinationBaseUrl + '/api/request/' + requestData.forwardDestinationId + '/status';
+                        getNewForwardingRequestStatus(url);
+                    }
                     // build request
                     vm.request = buildRequestFromRequestData(requestData);
                     vm.request.showRel = vm.request.relationshipCharacteristicType;
