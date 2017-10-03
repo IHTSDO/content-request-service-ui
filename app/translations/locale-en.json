@@ -268,8 +268,8 @@
                         "requestUrl": "Request Url",
                         "trackerId": "Tracker Id",
                         "authoringTicket":"Authoring Ticket",
-                        "forwardTicket": "Forwarding request ID",
-                        "forwardTicketStatus": "Forwarding request status",
+                        "forwardTicket": "International request ID",
+                        "forwardTicketStatus": "International request status",
                         "impactedConceptId":"Impacted/New Concept ID",
                         "newFSN": "New FSN"
                     }
