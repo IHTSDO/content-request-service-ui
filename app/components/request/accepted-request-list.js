@@ -23,7 +23,8 @@ angular
         '$timeout',
         'STATISTICS_STATUS',
         'configService',
-        function ($filter, $sce, $uibModal, NgTableParams, requestService, notificationService, accountService, scaService, crsJiraService, jiraService, utilsService, $scope, BULK_ACTION_STATUS, BULK_ACTION, $routeParams, DEFAULT_COLUMNS, $timeout, STATISTICS_STATUS, configService) {
+        '$rootScope',
+        function ($filter, $sce, $uibModal, NgTableParams, requestService, notificationService, accountService, scaService, crsJiraService, jiraService, utilsService, $scope, BULK_ACTION_STATUS, BULK_ACTION, $routeParams, DEFAULT_COLUMNS, $timeout, STATISTICS_STATUS, configService, $rootScope) {
             var vm = this;
             var maxSize;
 
@@ -220,6 +221,14 @@ angular
                 clarification: 'PENDING_CLARIFICATION',
                 inceptionElaboration: 'INCEPTION_ELABORATION'
             };
+
+            $rootScope.$on('crs:loadConfigSuccess', function () {
+                // check admin role
+                accountService.checkUserPermission().then(function (rs) {
+                    vm.isAdmin = (rs.isAdmin === true);
+                    vm.isViewer = (rs.isViewer === true);
+                });
+            });
 
             var initView = function() {
                 vm.selectedRequests = { checked: false, items: {}, requests: {} };
