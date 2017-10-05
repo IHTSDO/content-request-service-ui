@@ -10,12 +10,13 @@ angular
                 require: ['?^formControlReadonly', '^form'],
                 scope: {
                     models: '=',
-                    hideAction: '='
+                    hideAction: '=',
+                    skipFilter: '='
                 },
                 template: [
                     '<div class="row" style="margin-left: -15px;margin-right: -15px;margin-bottom: 10px" ng-repeat="model in models track by $index" >',
                     '<div class="{{hideAction?\'col-md-8\':(readonly?\'col-md-8\':\'col-md-6\')}}">',
-                    '<concept-input concept="models[$index]" on-concept-changed="" readonly="" concept-status="" ></concept-input>',
+                    '<concept-input skip-filter="skipFilter" concept="models[$index]" on-concept-changed="" readonly="" concept-status="" ></concept-input>',
                     '</div>',
                     '<div class="{{readonly?\'col-md-4\':\'col-md-4\'}}">',
                     '<select class="form-control" ng-model="models[$index].sourceTerminology" ng-options="suggestion.sourceTerminology as suggestion.label for suggestion in sourceTerminologies"></select>',

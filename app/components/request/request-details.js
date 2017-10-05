@@ -1208,9 +1208,12 @@ angular
                         item.proposedStatus = definitionOfChanges.proposedStatus;
                         item.historyAttribute = definitionOfChanges.historyAttribute;
                         item.historyAttributeValue = definitionOfChanges.historyAttributeValue;
-                        item.sourceTerminology = changedTarget.sourceTerminology;
+                        
                         item.destinationTerminology = changedTarget.destinationTerminology;
-                        item.duplicatedConceptId = vm.duplicateConcept.conceptId;
+                        if (vm.duplicateConcept && vm.duplicateConcept.length > 0){
+                            item.duplicatedConceptId = vm.duplicateConcept[0].conceptId;
+                            item.sourceTerminology = vm.duplicateConcept[0].sourceTerminology;
+                        }
                         break;
 
                     case REQUEST_TYPE.NEW_DESCRIPTION.value:
@@ -1369,15 +1372,16 @@ angular
                         request.destinationTerminology = mainItem.destinationTerminology;
 
                         // load duplicate concept
-                        snowowlService.getFullConcept(null, null, mainItem.duplicatedConceptId).then(function(response) {
-                            vm.duplicateConcept = response;
+                        snowowlService.getFullConcept(null, null, mainItem.duplicatedConceptId).then(function (response) {
+                            response.sourceTerminology = mainItem.sourceTerminology;
+                            vm.duplicateConcept = [response];
                         });
 
                         if(!vm.duplicateConcept.conceptId || !vm.duplicateConcept.fsn){
-                            vm.duplicateConcept = {
+                            vm.duplicateConcept = [{
                                 conceptId: mainItem.duplicatedConceptId,
                                 fsn: mainItem.duplicatedConceptId
-                            };
+                            }];
                         }
                         break;
 
@@ -1797,7 +1801,7 @@ angular
                     vm.concept = buildConceptFromRequest(vm.request);
                 } else if (vm.inputMode === REQUEST_INPUT_MODE.DIRECT) {
                     buildConceptDefinitionOfChange(vm.concept, vm.request);
-                }
+                } 
 
                 requestData = buildRequestData(vm.request, vm.concept);
                 if (vm.requestType === REQUEST_TYPE.NEW_CONCEPT) {
