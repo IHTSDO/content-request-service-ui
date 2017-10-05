@@ -23,7 +23,8 @@ angular
         '$timeout',
         'STATISTICS_STATUS',
         'configService',
-        function ($filter, $sce, crsJiraService, NgTableParams, requestService, notificationService, accountService, jiraService, $routeParams, $uibModal, utilsService, $scope, scaService, BULK_ACTION_STATUS, BULK_ACTION, DEFAULT_COLUMNS, $timeout, STATISTICS_STATUS, configService) {
+        '$rootScope',
+        function ($filter, $sce, crsJiraService, NgTableParams, requestService, notificationService, accountService, jiraService, $routeParams, $uibModal, utilsService, $scope, scaService, BULK_ACTION_STATUS, BULK_ACTION, DEFAULT_COLUMNS, $timeout, STATISTICS_STATUS, configService, $rootScope) {
             var vm = this;
             var maxSize;
 
@@ -221,24 +222,11 @@ angular
                 inceptionElaboration: 'INCEPTION_ELABORATION'
             };
 
-            var initView = function () {
-                vm.selectedRequests = {checked: false, items: {}, requests: {}};
-                vm.selectedSubmittedRequests = {checked: false, items: {}, requests: {}};
-                vm.selectedMyAssignedRequests = {checked: false, items: {}, requests: {}};
-                vm.showClosedRequests = $routeParams.showClosedRequest?$routeParams.showClosedRequest: false;
-				
-				vm.requestStatus = vm.requestStatus.sort(function(a, b) {
-					return utilsService.compareStrings(a.title, b.title);
-				});
-				
-				vm.requestTypes = vm.requestTypes.sort(function(a, b) {
-					return utilsService.compareStrings(a.title, b.title);
-				});
-				
-                accountService.getAccountInfo().then(function (accountDetails) {
-                    vm.assignee = accountDetails.login;                   
-                });
+            $rootScope.$on('crs:loadConfigSuccess', function () {
+                loadData();
+            });
 
+            var loadData = function () {
                 // check admin role
                 accountService.checkUserPermission().then(function (rs) {
                     vm.isAdmin = (rs.isAdmin === true);
@@ -247,12 +235,12 @@ angular
                     vm.isRequester = (rs.isRequester === true);
 
                     var list = $routeParams.list;
-                    if(!list){
-                        if(vm.isStaff || vm.isAdmin){
+                    if (!list) {
+                        if (vm.isStaff || vm.isAdmin) {
                             list = 'my-assigned-requests';
-                        }else if(vm.isRequester){
+                        } else if (vm.isRequester) {
                             list = 'requests';
-                        }else{
+                        } else {
                             list = 'submitted-requests';
                         }
                     }
@@ -264,10 +252,10 @@ angular
 
                     vm.submittedTableParams = submittedTableParams;
                     var subbmitedRequests;
-                    if(!isDateRangeFilteredFirstTime ){
+                    if (!isDateRangeFilteredFirstTime) {
                         //get filter values
                         subbmitedRequests = requestService.getSubmittedFilterValues();
-                        if(subbmitedRequests !== undefined && $routeParams.cache !== false){
+                        if (subbmitedRequests !== undefined && $routeParams.cache !== false) {
                             changeSubmittedFilter('search', subbmitedRequests.search);
                             changeSubmittedFilter('requestType', subbmitedRequests.requestType);
                             changeSubmittedFilter('batchRequest', subbmitedRequests.batchRequest);
@@ -293,13 +281,13 @@ angular
                                 endDate: subbmitedRequests.statusDateTo
                             });
 
-                            if(subbmitedRequests.requestDateFrom !== 0 && subbmitedRequests.requestDateTo !== 0){
+                            if (subbmitedRequests.requestDateFrom !== 0 && subbmitedRequests.requestDateTo !== 0) {
                                 vm.daterangeSQ = {
                                     startDate: new Date(subbmitedRequests.requestDateFrom),
                                     endDate: new Date(subbmitedRequests.requestDateTo)
                                 };
                             }
-                            if(subbmitedRequests.statusDateFrom !== 0 && subbmitedRequests.statusDateTo !== 0){
+                            if (subbmitedRequests.statusDateFrom !== 0 && subbmitedRequests.statusDateTo !== 0) {
                                 vm.lastModifiedDateRangeSR = {
                                     startDate: new Date(subbmitedRequests.statusDateFrom),
                                     endDate: new Date(subbmitedRequests.statusDateTo)
@@ -310,10 +298,10 @@ angular
 
                     vm.requestTableParams = requestTableParams;
                     var myRequests;
-                    if(!isDateRangeFilteredFirstTime ){
+                    if (!isDateRangeFilteredFirstTime) {
                         //get filter values
                         myRequests = requestService.getFilterValues();
-                        if(myRequests !== undefined && $routeParams.cache !== false){
+                        if (myRequests !== undefined && $routeParams.cache !== false) {
                             changeMyRequestFilter('search', myRequests.search);
                             changeMyRequestFilter('requestType', myRequests.requestType);
                             changeMyRequestFilter('batchRequest', myRequests.batchRequest);
@@ -338,13 +326,13 @@ angular
                                 startDate: myRequests.statusDateFrom,
                                 endDate: myRequests.statusDateTo
                             });
-                            if(myRequests.requestDateFrom !== 0 && myRequests.requestDateTo !== 0){
+                            if (myRequests.requestDateFrom !== 0 && myRequests.requestDateTo !== 0) {
                                 vm.daterange = {
                                     startDate: new Date(myRequests.requestDateFrom),
                                     endDate: new Date(myRequests.requestDateTo)
                                 };
                             }
-                            if(myRequests.statusDateFrom !== 0 && myRequests.statusDateTo !== 0){
+                            if (myRequests.statusDateFrom !== 0 && myRequests.statusDateTo !== 0) {
                                 vm.lastModifiedDateRange = {
                                     startDate: new Date(myRequests.statusDateFrom),
                                     endDate: new Date(myRequests.statusDateTo)
@@ -355,10 +343,10 @@ angular
 
                     vm.assignedRequestTableParams = assignedRequestTableParams;
                     var myAssignedRequests;
-                    if(!isDateRangeFilteredFirstTime ){
+                    if (!isDateRangeFilteredFirstTime) {
                         //get filter values
                         myAssignedRequests = requestService.getAssignedFilterValues();
-                        if(myAssignedRequests !== undefined){
+                        if (myAssignedRequests !== undefined) {
                             changeAssignedFilter('search', myAssignedRequests.search);
                             changeAssignedFilter('requestType', myAssignedRequests.requestType);
                             changeAssignedFilter('batchRequest', myAssignedRequests.batchRequest);
@@ -384,13 +372,13 @@ angular
                                 startDate: myAssignedRequests.statusDateFrom,
                                 endDate: myAssignedRequests.statusDateTo
                             });
-                            if(myAssignedRequests.requestDateFrom !== 0 && myAssignedRequests.requestDateTo !== 0){
+                            if (myAssignedRequests.requestDateFrom !== 0 && myAssignedRequests.requestDateTo !== 0) {
                                 vm.daterangeMAR = {
                                     startDate: new Date(myAssignedRequests.requestDateFrom),
                                     endDate: new Date(myAssignedRequests.requestDateTo)
                                 };
                             }
-                            if(myAssignedRequests.statusDateFrom !== 0 && myAssignedRequests.statusDateTo !== 0){
+                            if (myAssignedRequests.statusDateFrom !== 0 && myAssignedRequests.statusDateTo !== 0) {
                                 vm.lastModifiedDateRangeMAR = {
                                     startDate: new Date(myAssignedRequests.statusDateFrom),
                                     endDate: new Date(myAssignedRequests.statusDateTo)
@@ -398,14 +386,35 @@ angular
                             }
                         }
                     }
-                    if(!vm.isViewer && !vm.isRequester){
-                    //load projects
+                    if (!vm.isViewer && !vm.isRequester) {
+                        //load projects
                         vm.projects = requestService.getProjectsList();
-                        if(!vm.projects){
+                        if (!vm.projects) {
                             loadProjects();
                         }
                     }
                 });
+            }
+
+            var initView = function () {
+                vm.selectedRequests = {checked: false, items: {}, requests: {}};
+                vm.selectedSubmittedRequests = {checked: false, items: {}, requests: {}};
+                vm.selectedMyAssignedRequests = {checked: false, items: {}, requests: {}};
+                vm.showClosedRequests = $routeParams.showClosedRequest?$routeParams.showClosedRequest: false;
+				
+				vm.requestStatus = vm.requestStatus.sort(function(a, b) {
+					return utilsService.compareStrings(a.title, b.title);
+				});
+				
+				vm.requestTypes = vm.requestTypes.sort(function(a, b) {
+					return utilsService.compareStrings(a.title, b.title);
+				});
+				
+                accountService.getAccountInfo().then(function (accountDetails) {
+                    vm.assignee = accountDetails.login;                   
+                });
+
+                loadData();
                 
                 vm.enabledColumns = requestService.getSavedColumns();
 
