@@ -121,9 +121,8 @@ angular.module('conceptRequestServiceApp.request')
                 return crsService.sendGet(requestEndpoint + '/' + requestId, null);
             };
 
-            var getNewForwardingRequestStatus = function (requestId) {
-                var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
-                return crsService.sendGet(requestEndpoint + '/' + requestId + '/status');
+            var getNewForwardingRequestStatus = function (url) {
+                return crsService.sendGet(url);
             };
 
             var saveRequest = function (requestDetails) {

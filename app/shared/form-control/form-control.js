@@ -5,7 +5,7 @@ angular
     ])
     .directive('formControl', [
         function () {
-            var buildConceptInputControl = function (name, model, onConceptChanged, isMulti, readonlyExp, conceptStatusExp) {
+            var buildConceptInputControl = function (name, model, onConceptChanged, isMulti, readonlyExp, conceptStatusExp, hideAction) {
                 var elementHtml = '';
                 if (isMulti) {
                     // elementHtml += '<multi-concept-input models="' + model + '" ' + ((readonlyExp)?'readonly="' + readonlyExp +'"':'') + ' readonly=""></multi-concept-input>';
@@ -13,7 +13,7 @@ angular
                     (onConceptChanged?' on-concept-changed="'+ onConceptChanged + '"': '') +
                     ((readonlyExp)?' readonly="' + readonlyExp +'" ':'') +
                     ((conceptStatusExp)?' concept-status="' + conceptStatusExp +'"':'') +
-                    ' ></multi-concept-input>';
+                        ' hide-action="' + hideAction+'" ></multi-concept-input>';
                 } else {
                     elementHtml += '<concept-input concept="' + model + '"' +
                     (onConceptChanged?' on-concept-changed="'+ onConceptChanged + '"': '') +
@@ -182,7 +182,8 @@ angular
                                 $attrs.onConceptChanged,
                                 (multi === 'true'),
                                 $attrs.readonly,
-                                $attrs.conceptStatus);
+                                $attrs.conceptStatus,
+                                ($attrs.hideaction === 'true'));
                             break;
                         case 'attributeValue':
                             elementHtml = buildAttributeValueInputControl(
