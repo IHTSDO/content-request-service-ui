@@ -4,10 +4,15 @@ angular
     .module('conceptRequestServiceApp.configuration', [
     ])
     .provider('configService', function () {
-        var config;
+        var config,
+            configFromServer;
 
         this.config = function (configObj) {
             config = configObj;
+        };
+
+        this.configFromServer = function (configObj) {
+            configFromServer = configObj;
         };
 
         this.$get = [
@@ -40,12 +45,22 @@ angular
                     return config.messagePollingInterval;
                 };
 
+                var getConfigFromServer = function () {
+                    return configFromServer;
+                };
+
+                var setConfigFromServer = function (configObj) {
+                    configFromServer = configObj;
+                };
+
                 return {
                     getConfig: getConfig,
                     getFileStatusPollingInterval: getFileStatusPollingInterval,
                     getMessagePollingInterval: getMessagePollingInterval,
                     getEndpointConfig: getEndpointConfig,
-                    getRequestTimeout: getRequestTimeout
+                    getRequestTimeout: getRequestTimeout,
+                    getConfigFromServer: getConfigFromServer,
+                    setConfigFromServer: setConfigFromServer
                 };
             }
         ];

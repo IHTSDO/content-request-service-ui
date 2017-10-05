@@ -19,6 +19,9 @@ angular
             var authoringEndpoint = configService.getEndpointConfig('authoring');
 
             var getCrsEndpointUrl = function (resource) {
+                if (resource.startsWith('http')) {
+                    return resource;
+                }
                 return crsEndpoint + resource;
             };
 

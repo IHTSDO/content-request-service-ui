@@ -21,7 +21,9 @@ angular
         '$routeParams',
         'DEFAULT_COLUMNS',
         '$timeout',
-        function($filter, $sce, $uibModal, NgTableParams, requestService, notificationService, accountService, scaService, crsJiraService, jiraService, utilsService, $scope, BULK_ACTION_STATUS, BULK_ACTION, $routeParams, DEFAULT_COLUMNS, $timeout) {
+        'STATISTICS_STATUS',
+        'configService',
+        function ($filter, $sce, $uibModal, NgTableParams, requestService, notificationService, accountService, scaService, crsJiraService, jiraService, utilsService, $scope, BULK_ACTION_STATUS, BULK_ACTION, $routeParams, DEFAULT_COLUMNS, $timeout, STATISTICS_STATUS, configService) {
             var vm = this;
             var maxSize;
 
@@ -156,6 +158,10 @@ angular
                 {
                     id: "IN_APPEAL_CLARIFICATION",
                     title: "In Appeal Clarification"
+                },
+                {
+                    id: "INTERNAL_INPUT_NEEDED",
+                    title: "Waiting For Internal Input"
                 }
             ];
 
@@ -207,7 +213,12 @@ angular
                 unassignAuthor: 'UNASSIGN_AUTHOR',
                 addNote: 'ADD_NOTE',
                 withdraw: 'WITHDRAW',
-                reject: 'REJECT'
+                reject: 'REJECT',
+                onHold: 'ON_HOLD',
+                waitingForInternalInput: 'INTERNAL_INPUT_NEEDED',
+                forward: 'FORWARD',
+                clarification: 'PENDING_CLARIFICATION',
+                inceptionElaboration: 'INCEPTION_ELABORATION'
             };
 
             var initView = function() {
@@ -897,15 +908,247 @@ angular
                 });
             };
 
+            var searchTask = function ($event) {
+                var keyCode = $event.which || $event.keyCode;
+                if (keyCode === 13) {
+                    vm.requestTableParams.filter().search = vm.searchText;
+                    vm.requestTableParams.reload();
+                }
+            };
+            
             //watch columns change
-            $scope.$watch(function(){
+            $scope.$watch(function () {
                 return vm.enabledColumns;
-            }, function(newVal){
-                if(newVal){
+            }, function (newVal) {
+                if (newVal) {
                     requestService.setSavedColumns(newVal);
                 }
             });
+            
+            var onHoldSelectedRequests = function () {
+                var action = bulkAction.onHold;
+                var selectedRequests = vm.selectedRequests,
+                    onHoldRequestIds = [];
+                if (selectedRequests &&
+                    selectedRequests.items) {
+                    angular.forEach(selectedRequests.items, function (isSelected, requestId) {
+                        if (isSelected) {
+                            onHoldRequestIds.push(requestId);
+                        }
+                    });
+                    if (onHoldRequestIds.length > 0) {
+                        var modalInstance = $uibModal.open({
+                            templateUrl: 'components/request/modal-change-request-status.html',
+                            controller: 'ModalChangeRequestStatusCtrl as modal',
+                            resolve: {
+                                requestStatus: function () {
+                                    return STATISTICS_STATUS.ON_HOLD.value;
+                                }
+                            }
+                        });
 
+                        modalInstance.result.then(function (rs) {
+                            var data = {
+                                data: {
+                                    additionalInfo: rs
+                                },
+                                requestIds: onHoldRequestIds
+                            };
+                            requestService.bulkAction(data, action).then(function (response) {
+                                if (response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value) {
+                                    bulkActionRespondingModal(response.id, BULK_ACTION.ON_HOLD.langKey);
+                                }
+                            });
+                        });
+                    } else {
+                        notificationService.sendMessage('Please select at least a request to move to on hold.', 5000);
+                    }
+                }
+            };
+
+            var waitingForInternalInputSelectedRequests = function () {
+                var action = bulkAction.waitingForInternalInput;
+                var selectedRequests = vm.selectedRequests,
+                    waitingForInternalInputRequestIds = [];
+                if (selectedRequests &&
+                    selectedRequests.items) {
+                    angular.forEach(selectedRequests.items, function (isSelected, requestId) {
+                        if (isSelected) {
+                            waitingForInternalInputRequestIds.push(requestId);
+                        }
+                    });
+                    if (waitingForInternalInputRequestIds.length > 0) {
+                        var modalInstance = $uibModal.open({
+                            templateUrl: 'components/request/modal-change-request-status.html',
+                            controller: 'ModalChangeRequestStatusCtrl as modal',
+                            resolve: {
+                                requestStatus: function () {
+                                    return STATISTICS_STATUS.ON_HOLD.value;
+                                }
+                            }
+                        });
+
+                        modalInstance.result.then(function (rs) {
+                            var data = {
+                                data: {
+                                    additionalInfo: rs
+                                },
+                                requestIds: waitingForInternalInputRequestIds
+                            };
+                            requestService.bulkAction(data, action).then(function (response) {
+                                if (response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value) {
+                                    bulkActionRespondingModal(response.id, BULK_ACTION.INTERNAL_INPUT_NEEDED.langKey);
+                                }
+                            });
+                        });
+                    } else {
+                        notificationService.sendMessage('Please select at least a request to  move to waiting for internal input.', 5000);
+                    }
+                }
+            };
+
+            var forwardSelectedRequests = function () {
+                var action = bulkAction.forward;
+                var selectedRequests = vm.selectedRequests,
+                    forwardRequestIds = [];
+                if (selectedRequests &&
+                    selectedRequests.items) {
+                    angular.forEach(selectedRequests.items, function (isSelected, requestId) {
+                        if (isSelected) {
+                            forwardRequestIds.push(requestId);
+                        }
+                    });
+                    if (forwardRequestIds.length > 0) {
+                        var modalInstance = $uibModal.open({
+                            templateUrl: 'components/request/modal-change-request-status.html',
+                            controller: 'ModalChangeRequestStatusCtrl as modal',
+                            resolve: {
+                                requestStatus: function () {
+                                    return STATISTICS_STATUS.FORWARDED.value;
+                                }
+                            }
+                        });
+
+                        modalInstance.result.then(function (rs) {
+                            var data = {
+                                data: {
+                                    additionalInfo: {
+                                        reason: rs
+                                    }
+                                },
+                                requestIds: forwardRequestIds
+                            };
+                            requestService.bulkAction(data, action).then(function (response) {
+                                if (response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value) {
+                                    bulkActionRespondingModal(response.id, BULK_ACTION.FORWARDED.langKey);
+                                }
+                            });
+                        });
+                    } else {
+                        notificationService.sendMessage('Please select at least a request to move to forward.', 5000);
+                    }
+                }
+            };
+
+            var canForwardRequest = function () {
+                var config = configService.getConfigFromServer();
+                return (config && config !== undefined && config.forwardAllowed);
+            };
+
+            var pendingClarificationSelectedRequests = function () {
+                var action = bulkAction.clarification;
+                var selectedRequests = vm.selectedRequests,
+                    pendingClarificationRequestIds = [];
+                if (selectedRequests &&
+                    selectedRequests.items) {
+                    angular.forEach(selectedRequests.items, function (isSelected, requestId) {
+                        if (isSelected) {
+                            pendingClarificationRequestIds.push(requestId);
+                        }
+                    });
+                    if (pendingClarificationRequestIds.length > 0) {
+                        var modalInstance = $uibModal.open({
+                            templateUrl: 'components/request/modal-change-request-status.html',
+                            controller: 'ModalChangeRequestStatusCtrl as modal',
+                            resolve: {
+                                requestStatus: function () {
+                                    return STATISTICS_STATUS.CLARIFICATION_NEEDED.value;
+                                }
+                            }
+                        });
+
+                        modalInstance.result.then(function (rs) {
+                            var data = {
+                                data: {
+                                    additionalInfo: {
+                                        reason: rs
+                                    }
+                                },
+                                requestIds: pendingClarificationRequestIds
+                            };
+                            requestService.bulkAction(data, action).then(function (response) {
+                                if (response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value) {
+                                    bulkActionRespondingModal(response.id, BULK_ACTION.CLARIFICATION_NEEDED.langKey);
+                                }
+                            });
+                        });
+                    } else {
+                        notificationService.sendMessage('Please select at least a request to move to clarification.', 5000);
+                    }
+                }
+            };
+
+            var inceptionElaborationSelectedRequests = function () {
+                var action = bulkAction.inceptionElaboration;
+                var selectedRequests = vm.selectedRequests,
+                    inceptionElaborationRequestIds = [];
+                if (selectedRequests &&
+                    selectedRequests.items) {
+                    angular.forEach(selectedRequests.items, function (isSelected, requestId) {
+                        if (isSelected) {
+                            inceptionElaborationRequestIds.push(requestId);
+                        }
+                    });
+                    if (inceptionElaborationRequestIds.length > 0) {
+                        var modalInstance = $uibModal.open({
+                            templateUrl: 'components/request/modal-change-request-status.html',
+                            controller: 'ModalChangeRequestStatusCtrl as modal',
+                            resolve: {
+                                requestStatus: function () {
+                                    return 'inInceptionElaboration';
+                                }
+                            }
+                        });
+
+                        modalInstance.result.then(function (rs) {
+                            var data = {
+                                data: {
+                                    additionalInfo: {
+                                        contentRequestUrl: rs.contentRequestUrl,
+                                        trackerId: rs.trackerId
+                                    }
+                                },
+                                requestIds: inceptionElaborationRequestIds
+                            };
+                            requestService.bulkAction(data, action).then(function (response) {
+                                if (response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value) {
+                                    bulkActionRespondingModal(response.id, BULK_ACTION.IN_INCEPTION_ELABORATION.langKey);
+                                }
+                            });
+                        });
+                    } else {
+                        notificationService.sendMessage('Please select at least a request to move to inception/elaboration.', 5000);
+                    }
+                }
+            };
+
+            vm.inceptionElaborationSelectedRequests = inceptionElaborationSelectedRequests;
+            vm.pendingClarificationSelectedRequests = pendingClarificationSelectedRequests;
+            vm.canForwardRequest = canForwardRequest;
+            vm.forwardSelectedRequests = forwardSelectedRequests;
+            vm.searchTask = searchTask;
+            vm.onHoldSelectedRequests = onHoldSelectedRequests;
+            vm.waitingForInternalInputSelectedRequests = waitingForInternalInputSelectedRequests;
             vm.tableParams = requestTableParams;
             vm.assignSelectedRequests = assignSelectedRequests;
             vm.assignSelectedRequestsToStaff = assignSelectedRequestsToStaff;
