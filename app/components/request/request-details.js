@@ -1212,7 +1212,7 @@ angular
                         item.destinationTerminology = changedTarget.destinationTerminology;
                         if (vm.duplicateConcept && vm.duplicateConcept.length > 0){
                             item.duplicatedConceptId = vm.duplicateConcept[0].conceptId;
-                            item.sourceTerminology = vm.duplicateConcept[0].sourceTerminology;
+                            item.duplicatedConceptSourceTerminology = vm.duplicateConcept[0].sourceTerminology;
                         }
                         break;
 
@@ -1373,7 +1373,7 @@ angular
 
                         // load duplicate concept
                         snowowlService.getFullConcept(null, null, mainItem.duplicatedConceptId).then(function (response) {
-                            response.sourceTerminology = mainItem.sourceTerminology;
+                            response.sourceTerminology = mainItem.duplicatedConceptSourceTerminology ? mainItem.duplicatedConceptSourceTerminology : mainItem.sourceTerminology;
                             vm.duplicateConcept = [response];
                         });
 
