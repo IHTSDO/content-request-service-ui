@@ -16,7 +16,8 @@ angular
                 scope: {
                     concept: '=',
                     conceptStatus: '=?',
-                    onConceptChanged: '&'
+                    onConceptChanged: '&',
+                    skipFilter: '='
                 },
                 template: [
                     '<div class="no-padding">',
@@ -142,7 +143,8 @@ angular
                             $scope.concept.conceptId = null;
                         }
                         
-                        if(newConceptRequestType === REQUEST_TYPE.NEW_CONCEPT.value){
+                        if (newConceptRequestType === REQUEST_TYPE.NEW_CONCEPT.value || ($scope.skipFilter && newConceptRequestType === REQUEST_TYPE.CHANGE_RETIRE_CONCEPT.value && $scope.concept)){
+                            
                             switch ($scope.concept.sourceTerminology){
                                 case 'CURRENTBATCH':
                                 return requestService.getBatchConcept(requestId, viewValue).then(function(response){
