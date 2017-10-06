@@ -5,7 +5,7 @@ angular
     ])
     .directive('formControl', [
         function () {
-            var buildConceptInputControl = function (name, model, onConceptChanged, isMulti, readonlyExp, conceptStatusExp, hideAction) {
+            var buildConceptInputControl = function (name, model, onConceptChanged, isMulti, readonlyExp, conceptStatusExp, hideAction, skipFilter) {
                 var elementHtml = '';
                 if (isMulti) {
                     // elementHtml += '<multi-concept-input models="' + model + '" ' + ((readonlyExp)?'readonly="' + readonlyExp +'"':'') + ' readonly=""></multi-concept-input>';
@@ -13,7 +13,7 @@ angular
                     (onConceptChanged?' on-concept-changed="'+ onConceptChanged + '"': '') +
                     ((readonlyExp)?' readonly="' + readonlyExp +'" ':'') +
                     ((conceptStatusExp)?' concept-status="' + conceptStatusExp +'"':'') +
-                        ' hide-action="' + hideAction+'" ></multi-concept-input>';
+                        ' hide-action="' + hideAction + '" skip-filter="' + skipFilter +'" ></multi-concept-input>';
                 } else {
                     elementHtml += '<concept-input concept="' + model + '"' +
                     (onConceptChanged?' on-concept-changed="'+ onConceptChanged + '"': '') +
@@ -183,7 +183,8 @@ angular
                                 (multi === 'true'),
                                 $attrs.readonly,
                                 $attrs.conceptStatus,
-                                ($attrs.hideaction === 'true'));
+                                ($attrs.hideaction === 'true'),
+                                ($attrs.skipfilter === 'true'));
                             break;
                         case 'attributeValue':
                             elementHtml = buildAttributeValueInputControl(
