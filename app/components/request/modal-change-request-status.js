@@ -6,7 +6,8 @@ angular.module('conceptRequestServiceApp.request')
         '$uibModalInstance',
         'requestStatus',
         'STATISTICS_STATUS',
-        function ($rootScope, $scope, $uibModalInstance, requestStatus, STATISTICS_STATUS) {
+        'data',
+        function ($rootScope, $scope, $uibModalInstance, requestStatus, STATISTICS_STATUS, data) {
             var vm = this;
 
             /*var hideErrorMessage = function () {
@@ -56,5 +57,6 @@ angular.module('conceptRequestServiceApp.request')
             vm.changeRequestStatus = changeRequestStatus;
             vm.closeModal = closeModal;
             vm.requestStatus = requestStatus;
+            vm.data = data;
         }]
     );

@@ -948,3 +948,13 @@ input[type=checkbox].select-all-rqs {
 .alert-primary {
   text-decoration: underline;
 }
+.dropdown-menu{
+  li {
+    padding: 5px 10px;
+    color: #444;
+    font-size: 13px;
+  }
+  li:hover{
+    background-color: #f1f1f1;
+  }
+}
