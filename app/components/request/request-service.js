@@ -485,6 +485,26 @@ angular.module('conceptRequestServiceApp.request')
                 return crsService.sendPut(requestEndpoint + '/' + requestId + '/sctid', params, null);
             };
 
+            var organizationOptions;
+
+            var getOrganizationOptions = function () {
+                return organizationOptions;
+            };
+
+            var setOrganizationOptions = function (list) {
+                organizationOptions = list;
+            };
+
+            var collaborationAgreementOptions;
+
+            var getCollaborationAgreementOptions = function () {
+                return collaborationAgreementOptions;
+            };
+
+            var setCollaborationAgreementOptions = function (list) {
+                collaborationAgreementOptions = list;
+            };
+
             return {
                 identifyRequestType: identifyRequestType,
                 identifyRequestStatus: identifyRequestStatus,
@@ -545,7 +565,11 @@ angular.module('conceptRequestServiceApp.request')
                 setRlAuthorsList: setRlAuthorsList,
                 getRlStaffsList: getRlStaffsList,
                 setRlStaffsList: setRlStaffsList,
-                getProjects: getProjects
+                getProjects: getProjects,
+                getOrganizationOptions: getOrganizationOptions,
+                setOrganizationOptions: setOrganizationOptions,
+                getCollaborationAgreementOptions: getCollaborationAgreementOptions,
+                setCollaborationAgreementOptions: setCollaborationAgreementOptions
             };
 
         }]);

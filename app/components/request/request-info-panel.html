@@ -225,9 +225,20 @@
                 <span class="md md-done blue darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.accept"></span>
             </button> -->
-            <button ng-if="requestVM.pageMode.value === 'preview' && requestVM.request.requestType === 'NEW_CONCEPT'" class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.changeLocalCode()" title="{{'tooltips.request.details.info.button.changeSNOMEDCode' | translate}}">
+            <button ng-if="requestVM.pageMode.value === 'preview'" class="btn btn-default blue darken-1 promote" style="text-transform: none" title="{{'tooltips.request.details.info.button.updateInformation' | translate}}">
                 <span class="md md-credit-card blue darken-2 iconbase"></span>
-                <span class="button-link" translate="crs.request.details.info.button.changeSNOMEDCode"></span>
+                <span class="button-link">
+                    <span style="margin-left: 0" uib-dropdown on-toggle="toggled(open)">
+                        <span id="simple-dropdown" uib-dropdown-toggle>
+                            {{'crs.request.details.info.button.updateInformation' | translate}}
+                        </span>
+                        <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown">
+                            <li ng-if="requestVM.request.requestType === 'NEW_CONCEPT'" ng-click="requestVM.changeLocalCode()" title="{{'tooltips.request.details.info.button.changeSNOMEDCode' | translate}}">{{'crs.request.details.info.button.changeSNOMEDCode' | translate}}</li>
+                            <!--<li ng-if="requestVM.canShowOriginatingOrganization()" ng-click="requestVM.changeOriginatingOrganization()" title="{{'tooltips.request.details.info.button.changeOriginatingOrganization' | translate}}">{{'crs.request.details.info.button.changeOriginatingOrganization' | translate}}</li>-->
+                            <li ng-if="requestVM.canShowCollaborationAgreement()" ng-click="requestVM.changeCollaborationAgreement()" title="{{'tooltips.request.details.info.button.changeCollaborationAgreement' | translate}}">{{'crs.request.details.info.button.changeCollaborationAgreement' | translate}}</li>
+                        </ul>
+                    </span>
+                </span>
             </button>
             <button ng-if="requestVM.pageMode.value === 'preview' && (requestVM.request.requestHeader.status === 'ACCEPTED' || requestVM.request.requestHeader.status === 'NEW' || requestVM.request.requestHeader.status === 'APPEAL' || requestVM.request.requestHeader.status === 'CLARIFICATION_NEEDED')" class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.moveToInInceptionElaboration()" title="{{'tooltips.request.details.info.button.moveToInInceptionElaboration' | translate}}">
                 <span class="md md-done blue darken-2 iconbase"></span>

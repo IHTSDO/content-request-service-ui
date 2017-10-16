@@ -24,6 +24,20 @@
                       name="txtReference"></form-control>
 
         <form-control type="select"
+                      ng-if="requestVM.canShowOriginatingOrganization()"
+                      model="requestVM.request.organization"
+                      label="crs.request.details.label.organizationOptions"
+                      title="{{'tooltips.request.details.label.organizationOptions' | translate}}"
+                      options="suggestion.value as suggestion.value for suggestion in requestVM.organizationOptions"></form-control>
+
+        <form-control type="select"
+                      ng-if="requestVM.canShowCollaborationAgreement()"
+                      model="requestVM.request.collaborationAgreement"
+                      label="crs.request.details.label.collaborationAgreementOptions"
+                      title="{{'tooltips.request.details.label.collaborationAgreementOptions' | translate}}"
+                      options="suggestion.value as suggestion.value for suggestion in requestVM.collaborationAgreementOptions"></form-control>
+
+        <form-control type="select"
                       model="requestVM.request.additionalFields.topic"
                       label="crs.request.details.label.topic"
                       title="{{'tooltips.request.details.label.topic' | translate}}"

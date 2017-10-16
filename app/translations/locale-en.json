@@ -167,6 +167,10 @@
                     "cancel": "Cancel"
                 },
                 "label": {
+                    "changeOriginatingOrganization": "Originating Organization",
+                    "changeCollaborationAgreement": "Collaboration Agreement",
+                    "organizationOptions": "Originating Organization",
+                    "collaborationAgreementOptions": "Collaboration Agreement",
                     "topic": "Topic",
                     "requestorInternalId": "Local SNOMED CT Code",
                     "proposedFSN": "New Concept FSN",
@@ -250,6 +254,9 @@
                         "moveToForward": "Move To Forward",
                         "moveToWaitingForInternalInput": "Move To Pending Internal Input",
                         "changeSNOMEDCode": "Change Local SNOMED CT Code",
+                        "changeOriginatingOrganization": "Change Originating Organization",
+                        "changeCollaborationAgreement": "Change Collaboration Agreement",
+                        "updateInformation": "Update Request Information",
                         "addNote": "Add Note",
                         "unassign": "Unassign Request",
                         "unassignAndRejectRequest": "Unassign And Reject",
@@ -321,13 +328,17 @@
                     "FORWARDED": "Forward Request",
                     "INTERNAL_INPUT_NEEDED": "Pending Internal Input",
                     "CLARIFICATION_NEEDED": "Pending for Clarification",
-                    "IN_INCEPTION_ELABORATION": "Inception/Elaboration"
+                    "IN_INCEPTION_ELABORATION": "Inception/Elaboration",
+                    "changeOriginatingOrganization": "Change Originating Organization",
+                    "changeCollaborationAgreement": "Change Collaboration Agreement"
                 },
                 "comment": {
                     "label": "Reason",
                     "inInceptionElaboration": "Content Tracker URL",
                     "changeSNOMEDCode": "Local SNOMED CT Code",
-                    "trackerId": "Tracker Id"
+                    "trackerId": "Tracker Id",
+                    "changeOriginatingOrganization": "Change Originating Organization",
+                    "changeCollaborationAgreement": "Change Collaboration Agreement"
                 },
                 "button": {
                     "confirm": "Confirm",

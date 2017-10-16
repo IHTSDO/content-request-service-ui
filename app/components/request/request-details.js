@@ -434,6 +434,16 @@ angular
                     loadTopicOptions();
                 }
 
+                vm.organizationOptions = requestService.getOrganizationOptions();
+                if (!vm.organizationOptions) {
+                    loadOrganizationOptions();
+                }
+
+                vm.collaborationAgreementOptions = requestService.getCollaborationAgreementOptions();
+                if (!vm.collaborationAgreementOptions) {
+                    loadCollaborationAgreementOptions();
+                }
+
                 //check pre page
                 checkPrePage();
 
@@ -671,6 +681,26 @@ angular
                         return utilsService.compareStrings(a.value, b.value);
                     });
                     requestService.setTopics(vm.topicOptions);
+                });
+            };
+
+            var loadCollaborationAgreementOptions = function () {
+                return crsJiraService.getCollaborationAgreementOptions().then(function (collaborationAgreementOptions) {
+                    vm.collaborationAgreementOptions = collaborationAgreementOptions;
+                    collaborationAgreementOptions.sort(function (a, b) {
+                        return utilsService.compareStrings(a.value, b.value);
+                    });
+                    requestService.setCollaborationAgreementOptions(vm.collaborationAgreementOptions);
+                });
+            };
+
+            var loadOrganizationOptions = function () {
+                return crsJiraService.getOrganizationOptions().then(function (organizationOptions) {
+                    vm.organizationOptions = organizationOptions;
+                    organizationOptions.sort(function (a, b) {
+                        return utilsService.compareStrings(a.value, b.value);
+                    });
+                    requestService.setOrganizationOptions(vm.organizationOptions);
                 });
             };
 
@@ -1318,7 +1348,9 @@ angular
                     impactedConceptId: requestData.impactedConceptId,
                     newFSN: requestData.newFSN,
                     forwardDestinationId: requestData.forwardDestinationId,
-                    forwardDestinationBrowserUrl: requestData.forwardDestinationBrowserUrl + '/' + requestData.forwardDestinationId
+                    forwardDestinationBrowserUrl: requestData.forwardDestinationBrowserUrl + '/' + requestData.forwardDestinationId,
+                    organization: requestData.organization,
+                    collaborationAgreement: requestData.collaborationAgreement
                 };
                 $rootScope.newConceptRequestType = requestData.requestType;
                 var requestItems = requestData.requestItems;
@@ -1521,6 +1553,8 @@ angular
                 requestDetails.localCode = request.localCode;
                 requestDetails.requestItems = [];
                 requestDetails.concept = concept;
+                requestDetails.collaborationAgreement = request.collaborationAgreement;
+                requestDetails.organization = request.organization;
 
                 //buildRequestAdditionalFields(requestDetails, concept);
                 requestDetails.additionalFields = request.additionalFields;
@@ -2221,13 +2255,16 @@ angular
                 }
             };
 
-            var openStatusCommentModal = function(requestStatus) {
+            var openStatusCommentModal = function(requestStatus, data) {
                 return $uibModal.open({
                     templateUrl: 'components/request/modal-change-request-status.html',
                     controller: 'ModalChangeRequestStatusCtrl as modal',
                     resolve: {
                         requestStatus: function() {
                             return requestStatus;
+                        },
+                        data: function () {
+                            return angular.isArray(data) ? data : [];
                         }
                     }
                 });
@@ -2521,11 +2558,52 @@ angular
                 });
             };
 
+            var canShowOriginatingOrganization = function () {
+                var config = configService.getConfigFromServer();
+                return (config && config !== undefined && config.crsId !== 'int-crs');
+            };
+
+            var canShowCollaborationAgreement = function () {
+                var config = configService.getConfigFromServer();
+                return (config && config !== undefined && config.crsId === 'int-crs');
+            };
+
             var canForwardRequest = function () {
                 var config = configService.getConfigFromServer();
                 return (config && config !== undefined && config.forwardAllowed);
             };
 
+            var changeOriginatingOrganization = function () {
+                var modalInstance = openStatusCommentModal('changeOriginatingOrganization', vm.organizationOptions);
+                modalInstance.result.then(function (value) {
+                    console.log(value);
+                    // notificationService.sendMessage('Changing Originating Organization...', 5000, null);
+                    // requestService.changeLocalCode(vm.request.id, value).then(function (response) {
+                    //     vm.request.requestorInternalId = response.requestorInternalId;
+                    //     notificationService.sendMessage('Originating Organization has been changed', 5000, null);
+                    // }, function (error) {
+                    //     notificationService.sendError(error.message, 5000, null, true);
+                    // });
+                });
+            };
+
+            var changeCollaborationAgreement = function () {
+                var modalInstance = openStatusCommentModal('changeCollaborationAgreement', vm.collaborationAgreementOptions);
+                modalInstance.result.then(function (value) {
+                    console.log(value);
+                    // notificationService.sendMessage('Changing Collaboration Agreement...', 5000, null);
+                    // requestService.changeLocalCode(vm.request.id, value).then(function (response) {
+                    //     vm.request.requestorInternalId = response.requestorInternalId;
+                    //     notificationService.sendMessage('Collaboration Agreement has been changed', 5000, null);
+                    // }, function (error) {
+                    //     notificationService.sendError(error.message, 5000, null, true);
+                    // });
+                });
+            };
+
+            vm.changeOriginatingOrganization = changeOriginatingOrganization;
+            vm.changeCollaborationAgreement = changeCollaborationAgreement;
+            vm.canShowOriginatingOrganization = canShowOriginatingOrganization;
             vm.forwardDestinationStatus = '';
             vm.canForwardRequest = canForwardRequest;
             vm.canForwardAction = canForwardAction;
