@@ -2560,12 +2560,12 @@ angular
 
             var canShowOriginatingOrganization = function () {
                 var config = configService.getConfigFromServer();
-                return (config && config !== undefined && config.crsId !== 'int-crs');
+                return (config && config !== undefined && config.crsId === 'int-crs');
             };
 
             var canShowCollaborationAgreement = function () {
                 var config = configService.getConfigFromServer();
-                return (config && config !== undefined && config.crsId === 'int-crs');
+                return (config && config !== undefined && config.crsId !== 'int-crs');
             };
 
             var canForwardRequest = function () {
