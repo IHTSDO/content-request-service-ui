@@ -1764,6 +1764,12 @@ angular
                         error.reference = fieldRequiredLangKey;
                     }
 
+                   if (vm.canShowOriginatingOrganization() && (
+                      !vm.request.organization ||
+                      !vm.request.organization.trim())) {
+                      error.organization = fieldRequiredLangKey;
+                   }
+
                     // if ((!vm.request.proposedUse ||
                     //     !vm.request.proposedUse.trim()) && vm.requestType === REQUEST_TYPE.NEW_CONCEPT) {
                     //     error.proposedUse = fieldRequiredLangKey;
@@ -2604,6 +2610,7 @@ angular
             vm.changeOriginatingOrganization = changeOriginatingOrganization;
             vm.changeCollaborationAgreement = changeCollaborationAgreement;
             vm.canShowOriginatingOrganization = canShowOriginatingOrganization;
+            vm.canShowCollaborationAgreement = canShowCollaborationAgreement;
             vm.forwardDestinationStatus = '';
             vm.canForwardRequest = canForwardRequest;
             vm.canForwardAction = canForwardAction;

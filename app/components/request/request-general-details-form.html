@@ -28,7 +28,9 @@
                       model="requestVM.request.organization"
                       label="crs.request.details.label.organizationOptions"
                       title="{{'tooltips.request.details.label.organizationOptions' | translate}}"
-                      options="suggestion.value as suggestion.value for suggestion in requestVM.organizationOptions"></form-control>
+                      options="suggestion.value as suggestion.value for suggestion in requestVM.organizationOptions"
+                      required
+                      error-model="requestVM.error.organization"></form-control>
 
         <form-control type="select"
                       ng-if="requestVM.canShowCollaborationAgreement()"
