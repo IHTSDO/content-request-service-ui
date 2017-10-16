@@ -234,7 +234,7 @@
                         </span>
                         <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown">
                             <li ng-if="requestVM.request.requestType === 'NEW_CONCEPT'" ng-click="requestVM.changeLocalCode()" title="{{'tooltips.request.details.info.button.changeSNOMEDCode' | translate}}">{{'crs.request.details.info.button.changeSNOMEDCode' | translate}}</li>
-                            <!--<li ng-if="requestVM.canShowOriginatingOrganization()" ng-click="requestVM.changeOriginatingOrganization()" title="{{'tooltips.request.details.info.button.changeOriginatingOrganization' | translate}}">{{'crs.request.details.info.button.changeOriginatingOrganization' | translate}}</li>-->
+                            <li ng-if="requestVM.canShowOriginatingOrganization()" ng-click="requestVM.changeOriginatingOrganization()" title="{{'tooltips.request.details.info.button.changeOriginatingOrganization' | translate}}">{{'crs.request.details.info.button.changeOriginatingOrganization' | translate}}</li>
                             <li ng-if="requestVM.canShowCollaborationAgreement()" ng-click="requestVM.changeCollaborationAgreement()" title="{{'tooltips.request.details.info.button.changeCollaborationAgreement' | translate}}">{{'crs.request.details.info.button.changeCollaborationAgreement' | translate}}</li>
                         </ul>
                     </span>
