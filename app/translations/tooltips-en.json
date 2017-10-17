@@ -164,6 +164,8 @@
                     "clearDropdownList": "Clear"
                 },
                 "label": {
+                    "organizationOptions": "Originating Organization",
+                    "collaborationAgreementOptions": "Collaboration Agreement",
                     "topic": "The category the request falls under",
                     "requestorInternalId": "Local and valid SNOMED CT ID of the concept in question",
                     "proposedFSN": "New Concept's Fully Specified Name",
@@ -248,6 +250,10 @@
                         "moveToForward": "Move to Forward",
                         "moveToClarification": "Move to Clarification",
                         "moveToInception": "Move to Inception/Elaboration",
+                        "changeSNOMEDCode": "Change Local SNOMED CT Code",
+                        "changeOriginatingOrganization": "Change Originating Organization",
+                        "changeCollaborationAgreement": "Change Collaboration Agreement",
+                        "updateInformation": "Update Request Information",
                         "addNote": "Add Note",
                         "unassign": "Unassign Request",
                         "unassignAndRejectRequest": "Unassign And Reject",

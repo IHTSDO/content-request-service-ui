@@ -12,8 +12,7 @@ angular
         '$q',
         '$http',
         'configService',
-        'CRS_ROLE',
-        function (LOGIN_STATUS, $q, $http, configService, CRS_ROLE) {
+        function (LOGIN_STATUS, $q, $http, configService) {
             var loginStatus = LOGIN_STATUS.UNDEFINED;
             var accountDetails = null;
 
@@ -92,25 +91,26 @@ angular
                 });
             };
             var checkUserPermission = function () {
-                return checkRoles([CRS_ROLE.ADMINISTRATOR, CRS_ROLE.MANAGER]).then(function (adminRs) {
+                var roles = (configService.getConfigFromServer() === null || configService.getConfigFromServer() === undefined) ? {} : configService.getConfigFromServer().roles;
+                return checkRoles([roles.administrator, roles.manager]).then(function (adminRs) {
                     if (adminRs === true) {
                         return {
                             isAdmin: true
                         };
                     } else {
-                        return checkRoles([CRS_ROLE.STAFF]).then(function (staffRs) {
+                        return checkRoles([roles.staff]).then(function (staffRs) {
                             if(staffRs === true){
                                 return {
                                     isStaff: true
                                 }; 
                             }else{
-                                return checkRoles([CRS_ROLE.REQUESTOR, CRS_ROLE.PARTNER, CRS_ROLE.MEMBER]).then(function (requestorRs) {
+                                return checkRoles([roles.requestor, roles.partner, roles.member]).then(function (requestorRs) {
                                     if(requestorRs === true){
                                         return {
                                             isRequester: true
                                         }; 
                                     }else{
-                                        return checkRoles([CRS_ROLE.VIEWER]).then(function (viewerRs) {
+                                        return checkRoles([roles.viewer]).then(function (viewerRs) {
                                             return {
                                                 isViewer: viewerRs
                                             };

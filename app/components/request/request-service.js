@@ -485,6 +485,32 @@ angular.module('conceptRequestServiceApp.request')
                 return crsService.sendPut(requestEndpoint + '/' + requestId + '/sctid', params, null);
             };
 
+            var changeRequestInfoAfterSubmission = function (requestId, requestBody) {
+               var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
+               return crsService.sendPut(requestEndpoint + '/' + requestId + '/submittedInfo', null, requestBody);
+               
+            };
+
+            var organizationOptions;
+
+            var getOrganizationOptions = function () {
+                return organizationOptions;
+            };
+
+            var setOrganizationOptions = function (list) {
+                organizationOptions = list;
+            };
+
+            var collaborationAgreementOptions;
+
+            var getCollaborationAgreementOptions = function () {
+                return collaborationAgreementOptions;
+            };
+
+            var setCollaborationAgreementOptions = function (list) {
+                collaborationAgreementOptions = list;
+            };
+
             return {
                 identifyRequestType: identifyRequestType,
                 identifyRequestStatus: identifyRequestStatus,
@@ -541,11 +567,16 @@ angular.module('conceptRequestServiceApp.request')
                 setMaxSize: setMaxSize,
                 reassignRequestToRequestor: reassignRequestToRequestor,
                 changeLocalCode: changeLocalCode,
+                changeRequestInfoAfterSubmission: changeRequestInfoAfterSubmission,
                 getRlAuthorsList: getRlAuthorsList,
                 setRlAuthorsList: setRlAuthorsList,
                 getRlStaffsList: getRlStaffsList,
                 setRlStaffsList: setRlStaffsList,
-                getProjects: getProjects
+                getProjects: getProjects,
+                getOrganizationOptions: getOrganizationOptions,
+                setOrganizationOptions: setOrganizationOptions,
+                getCollaborationAgreementOptions: getCollaborationAgreementOptions,
+                setCollaborationAgreementOptions: setCollaborationAgreementOptions
             };
 
         }]);
