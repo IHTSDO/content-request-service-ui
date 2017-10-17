@@ -225,7 +225,7 @@
                 <span class="md md-done blue darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.accept"></span>
             </button> -->
-            <button ng-if="requestVM.pageMode.value === 'preview'" class="btn btn-default blue darken-1 promote" style="text-transform: none" title="{{'tooltips.request.details.info.button.updateInformation' | translate}}">
+            <button ng-if="requestVM.pageMode.value === 'preview' && (requestVM.request.requestType === 'NEW_CONCEPT' || requestVM.canShowOriginatingOrganization() || requestVM.canShowCollaborationAgreement())" class="btn btn-default blue darken-1 promote" style="text-transform: none" title="{{'tooltips.request.details.info.button.updateInformation' | translate}}">
                 <span class="md md-credit-card blue darken-2 iconbase"></span>
                 <span class="button-link">
                     <span style="margin-left: 0" uib-dropdown on-toggle="toggled(open)">

@@ -485,6 +485,12 @@ angular.module('conceptRequestServiceApp.request')
                 return crsService.sendPut(requestEndpoint + '/' + requestId + '/sctid', params, null);
             };
 
+            var changeRequestInfoAfterSubmission = function (requestId, requestBody) {
+               var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
+               return crsService.sendPut(requestEndpoint + '/' + requestId + '/submittedInfo', null, requestBody);
+               
+            };
+
             var organizationOptions;
 
             var getOrganizationOptions = function () {
@@ -561,6 +567,7 @@ angular.module('conceptRequestServiceApp.request')
                 setMaxSize: setMaxSize,
                 reassignRequestToRequestor: reassignRequestToRequestor,
                 changeLocalCode: changeLocalCode,
+                changeRequestInfoAfterSubmission: changeRequestInfoAfterSubmission,
                 getRlAuthorsList: getRlAuthorsList,
                 setRlAuthorsList: setRlAuthorsList,
                 getRlStaffsList: getRlStaffsList,
