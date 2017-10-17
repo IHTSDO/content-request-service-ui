@@ -2571,7 +2571,7 @@ angular
 
             var canShowCollaborationAgreement = function () {
                 var config = configService.getConfigFromServer();
-                return (config && config !== undefined && config.crsId !== 'int-crs');
+                return (config && config !== undefined && config.crsId === 'int-crs');
             };
 
             var canForwardRequest = function () {
@@ -2582,28 +2582,28 @@ angular
             var changeOriginatingOrganization = function () {
                 var modalInstance = openStatusCommentModal('changeOriginatingOrganization', vm.organizationOptions);
                 modalInstance.result.then(function (value) {
-                    console.log(value);
-                    // notificationService.sendMessage('Changing Originating Organization...', 5000, null);
-                    // requestService.changeLocalCode(vm.request.id, value).then(function (response) {
-                    //     vm.request.requestorInternalId = response.requestorInternalId;
-                    //     notificationService.sendMessage('Originating Organization has been changed', 5000, null);
-                    // }, function (error) {
-                    //     notificationService.sendError(error.message, 5000, null, true);
-                    // });
+                    notificationService.sendMessage('Changing Originating Organization...', 5000, null);
+                    var body = {"organization": value};
+                    requestService.changeRequestInfoAfterSubmission(vm.request.id, body).then(function (response) {
+                    vm.request.organization = response.organization;
+                         notificationService.sendMessage('Originating Organization has been changed', 5000, null);
+                    }, function (error) {
+                         notificationService.sendError(error.message, 5000, null, true);
+                    });
                 });
             };
 
             var changeCollaborationAgreement = function () {
                 var modalInstance = openStatusCommentModal('changeCollaborationAgreement', vm.collaborationAgreementOptions);
                 modalInstance.result.then(function (value) {
-                    console.log(value);
-                    // notificationService.sendMessage('Changing Collaboration Agreement...', 5000, null);
-                    // requestService.changeLocalCode(vm.request.id, value).then(function (response) {
-                    //     vm.request.requestorInternalId = response.requestorInternalId;
-                    //     notificationService.sendMessage('Collaboration Agreement has been changed', 5000, null);
-                    // }, function (error) {
-                    //     notificationService.sendError(error.message, 5000, null, true);
-                    // });
+                    notificationService.sendMessage('Changing Collaboration Agreement...', 5000, null);
+                    var body = {"collaborationAgreement": value};
+                    requestService.changeRequestInfoAfterSubmission(vm.request.id, body).then(function (response) {
+                    vm.request.collaborationAgreement = response.collaborationAgreement;
+                    notificationService.sendMessage('Collaboration Agreement has been changed', 5000, null);
+                    }, function (error) {
+                        notificationService.sendError(error.message, 5000, null, true);
+                    });
                 });
             };
 
