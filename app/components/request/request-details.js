@@ -1405,18 +1405,12 @@ angular
 
                         // load duplicate concept
                        if(mainItem.duplicatedConceptId && mainItem.duplicatedConceptId.trim() !== '') {
-                          if(mainItem.duplicatedConceptSourceTerminology == 'NEWCONCEPTREQUESTS') {
+                          if(mainItem.duplicatedConceptSourceTerminology === 'NEWCONCEPTREQUESTS') {
                              requestService.getNewConcept(mainItem.duplicatedConceptId).then(function(response) {
                                 if(response && response.length > 0) {
                                    var result = response[0];
                                    result.sourceTerminology = mainItem.duplicatedConceptSourceTerminology;
                                    vm.duplicateConcept = [result];
-                                } else {
-                                   vm.duplicateConcept = [{
-                                      conceptId: mainItem.duplicatedConceptId,
-                                      fsn: mainItem.duplicatedConceptId,
-                                      sourceTerminology: mainItem.duplicatedConceptSourceTerminology
-                                   }];
                                 }
                              });
                           } else {
@@ -1424,14 +1418,15 @@ angular
                                 if(response.conceptId && response.fsn) {
                                    response.sourceTerminology = mainItem.duplicatedConceptSourceTerminology;
                                    vm.duplicateConcept = [response];
-                                } else {
-                                   vm.duplicateConcept = [{
-                                      conceptId: mainItem.duplicatedConceptId,
-                                      fsn: mainItem.duplicatedConceptId,
-                                      sourceTerminology: mainItem.duplicatedConceptSourceTerminology
-                                   }];
                                 }
                              });
+                          }
+                          if(!vm.duplicateConcept || !vm.duplicateConcept.conceptId && !vm.duplicateConcept.fsn) {
+                             vm.duplicateConcept = [{
+                                conceptId: mainItem.duplicatedConceptId,
+                                fsn: mainItem.duplicatedConceptId,
+                                sourceTerminology: mainItem.duplicatedConceptSourceTerminology
+                             }];
                           }
 
                        }
