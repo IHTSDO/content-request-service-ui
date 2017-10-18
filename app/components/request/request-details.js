@@ -1404,17 +1404,33 @@ angular
                         request.destinationTerminology = mainItem.destinationTerminology;
 
                         // load duplicate concept
-                        snowowlService.getFullConcept(null, null, mainItem.duplicatedConceptId).then(function (response) {
-                            response.sourceTerminology = mainItem.duplicatedConceptSourceTerminology ? mainItem.duplicatedConceptSourceTerminology : mainItem.sourceTerminology;
-                            vm.duplicateConcept = [response];
-                        });
-
-                        if(!vm.duplicateConcept.conceptId || !vm.duplicateConcept.fsn){
-                            vm.duplicateConcept = [{
+                       if(mainItem.duplicatedConceptId && mainItem.duplicatedConceptId.trim() !== '') {
+                          if(mainItem.duplicatedConceptSourceTerminology === 'NEWCONCEPTREQUESTS') {
+                             requestService.getNewConcept(mainItem.duplicatedConceptId).then(function(response) {
+                                if(response && response.length > 0) {
+                                   var result = response[0];
+                                   result.sourceTerminology = mainItem.duplicatedConceptSourceTerminology;
+                                   vm.duplicateConcept = [result];
+                                }
+                             });
+                          } else {
+                             snowowlService.getFullConcept(null, null, mainItem.duplicatedConceptId).then(function (response) {
+                                if(response.conceptId && response.fsn) {
+                                   response.sourceTerminology = mainItem.duplicatedConceptSourceTerminology;
+                                   vm.duplicateConcept = [response];
+                                }
+                             });
+                          }
+                          if(!vm.duplicateConcept || !vm.duplicateConcept.conceptId && !vm.duplicateConcept.fsn) {
+                             vm.duplicateConcept = [{
                                 conceptId: mainItem.duplicatedConceptId,
-                                fsn: mainItem.duplicatedConceptId
-                            }];
-                        }
+                                fsn: mainItem.duplicatedConceptId,
+                                sourceTerminology: mainItem.duplicatedConceptSourceTerminology
+                             }];
+                          }
+
+                       }
+
                         break;
 
                     case REQUEST_TYPE.NEW_DESCRIPTION.value:
