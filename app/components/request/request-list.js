@@ -1183,10 +1183,11 @@ angular
             var requestTableParams = new NgTableParams({
                     page: 1,
                     count: 10,
-                    sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'desc', id: 'desc'},
+                    //sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'desc', id: 'desc'},
+                    sorting: {'requestHeader.statusDate': 'desc', id: 'desc'},
                     filter: {
                         status: $routeParams.status,
-						manager: $routeParams.manager,
+						      manager: $routeParams.manager,
                         requestDate: {
                             startDate: null,
                             endDate: null
@@ -1245,7 +1246,7 @@ angular
 
                         //set filter values
                         requestService.setFilterValues(filterValues, params.sorting());
-
+                        myRequests.isInboxStyle = true;
                         return requestService.getRequests(myRequests).then(function (requests) {
                             isDateRangeFilteredFirstTime = true;
                             notificationService.sendMessage('crs.request.message.listLoaded', 5000);
@@ -1270,7 +1271,8 @@ angular
             var assignedRequestTableParams = new NgTableParams({
                     page: 1,
                     count: 10,
-                    sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'desc', id: 'desc'},
+                  //sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'desc', id: 'desc'},
+                    sorting: {'requestHeader.statusDate': 'desc', id: 'desc'},
                     filter: {
                         status: $routeParams.status,
                         manager: $routeParams.manager,
@@ -1332,6 +1334,7 @@ angular
 
                         //set filter values
                         requestService.setAssignedFilterValues(filterValues, params.sorting());
+                        myAssignedRequests.isInboxStyle = true;
                         return requestService.getRequests(myAssignedRequests).then(function (requests) {
                             isDateRangeFilteredFirstTime = true;
                             notificationService.sendMessage('crs.request.message.listLoaded', 5000);
