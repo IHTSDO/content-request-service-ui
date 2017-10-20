@@ -104,7 +104,7 @@
             <div class="table-responsive white" style="min-height: 416px;">
                 <table ng-table="vm.tableParams" template-pagination="layout/template/review-table-pager.html"
                        class="table table-full table-full-small table-requests" show-filter="">
-                    <tr ng-repeat="request in $data" ng-click="dashboard.editRequest(request.id)" class="clickable-row" ng-class="{'row-selected': vm.selectedRequests.items[request.id] === true}">
+                    <tr ng-repeat="request in $data" ng-click="dashboard.editRequest(request.id)" class="clickable-row" ng-class="[{'row-selected': vm.selectedRequests.items[request.id] === true}, {'row-new': request.isModified}]">
                         <td class="col-checkbox" header="'ng-table/headers/checkbox.html'" ng-click="$event.stopPropagation()">
                             <input type="checkbox" class="small-checkbox" ng-model="vm.selectedRequests.items[request.id]">
                         </td>
