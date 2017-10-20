@@ -952,6 +952,9 @@ angular
                             resolve: {
                                 requestStatus: function () {
                                     return STATISTICS_STATUS.ON_HOLD.value;
+                                },
+                                data: function () {
+                                    return [];
                                 }
                             }
                         });
@@ -993,6 +996,9 @@ angular
                             resolve: {
                                 requestStatus: function () {
                                     return STATISTICS_STATUS.ON_HOLD.value;
+                                },
+                                data: function () {
+                                    return [];
                                 }
                             }
                         });
@@ -1034,6 +1040,9 @@ angular
                             resolve: {
                                 requestStatus: function () {
                                     return STATISTICS_STATUS.FORWARDED.value;
+                                },
+                                data: function () {
+                                    return [];
                                 }
                             }
                         });
@@ -1082,6 +1091,9 @@ angular
                             resolve: {
                                 requestStatus: function () {
                                     return STATISTICS_STATUS.CLARIFICATION_NEEDED.value;
+                                },
+                                data: function () {
+                                    return [];
                                 }
                             }
                         });
@@ -1125,6 +1137,9 @@ angular
                             resolve: {
                                 requestStatus: function () {
                                     return 'inInceptionElaboration';
+                                },
+                                data: function () {
+                                    return [];
                                 }
                             }
                         });
