@@ -297,7 +297,8 @@ angular
                 if(!isDateRangeFilteredFirstTime ){
                     //get filter values
                     acceptedRequests = requestService.getAcceptedFilterValues();
-                    if(acceptedRequests !== undefined){
+                    if (acceptedRequests !== undefined) {
+                        vm.searchText = acceptedRequests.search;
                         changeAcceptedFilter('search', acceptedRequests.search);
                         changeAcceptedFilter('requestType', acceptedRequests.requestType);
                         changeAcceptedFilter('batchRequest', acceptedRequests.batchRequest);

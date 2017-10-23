@@ -256,6 +256,9 @@ angular
                         //get filter values
                         subbmitedRequests = requestService.getSubmittedFilterValues();
                         if (subbmitedRequests !== undefined && $routeParams.cache !== false) {
+                            if (list === 'submitted-requests') {
+                                vm.searchText = subbmitedRequests.search;
+                            }
                             changeSubmittedFilter('search', subbmitedRequests.search);
                             changeSubmittedFilter('requestType', subbmitedRequests.requestType);
                             changeSubmittedFilter('batchRequest', subbmitedRequests.batchRequest);
@@ -302,6 +305,9 @@ angular
                         //get filter values
                         myRequests = requestService.getFilterValues();
                         if (myRequests !== undefined && $routeParams.cache !== false) {
+                            if (list === 'requests') {
+                                vm.searchText = myRequests.search;
+                            }
                             changeMyRequestFilter('search', myRequests.search);
                             changeMyRequestFilter('requestType', myRequests.requestType);
                             changeMyRequestFilter('batchRequest', myRequests.batchRequest);
@@ -347,6 +353,9 @@ angular
                         //get filter values
                         myAssignedRequests = requestService.getAssignedFilterValues();
                         if (myAssignedRequests !== undefined) {
+                            if (list === 'my-assigned-requests') {
+                                vm.searchText = myAssignedRequests.search;
+                            }
                             changeAssignedFilter('search', myAssignedRequests.search);
                             changeAssignedFilter('requestType', myAssignedRequests.requestType);
                             changeAssignedFilter('batchRequest', myAssignedRequests.batchRequest);
@@ -397,6 +406,7 @@ angular
             }
 
             var initView = function () {
+                vm.searchText = '';
                 vm.selectedRequests = {checked: false, items: {}, requests: {}};
                 vm.selectedSubmittedRequests = {checked: false, items: {}, requests: {}};
                 vm.selectedMyAssignedRequests = {checked: false, items: {}, requests: {}};
