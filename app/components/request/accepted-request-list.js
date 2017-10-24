@@ -925,6 +925,12 @@ angular
                     vm.requestTableParams.reload();
                 }
             };
+
+            var clearSearch = function () {
+                vm.searchText = '';
+                vm.requestTableParams.filter().search = vm.searchText;
+                vm.requestTableParams.reload();
+            };
             
             //watch columns change
             $scope.$watch(function () {
@@ -1167,6 +1173,7 @@ angular
                 }
             };
 
+            vm.clearSearch = clearSearch;
             vm.inceptionElaborationSelectedRequests = inceptionElaborationSelectedRequests;
             vm.pendingClarificationSelectedRequests = pendingClarificationSelectedRequests;
             vm.canForwardRequest = canForwardRequest;

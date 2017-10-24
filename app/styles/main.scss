@@ -962,3 +962,14 @@ input[type=checkbox].select-all-rqs {
     background-color: #f1f1f1;
   }
 }
+.table-search {
+  input{
+    width: 99%;
+    float: left;
+  }
+  .btn-small{
+    margin: 2px 0 0 -26px;
+    height: 100%;
+    line-height: 26px;
+  }
+}

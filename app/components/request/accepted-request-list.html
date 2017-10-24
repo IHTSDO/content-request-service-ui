@@ -10,6 +10,11 @@
                     <div class="table-search">
                         <input type="text" ng-keypress="vm.searchTask($event)" ng-model="vm.searchText" class="form-control" placeholder="{{'crs.request.list.searchPlaceHolder.acceptedRequests' | translate}}"
                             autofocus/>
+                        <button type="button" class="btn btn-round btn-default btn-small" ng-click="vm.clearSearch()"
+                                title="{{'tooltips.notification.button.clear' | translate}}">
+                            <span class="md md-clear"></span>
+                            <span class="button-link"></span>
+                        </button>
                     </div>
                 </div>
                 <div class="col-md-4">

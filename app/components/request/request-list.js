@@ -1598,24 +1598,33 @@ angular
                 });
             };
 
+            var reloadList = function (list) {
+                switch (list) {
+                    case 'my-requests':
+                        vm.tableParams.filter().search = vm.searchText;
+                        vm.tableParams.reload();
+                        break;
+                    case 'submitted-requests':
+                        vm.submittedTableParams.filter().search = vm.searchText;
+                        vm.submittedTableParams.reload();
+                        break;
+                    case 'my-assigned-requests':
+                        vm.assignedRequestTableParams.filter().search = vm.searchText;
+                        vm.assignedRequestTableParams.reload();
+                        break;
+                }
+            }
+
             var searchTask = function ($event, list) {
                 var keyCode = $event.which || $event.keyCode;
                 if (keyCode === 13) {
-                    switch (list) {
-                        case 'my-requests':
-                            vm.tableParams.filter().search = vm.searchText;    
-                            vm.tableParams.reload();
-                            break;
-                        case 'submitted-requests':
-                            vm.submittedTableParams.filter().search = vm.searchText;    
-                            vm.submittedTableParams.reload();
-                            break;
-                        case 'my-assigned-requests':
-                            vm.assignedRequestTableParams.filter().search = vm.searchText;    
-                            vm.assignedRequestTableParams.reload();
-                            break;
-                    }
+                    reloadList(list);
                 }
+            };
+
+            var clearSearch = function (list) {
+                vm.searchText = '';
+                reloadList(list);
             };
 
             $scope.$watch(function(){
@@ -1924,6 +1933,7 @@ angular
                 }
             };
 
+            vm.clearSearch = clearSearch;
             vm.inceptionElaborationSelectedRequests = inceptionElaborationSelectedRequests;
             vm.pendingClarificationSelectedRequests = pendingClarificationSelectedRequests;
             vm.canForwardRequest = canForwardRequest;
