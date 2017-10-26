@@ -92,7 +92,13 @@ angular
                         id: "text",
                         placeholder: "Surname.."
                     }
-                }
+                },
+               forwardDestinationId: {
+                  forwardDestinationId: {
+                     id: "number",
+                     placeholder: "Ids..."
+                  }
+               }
             };
 
             vm.requestStatus = [
@@ -1159,7 +1165,7 @@ angular
                 return milliseconds.getTime();
             };
 
-            var buildRequestList = function (typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, summary, trackerId, manager, status, author, requestId, requestType, showClosedRequests, statusDateFrom, statusDateTo, lastStatusModifier){
+            var buildRequestList = function (typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, summary, trackerId, manager, status, author, requestId, requestType, showClosedRequests, statusDateFrom, statusDateTo, lastStatusModifier, forwardDestinationId){
                 var requestList = {};
                 requestList.batchRequest = batchRequest;
                 requestList.concept = fsn;
@@ -1184,6 +1190,7 @@ angular
                 requestList.summary = summary;
                 requestList.trackerId = trackerId;
                 requestList.lastStatusModifier = lastStatusModifier;
+                requestList.forwardDestinationId = forwardDestinationId;
                 return requestList;
 
             };
@@ -1247,7 +1254,8 @@ angular
                             vm.showClosedRequests,
                             params.filter().statusDate.startDate,
                             params.filter().statusDate.endDate,
-                            params.filter().lastStatusModifier
+                            params.filter().lastStatusModifier,
+                            params.filter().forwardDestinationId
                         );
 
                         if(myRequests === undefined){
@@ -1335,7 +1343,8 @@ angular
                             vm.showClosedRequests,
                             params.filter().statusDate.startDate,
                             params.filter().statusDate.endDate,
-                            params.filter().lastStatusModifier
+                            params.filter().lastStatusModifier,
+                            params.filter().forwardDestinationId
                         );
 
                         if(myAssignedRequests === undefined){
@@ -1425,7 +1434,8 @@ angular
                             vm.showClosedRequests,
                             params.filter().statusDate.startDate,
                             params.filter().statusDate.endDate,
-                            params.filter().lastStatusModifier
+                            params.filter().lastStatusModifier,
+                            params.filter().forwardDestinationId
                         );
                         if(subbmitedRequests === undefined){
                             subbmitedRequests = filterValues;

@@ -90,6 +90,9 @@
                                     <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.myRequests.columns.trackerId" /> {{'crs.request.list.tableHeader.trackerId' | translate}}
                                 </label>
                             <label>
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.myRequests.columns.forwardDestinationId" /> {{'crs.request.list.tableHeader.forwardDestinationId' | translate}}
+                            </label>
+                            <label>
                                     <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.myRequests.columns.manager" /> {{'crs.request.list.tableHeader.manager' | translate}}
                                 </label>
                             <label>
@@ -160,7 +163,9 @@
                         <td data-title="'crs.request.list.tableHeader.trackerId' | translate" sortable="'trackerId'" filter="vm.filterRequests.trackerId" ng-if="vm.enabledColumns.myRequests.columns.trackerId">
                             {{request.trackerId}}
                         </td>
-
+                        <td data-title="'crs.request.list.tableHeader.forwardDestinationId' | translate" sortable="'id'" filter="vm.filterRequests.forwardDestinationId" ng-if="vm.enabledColumns.myRequests.columns.forwardDestinationId">
+                            {{request.forwardDestinationId}}
+                        </td>
                         <td data-title="'crs.request.list.tableHeader.manager' | translate" sortable="'requestHeader.manager'" filter="{manager: 'ng-table/manager-select.html'}" style="min-width: 150px" ng-if="vm.enabledColumns.myRequests.columns.manager">
                             <span ng-show="vm.loadingAuthors" class="md md-autorenew" ng-class="{'md-spin':vm.loadingAuthors}"></span>
                             <div  ng-bind-html="(vm.getAuthorName(request.requestHeader.manager))?vm.getAuthorName(request.requestHeader.manager):request.requestHeader.manager"></div>

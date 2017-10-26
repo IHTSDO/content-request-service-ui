@@ -123,6 +123,9 @@
                                 <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.acceptedRequests.columns.trackerId" /> {{'crs.request.list.tableHeader.trackerId' | translate}}
                             </label>
                             <label>
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.acceptedRequests.columns.forwardDestinationId" /> {{'crs.request.list.tableHeader.forwardDestinationId' | translate}}
+                            </label>
+                            <label>
                                 <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.acceptedRequests.columns.manager" /> {{'crs.request.list.tableHeader.manager' | translate}}
                             </label>
                             <label>
@@ -190,6 +193,10 @@
 
                         <td data-title="'crs.request.list.tableHeader.trackerId' | translate" sortable="'trackerId'" filter="vm.filterRequests.trackerId" ng-if="vm.enabledColumns.acceptedRequests.columns.trackerId">
                             {{request.trackerId}}
+                        </td>
+
+                        <td data-title="'crs.request.list.tableHeader.forwardDestinationId' | translate" sortable="'id'" filter="vm.filterRequests.forwardDestinationId" ng-if="vm.enabledColumns.acceptedRequests.columns.forwardDestinationId">
+                            {{request.forwardDestinationId}}
                         </td>
                         
                         <td data-title="'crs.request.list.tableHeader.manager' | translate" sortable="'requestHeader.manager'"  filter="{manager: 'ng-table/manager-select.html'}" ng-if="vm.enabledColumns.acceptedRequests.columns.manager">
