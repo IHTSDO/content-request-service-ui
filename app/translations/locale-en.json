@@ -152,7 +152,8 @@
                     "requestDescription": "Descripion of Request",
                     "manager": "Manager",
                     "summary": "Summary",
-                    "trackerId": "Tracker Id"
+                    "trackerId": "Tracker Id",
+                    "forwardDestinationId" : "External CRS ID"
                 }
             },
             "details": {

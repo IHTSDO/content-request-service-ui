@@ -63,7 +63,7 @@
 
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
-<script>
+<!--<script>
     !function (A, n, g, u, l, a, r) {
         A.GoogleAnalyticsObject = l, A[l] = A[l] || function () {
             (A[l].q = A[l].q || []).push(arguments)
@@ -71,9 +71,9 @@
                 r = n.getElementsByTagName(g)[0], a.src = u, r.parentNode.insertBefore(a, r)
     }(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
-    ga('create', 'UA-41892858-22', 'auto');
+    ga('create', 'UA-108834658-1', 'auto');
     ga('send', 'pageview');
-</script>
+</script>-->
 
 
 <!-- build:js(.) scripts/vendor.js -->
@@ -226,6 +226,19 @@
 
                                 jiraServiceProvider.config(data['jira']);
                                 jiraServiceProvider.setJiraEndpoint(data.endpoint.jira);
+
+                                var gaTrackingId = data.app.gaTrackingId;
+                                if(gaTrackingId && gaTrackingId !== '') {
+                                   !function (A, n, g, u, l, a, r) {
+                                      A.GoogleAnalyticsObject = l, A[l] = A[l] || function () {
+                                            (A[l].q = A[l].q || []).push(arguments)
+                                         }, A[l].l = +new Date, a = n.createElement(g),
+                                         r = n.getElementsByTagName(g)[0], a.src = u, r.parentNode.insertBefore(a, r)
+                                   }(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+                                   ga('create', gaTrackingId, 'auto');
+                                   var firstLocationSent = window.location.hash.replace('#','');
+                                   window.ga('send', 'pageview', firstLocationSent === '' ? '/' : firstLocationSent);
+                                }
                             }]);
 
                 angular.bootstrap(document, ['conceptRequestServiceApp']);

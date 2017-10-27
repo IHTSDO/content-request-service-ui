@@ -10,6 +10,10 @@
                      <div class="table-search">
                         <input type="text" ng-keypress="vm.searchTask($event,'submitted-requests')" ng-model="vm.searchText" class="form-control"
                                placeholder="{{'crs.request.list.searchPlaceHolder.submittedRequests' | translate}}" autofocus/>
+                        <button type="button" class="btn btn-round btn-default btn-small" ng-click="vm.clearSearch('submitted-requests')" title="{{'tooltips.notification.button.clear' | translate}}">
+                            <span class="md md-clear"></span>
+                            <span class="button-link"></span>
+                        </button>
                     </div> 
                 </div>
                 <div class="col-md-4">
@@ -116,6 +120,9 @@
                                 <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.submittedRequests.columns.trackerId" /> {{'crs.request.list.tableHeader.trackerId' | translate}}
                             </label>
                             <label>
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.submittedRequests.columns.forwardDestinationId" /> {{'crs.request.list.tableHeader.forwardDestinationId' | translate}}
+                            </label>
+                            <label>
                                 <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.submittedRequests.columns.manager" /> {{'crs.request.list.tableHeader.manager' | translate}}
                             </label>
                             <label>
@@ -180,7 +187,9 @@
                         <td data-title="'crs.request.list.tableHeader.trackerId' | translate" sortable="'trackerId'" filter="vm.filterRequests.trackerId" ng-if="vm.enabledColumns.submittedRequests.columns.trackerId">
                             {{request.trackerId}}
                         </td>
-
+                        <td data-title="'crs.request.list.tableHeader.forwardDestinationId' | translate" sortable="'id'" filter="vm.filterRequests.forwardDestinationId" ng-if="vm.enabledColumns.submittedRequests.columns.forwardDestinationId">
+                            {{request.forwardDestinationId}}
+                        </td>
                         <td data-title="'crs.request.list.tableHeader.manager' | translate" sortable="'requestHeader.manager'" style="min-width: 150px" filter="{manager: 'ng-table/manager-select.html'}" ng-if="vm.enabledColumns.submittedRequests.columns.manager">
                             <span ng-show="!vm.staffs" class="md md-autorenew" ng-class="{'md-spin':!vm.staffs}"></span>
                             <div  ng-bind-html="(vm.getAuthorName(request.requestHeader.manager))?vm.getAuthorName(request.requestHeader.manager):request.requestHeader.manager"></div>
