@@ -20,6 +20,13 @@ angular
             var messagePollingInterval = configService.getMessagePollingInterval(),
                 appName = configService.getConfig().app.header;
 
+           $rootScope.$on('$locationChangeSuccess', function (event) {
+              if (window.ga) {
+                 window.ga('send', 'pageview', $location.path());
+              }
+           });
+
+
             var initView = function () {
                 checkNewMessages();
             };
