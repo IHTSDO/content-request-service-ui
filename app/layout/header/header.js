@@ -21,9 +21,14 @@ angular
                 appName = configService.getConfig().app.header;
 
            $rootScope.$on('$locationChangeSuccess', function (event) {
-              if (window.ga) {
-                 window.ga('send', 'pageview', $location.path());
-              }
+               try{
+                  if (window.ga) {
+                     window.ga('send', 'pageview', $location.path());
+                  }
+               } catch(err) {
+                  console.log("Could not send GA event");
+                  console.log(err);
+               }
            });
 
 
