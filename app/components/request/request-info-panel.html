@@ -196,7 +196,7 @@
                 <span class="button-link" translate="crs.request.details.info.button.moveToWaitingForInternalInput"></span>
             </button>
 
-            <button ng-if="(requestVM.pageMode.value === 'preview') && requestVM.canForwardAction()" class="btn btn-default blue darken-1 promote"
+            <button ng-if="(requestVM.pageMode.value === 'preview') && requestVM.canForwardAction() && !requestVM.request.forwardDestinationId" class="btn btn-default blue darken-1 promote"
                 style="text-transform: none" ng-click="requestVM.moveForwardRequest()" title="{{'tooltips.request.details.info.button.moveToForward' | translate}}">
                 <span class="md md-done blue darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.moveToForward"></span>
