@@ -10,6 +10,11 @@
                      <div class="table-search">
                         <input type="text" ng-keypress="vm.searchTask($event,'my-assigned-requests')" ng-model="vm.searchText" class="form-control"
                                placeholder="{{'crs.request.list.searchPlaceHolder.myRequests' | translate}}" autofocus/>
+
+                        <button type="button" class="btn btn-round btn-default btn-small" ng-click="vm.clearSearch('my-assigned-requests')" title="{{'tooltips.notification.button.clear' | translate}}">
+                            <span class="md md-clear"></span>
+                            <span class="button-link"></span>
+                        </button>
                     </div> 
                 </div>
                 <div class="col-md-4">
@@ -112,7 +117,9 @@
                             <label>
                                 <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.myAssignedRequests.columns.trackerId" /> {{'crs.request.list.tableHeader.trackerId' | translate}}
                             </label>
-                            
+                            <label>
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.myAssignedRequests.columns.forwardDestinationId" /> {{'crs.request.list.tableHeader.forwardDestinationId' | translate}}
+                            </label>
                             <label>
                                 <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.myAssignedRequests.columns.status" /> {{'crs.request.list.tableHeader.status' | translate}}
                             </label>
@@ -178,6 +185,10 @@
                         
                         <td data-title="'crs.request.list.tableHeader.trackerId' | translate" sortable="'trackerId'" filter="vm.filterRequests.trackerId" ng-if="vm.enabledColumns.myAssignedRequests.columns.trackerId">
                             {{request.trackerId}}
+                        </td>
+
+                        <td data-title="'crs.request.list.tableHeader.forwardDestinationId' | translate" sortable="'id'" filter="vm.filterRequests.forwardDestinationId" ng-if="vm.enabledColumns.myAssignedRequests.columns.forwardDestinationId">
+                            {{request.forwardDestinationId}}
                         </td>
 
                         <td data-title="'crs.request.list.tableHeader.status' | translate" sortable="'requestHeader.status'" filter="{status: 'ng-table/status-select.html'}" ng-if="vm.enabledColumns.myAssignedRequests.columns.status">
