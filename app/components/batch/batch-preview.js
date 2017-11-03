@@ -211,10 +211,10 @@ angular
             var importRequests = function () {
                 angular.forEach(vm.selectedFiles.files, function(key) {
                     if(vm.selectedFiles.files[key.id].status === BATCH_IMPORT_STATUS.COMPLETED_UPLOAD.value){
-                        notificationService.sendMessage('Importing...');
+                        notificationService.sendMessage('Batch import process has started', 5000);
                         batchService.importBatch(key.id).then(function () {
                             //loadUploadedFiles();
-                            notificationService.sendMessage('The Batch requests have been imported successfully', 5000);
+                            //notificationService.sendMessage('The Batch requests have been imported successfully', 5000);
                             vm.disabledImportButton = true;
                             filesTableParams.reload();
                         });
@@ -240,7 +240,7 @@ angular
                     if (selectedFiles &&
                         selectedFiles.items) {
                         angular.forEach(selectedFiles.items, function(isSelected, fileId) {
-                            if(fileId !== "undefined" && fileId !== null){
+                            if(isSelected && fileId !== "undefined" && fileId !== null){
                                 selectedFileIds.push(fileId);
                             }
                         });
@@ -253,6 +253,7 @@ angular
                             // vm.selectedFile.removed = true;
                             filesTableParams.reload();
                             notificationService.sendMessage('Batch file deleted', 5000);
+                            vm.selectedFiles = { checked: false, items: {}, files: {} };
                         });
                     }
                 }else{
