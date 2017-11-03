@@ -1612,18 +1612,24 @@ angular
                 switch (list) {
                     case 'my-requests':
                         vm.tableParams.filter().search = vm.searchText;
+                        vm.tableParams.filter().page = 0;
+                        changeMyRequestsPage(0);
                         vm.tableParams.reload();
                         break;
                     case 'submitted-requests':
                         vm.submittedTableParams.filter().search = vm.searchText;
+                        vm.submittedTableParams.filter().page = 0;
+                        changeSubmittedRequestsPage(0);
                         vm.submittedTableParams.reload();
                         break;
                     case 'my-assigned-requests':
                         vm.assignedRequestTableParams.filter().search = vm.searchText;
+                        vm.assignedRequestTableParams.filter().page = 0;
+                        changeAssignedRequestsPage(0);
                         vm.assignedRequestTableParams.reload();
                         break;
                 }
-            }
+            };
 
             var searchTask = function ($event, list) {
                 var keyCode = $event.which || $event.keyCode;

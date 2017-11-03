@@ -931,6 +931,8 @@ angular
                 var keyCode = $event.which || $event.keyCode;
                 if (keyCode === 13) {
                     vm.requestTableParams.filter().search = vm.searchText;
+                   vm.tableParams.filter().page = 0;
+                   changeAcceptedRequestsPage(0);
                     vm.requestTableParams.reload();
                 }
             };
@@ -938,6 +940,8 @@ angular
             var clearSearch = function () {
                 vm.searchText = '';
                 vm.requestTableParams.filter().search = vm.searchText;
+                vm.tableParams.filter().page = 0;
+                changeAcceptedRequestsPage(0);
                 vm.requestTableParams.reload();
             };
             
