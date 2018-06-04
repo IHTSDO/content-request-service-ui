@@ -92,7 +92,13 @@ angular
                         id: "text",
                         placeholder: "Surname.."
                     }
-                }
+                },
+               forwardDestinationId: {
+                  forwardDestinationId: {
+                     id: "number",
+                     placeholder: "Ids..."
+                  }
+               }
             };
 
             vm.requestStatus = [
@@ -313,6 +319,7 @@ angular
                         changeAcceptedFilter('assignee', acceptedRequests.assignee);
                         changeAcceptedFilter('summary', acceptedRequests.summary);
                         changeAcceptedFilter('trackerId', acceptedRequests.trackerId);
+                        changeAcceptedFilter('forwardDestinationId', acceptedRequests.forwardDestinationId);
                         changeAcceptedFilter('lastStatusModifier', acceptedRequests.lastStatusModifier);
                         changeAcceptedRequestsPageSize(acceptedRequests.limit);
                         changeAcceptedRequestsPage(acceptedRequests.offset);
@@ -754,7 +761,7 @@ angular
             var isDateRangeFilteredFirstTime = false;
 
             var buildRequestFilterValues = function(typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, summary, trackerId, manager, status, author,
-                project, assignee, requestId, requestType, showUnassignedRequests, statusDateFrom, statusDateTo, lastStatusModifier){
+                project, assignee, requestId, requestType, showUnassignedRequests, statusDateFrom, statusDateTo, lastStatusModifier, forwardDestinationId){
                 var requestList = {};
                 requestList.batchRequest = batchRequest;
                 requestList.concept = fsn;
@@ -779,6 +786,7 @@ angular
                 requestList.statusDateTo = convertDateToMilliseconds(statusDateTo);
                 requestList.summary = summary; 
                 requestList.trackerId = trackerId;
+                requestList.forwardDestinationId = forwardDestinationId;
                 requestList.lastStatusModifier = lastStatusModifier;
                 requestList.search = search;
                 return requestList;
@@ -859,7 +867,8 @@ angular
                         vm.showUnassignedRequests, 
                         params.filter().statusDate.startDate,
                         params.filter().statusDate.endDate,
-                        params.filter().lastStatusModifier
+                        params.filter().lastStatusModifier,
+                        params.filter().forwardDestinationId
                     );
 
                     if(acceptedRequests === undefined){
@@ -922,8 +931,18 @@ angular
                 var keyCode = $event.which || $event.keyCode;
                 if (keyCode === 13) {
                     vm.requestTableParams.filter().search = vm.searchText;
+                   vm.tableParams.filter().page = 0;
+                   changeAcceptedRequestsPage(0);
                     vm.requestTableParams.reload();
                 }
+            };
+
+            var clearSearch = function () {
+                vm.searchText = '';
+                vm.requestTableParams.filter().search = vm.searchText;
+                vm.tableParams.filter().page = 0;
+                changeAcceptedRequestsPage(0);
+                vm.requestTableParams.reload();
             };
             
             //watch columns change
@@ -1167,6 +1186,7 @@ angular
                 }
             };
 
+            vm.clearSearch = clearSearch;
             vm.inceptionElaborationSelectedRequests = inceptionElaborationSelectedRequests;
             vm.pendingClarificationSelectedRequests = pendingClarificationSelectedRequests;
             vm.canForwardRequest = canForwardRequest;

@@ -500,7 +500,8 @@ angular
                 manager: false,
                 status: true,
                 summary: false,
-                trackerId: false
+                trackerId: false,
+               forwardDestinationId: false
             }
         },
         myAssignedRequests: {
@@ -518,7 +519,8 @@ angular
                 manager: false,
                 status: true,
                 summary: false,
-                trackerId: false
+                trackerId: false,
+                forwardDestinationId: false
             }
         },
         submittedRequests: {
@@ -536,7 +538,8 @@ angular
                 manager: false,
                 status: true,
                 summary: false,
-                trackerId: false
+                trackerId: false,
+               forwardDestinationId: false
             }
         },
         acceptedRequests: {
@@ -556,7 +559,8 @@ angular
                 summary: false,
                 assignee: true,
                 project: true,
-                trackerId: false
+                trackerId: false,
+               forwardDestinationId: false
             }
         }
     })
