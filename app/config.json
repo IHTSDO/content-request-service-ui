@@ -1,8 +1,13 @@
 {
+    "app": {
+        "title": "SNOMED International CRS (Content Request Service)",
+        "header": "Content Request Service"
+    },
     "endpoint": {
         "crs": "http://crs3.ihtsdotools.org/crs/",
         "ims": "https://dev-ims.ihtsdotools.org/",
         "snowowl": "http://crs3.ihtsdotools.org/snowowl/",
+        "authoring": "/authoring-services",
         "jira": "http://dev-jira.ihtsdotools.org:8080/",
         "ims-api": "https://dev-term.ihtsdotools.org/ims-api/"
     },
@@ -25,15 +30,6 @@
         "author-group": "ihtsdo-sca-author",
         "staff-group": "crs-staff",
         "requestor-group": "crs-requestor"
-    },
-    "userRole": {
-        "ADMINISTRATOR": "ROLE_crs-administrator",
-        "MANAGER": "ROLE_crs-manager",
-        "STAFF": "ROLE_crs-staff",
-        "MEMBER": "ROLE_crs-member",
-        "PARTNER": "ROLE_crs-partner",
-        "REQUESTOR": "ROLE_crs-requestor",
-        "VIEWER": "ROLE_crs-viewer"
     },
     "link": {
         "userGuide": "https://confluence.ihtsdotools.org/display/SCTCR/CRS+User+Guide",

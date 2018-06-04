@@ -100,9 +100,11 @@ angular
 
                         switch (desTerminilogy){
                             case 'CURRENTBATCH':
-                                return requestService.getBatchConcept(requestId, conceptData.id).then(function(response){
-                                    $scope.concept.conceptId = response[0].concept.conceptId;
-                                    $scope.concept.fsn = response[0].concept.fsn;
+                                return requestService.getBatchConcept(requestId, conceptData.id).then(function (response) {
+                                    if (Array.isArray(response) && response.length > 0) {
+                                        $scope.concept.conceptId = response[0].concept.conceptId;
+                                        $scope.concept.fsn = response[0].concept.fsn;
+                                    }
                                     $scope.showLoading = false;
                                     $scope.conceptStatus.loading = false;
                                     $scope.conceptStatus.searching = false;
@@ -116,9 +118,10 @@ angular
 
                             case 'NEWCONCEPTREQUESTS':
                                 return requestService.getNewConcept(conceptData.id).then(function(response){
-                                    
-                                    $scope.concept.conceptId = response[0].conceptId;
-                                    $scope.concept.fsn = response[0].fsn;
+                                    if (Array.isArray(response) && response.length > 0) {
+                                        $scope.concept.conceptId = response[0].conceptId;
+                                        $scope.concept.fsn = response[0].fsn;
+                                    }
                                     $scope.showLoading = false;
                                     $scope.conceptStatus.loading = false;
                                     $scope.conceptStatus.searching = false;

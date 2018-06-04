@@ -79,6 +79,15 @@ angular.module('conceptRequestServiceApp.request')
                 return crsService.sendPost(listEndpoint, null, requestList);
             };
 
+            var getProjects = function () {
+                var endPointUrl = CRS_API_ENDPOINT.PROJECT;
+                return crsService.authoringSendGet(endPointUrl, null, null)
+                    .then(function (response) {
+                        var data = response.data ? response.data : response;
+                        return data;
+                    });
+            };
+
             var getSubmittedRequests = function (page, pageCount, searchStr, sortFields, sortDirections) {
                 var listEndpoint = CRS_API_ENDPOINT.SUBMITTED_REQUEST_LIST;
                 var params = {
@@ -110,6 +119,10 @@ angular.module('conceptRequestServiceApp.request')
 
                 var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
                 return crsService.sendGet(requestEndpoint + '/' + requestId, null);
+            };
+
+            var getNewForwardingRequestStatus = function (url) {
+                return crsService.sendGet(url);
             };
 
             var saveRequest = function (requestDetails) {
@@ -472,10 +485,37 @@ angular.module('conceptRequestServiceApp.request')
                 return crsService.sendPut(requestEndpoint + '/' + requestId + '/sctid', params, null);
             };
 
+            var changeRequestInfoAfterSubmission = function (requestId, requestBody) {
+               var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
+               return crsService.sendPut(requestEndpoint + '/' + requestId + '/submittedInfo', null, requestBody);
+               
+            };
+
+            var organizationOptions;
+
+            var getOrganizationOptions = function () {
+                return organizationOptions;
+            };
+
+            var setOrganizationOptions = function (list) {
+                organizationOptions = list;
+            };
+
+            var collaborationAgreementOptions;
+
+            var getCollaborationAgreementOptions = function () {
+                return collaborationAgreementOptions;
+            };
+
+            var setCollaborationAgreementOptions = function (list) {
+                collaborationAgreementOptions = list;
+            };
+
             return {
                 identifyRequestType: identifyRequestType,
                 identifyRequestStatus: identifyRequestStatus,
                 getRequest: getRequest,
+                getNewForwardingRequestStatus: getNewForwardingRequestStatus,
                 getRequests: getRequests,
                 getSubmittedRequests: getSubmittedRequests,
                 getAcceptedRequests: getAcceptedRequests,
@@ -527,10 +567,16 @@ angular.module('conceptRequestServiceApp.request')
                 setMaxSize: setMaxSize,
                 reassignRequestToRequestor: reassignRequestToRequestor,
                 changeLocalCode: changeLocalCode,
+                changeRequestInfoAfterSubmission: changeRequestInfoAfterSubmission,
                 getRlAuthorsList: getRlAuthorsList,
                 setRlAuthorsList: setRlAuthorsList,
                 getRlStaffsList: getRlStaffsList,
-                setRlStaffsList: setRlStaffsList
+                setRlStaffsList: setRlStaffsList,
+                getProjects: getProjects,
+                getOrganizationOptions: getOrganizationOptions,
+                setOrganizationOptions: setOrganizationOptions,
+                getCollaborationAgreementOptions: getCollaborationAgreementOptions,
+                setCollaborationAgreementOptions: setCollaborationAgreementOptions
             };
 
         }]);

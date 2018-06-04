@@ -106,13 +106,21 @@ angular
         'accountService',
         'crsService',
         '$http',
-        function ($rootScope, $location, configService, accountService, crsService, $http) {
+        '$translate',
+        function ($rootScope, $location, configService, accountService, crsService, $http, $translate) {
             var config = configService.getConfig();
-            $http.get('version.json', { cache: true })
-                .then(function (response) {
-                    $rootScope.clientVersion = response.data.version;
-                });
-
+            $http.get('version.json', { cache: true }).then(function (response) {
+                $rootScope.clientVersion = response.data.version;
+            });
+            $http.get(config.endpoint.crs + '/common/config').then(function (configFromServer) {
+                if (configFromServer.data) {
+                    configService.setConfigFromServer(configFromServer.data);
+                    $rootScope.$broadcast('crs:loadConfigSuccess');
+                }
+            });
+            
+            document.querySelector('head > title').innerHTML = config.app.title;
+            
             $rootScope.showAppLoading = false;
             $rootScope.showSplash = true;
             $rootScope.pageTitles = [];

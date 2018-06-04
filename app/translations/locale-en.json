@@ -138,6 +138,7 @@
                     "requestId": "Request ID",
                     "description": "Description",
                     "lastModified": "Modified",
+                    "lastStatusModifier": "Modified By",
                     "requestType": "Type",
                     "status": "Status",
                     "conceptFSN": "Concept",
@@ -166,6 +167,10 @@
                     "cancel": "Cancel"
                 },
                 "label": {
+                    "changeOriginatingOrganization": "Originating Organization",
+                    "changeCollaborationAgreement": "Collaboration Agreement",
+                    "organizationOptions": "Originating Organization",
+                    "collaborationAgreementOptions": "Collaboration Agreement",
                     "topic": "Topic",
                     "requestorInternalId": "Local SNOMED CT Code",
                     "proposedFSN": "New Concept FSN",
@@ -241,11 +246,17 @@
                         "pendingForClarification": "Pending Clarification",
                         "inAppealClarification": "In Appeal Clarification",
                         "acceptAndAssign": "Accept and Assign To Author",
-                        "assign": "Assign Request to an Authoring Task",
+                        "assign": "Assign Request To an Authoring Task",
                         "assignToStaff": "Assign To Manager",
                         "reassignToRequestor": "Change Requestor",
-                        "moveToInInceptionElaboration": "Move to In Inception/Elaboration",
+                        "moveToInInceptionElaboration": "Move To In Inception/Elaboration",
+                        "moveToOnHold": "Move To On Hold",
+                        "moveToForward": "Move To Forward",
+                        "moveToWaitingForInternalInput": "Move To Pending Internal Input",
                         "changeSNOMEDCode": "Change Local SNOMED CT Code",
+                        "changeOriginatingOrganization": "Change Originating Organization",
+                        "changeCollaborationAgreement": "Change Collaboration Agreement",
+                        "updateInformation": "Update Request Information",
                         "addNote": "Add Note",
                         "unassign": "Unassign Request",
                         "unassignAndRejectRequest": "Unassign And Reject",
@@ -264,6 +275,8 @@
                         "requestUrl": "Request Url",
                         "trackerId": "Tracker Id",
                         "authoringTicket":"Authoring Ticket",
+                        "forwardTicket": "International request ID",
+                        "forwardTicketStatus": "International request status",
                         "impactedConceptId":"Impacted/New Concept ID",
                         "newFSN": "New FSN"
                     }
@@ -310,13 +323,22 @@
                     "inAppealClarification": "In Appeal Clarification",
                     "inInceptionElaboration": "In Inception/Elaboration",
                     "changeSNOMEDCode": "Change Local SNOMED CT Code",
-                    "unassignAndReject": "Unassign And Reject Request"
+                    "unassignAndReject": "Unassign And Reject Request",
+                    "ON_HOLD": "On Hold Request",
+                    "FORWARDED": "Forward Request",
+                    "INTERNAL_INPUT_NEEDED": "Pending Internal Input",
+                    "CLARIFICATION_NEEDED": "Pending for Clarification",
+                    "IN_INCEPTION_ELABORATION": "Inception/Elaboration",
+                    "changeOriginatingOrganization": "Change Originating Organization",
+                    "changeCollaborationAgreement": "Change Collaboration Agreement"
                 },
                 "comment": {
                     "label": "Reason",
                     "inInceptionElaboration": "Content Tracker URL",
                     "changeSNOMEDCode": "Local SNOMED CT Code",
-                    "trackerId": "Tracker Id"
+                    "trackerId": "Tracker Id",
+                    "changeOriginatingOrganization": "Change Originating Organization",
+                    "changeCollaborationAgreement": "Change Collaboration Agreement"
                 },
                 "button": {
                     "confirm": "Confirm",
@@ -349,6 +371,9 @@
                 "requestUnassigning": "Unassigning request...",
                 "requestUnassigningAndRejecting": "Unassigning And Rejecting Request...",
                 "requestUnassignedAndRejected": "Request has been Unassigned And Rejected successfully",
+                "requestOnHold": "Request has been on hold successfully",
+                "requestForwarded": "Request has been forwarded successfully",
+                "requestWaitingForInternalInput": "Request has been moved to pending internal input successfully",
 
                 "error": {
                     "requestTypeRequired": "Please select request type",
@@ -397,7 +422,8 @@
                 "inInceptionElaboration": "In Inception/Elaboration",
                 "readyForRelease": "Ready For Release",
                 "submitted": "Submitted",
-                "inAppealClarification": "In Appeal Clarification"
+                "inAppealClarification": "In Appeal Clarification",
+                "waitingForInternalInput": "Pending Internal Input"
             },
             "bulkAction": {
                 "status": {
@@ -425,7 +451,13 @@
                     "unassignAuthor": "Unassign Project",
                     "addNote": "Add Note",
                     "withdraw": "Withdrawn",
-                    "reject": "Reject Requests"
+                    "reject": "Reject Requests",
+                    "onHold": "On Hold",
+                    "waitingInternalInput": "Pending Internal Input",
+                    "forward": "Forward Requests",
+                    "clarification": "Clarification Needed",
+                    "inInceptionElaboration": "In Inception/Elaboration",
+                    "forwarded": "Forwarded Requests"
                 },
                 "button": {
                     "close": "Close",

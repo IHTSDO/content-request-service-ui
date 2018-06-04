@@ -16,10 +16,18 @@ angular
                 DELETE: 'DELETE'
             };
             var crsEndpoint = configService.getEndpointConfig('crs');
+            var authoringEndpoint = configService.getEndpointConfig('authoring');
 
             var getCrsEndpointUrl = function (resource) {
+                if (resource.startsWith('http')) {
+                    return resource;
+                }
                 return crsEndpoint + resource;
             };
+
+            var authoringEnpointUrl = function (resource) {
+                return authoringEndpoint + resource;
+            }
 
             var sendRequest = function (request) {
                 var deferred = $q.defer();
@@ -51,8 +59,24 @@ angular
                 });
             };
 
+            var sendAuthoringRequest = function (method, resource, params, data, ignoreLoadingBar) {
+                var url = authoringEnpointUrl(resource);
+
+                return sendRequest({
+                    method: method,
+                    url: url,
+                    params: params,
+                    data: data,
+                    ignoreLoadingBar: (ignoreLoadingBar === true)
+                });
+            };
+
             var sendGet = function (resource, params, ignoreLoadingBar) {
                 return sendCrsRequest(HTTP_METHOD.GET, resource, params, null, ignoreLoadingBar);
+            };
+
+            var authoringSendGet = function (resource, params, ignoreLoadingBar) {
+                return sendAuthoringRequest(HTTP_METHOD.GET, resource, params, null, ignoreLoadingBar);
             };
 
             var sendPut = function (resource, params, data) {
@@ -104,7 +128,8 @@ angular
                 sendPost: sendPost,
                 sendDelete: sendDelete,
                 sendUpload: sendUpload,
-                getServerVersion: getServerVersion
+                getServerVersion: getServerVersion,
+                authoringSendGet: authoringSendGet
             };
         }
     ]);

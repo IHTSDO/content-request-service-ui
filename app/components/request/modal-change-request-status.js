@@ -5,7 +5,9 @@ angular.module('conceptRequestServiceApp.request')
         '$scope',
         '$uibModalInstance',
         'requestStatus',
-        function ($rootScope, $scope, $uibModalInstance, requestStatus) {
+        'STATISTICS_STATUS',
+        'data',
+        function ($rootScope, $scope, $uibModalInstance, requestStatus, STATISTICS_STATUS, data) {
             var vm = this;
 
             /*var hideErrorMessage = function () {
@@ -31,6 +33,13 @@ angular.module('conceptRequestServiceApp.request')
             };
 
             var changeRequestStatus = function () {
+                if (vm.requestStatus === STATISTICS_STATUS.ON_HOLD.value || vm.requestStatus === STATISTICS_STATUS.INTERNAL_INPUT_NEEDED.value){
+                    $uibModalInstance.close({
+                        reason: vm.comment,
+                        internal: vm.internal
+                    });
+                    return;
+                }
                 if (vm.comment) {
                     $uibModalInstance.close(vm.comment);
                 } else if(vm.requestStatus === 'changeSNOMEDCode'){
@@ -44,8 +53,10 @@ angular.module('conceptRequestServiceApp.request')
 
             vm.msgSuccess = null;
             vm.msgError = null;
+            vm.internal = false;
             vm.changeRequestStatus = changeRequestStatus;
             vm.closeModal = closeModal;
             vm.requestStatus = requestStatus;
+            vm.data = data;
         }]
     );

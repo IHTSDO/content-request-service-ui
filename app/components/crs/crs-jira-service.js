@@ -71,10 +71,34 @@ angular
                 });
             };
 
+            var getOrganizationOptions = function () {
+                var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
+                return crsService.sendGet(requestEndpoint + '/organizationOptions').then(function (organizationOptions) {
+                    if (organizationOptions.error) {
+                        return [];
+                    } else if (organizationOptions) {
+                        return organizationOptions;
+                    }
+                });
+            };
+
+            var getCollaborationAgreementOptions = function () {
+                var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
+                return crsService.sendGet(requestEndpoint + '/collaborationAgreementOptions').then(function (collaborationAgreementOptions) {
+                    if (collaborationAgreementOptions.error) {
+                        return [];
+                    } else if (collaborationAgreementOptions) {
+                        return collaborationAgreementOptions;
+                    }
+                });
+            };
+
             return {
                 getAuthorUsers: getAuthorUsers,
                 getSemanticTags: getSemanticTags,
-                getTopicOptions: getTopicOptions
+                getTopicOptions: getTopicOptions,
+                getOrganizationOptions: getOrganizationOptions,
+                getCollaborationAgreementOptions: getCollaborationAgreementOptions
             };
         }
     ]);

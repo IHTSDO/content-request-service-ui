@@ -154,6 +154,16 @@ footer {
     color: black;
   }
 
+  &.ON_HOLD {
+    background-color: #F3CB67;
+    color: white;
+  }
+
+    &.INTERNAL_INPUT_NEEDED {
+    background-color: #F3CB67;
+    color: white;
+  }
+
   &.NEW {
     background-color: #F3CB67;
     color: white;
@@ -309,6 +319,10 @@ footer {
 
 .row-selected, .file-selected {
   background-color: rgb(199, 238, 253) !important;
+}
+
+.row-new {
+  font-weight: bold !important;
 }
 
 .batch-preview-tabs {
@@ -937,4 +951,14 @@ input[type=checkbox].select-all-rqs {
 }
 .alert-primary {
   text-decoration: underline;
+}
+.dropdown-menu{
+  li {
+    padding: 5px 10px;
+    color: #444;
+    font-size: 13px;
+  }
+  li:hover{
+    background-color: #f1f1f1;
+  }
 }

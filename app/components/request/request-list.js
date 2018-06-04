@@ -21,7 +21,10 @@ angular
         'BULK_ACTION',
         'DEFAULT_COLUMNS',
         '$timeout',
-        function ($filter, $sce, crsJiraService, NgTableParams, requestService, notificationService, accountService, jiraService, $routeParams, $uibModal, utilsService, $scope, scaService, BULK_ACTION_STATUS, BULK_ACTION, DEFAULT_COLUMNS, $timeout) {
+        'STATISTICS_STATUS',
+        'configService',
+        '$rootScope',
+        function ($filter, $sce, crsJiraService, NgTableParams, requestService, notificationService, accountService, jiraService, $routeParams, $uibModal, utilsService, $scope, scaService, BULK_ACTION_STATUS, BULK_ACTION, DEFAULT_COLUMNS, $timeout, STATISTICS_STATUS, configService, $rootScope) {
             var vm = this;
             var maxSize;
 
@@ -70,6 +73,12 @@ angular
                     trackerId: {
                         id: "text",
                         placeholder: "Ids..."
+                    }
+                },
+                lastStatusModifier: {
+                    lastStatusModifier: {
+                        id: "text",
+                        placeholder: "Modifier..."
                     }
                 },
                 requestId: {
@@ -150,6 +159,10 @@ angular
                 {
                     id: "IN_APPEAL_CLARIFICATION",
                     title: "In Appeal Clarification"
+                },
+                {
+                    id: "INTERNAL_INPUT_NEEDED",
+                    title: "Waiting For Internal Input"
                 }
             ];
 
@@ -201,10 +214,199 @@ angular
                 addNote: 'ADD_NOTE',
                 withdraw: 'WITHDRAW',
                 reject: 'REJECT',
-                reassignToRequestor: 'UPDATE_REPORTER'
+                reassignToRequestor: 'UPDATE_REPORTER',
+                onHold: 'ON_HOLD',
+                waitingForInternalInput: 'INTERNAL_INPUT_NEEDED',
+                forward: 'FORWARD',
+                clarification: 'PENDING_CLARIFICATION',
+                inceptionElaboration: 'INCEPTION_ELABORATION'
             };
 
+            $rootScope.$on('crs:loadConfigSuccess', function () {
+                loadData();
+            });
+
+            var loadData = function () {
+                // check admin role
+                accountService.checkUserPermission().then(function (rs) {
+                    vm.isAdmin = (rs.isAdmin === true);
+                    vm.isViewer = (rs.isViewer === true);
+                    vm.isStaff = (rs.isStaff === true);
+                    vm.isRequester = (rs.isRequester === true);
+
+                    var list = $routeParams.list;
+                    if (!list) {
+                        if (vm.isStaff || vm.isAdmin) {
+                            list = 'my-assigned-requests';
+                        } else if (vm.isRequester) {
+                            list = 'requests';
+                        } else {
+                            list = 'submitted-requests';
+                        }
+                    }
+                    requestService.saveCurrentList(list);
+
+                    if (!vm.isViewer) {
+                        vm.tableParams = requestTableParams;
+                    }
+
+                    vm.submittedTableParams = submittedTableParams;
+                    var subbmitedRequests;
+                    if (!isDateRangeFilteredFirstTime) {
+                        //get filter values
+                        subbmitedRequests = requestService.getSubmittedFilterValues();
+                        if (subbmitedRequests !== undefined && $routeParams.cache !== false) {
+                            if (list === 'submitted-requests') {
+                                vm.searchText = subbmitedRequests.search;
+                            }
+                            changeSubmittedFilter('search', subbmitedRequests.search);
+                            changeSubmittedFilter('requestType', subbmitedRequests.requestType);
+                            changeSubmittedFilter('batchRequest', subbmitedRequests.batchRequest);
+                            changeSubmittedFilter('fsn', subbmitedRequests.concept);
+                            changeSubmittedFilter('jiraTicketId', subbmitedRequests.jiraTicketId);
+                            changeSubmittedFilter('topic', subbmitedRequests.topic);
+                            changeSubmittedFilter('manager', subbmitedRequests.manager);
+                            changeSubmittedFilter('status', subbmitedRequests.status);
+                            changeSubmittedFilter('author', subbmitedRequests.ogirinatorId);
+                            changeSubmittedFilter('requestId', subbmitedRequests.requestId);
+                            changeSubmittedFilter('summary', subbmitedRequests.summary);
+                            changeSubmittedFilter('trackerId', subbmitedRequests.trackerId);
+                            changeSubmitedRequestsPageSize(subbmitedRequests.limit);
+                            changeSubmittedRequestsPage(subbmitedRequests.offset);
+                            changeSubmittedRequestsSorting(subbmitedRequests.sorting);
+                            changeSubmittedFilter('lastStatusModifier', subbmitedRequests.lastStatusModifier);
+                            changeSubmittedFilter('requestDate', {
+                                startDate: subbmitedRequests.requestDateFrom,
+                                endDate: subbmitedRequests.requestDateTo
+                            });
+                            changeSubmittedFilter('statusDate', {
+                                startDate: subbmitedRequests.statusDateFrom,
+                                endDate: subbmitedRequests.statusDateTo
+                            });
+
+                            if (subbmitedRequests.requestDateFrom !== 0 && subbmitedRequests.requestDateTo !== 0) {
+                                vm.daterangeSQ = {
+                                    startDate: new Date(subbmitedRequests.requestDateFrom),
+                                    endDate: new Date(subbmitedRequests.requestDateTo)
+                                };
+                            }
+                            if (subbmitedRequests.statusDateFrom !== 0 && subbmitedRequests.statusDateTo !== 0) {
+                                vm.lastModifiedDateRangeSR = {
+                                    startDate: new Date(subbmitedRequests.statusDateFrom),
+                                    endDate: new Date(subbmitedRequests.statusDateTo)
+                                };
+                            }
+                        }
+                    }
+
+                    vm.requestTableParams = requestTableParams;
+                    var myRequests;
+                    if (!isDateRangeFilteredFirstTime) {
+                        //get filter values
+                        myRequests = requestService.getFilterValues();
+                        if (myRequests !== undefined && $routeParams.cache !== false) {
+                            if (list === 'requests') {
+                                vm.searchText = myRequests.search;
+                            }
+                            changeMyRequestFilter('search', myRequests.search);
+                            changeMyRequestFilter('requestType', myRequests.requestType);
+                            changeMyRequestFilter('batchRequest', myRequests.batchRequest);
+                            changeMyRequestFilter('fsn', myRequests.concept);
+                            changeMyRequestFilter('jiraTicketId', myRequests.jiraTicketId);
+                            changeMyRequestFilter('topic', myRequests.topic);
+                            changeMyRequestFilter('manager', myRequests.manager);
+                            changeMyRequestFilter('status', myRequests.status);
+                            changeMyRequestFilter('author', myRequests.ogirinatorId);
+                            changeMyRequestFilter('requestId', myRequests.requestId);
+                            changeMyRequestFilter('summary', myRequests.summary);
+                            changeMyRequestFilter('trackerId', myRequests.trackerId);
+                            changeMyRequestFilter('lastStatusModifier', myRequests.lastStatusModifier);
+                            changeMyRequestsPageSize(myRequests.limit);
+                            changeMyRequestsPage(myRequests.offset);
+                            changeMyRequestsSorting(myRequests.sorting);
+                            changeMyRequestFilter('requestDate', {
+                                startDate: myRequests.requestDateFrom,
+                                endDate: myRequests.requestDateTo
+                            });
+                            changeMyRequestFilter('statusDate', {
+                                startDate: myRequests.statusDateFrom,
+                                endDate: myRequests.statusDateTo
+                            });
+                            if (myRequests.requestDateFrom !== 0 && myRequests.requestDateTo !== 0) {
+                                vm.daterange = {
+                                    startDate: new Date(myRequests.requestDateFrom),
+                                    endDate: new Date(myRequests.requestDateTo)
+                                };
+                            }
+                            if (myRequests.statusDateFrom !== 0 && myRequests.statusDateTo !== 0) {
+                                vm.lastModifiedDateRange = {
+                                    startDate: new Date(myRequests.statusDateFrom),
+                                    endDate: new Date(myRequests.statusDateTo)
+                                };
+                            }
+                        }
+                    }
+
+                    vm.assignedRequestTableParams = assignedRequestTableParams;
+                    var myAssignedRequests;
+                    if (!isDateRangeFilteredFirstTime) {
+                        //get filter values
+                        myAssignedRequests = requestService.getAssignedFilterValues();
+                        if (myAssignedRequests !== undefined) {
+                            if (list === 'my-assigned-requests') {
+                                vm.searchText = myAssignedRequests.search;
+                            }
+                            changeAssignedFilter('search', myAssignedRequests.search);
+                            changeAssignedFilter('requestType', myAssignedRequests.requestType);
+                            changeAssignedFilter('batchRequest', myAssignedRequests.batchRequest);
+                            changeAssignedFilter('fsn', myAssignedRequests.concept);
+                            changeAssignedFilter('jiraTicketId', myAssignedRequests.jiraTicketId);
+                            changeAssignedFilter('topic', myAssignedRequests.topic);
+                            changeAssignedFilter('manager', myAssignedRequests.manager);
+                            changeAssignedFilter('status', myAssignedRequests.status);
+                            changeAssignedFilter('author', myAssignedRequests.ogirinatorId);
+                            changeAssignedFilter('requestId', myAssignedRequests.requestId);
+                            changeAssignedFilter('summary', myAssignedRequests.summary);
+                            changeAssignedFilter('trackerId', myAssignedRequests.trackerId);
+                            changeAssignedFilter('count', myAssignedRequests.count);
+                            changeAssignedFilter('lastStatusModifier', myAssignedRequests.lastStatusModifier);
+                            changeAssignedRequestsPageSize(myAssignedRequests.limit);
+                            changeAssignedRequestsPage(myAssignedRequests.offset);
+                            changeAssignedRequestsSorting(myAssignedRequests.sorting);
+                            changeAssignedFilter('requestDate', {
+                                startDate: myAssignedRequests.requestDateFrom,
+                                endDate: myAssignedRequests.requestDateTo
+                            });
+                            changeMyRequestFilter('statusDate', {
+                                startDate: myAssignedRequests.statusDateFrom,
+                                endDate: myAssignedRequests.statusDateTo
+                            });
+                            if (myAssignedRequests.requestDateFrom !== 0 && myAssignedRequests.requestDateTo !== 0) {
+                                vm.daterangeMAR = {
+                                    startDate: new Date(myAssignedRequests.requestDateFrom),
+                                    endDate: new Date(myAssignedRequests.requestDateTo)
+                                };
+                            }
+                            if (myAssignedRequests.statusDateFrom !== 0 && myAssignedRequests.statusDateTo !== 0) {
+                                vm.lastModifiedDateRangeMAR = {
+                                    startDate: new Date(myAssignedRequests.statusDateFrom),
+                                    endDate: new Date(myAssignedRequests.statusDateTo)
+                                };
+                            }
+                        }
+                    }
+                    if (!vm.isViewer && !vm.isRequester) {
+                        //load projects
+                        vm.projects = requestService.getProjectsList();
+                        if (!vm.projects) {
+                            loadProjects();
+                        }
+                    }
+                });
+            }
+
             var initView = function () {
+                vm.searchText = '';
                 vm.selectedRequests = {checked: false, items: {}, requests: {}};
                 vm.selectedSubmittedRequests = {checked: false, items: {}, requests: {}};
                 vm.selectedMyAssignedRequests = {checked: false, items: {}, requests: {}};
@@ -222,170 +424,7 @@ angular
                     vm.assignee = accountDetails.login;                   
                 });
 
-                // check admin role
-                accountService.checkUserPermission().then(function (rs) {
-                    vm.isAdmin = (rs.isAdmin === true);
-                    vm.isViewer = (rs.isViewer === true);
-                    vm.isStaff = (rs.isStaff === true);
-                    vm.isRequester = (rs.isRequester === true);
-
-                    var list = $routeParams.list;
-                    if(!list){
-                        if(vm.isStaff || vm.isAdmin){
-                            list = 'my-assigned-requests';
-                        }else if(vm.isRequester){
-                            list = 'requests';
-                        }else{
-                            list = 'submitted-requests';
-                        }
-                    }
-                    requestService.saveCurrentList(list);
-
-                    if (!vm.isViewer) {
-                        vm.tableParams = requestTableParams;
-                    }
-
-                    vm.submittedTableParams = submittedTableParams;
-                    var subbmitedRequests;
-                    if(!isDateRangeFilteredFirstTime ){
-                        //get filter values
-                        subbmitedRequests = requestService.getSubmittedFilterValues();
-                        if(subbmitedRequests !== undefined && $routeParams.cache !== false){
-                            changeSubmittedFilter('search', subbmitedRequests.search);
-                            changeSubmittedFilter('requestType', subbmitedRequests.requestType);
-                            changeSubmittedFilter('batchRequest', subbmitedRequests.batchRequest);
-                            changeSubmittedFilter('fsn', subbmitedRequests.concept);
-                            changeSubmittedFilter('jiraTicketId', subbmitedRequests.jiraTicketId);
-                            changeSubmittedFilter('topic', subbmitedRequests.topic);
-                            changeSubmittedFilter('manager', subbmitedRequests.manager);
-                            changeSubmittedFilter('status', subbmitedRequests.status);
-                            changeSubmittedFilter('author', subbmitedRequests.ogirinatorId);
-                            changeSubmittedFilter('requestId', subbmitedRequests.requestId);
-                            changeSubmittedFilter('summary', subbmitedRequests.summary);
-                            changeSubmittedFilter('trackerId', subbmitedRequests.trackerId);
-                            changeSubmitedRequestsPageSize(subbmitedRequests.limit);
-                            changeSubmittedRequestsPage(subbmitedRequests.offset);
-                            changeSubmittedRequestsSorting(subbmitedRequests.sorting);
-                            changeSubmittedFilter('requestDate', {
-                                startDate: subbmitedRequests.requestDateFrom,
-                                endDate: subbmitedRequests.requestDateTo
-                            });
-                            changeSubmittedFilter('statusDate', {
-                                startDate: subbmitedRequests.statusDateFrom,
-                                endDate: subbmitedRequests.statusDateTo
-                            });
-
-                            if(subbmitedRequests.requestDateFrom !== 0 && subbmitedRequests.requestDateTo !== 0){
-                                vm.daterangeSQ = {
-                                    startDate: new Date(subbmitedRequests.requestDateFrom),
-                                    endDate: new Date(subbmitedRequests.requestDateTo)
-                                };
-                            }
-                            if(subbmitedRequests.statusDateFrom !== 0 && subbmitedRequests.statusDateTo !== 0){
-                                vm.lastModifiedDateRangeSR = {
-                                    startDate: new Date(subbmitedRequests.statusDateFrom),
-                                    endDate: new Date(subbmitedRequests.statusDateTo)
-                                };
-                            }
-                        }
-                    }
-
-                    vm.requestTableParams = requestTableParams;
-                    var myRequests;
-                    if(!isDateRangeFilteredFirstTime ){
-                        //get filter values
-                        myRequests = requestService.getFilterValues();
-                        if(myRequests !== undefined && $routeParams.cache !== false){
-                            changeMyRequestFilter('search', myRequests.search);
-                            changeMyRequestFilter('requestType', myRequests.requestType);
-                            changeMyRequestFilter('batchRequest', myRequests.batchRequest);
-                            changeMyRequestFilter('fsn', myRequests.concept);
-                            changeMyRequestFilter('jiraTicketId', myRequests.jiraTicketId);
-                            changeMyRequestFilter('topic', myRequests.topic);
-                            changeMyRequestFilter('manager', myRequests.manager);
-                            changeMyRequestFilter('status', myRequests.status);
-                            changeMyRequestFilter('author', myRequests.ogirinatorId);
-                            changeMyRequestFilter('requestId', myRequests.requestId);
-                            changeMyRequestFilter('summary', myRequests.summary);
-                            changeMyRequestFilter('trackerId', myRequests.trackerId);
-                            changeMyRequestsPageSize(myRequests.limit);
-                            changeMyRequestsPage(myRequests.offset);
-                            changeMyRequestsSorting(myRequests.sorting);
-                            changeMyRequestFilter('requestDate', {
-                                startDate: myRequests.requestDateFrom,
-                                endDate: myRequests.requestDateTo
-                            });
-                            changeMyRequestFilter('statusDate', {
-                                startDate: myRequests.statusDateFrom,
-                                endDate: myRequests.statusDateTo
-                            });
-                            if(myRequests.requestDateFrom !== 0 && myRequests.requestDateTo !== 0){
-                                vm.daterange = {
-                                    startDate: new Date(myRequests.requestDateFrom),
-                                    endDate: new Date(myRequests.requestDateTo)
-                                };
-                            }
-                            if(myRequests.statusDateFrom !== 0 && myRequests.statusDateTo !== 0){
-                                vm.lastModifiedDateRange = {
-                                    startDate: new Date(myRequests.statusDateFrom),
-                                    endDate: new Date(myRequests.statusDateTo)
-                                };
-                            }
-                        }
-                    }
-
-                    vm.assignedRequestTableParams = assignedRequestTableParams;
-                    var myAssignedRequests;
-                    if(!isDateRangeFilteredFirstTime ){
-                        //get filter values
-                        myAssignedRequests = requestService.getAssignedFilterValues();
-                        if(myAssignedRequests !== undefined){
-                            changeAssignedFilter('search', myAssignedRequests.search);
-                            changeAssignedFilter('requestType', myAssignedRequests.requestType);
-                            changeAssignedFilter('batchRequest', myAssignedRequests.batchRequest);
-                            changeAssignedFilter('fsn', myAssignedRequests.concept);
-                            changeAssignedFilter('jiraTicketId', myAssignedRequests.jiraTicketId);
-                            changeAssignedFilter('topic', myAssignedRequests.topic);
-                            changeAssignedFilter('manager', myAssignedRequests.manager);
-                            changeAssignedFilter('status', myAssignedRequests.status);
-                            changeAssignedFilter('author', myAssignedRequests.ogirinatorId);
-                            changeAssignedFilter('requestId', myAssignedRequests.requestId);
-                            changeAssignedFilter('summary', myAssignedRequests.summary);
-                            changeAssignedFilter('trackerId', myAssignedRequests.trackerId);
-                            changeAssignedFilter('count', myAssignedRequests.count);
-                            changeAssignedRequestsPageSize(myAssignedRequests.limit);
-                            changeAssignedRequestsPage(myAssignedRequests.offset);
-                            changeAssignedRequestsSorting(myAssignedRequests.sorting);
-                            changeAssignedFilter('requestDate', {
-                                startDate: myAssignedRequests.requestDateFrom,
-                                endDate: myAssignedRequests.requestDateTo
-                            });
-                            changeMyRequestFilter('statusDate', {
-                                startDate: myAssignedRequests.statusDateFrom,
-                                endDate: myAssignedRequests.statusDateTo
-                            });
-                            if(myAssignedRequests.requestDateFrom !== 0 && myAssignedRequests.requestDateTo !== 0){
-                                vm.daterangeMAR = {
-                                    startDate: new Date(myAssignedRequests.requestDateFrom),
-                                    endDate: new Date(myAssignedRequests.requestDateTo)
-                                };
-                            }
-                            if(myAssignedRequests.statusDateFrom !== 0 && myAssignedRequests.statusDateTo !== 0){
-                                vm.lastModifiedDateRangeMAR = {
-                                    startDate: new Date(myAssignedRequests.statusDateFrom),
-                                    endDate: new Date(myAssignedRequests.statusDateTo)
-                                };
-                            }
-                        }
-                    }
-                    if(!vm.isViewer && !vm.isRequester){
-                    //load projects
-                        vm.projects = requestService.getProjectsList();
-                        if(!vm.projects){
-                            loadProjects();
-                        }
-                    }
-                });
+                loadData();
                 
                 vm.enabledColumns = requestService.getSavedColumns();
 
@@ -427,7 +466,7 @@ angular
 
             var loadProjects = function() {
                 vm.loadingProjects = true;
-                scaService.getProjects().then(function(response) {
+                requestService.getProjects().then(function(response) {
                     response.sort(function(a, b) {
                         return utilsService.compareStrings(a.title, b.title);
                     });
@@ -1120,7 +1159,7 @@ angular
                 return milliseconds.getTime();
             };
 
-            var buildRequestList = function(typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, summary, trackerId, manager, status, author, requestId, requestType, showClosedRequests, statusDateFrom, statusDateTo){
+            var buildRequestList = function (typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, summary, trackerId, manager, status, author, requestId, requestType, showClosedRequests, statusDateFrom, statusDateTo, lastStatusModifier){
                 var requestList = {};
                 requestList.batchRequest = batchRequest;
                 requestList.concept = fsn;
@@ -1144,6 +1183,7 @@ angular
                 requestList.statusDateTo = convertDateToMilliseconds(statusDateTo);
                 requestList.summary = summary;
                 requestList.trackerId = trackerId;
+                requestList.lastStatusModifier = lastStatusModifier;
                 return requestList;
 
             };
@@ -1153,10 +1193,11 @@ angular
             var requestTableParams = new NgTableParams({
                     page: 1,
                     count: 10,
-                    sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'desc', id: 'desc'},
+                    //sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'desc', id: 'desc'},
+                    sorting: {'requestHeader.statusDate': 'desc', id: 'desc'},
                     filter: {
                         status: $routeParams.status,
-						manager: $routeParams.manager,
+						      manager: $routeParams.manager,
                         requestDate: {
                             startDate: null,
                             endDate: null
@@ -1205,7 +1246,8 @@ angular
                             params.filter().requestType,
                             vm.showClosedRequests,
                             params.filter().statusDate.startDate,
-                            params.filter().statusDate.endDate
+                            params.filter().statusDate.endDate,
+                            params.filter().lastStatusModifier
                         );
 
                         if(myRequests === undefined){
@@ -1214,7 +1256,7 @@ angular
 
                         //set filter values
                         requestService.setFilterValues(filterValues, params.sorting());
-
+                        myRequests.isInboxStyle = true;
                         return requestService.getRequests(myRequests).then(function (requests) {
                             isDateRangeFilteredFirstTime = true;
                             notificationService.sendMessage('crs.request.message.listLoaded', 5000);
@@ -1239,7 +1281,8 @@ angular
             var assignedRequestTableParams = new NgTableParams({
                     page: 1,
                     count: 10,
-                    sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'desc', id: 'desc'},
+                  //sorting: {'requestHeader.requestDate': 'desc', batchRequest: 'desc', id: 'desc'},
+                    sorting: {'requestHeader.statusDate': 'desc', id: 'desc'},
                     filter: {
                         status: $routeParams.status,
                         manager: $routeParams.manager,
@@ -1291,7 +1334,8 @@ angular
                             params.filter().requestType,
                             vm.showClosedRequests,
                             params.filter().statusDate.startDate,
-                            params.filter().statusDate.endDate
+                            params.filter().statusDate.endDate,
+                            params.filter().lastStatusModifier
                         );
 
                         if(myAssignedRequests === undefined){
@@ -1300,6 +1344,7 @@ angular
 
                         //set filter values
                         requestService.setAssignedFilterValues(filterValues, params.sorting());
+                        myAssignedRequests.isInboxStyle = true;
                         return requestService.getRequests(myAssignedRequests).then(function (requests) {
                             isDateRangeFilteredFirstTime = true;
                             notificationService.sendMessage('crs.request.message.listLoaded', 5000);
@@ -1379,7 +1424,8 @@ angular
                             params.filter().requestType,
                             vm.showClosedRequests,
                             params.filter().statusDate.startDate,
-                            params.filter().statusDate.endDate
+                            params.filter().statusDate.endDate,
+                            params.filter().lastStatusModifier
                         );
                         if(subbmitedRequests === undefined){
                             subbmitedRequests = filterValues;
@@ -1552,6 +1598,26 @@ angular
                 });
             };
 
+            var searchTask = function ($event, list) {
+                var keyCode = $event.which || $event.keyCode;
+                if (keyCode === 13) {
+                    switch (list) {
+                        case 'my-requests':
+                            vm.tableParams.filter().search = vm.searchText;    
+                            vm.tableParams.reload();
+                            break;
+                        case 'submitted-requests':
+                            vm.submittedTableParams.filter().search = vm.searchText;    
+                            vm.submittedTableParams.reload();
+                            break;
+                        case 'my-assigned-requests':
+                            vm.assignedRequestTableParams.filter().search = vm.searchText;    
+                            vm.assignedRequestTableParams.reload();
+                            break;
+                    }
+                }
+            };
+
             $scope.$watch(function(){
                 return vm.enabledColumns;
             }, function(newVal){
@@ -1560,6 +1626,310 @@ angular
                 }
             });
 
+
+            var onHoldSelectedRequests = function () {
+                var action = bulkAction.onHold;
+                var selectedRequests = vm.selectedRequests,
+                    onHoldRequestIds = [];
+                if ($routeParams.list === 'submitted-requests') {
+                    selectedRequests = vm.selectedSubmittedRequests;
+                } else if ($routeParams.list === 'my-assigned-requests') {
+                    selectedRequests = vm.selectedMyAssignedRequests;
+                } else if ($routeParams.list === 'requests') {
+                    selectedRequests = vm.selectedRequests;
+                } else {
+                    if (vm.isAdmin || vm.isStaff) {
+                        selectedRequests = vm.selectedMyAssignedRequests;
+                    } else {
+                        selectedRequests = vm.selectedRequests;
+                    }
+                }
+                if (selectedRequests &&
+                    selectedRequests.items) {
+                    angular.forEach(selectedRequests.items, function (isSelected, requestId) {
+                        if (isSelected) {
+                            onHoldRequestIds.push(requestId);
+                        }
+                    });
+                    if (onHoldRequestIds.length > 0) {
+                        var modalInstance = $uibModal.open({
+                            templateUrl: 'components/request/modal-change-request-status.html',
+                            controller: 'ModalChangeRequestStatusCtrl as modal',
+                            resolve: {
+                                requestStatus: function () {
+                                    return STATISTICS_STATUS.ON_HOLD.value;
+                                },
+                                data: function () {
+                                    return [];
+                                }
+                            }
+                        });
+
+                        modalInstance.result.then(function (rs) {
+                            var data = {
+                                data: {
+                                    additionalInfo: rs
+                                },
+                                requestIds: onHoldRequestIds
+                            };
+                            requestService.bulkAction(data, action).then(function (response) {
+                                if (response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value) {
+                                    bulkActionRespondingModal(response.id, BULK_ACTION.ON_HOLD.langKey);
+                                }
+                            });
+                        });
+                    } else {
+                        notificationService.sendMessage('Please select at least a request to move to on hold.', 5000);
+                    }
+                }
+            };
+
+            var waitingForInternalInputSelectedRequests = function () {
+                var action = bulkAction.waitingForInternalInput;
+                var selectedRequests = vm.selectedRequests,
+                    waitingForInternalInputRequestIds = [];
+                if ($routeParams.list === 'submitted-requests') {
+                    selectedRequests = vm.selectedSubmittedRequests;
+                } else if ($routeParams.list === 'my-assigned-requests') {
+                    selectedRequests = vm.selectedMyAssignedRequests;
+                } else if ($routeParams.list === 'requests') {
+                    selectedRequests = vm.selectedRequests;
+                } else {
+                    if (vm.isAdmin || vm.isStaff) {
+                        selectedRequests = vm.selectedMyAssignedRequests;
+                    } else {
+                        selectedRequests = vm.selectedRequests;
+                    }
+                }
+                if (selectedRequests &&
+                    selectedRequests.items) {
+                    angular.forEach(selectedRequests.items, function (isSelected, requestId) {
+                        if (isSelected) {
+                            waitingForInternalInputRequestIds.push(requestId);
+                        }
+                    });
+                    if (waitingForInternalInputRequestIds.length > 0) {
+                        var modalInstance = $uibModal.open({
+                            templateUrl: 'components/request/modal-change-request-status.html',
+                            controller: 'ModalChangeRequestStatusCtrl as modal',
+                            resolve: {
+                                requestStatus: function () {
+                                    return STATISTICS_STATUS.ON_HOLD.value;
+                                },
+                                data: function () {
+                                    return [];
+                                }
+                            }
+                        });
+
+                        modalInstance.result.then(function (rs) {
+                            var data = {
+                                data: {
+                                    additionalInfo: rs
+                                },
+                                requestIds: waitingForInternalInputRequestIds
+                            };
+                            requestService.bulkAction(data, action).then(function (response) {
+                                if (response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value) {
+                                    bulkActionRespondingModal(response.id, BULK_ACTION.INTERNAL_INPUT_NEEDED.langKey);
+                                }
+                            });
+                        });
+                    } else {
+                        notificationService.sendMessage('Please select at least a request to move to waiting internal input.', 5000);
+                    }
+                }
+            };
+
+            var forwardSelectedRequests = function () {
+                var action = bulkAction.forward;
+                var selectedRequests = vm.selectedRequests,
+                    forwardRequestIds = [];
+                if ($routeParams.list === 'submitted-requests') {
+                    selectedRequests = vm.selectedSubmittedRequests;
+                } else if ($routeParams.list === 'my-assigned-requests') {
+                    selectedRequests = vm.selectedMyAssignedRequests;
+                } else if ($routeParams.list === 'requests') {
+                    selectedRequests = vm.selectedRequests;
+                } else {
+                    if (vm.isAdmin || vm.isStaff) {
+                        selectedRequests = vm.selectedMyAssignedRequests;
+                    } else {
+                        selectedRequests = vm.selectedRequests;
+                    }
+                }
+                if (selectedRequests &&
+                    selectedRequests.items) {
+                    angular.forEach(selectedRequests.items, function (isSelected, requestId) {
+                        if (isSelected) {
+                            forwardRequestIds.push(requestId);
+                        }
+                    });
+                    if (forwardRequestIds.length > 0) {
+                        var modalInstance = $uibModal.open({
+                            templateUrl: 'components/request/modal-change-request-status.html',
+                            controller: 'ModalChangeRequestStatusCtrl as modal',
+                            resolve: {
+                                requestStatus: function () {
+                                    return STATISTICS_STATUS.FORWARDED.value;
+                                },
+                                data: function () {
+                                    return [];
+                                }
+                            }
+                        });
+
+                        modalInstance.result.then(function (rs) {
+                            var data = {
+                                data: {
+                                    additionalInfo: {
+                                        reason: rs
+                                    }
+                                },
+                                requestIds: forwardRequestIds
+                            };
+                            requestService.bulkAction(data, action).then(function (response) {
+                                if (response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value) {
+                                    bulkActionRespondingModal(response.id, BULK_ACTION.FORWARDED.langKey);
+                                }
+                            });
+                        });
+                    } else {
+                        notificationService.sendMessage('Please select at least a request to move to forward.', 5000);
+                    }
+                }
+            };
+
+            var canForwardRequest = function () {
+                var config = configService.getConfigFromServer();
+                return (config && config !== undefined && config.forwardAllowed);
+            };
+
+            var pendingClarificationSelectedRequests = function () {
+                var action = bulkAction.clarification;
+                var selectedRequests = vm.selectedRequests,
+                    pendingClarificationRequestIds = [];
+                if ($routeParams.list === 'submitted-requests') {
+                    selectedRequests = vm.selectedSubmittedRequests;
+                } else if ($routeParams.list === 'my-assigned-requests') {
+                    selectedRequests = vm.selectedMyAssignedRequests;
+                } else if ($routeParams.list === 'requests') {
+                    selectedRequests = vm.selectedRequests;
+                } else {
+                    if (vm.isAdmin || vm.isStaff) {
+                        selectedRequests = vm.selectedMyAssignedRequests;
+                    } else {
+                        selectedRequests = vm.selectedRequests;
+                    }
+                }
+                if (selectedRequests &&
+                    selectedRequests.items) {
+                    angular.forEach(selectedRequests.items, function (isSelected, requestId) {
+                        if (isSelected) {
+                            pendingClarificationRequestIds.push(requestId);
+                        }
+                    });
+                    if (pendingClarificationRequestIds.length > 0) {
+                        var modalInstance = $uibModal.open({
+                            templateUrl: 'components/request/modal-change-request-status.html',
+                            controller: 'ModalChangeRequestStatusCtrl as modal',
+                            resolve: {
+                                requestStatus: function () {
+                                    return STATISTICS_STATUS.CLARIFICATION_NEEDED.value;
+                                },
+                                data: function () {
+                                    return [];
+                                }
+                            }
+                        });
+
+                        modalInstance.result.then(function (rs) {
+                            var data = {
+                                data: {
+                                    additionalInfo: {
+                                        reason: rs
+                                    }
+                                },
+                                requestIds: pendingClarificationRequestIds
+                            };
+                            requestService.bulkAction(data, action).then(function (response) {
+                                if (response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value) {
+                                    bulkActionRespondingModal(response.id, BULK_ACTION.CLARIFICATION_NEEDED.langKey);
+                                }
+                            });
+                        });
+                    } else {
+                        notificationService.sendMessage('Please select at least a request to move to clarification.', 5000);
+                    }
+                }
+            };
+
+            var inceptionElaborationSelectedRequests = function () {
+                var action = bulkAction.inceptionElaboration;
+                var selectedRequests = vm.selectedRequests,
+                    inceptionElaborationRequestIds = [];
+                if ($routeParams.list === 'submitted-requests') {
+                    selectedRequests = vm.selectedSubmittedRequests;
+                } else if ($routeParams.list === 'my-assigned-requests') {
+                    selectedRequests = vm.selectedMyAssignedRequests;
+                } else if ($routeParams.list === 'requests') {
+                    selectedRequests = vm.selectedRequests;
+                } else {
+                    if (vm.isAdmin || vm.isStaff) {
+                        selectedRequests = vm.selectedMyAssignedRequests;
+                    } else {
+                        selectedRequests = vm.selectedRequests;
+                    }
+                }
+                if (selectedRequests &&
+                    selectedRequests.items) {
+                    angular.forEach(selectedRequests.items, function (isSelected, requestId) {
+                        if (isSelected) {
+                            inceptionElaborationRequestIds.push(requestId);
+                        }
+                    });
+                    if (inceptionElaborationRequestIds.length > 0) {
+                        var modalInstance = $uibModal.open({
+                            templateUrl: 'components/request/modal-change-request-status.html',
+                            controller: 'ModalChangeRequestStatusCtrl as modal',
+                            resolve: {
+                                requestStatus: function () {
+                                    return 'inInceptionElaboration';
+                                },
+                                data: function () {
+                                    return [];
+                                }
+                            }
+                        });
+
+                        modalInstance.result.then(function (rs) {
+                            var data = {
+                                data: {
+                                    additionalInfo: {
+                                        contentRequestUrl: rs.contentRequestUrl,
+                                        trackerId: rs.trackerId
+                                    }
+                                },
+                                requestIds: inceptionElaborationRequestIds
+                            };
+                            requestService.bulkAction(data, action).then(function (response) {
+                                if (response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value) {
+                                    bulkActionRespondingModal(response.id, BULK_ACTION.IN_INCEPTION_ELABORATION.langKey);
+                                }
+                            });
+                        });
+                    } else {
+                        notificationService.sendMessage('Please select at least a request to move to inception/elaboration.', 5000);
+                    }
+                }
+            };
+
+            vm.inceptionElaborationSelectedRequests = inceptionElaborationSelectedRequests;
+            vm.pendingClarificationSelectedRequests = pendingClarificationSelectedRequests;
+            vm.canForwardRequest = canForwardRequest;
+            vm.forwardSelectedRequests = forwardSelectedRequests;
+            vm.onHoldSelectedRequests = onHoldSelectedRequests;
+            vm.waitingForInternalInputSelectedRequests = waitingForInternalInputSelectedRequests;
             vm.showFilter = false;
             vm.isAdmin = false;
             vm.isViewer = false;
@@ -1585,6 +1955,7 @@ angular
             vm.withdrawSelectedRequests = withdrawSelectedRequests;
             vm.rejectSelectedRequests = rejectSelectedRequests;
             vm.reassignSelectedRequestsToRequestor = reassignSelectedRequestsToRequestor;
+            vm.searchTask = searchTask;
             vm.daterange = {
                 startDate: null,
                 endDate: null
@@ -1614,6 +1985,7 @@ angular
               showDropdowns: true,
               type: 'moment'
             };
+            vm.searchText = '';
             
             initView();
         }
