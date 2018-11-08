@@ -5,3 +5,9 @@ dist/
 /bower_components/
 /node_modules/
 crs-web-ui.iml
+.project
+.settings/org.eclipse.jdt.apt.core.prefs
+.settings/org.eclipse.jdt.core.prefs
+.settings/org.eclipse.m2e.core.prefs
+.classpath
+,settings
