@@ -1,4 +1,5 @@
 <nav class="navbar navbar-default navbar-fixed-top" ng-class="{scroll: (scroll>10)}" ng-controller="HeaderCtrl as header">
+    <div class="announcement-banner" ng-if="header.announcement" ng-bind-html="header.announcement"></div>
     <div class="container-fluid">
         <ul class="nav navbar-nav navbar-left navbar-left-no-collapse col-md-8 no-padding pull-left">
             <li>

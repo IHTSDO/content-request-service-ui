@@ -18,7 +18,9 @@ angular
             var timeout = null;
             var messagePoller;
             var messagePollingInterval = configService.getMessagePollingInterval(),
-                appName = configService.getConfig().app.header;
+                appName = configService.getConfig().app.header,
+               announcement = configService.getConfig().app.announcement;
+
 
            $rootScope.$on('$locationChangeSuccess', function (event) {
                try{
@@ -223,6 +225,7 @@ angular
             vm.loadMoreMessages = loadMoreMessages;
             vm.clearMessages = clearMessages;
             vm.appName = appName;
+            vm.announcement = announcement;
 
             initView();
         }
