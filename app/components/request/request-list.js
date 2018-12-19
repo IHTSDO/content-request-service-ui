@@ -409,7 +409,7 @@ angular
                         }
                     }
                 });
-            }
+            };
 
             var initView = function () {
                 vm.searchText = '';

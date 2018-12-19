@@ -581,7 +581,7 @@ angular
                 requestService.getNewForwardingRequestStatus(forwardDestinationId).then(function (data) {
                     vm.forwardDestinationStatus = data;
                 });
-            }
+            };
 
             var loadRequest = function() {
                 var originConcept;
@@ -2050,7 +2050,7 @@ angular
                     controller: 'ModalAssignRequestToRequestorCtrl as modal',
                     resolve: {
                         requestors: function() {
-                            return vm.authors;
+                            return vm.requestors;
                         }
                     }
                 });

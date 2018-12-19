@@ -27,7 +27,7 @@ angular
 
             var authoringEnpointUrl = function (resource) {
                 return authoringEndpoint + resource;
-            }
+            };
 
             var sendRequest = function (request) {
                 var deferred = $q.defer();
