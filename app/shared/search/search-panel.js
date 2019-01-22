@@ -22,6 +22,7 @@ angular.module('conceptRequestServiceApp.search')
             $scope.loadPerformed = false;
             $scope.loadMoreEnabled = false;
             $scope.searchStr = '';
+            $scope.searchAfter = '';
 
             // the displayed results
             $scope.results = [];
@@ -181,8 +182,9 @@ angular.module('conceptRequestServiceApp.search')
                     $scope.storedResults = [];
                 }
 
-                snowowlService.findConcepts(null, null, $scope.searchStr, $scope.storedResults.length, $scope.resultsSize).then(function (concepts) {
+                snowowlService.findConcepts(null, null, $scope.searchStr, $scope.searchAfter, $scope.resultsSize).then(function (response) {
 
+                    var concepts = response.items ? response.items : response;
 
                     if (!concepts) {
                         notificationService.sendError('Unexpected error searching for concepts', 10000);
@@ -194,6 +196,7 @@ angular.module('conceptRequestServiceApp.search')
 
                     //console.log($scope.storedResults.length);
                     $scope.storedResults = appendResults ? $scope.storedResults.concat(concepts) : concepts;
+                    $scope.searchAfter = response.searchAfter;
 
                     $scope.processResults();
 
@@ -234,6 +237,7 @@ angular.module('conceptRequestServiceApp.search')
                 $scope.results = [];
                 $scope.searchStatus = null;
                 $scope.loadPerformed = false;
+                $scope.searchAfter = '';
             };
 
             /**
