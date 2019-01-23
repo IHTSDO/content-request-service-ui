@@ -180,22 +180,23 @@ angular
                                 default:
                                 // search concepts
                                 return snowowlService.findConcepts(null, null, viewValue, 0, 20).then(function (response) {
+                                   var items = response.items ? response.items : response;
                                     //restore error status
                                     if (!isFocused) {
                                         validateConceptInput(viewValue);
                                     }
 
                                     // remove duplicates
-                                    for (var i = 0; i < response.length; i++) {
-                                        for (var j = response.length - 1; j > i; j--) {
-                                            if (response[j].concept.conceptId === response[i].concept.conceptId) {
+                                    for (var i = 0; i < items.length; i++) {
+                                        for (var j = items.length - 1; j > i; j--) {
+                                            if (items[j].concept.conceptId === items[i].concept.conceptId) {
                                                 // console.debug(' duplicate ', j, response[j]);
-                                                response.splice(j, 1);
+                                               items.splice(j, 1);
                                                 j--;
                                             }
                                         }
                                     }
-                                    return removeInactiveConcept(response);
+                                    return removeInactiveConcept(items);
                                 }).finally(function () {
                                     $scope.showLoading = false;
                                     $scope.conceptStatus.loading = false;
@@ -205,22 +206,23 @@ angular
                         }
                         // search concepts
                         return snowowlService.findConcepts(null, null, viewValue, 0, 20).then(function (response) {
-                            //restore error status
-                            if (!isFocused) {
-                                validateConceptInput(viewValue);
-                            }
+                           var items = response.items ? response.items : response;
+                           //restore error status
+                           if (!isFocused) {
+                              validateConceptInput(viewValue);
+                           }
 
-                            // remove duplicates
-                            for (var i = 0; i < response.length; i++) {
-                                for (var j = response.length - 1; j > i; j--) {
-                                    if (response[j].concept.conceptId === response[i].concept.conceptId) {
-                                        // console.debug(' duplicate ', j, response[j]);
-                                        response.splice(j, 1);
-                                        j--;
-                                    }
-                                }
-                            }
-                            return removeInactiveConcept(response);
+                           // remove duplicates
+                           for (var i = 0; i < items.length; i++) {
+                              for (var j = items.length - 1; j > i; j--) {
+                                 if (items[j].concept.conceptId === items[i].concept.conceptId) {
+                                    // console.debug(' duplicate ', j, response[j]);
+                                    items.splice(j, 1);
+                                    j--;
+                                 }
+                              }
+                           }
+                           return removeInactiveConcept(items);
                         }).finally(function () {
                             $scope.showLoading = false;
                             $scope.conceptStatus.loading = false;

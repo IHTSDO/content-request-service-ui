@@ -89,7 +89,6 @@ angular.module('conceptRequestServiceApp.snowowl')
                 };
 
                 var buildSearchResultConceptItem = function (response) {
-
                     return {
                         active: response.data.active,
                         term: response.data.preferredSynonym,
@@ -191,7 +190,7 @@ angular.module('conceptRequestServiceApp.snowowl')
                         searchParams = {
                             query: searchStr,
                             limit: maxResults,
-                            offset: offset
+                            searchAfter: offset !== 0 ? offset : ''
                         };
 
                         sendSnowowlRequest('GET', SNOWOWL_API.BROWSER, null, null, SNOWOWL_TARGET.DESCRIPTION.path, null, searchParams, null)

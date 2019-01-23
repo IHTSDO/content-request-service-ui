@@ -1516,9 +1516,13 @@ angular
                         $rootScope.desTerminilogy = mainItem.destinationTerminology;
 
                         // load destination concept
-                        request.destinationConcept = {
-                            conceptId: mainItem.destConceptId
-                        };
+                       snowowlService.getFullConcept(null, null, mainItem.destConceptId).then(function(response) {
+                          request.destinationConcept = {
+                             conceptId: mainItem.destConceptId,
+                             fsn: response.fsn
+                          };
+
+                       });
 
                         // load relationship type
                         snowowlService.getFullConcept(null, null, mainItem.relationshipType).then(function(response) {
