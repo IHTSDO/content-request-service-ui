@@ -1313,7 +1313,7 @@ angular
                     case REQUEST_TYPE.CHANGE_RELATIONSHIP.value:
                         item.conceptId = concept.conceptId;
                         item.conceptFSN = concept.fsn;
-                        item.relationshipType = changedTarget.type.conceptId;
+                        item.relationshipType = request.relationshipType ? request.relationshipType.conceptId : null;
                         item.destConceptId = (request.destinationConcept) ? request.destinationConcept.conceptId : concept.conceptId;
                         item.relationshipId = changedTarget.relationshipId;
                         item.refinability = definitionOfChanges.refinability;
@@ -1475,9 +1475,13 @@ angular
                         $rootScope.desTerminilogy = mainItem.destinationTerminology;
 
                         // load destination concept
-                        request.destinationConcept = {
-                            conceptId: mainItem.destConceptId
-                        };
+                        snowowlService.getFullConcept(null, null, mainItem.destConceptId).then(function(response) {
+                            request.destinationConcept = {
+                                conceptId: mainItem.destConceptId,
+                                fsn: response.fsn
+                            };
+
+                        });
 
                         // load relationship type
                         snowowlService.getFullConcept(null, null, mainItem.relationshipType).then(function(response) {

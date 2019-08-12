@@ -8,7 +8,7 @@
     "endpoint": {
         "crs": "/crs/",
         "ims": "https://dev-ims.ihtsdotools.org/",
-        "snowowl": "/snowowl/",
+        "snowowl": "/snowstorm/",
         "authoring": "/authoring-services/",
         "jira": "https://dev-workflow.ihtsdotools.org/",
         "ims-api": "https://dev-ims.ihtsdotools.org//api/"
@@ -18,7 +18,7 @@
     "messagePollingInterval": 10000,
     "snomed-ct": {
         "path": "snomed-ct/v2/",
-        "edition": "MAIN/2017-07-31/SNOMEDCT-USFIX",
+        "edition": "MAIN/2019-07-31",
         "release": ""
     },
     "sca": {
