@@ -220,6 +220,7 @@
 
                                 snowowlServiceProvider.config(data['snomed-ct']);
                                 snowowlServiceProvider.setSnowowlEndpoint(data.endpoint.snowowl);
+                                snowowlServiceProvider.setUseAdapter(data.endpoint.useAdapter);
 
                                 scaServiceProvider.config(data['sca']);
                                 scaServiceProvider.setSnowowlEndpoint(data.endpoint.snowowl);
