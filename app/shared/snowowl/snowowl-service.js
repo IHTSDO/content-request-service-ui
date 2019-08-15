@@ -264,7 +264,6 @@ angular.module('conceptRequestServiceApp.snowowl')
                             data.forEach(transformConcept);
                          } else {
                             transformConcept(data);
-                            console.log(data);
                          }
                       }
                    }
@@ -274,7 +273,7 @@ angular.module('conceptRequestServiceApp.snowowl')
                 var transformConcept = function(item) {
                     if(item && item.fsn instanceof Object) {
                         item.fsn = item.fsn.term;
-                        item.preferredSynonym = item.pt.name;
+                        item.preferredSynonym = item.pt.term;
                         if(item.classAxioms) {
                             var newRelationships = [];
                             for(var i=0;i< item.classAxioms.length;i++) {
@@ -311,7 +310,7 @@ angular.module('conceptRequestServiceApp.snowowl')
                       definitionStatus: relationship.definitionStatus
                    };
                    convertedRelationship.type.fsn = relationship.type.fsn.term;
-                   delete convertedRelationship.type.pt;
+                   convertedRelationship.type.pt = relationship.type.pt.term;
 
                    return convertedRelationship;
                };
