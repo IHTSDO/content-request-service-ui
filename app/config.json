@@ -8,17 +8,18 @@
     "endpoint": {
         "crs": "/crs/",
         "ims": "https://dev-ims.ihtsdotools.org/",
-        "snowowl": "/snowstorm/",
+        "snowowl": "/snowowl/",
         "authoring": "/authoring-services/",
         "jira": "https://dev-workflow.ihtsdotools.org/",
-        "ims-api": "https://dev-ims.ihtsdotools.org//api/"
+        "ims-api": "https://dev-ims.ihtsdotools.org/api/",
+        "useAdapter": true
     },
     "xhrTimeout": 50000,
     "fileStatusPollingInterval": 5000,
     "messagePollingInterval": 10000,
     "snomed-ct": {
         "path": "snomed-ct/v2/",
-        "edition": "MAIN/2019-07-31",
+        "edition": "MAIN",
         "release": ""
     },
     "sca": {

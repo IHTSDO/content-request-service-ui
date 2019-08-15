@@ -1532,7 +1532,8 @@ angular
                         snowowlService.getFullConcept(null, null, mainItem.relationshipType).then(function(response) {
                             request.relationshipType = {
                                 conceptId: mainItem.relationshipType,
-                                fsn: response.fsn
+                                fsn: response.fsn,
+                                pt: response.preferredSynonym
                             };
                         });
 

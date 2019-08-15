@@ -4,10 +4,14 @@
 angular.module('conceptRequestServiceApp.snowowl')
     .provider('snowowlService', function () {
         var provider = this;
-        var config, snowowlEndpoint;
+        var config, snowowlEndpoint, useAdapter;
 
         provider.setSnowowlEndpoint = function (endpoint) {
             snowowlEndpoint = endpoint;
+        };
+
+        provider.setUseAdapter = function(adapter) {
+           useAdapter = adapter;
         };
 
         provider.config = function (snowowlConfig) {
@@ -234,12 +238,9 @@ angular.module('conceptRequestServiceApp.snowowl')
                         });
                 };
 
-                var isUsingSnowstormAPI = function() {
-                   return snowowlEndpoint.includes("/snowstorm/");
-                };
 
                 var transformConceptAttributeValues = function (data) {
-                   if(isUsingSnowstormAPI()) {
+                   if(useAdapter) {
                       if(data) {
                          if(Array.isArray(data)) {
                             data.forEach(transformConceptAttributeValue);
@@ -258,7 +259,7 @@ angular.module('conceptRequestServiceApp.snowowl')
                 };
 
                 var transformConceptSnowowlToSnowstorm = function(data) {
-                   if(isUsingSnowstormAPI()) {
+                   if(useAdapter) {
                       if(data) {
                          if(Array.isArray(data)) {
                             data.forEach(transformConcept);
@@ -273,7 +274,11 @@ angular.module('conceptRequestServiceApp.snowowl')
                 var transformConcept = function(item) {
                     if(item && item.fsn instanceof Object) {
                         item.fsn = item.fsn.term;
-                        item.preferredSynonym = item.pt.term;
+                        if(item.pt) {
+                           item.preferredSynonym = item.pt.term;
+                        } else if(item.preferredSynonym instanceof Object) {
+                           item.preferredSynonym = item.preferredSynonym.term;
+                        }
                         if(item.classAxioms) {
                             var newRelationships = [];
                             for(var i=0;i< item.classAxioms.length;i++) {
@@ -311,7 +316,6 @@ angular.module('conceptRequestServiceApp.snowowl')
                    };
                    convertedRelationship.type.fsn = relationship.type.fsn.term;
                    convertedRelationship.type.pt = relationship.type.pt.term;
-
                    return convertedRelationship;
                };
 
