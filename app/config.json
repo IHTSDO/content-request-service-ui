@@ -9,6 +9,7 @@
         "crs": "/crs/",
         "ims": "https://dev-ims.ihtsdotools.org/",
         "snowowl": "/snowowl/",
+        "termServer": "/term-server/",
         "authoring": "/authoring-services/",
         "jira": "https://dev-workflow.ihtsdotools.org/",
         "ims-api": "https://dev-ims.ihtsdotools.org/api/",

@@ -219,11 +219,11 @@
                                 configServiceProvider.config(data);
 
                                 snowowlServiceProvider.config(data['snomed-ct']);
-                                snowowlServiceProvider.setSnowowlEndpoint(data.endpoint.snowowl);
+                                snowowlServiceProvider.setSnowowlEndpoint(data.endpoint.termServer);
                                 snowowlServiceProvider.setUseAdapter(data.endpoint.useAdapter);
 
                                 scaServiceProvider.config(data['sca']);
-                                scaServiceProvider.setSnowowlEndpoint(data.endpoint.snowowl);
+                                scaServiceProvider.setSnowowlEndpoint(data.endpoint.termServer);
 
                                 jiraServiceProvider.config(data['jira']);
                                 jiraServiceProvider.setJiraEndpoint(data.endpoint.jira);
