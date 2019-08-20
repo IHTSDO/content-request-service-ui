@@ -184,7 +184,7 @@ angular.module('conceptRequestServiceApp.search')
 
                 snowowlService.findConcepts(null, null, $scope.searchStr, $scope.searchAfter, $scope.resultsSize).then(function (response) {
 
-                    var concepts = response.items ? response.items : response;
+                    var concepts = response.items ? snowowlService.transformConceptSnowowlToSnowstorm(response.items) : response;
 
                     if (!concepts) {
                         notificationService.sendError('Unexpected error searching for concepts', 10000);

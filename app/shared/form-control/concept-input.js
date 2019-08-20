@@ -180,7 +180,7 @@ angular
                                 default:
                                 // search concepts
                                 return snowowlService.findConcepts(null, null, viewValue, 0, 20).then(function (response) {
-                                   var items = response.items ? response.items : response;
+                                   var items = response.items ? snowowlService.transformConceptSnowowlToSnowstorm(response.items) : response;
                                     //restore error status
                                     if (!isFocused) {
                                         validateConceptInput(viewValue);
@@ -206,7 +206,7 @@ angular
                         }
                         // search concepts
                         return snowowlService.findConcepts(null, null, viewValue, 0, 20).then(function (response) {
-                           var items = response.items ? response.items : response;
+                           var items = response.items ? snowowlService.transformConceptSnowowlToSnowstorm(response.items) : response;
                            //restore error status
                            if (!isFocused) {
                               validateConceptInput(viewValue);

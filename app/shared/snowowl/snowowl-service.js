@@ -4,10 +4,14 @@
 angular.module('conceptRequestServiceApp.snowowl')
     .provider('snowowlService', function () {
         var provider = this;
-        var config, snowowlEndpoint;
+        var config, snowowlEndpoint, useAdapter;
 
         provider.setSnowowlEndpoint = function (endpoint) {
             snowowlEndpoint = endpoint;
+        };
+
+        provider.setUseAdapter = function(adapter) {
+           useAdapter = adapter;
         };
 
         provider.config = function (snowowlConfig) {
@@ -89,6 +93,10 @@ angular.module('conceptRequestServiceApp.snowowl')
                 };
 
                 var buildSearchResultConceptItem = function (response) {
+                    var fsn = response.data.fsn;
+                    if(response.data.fsn instanceof Object) {
+                        fsn = response.data.fsn.term;
+                    }
                     return {
                         active: response.data.active,
                         term: response.data.preferredSynonym,
@@ -96,7 +104,7 @@ angular.module('conceptRequestServiceApp.snowowl')
                             active: response.data.active,
                             conceptId: response.data.conceptId,
                             definitionStatus: response.data.definitionStatus,
-                            fsn: response.data.fsn,
+                            fsn: fsn,
                             moduleId: response.data.moduleId
                         }
                     };
@@ -139,7 +147,7 @@ angular.module('conceptRequestServiceApp.snowowl')
 
                     return sendSnowowlRequest('GET', SNOWOWL_API.MRCM, projectKey, taskKey, SNOWOWL_TARGET.DOMAIN_ATTRIBUTE_VALUE.path, attributeId, params, null)
                         .then(function (response) {
-                            return (response.data && response.data.items) ? response.data.items : [];
+                            return (response.data && response.data.items) ? transformConceptAttributeValues(response.data.items) : [];
                         }, function () {
                             return null;
                         });
@@ -189,6 +197,7 @@ angular.module('conceptRequestServiceApp.snowowl')
                     } else { // otherwise, a text value, search by query
                         searchParams = {
                             query: searchStr,
+                            term: searchStr,
                             limit: maxResults,
                             searchAfter: offset !== 0 ? offset : ''
                         };
@@ -211,23 +220,110 @@ angular.module('conceptRequestServiceApp.snowowl')
                 function getFullConcept(projectKey, taskKey, conceptId) {
                     return sendSnowowlRequest('GET', SNOWOWL_API.BROWSER, projectKey, taskKey, SNOWOWL_TARGET.CONCEPT.path, conceptId, null, null)
                         .then(function (response) {
-                            return response.data;
+                            return transformConceptSnowowlToSnowstorm(response.data);
                         });
                 }
 
                 var getConceptParents = function (projectKey, taskKey, conceptId) {
                     return sendSnowowlRequest('GET', SNOWOWL_API.BROWSER, projectKey, taskKey, SNOWOWL_TARGET.CONCEPT.path, conceptId + '/parents', null, null)
                         .then(function (response) {
-                            return response.data;
+                            return transformConceptSnowowlToSnowstorm(response.data);
                         });
                 };
 
                 var getConceptChildren = function (projectKey, taskKey, conceptId) {
                     return sendSnowowlRequest('GET', SNOWOWL_API.BROWSER, projectKey, taskKey, SNOWOWL_TARGET.CONCEPT.path, conceptId + '/children', null, null)
                         .then(function (response) {
-                            return response.data;
+                            return transformConceptSnowowlToSnowstorm(response.data);
                         });
                 };
+
+
+                var transformConceptAttributeValues = function (data) {
+                   if(useAdapter) {
+                      if(data) {
+                         if(Array.isArray(data)) {
+                            data.forEach(transformConceptAttributeValue);
+                         } else {
+                            transformConceptAttributeValue(data);
+                         }
+                      }
+                   }
+                   return data;
+                };
+
+                var transformConceptAttributeValue = function (item) {
+                    if(item && item.fsn && !item.fsn.conceptId) {
+                        item.fsn.conceptId = item.id;
+                    }
+                };
+
+                var transformConceptSnowowlToSnowstorm = function(data) {
+                   if(useAdapter) {
+                      if(data) {
+                         if(Array.isArray(data)) {
+                            data.forEach(transformConcept);
+                         } else {
+                            transformConcept(data);
+                         }
+                      }
+                   }
+                    return data;
+                };
+
+                var transformConcept = function(item) {
+                    if(item && item.fsn instanceof Object) {
+                        item.fsn = item.fsn.term;
+                        if(item.pt) {
+                           item.preferredSynonym = item.pt.term;
+                        } else if(item.preferredSynonym instanceof Object) {
+                           item.preferredSynonym = item.preferredSynonym.term;
+                        }
+                        if(item.classAxioms) {
+                            var newRelationships = [];
+                            for(var i=0;i< item.classAxioms.length;i++) {
+                                if(item.classAxioms[i].active) {
+                                    var snowStormRelationships = item.classAxioms[i].relationships;
+                                    for(var j=0;j<snowStormRelationships.length;j++) {
+                                        newRelationships.push(convertRelationshipSnowstormToSnowowl(snowStormRelationships[j], true));
+                                    }
+                                }
+                            }
+                            for(i=0;i< item.relationships.length;i++) {
+                                if(item.relationships[i].characteristicType == 'INFERRED_RELATIONSHIP') {
+                                   newRelationships.push(convertRelationshipSnowstormToSnowowl(item.relationships[i], false));
+                                }
+                            }
+                            item.relationships = newRelationships;
+                        }
+                    } else if(item && item.concept && item.concept.fsn instanceof Object) {
+                        item.concept.fsn = item.concept.fsn.term;
+                    }
+                    delete item.pt;
+                    delete item.classAxioms;
+                    delete item.gciAxioms;
+                };
+
+                var convertRelationshipSnowstormToSnowowl = function(relationship, isAxiom) {
+                   var convertedRelationship = relationship;
+                   if(isAxiom) {
+                      convertedRelationship.relationshipId = relationship.sourceId + "_" + relationship.target.conceptId + "_" + relationship.type.conceptId;
+                   }
+                   convertedRelationship.target = {
+                      conceptId: relationship.target.conceptId,
+                      fsn: relationship.target.fsn.term,
+                      definitionStatus: relationship.definitionStatus
+                   };
+                   convertedRelationship.type = {
+                     fsn: relationship.type.fsn.term,
+                     pt: relationship.type.pt.term,
+                     conceptId: relationship.type.conceptId
+                   };
+                   return convertedRelationship;
+               };
+
+
+
 
                 var getConceptDescendants = function (projectKey, taskKey, conceptId, offset, limit) {
                     var params;
@@ -252,7 +348,7 @@ angular.module('conceptRequestServiceApp.snowowl')
 
                     return sendSnowowlRequest('GET', SNOWOWL_API.BROWSER, projectKey, taskKey, SNOWOWL_TARGET.CONCEPT.path, conceptId + '/descendants', params, null)
                         .then(function (response) {
-                            return response.data;
+                            return transformConceptSnowowlToSnowstorm(response.data);
                         });
                 };
 
@@ -305,7 +401,8 @@ angular.module('conceptRequestServiceApp.snowowl')
                     getConceptParents: getConceptParents,
                     getConceptDescendants: getConceptDescendants,
                     getConceptRelationshipsInbound: getConceptRelationshipsInbound,
-                    getConceptRelationshipsOutbound: getConceptRelationshipsOutbound
+                    getConceptRelationshipsOutbound: getConceptRelationshipsOutbound,
+                    transformConceptSnowowlToSnowstorm: transformConceptSnowowlToSnowstorm
                 };
             }
         ];
