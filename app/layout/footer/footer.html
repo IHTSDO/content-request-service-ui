@@ -7,20 +7,31 @@
             <li><a href="{{link.privacyPolicy}}" target="_blank">{{'crs.link.policy' | translate}}</a></li>
             <li><a href="{{link.contactUs}}" target="_blank">{{'crs.link.contact' | translate}}</a></li>
         </ul>
-        <button class="btn btn-primary navbar-right" style="margin:5px; padding:5px; font-size:10px;" id="myCustomTrigger" >{{'crs.link.feedback' | translate}}</button>
+        <!--<button class="btn btn-primary navbar-right" style="margin:5px; padding:5px; font-size:10px;" id="myCustomTrigger" >{{'crs.link.feedback' | translate}}</button>-->
         <ul class="nav navbar-nav navbar-right identity-services">
             <li><a>web: v{{clientVersion}} | server: v{{serverVersion}}</a></li>
         </ul>
+        <button type="button" class="btn btn-primary navbar-right" id="myCustomTrigger" style="margin:5px; padding:5px; font-size:10px;" onclick="FreshWidget.show();
+                                    return false;">{{'crs.link.feedback' | translate}}
+        </button>
     </div>
 </div>
-<script type="text/javascript" src="https://jira.ihtsdotools.org/s/2ebaf932312f53221f61a6838c666674-T/en_USgrrjqp/64027/64/1.4.27/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-US&collectorId=d0808496"></script>
-<script type="application/javascript">
-    window.ATL_JQ_PAGE_PROPS = {
-        "triggerFunction": function(showCollectorDialog) {
-            $("#myCustomTrigger").click(function(e) {
-                e.preventDefault();
-                showCollectorDialog();
-            });
-        }
-    };
+<!-- Using Freshdesk Widget for feedback -->
+<script type="text/javascript">
+   FreshWidget.init("", {
+      "queryString": "&widgetType=popup&formTitle=SNOMED+CT+Request Service+Feedback&submitTitle=Send+Feedback&submitThanks=Thank+you+for+your+feedback&captcha=yes&searchArea=no",
+      "utf8": "✓",
+      "backgroundImage": "https://s3.amazonaws.com/assets.freshdesk.com/widget/help-button.png",
+      "widgetType": "popup",
+      "buttonType": "image",
+      "buttonText": "Support",
+      "buttonColor": "white",
+      "buttonBg": "#00aadd",
+      "alignment": "1",
+      "offset": "-1500px",
+      "submitThanks": "Thank you for your feedback",
+      "formHeight": "500px",
+      "captcha": "yes",
+      "url": "https://ihtsdo.freshdesk.com"
+   });
 </script>
