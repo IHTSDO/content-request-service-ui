@@ -56,6 +56,26 @@
     </div>
 </div>
 <footer>
+    <!-- Using Freshdesk Widget for feedback -->
+    <script type="text/javascript" src="https://s3.amazonaws.com/assets.freshdesk.com/widget/freshwidget.js"></script>
+    <script type="text/javascript">
+       FreshWidget.init("", {
+          "queryString": "&widgetType=popup&formTitle=SNOMED+CT+Request Service+Feedback&submitTitle=Send+Feedback&submitThanks=Thank+you+for+your+feedback&captcha=yes&searchArea=no",
+          "utf8": "✓",
+          "backgroundImage": "https://s3.amazonaws.com/assets.freshdesk.com/widget/help-button.png",
+          "widgetType": "popup",
+          "buttonType": "image",
+          "buttonText": "Support",
+          "buttonColor": "white",
+          "buttonBg": "#00aadd",
+          "alignment": "1",
+          "offset": "-1500px",
+          "submitThanks": "Thank you for your feedback",
+          "formHeight": "500px",
+          "captcha": "yes",
+          "url": "https://ihtsdo.freshdesk.com"
+       });
+    </script>
     <div ng-include="'layout/footer/footer.html'"></div>
 </footer>
 <div ng-show="showSplash" ng-include="'layout/splash/splash.html'"></div>
@@ -206,7 +226,6 @@
 
 
 <!-- endbuild -->
-<script src="https://s3.amazonaws.com/assets.freshdesk.com/widget/freshwidget.js"></script>
 <script type="application/javascript">
     (function ($) {
         angular.element(document).ready(function () {
