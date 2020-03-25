@@ -22,7 +22,7 @@ angular
                announcement = configService.getConfig().app.announcement;
 
 
-           $rootScope.$on('$locationChangeSuccess', function (event) {
+           $rootScope.$on('$locationChangeSuccess', function () {
                try{
                   if (window.ga) {
                      window.ga('send', 'pageview', $location.path());

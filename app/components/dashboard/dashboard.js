@@ -8,7 +8,16 @@ angular
             .when('/dashboard/:list?', {
                 templateUrl: 'components/dashboard/dashboard.html',
                 controller: 'DashboardCtrl',
-                controllerAs: 'dashboard'
+                controllerAs: 'dashboard',
+                resolve: {
+                    initConfig : function (configService, $q) {
+                        var defer = $q.defer();
+                        configService.isConfigLoaded().then(function(){
+                          defer.resolve();
+                        });                        
+                        return defer.promise;
+                    }
+                }
             })
             .when('/requests', {
                 redirectTo: '/dashboard/requests'
@@ -42,10 +51,6 @@ angular
             var vm = this;
             var list = '';
             vm.activeList = $route.current.params.list;
-
-            $rootScope.$on('crs:loadConfigSuccess', function () {
-                loadData();
-            });
 
             var loadData = function () {
                 // check admin role

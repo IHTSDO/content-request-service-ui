@@ -39,7 +39,7 @@
                 </a>
             </div>
         </div>
-        <div class="row" ng-if="requestVM.permissionChecked && (requestVM.isAdmin || requestVM.isAdmin.isStaff)">
+        <div class="row" ng-if="requestVM.permissionChecked && (requestVM.isAdmin || requestVM.isStaff)">
             <div class="form-control-element">
             <input type="checkbox"
                    ng-model="ctrl.internalComment"

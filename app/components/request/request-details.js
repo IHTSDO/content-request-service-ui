@@ -373,17 +373,6 @@ angular
                 });
             });
 
-            $rootScope.$on('crs:loadConfigSuccess', function () {
-                // check permission
-                accountService.checkUserPermission().then(function (rs) {
-                    vm.permissionChecked = true;
-                    vm.isAdmin = (rs.isAdmin === true);
-                    vm.isViewer = (rs.isViewer === true);
-                    vm.isStaff = (rs.isStaff === true);
-                    vm.isRequester = (rs.isRequester === true);
-                });
-            });
-
             var initView = function() {
 
                 //load semantic tag

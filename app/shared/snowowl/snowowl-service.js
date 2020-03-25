@@ -290,7 +290,7 @@ angular.module('conceptRequestServiceApp.snowowl')
                                 }
                             }
                             for(i=0;i< item.relationships.length;i++) {
-                                if(item.relationships[i].characteristicType == 'INFERRED_RELATIONSHIP') {
+                                if(item.relationships[i].characteristicType === 'INFERRED_RELATIONSHIP') {
                                    newRelationships.push(convertRelationshipSnowstormToSnowowl(item.relationships[i], false));
                                 }
                             }

@@ -2,7 +2,7 @@
     "app": {
         "title": "SNOMED International CRS (Content Request Service)",
         "header": "Content Request Service",
-        "gaTrackingId" : "UA-108834658-1",
+        "gaTrackingId": "UA-108834658-1",
         "announcement": ""
     },
     "endpoint": {

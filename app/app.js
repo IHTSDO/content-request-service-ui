@@ -115,7 +115,7 @@ angular
             $http.get(config.endpoint.crs + '/common/config').then(function (configFromServer) {
                 if (configFromServer.data) {
                     configService.setConfigFromServer(configFromServer.data);
-                    $rootScope.$broadcast('crs:loadConfigSuccess');
+                    configService.markLoadingConfigCompleted();
                 }
             });
             

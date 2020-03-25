@@ -5,7 +5,8 @@ angular
     ])
     .provider('configService', function () {
         var config,
-            configFromServer;
+            configFromServer,
+            loadConfigCompleted;
 
         this.config = function (configObj) {
             config = configObj;
@@ -16,7 +17,8 @@ angular
         };
 
         this.$get = [
-            function () {
+            '$q',
+            function ($q) {
                 var getConfig = function () {
                     return config;
                 };
@@ -53,6 +55,28 @@ angular
                     configFromServer = configObj;
                 };
 
+                var markLoadingConfigCompleted = function() {
+                    loadConfigCompleted = true;
+                };
+
+                var isConfigLoaded = function() {
+                    var defer = $q.defer();        
+                    if (!loadConfigCompleted) {                  
+                      setTimeout(function waitForLoadingConfigCompleted() {                              
+                        if (!loadConfigCompleted) {                      
+                          setTimeout(waitForLoadingConfigCompleted, 50);            } 
+                        else {                  
+                          defer.resolve(loadConfigCompleted);
+                        }
+                      }, 50);
+                    }
+                    else {              
+                      defer.resolve(loadConfigCompleted);
+                    }
+                    
+                    return defer.promise;
+                };
+
                 return {
                     getConfig: getConfig,
                     getFileStatusPollingInterval: getFileStatusPollingInterval,
@@ -60,7 +84,9 @@ angular
                     getEndpointConfig: getEndpointConfig,
                     getRequestTimeout: getRequestTimeout,
                     getConfigFromServer: getConfigFromServer,
-                    setConfigFromServer: setConfigFromServer
+                    setConfigFromServer: setConfigFromServer,                    
+                    markLoadingConfigCompleted: markLoadingConfigCompleted,
+                    isConfigLoaded: isConfigLoaded
                 };
             }
         ];

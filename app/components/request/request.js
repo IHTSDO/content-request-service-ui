@@ -569,6 +569,15 @@ angular
             .when('/requests/:mode/:param', {
                 templateUrl: 'components/request/request-details.html',
                 controller: 'RequestDetailsCtrl',
-                controllerAs: 'requestVM'
+                controllerAs: 'requestVM',
+                resolve: {
+                    initConfig : function (configService, $q) {
+                        var defer = $q.defer();
+                        configService.isConfigLoaded().then(function(){
+                          defer.resolve();
+                        });                        
+                        return defer.promise;
+                    }
+                }                
             });
     });

@@ -23,8 +23,7 @@ angular
         '$timeout',
         'STATISTICS_STATUS',
         'configService',
-        '$rootScope',
-        function ($filter, $sce, crsJiraService, NgTableParams, requestService, notificationService, accountService, jiraService, $routeParams, $uibModal, utilsService, $scope, scaService, BULK_ACTION_STATUS, BULK_ACTION, DEFAULT_COLUMNS, $timeout, STATISTICS_STATUS, configService, $rootScope) {
+        function ($filter, $sce, crsJiraService, NgTableParams, requestService, notificationService, accountService, jiraService, $routeParams, $uibModal, utilsService, $scope, scaService, BULK_ACTION_STATUS, BULK_ACTION, DEFAULT_COLUMNS, $timeout, STATISTICS_STATUS, configService) {
             var vm = this;
             var maxSize;
 
@@ -227,10 +226,6 @@ angular
                 clarification: 'PENDING_CLARIFICATION',
                 inceptionElaboration: 'INCEPTION_ELABORATION'
             };
-
-            $rootScope.$on('crs:loadConfigSuccess', function () {
-                loadData();
-            });
 
             var loadData = function () {
                 // check admin role
