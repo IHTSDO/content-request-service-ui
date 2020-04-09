@@ -217,6 +217,10 @@ angular
         INTERNAL_INPUT_NEEDED: {
             value: 'INTERNAL_INPUT_NEEDED',
             langKey: 'crs.request.requestStatus.waitingForInternalInput'
+        },
+        RESOLVED_WITHOUT_CONTENT_CHANGES: {
+            value: 'RESOLVED_WITHOUT_CONTENT_CHANGES',
+            langKey: 'crs.request.requestStatus.resolvedWithoutContentChanges'
         }
     })
     .value('STATISTICS_STATUS',{

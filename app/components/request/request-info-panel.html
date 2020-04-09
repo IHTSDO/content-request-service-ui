@@ -294,6 +294,12 @@
                 <span class="button-link" translate="crs.request.details.info.button.pendingForClarification"></span>
             </button>
 
+            <button ng-if="requestVM.pageMode.value === 'preview' && (requestVM.request.requestHeader.status === 'ACCEPTED' || requestVM.request.requestHeader.status === 'CLARIFICATION_NEEDED')"
+                class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.requestResolveWithoutChanges()" title="{{'tooltips.request.details.info.button.resolvedWithoutContentChanges' | translate}}">
+                <span class="md md-done blue darken-2 iconbase"></span>
+                <span class="button-link" translate="crs.request.details.info.button.resolvedWithoutContentChanges"></span>
+            </button>
+
             <button ng-if="requestVM.pageMode.value === 'preview' && requestVM.request.requestHeader.status === 'APPEAL'" class="btn btn-default pink1 darken-1 review" style="text-transform: none" ng-click="requestVM.requestInAppealClarification()" title="{{'tooltips.request.details.info.button.inAppealClarification' | translate}}">
                 <span class="md md-mode-edit pink darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.inAppealClarification"></span>

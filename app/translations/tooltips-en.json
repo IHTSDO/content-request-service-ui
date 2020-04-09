@@ -257,7 +257,8 @@
                         "addNote": "Add Note",
                         "unassign": "Unassign Request",
                         "unassignAndRejectRequest": "Unassign And Reject",
-                        "rejectSelectedRequests": "Reject Selected Requests"
+                        "rejectSelectedRequests": "Reject Selected Requests",
+                        "resolvedWithoutContentChanges" : "Resolved Without Content Changes"
                     },
                     "label": {
                         "batchId": "Batch ID",

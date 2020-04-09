@@ -2209,6 +2209,20 @@ angular
                 });
             };
 
+            var requestResolveWithoutChanges = function() {
+                var modalInstance = openStatusCommentModal('resolveWithoutChanges');
+
+                modalInstance.result.then(function(rejectComment) {
+                    changeRequestStatus(vm.request.id, REQUEST_STATUS.RESOLVED_WITHOUT_CONTENT_CHANGES, { reason: rejectComment })
+                        .then(function() {
+                            notificationService.sendMessage('crs.request.message.resolveWithoutChanges', 5000);
+                            goBackToPreviousList();
+                        }, function(e) {
+                            showErrorMessage(e.message);
+                        });
+                });
+            };
+
             var appealRequest = function() {
                 var modalInstance = openStatusCommentModal('appeal');
 
@@ -2643,6 +2657,7 @@ angular
             vm.rejectAppeal = rejectAppeal;
             vm.moveToInInceptionElaboration = moveToInInceptionElaboration;
             vm.requestClarification = requestClarification;
+            vm.requestResolveWithoutChanges = requestResolveWithoutChanges;
             vm.requestInAppealClarification = requestInAppealClarification;
             vm.saveAndSubmitRequest = saveAndSubmitRequest;
             vm.startEditingConcept = startEditingConcept;

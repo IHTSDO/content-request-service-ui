@@ -263,7 +263,8 @@
                         "unassignAndRejectRequest": "Unassign And Reject",
                         "nextRequest": "Next Request",
                         "previousRequest": "Previous Request",
-                        "rejectSelectedRequests": "Reject Selected Requests"
+                        "rejectSelectedRequests": "Reject Selected Requests",
+                        "resolvedWithoutContentChanges": "Resolved Without Content Changes"
                     },
                     "label": {
                         "batchId": "Batch ID",
@@ -331,7 +332,8 @@
                     "CLARIFICATION_NEEDED": "Pending for Clarification",
                     "IN_INCEPTION_ELABORATION": "Inception/Elaboration",
                     "changeOriginatingOrganization": "Change Originating Organization",
-                    "changeCollaborationAgreement": "Change Collaboration Agreement"
+                    "changeCollaborationAgreement": "Change Collaboration Agreement",
+                    "resolveWithoutChanges": "Resolved Without Content Changes"
                 },
                 "comment": {
                     "label": "Reason",
@@ -375,6 +377,7 @@
                 "requestOnHold": "Request has been on hold successfully",
                 "requestForwarded": "Request has been forwarded successfully",
                 "requestWaitingForInternalInput": "Request has been moved to pending internal input successfully",
+                "resolveWithoutChanges": "Request has been moved to Resolved Without Content Changes successfully",
 
                 "error": {
                     "requestTypeRequired": "Please select request type",
