@@ -427,7 +427,8 @@
                 "readyForRelease": "Ready For Release",
                 "submitted": "Submitted",
                 "inAppealClarification": "In Appeal Clarification",
-                "waitingForInternalInput": "Pending Internal Input"
+                "resolvedWithoutContentChanges": "Resolved Without Content Changes",
+                "waitingForInternalInput": "Pending Internal Input"                
             },
             "bulkAction": {
                 "status": {

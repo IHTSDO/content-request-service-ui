@@ -169,7 +169,7 @@ footer {
     color: white;
   }
 
-  &.ACCEPTED {
+  &.ACCEPTED, &.RESOLVED_WITHOUT_CONTENT_CHANGES {
     background-color: #009cd7;
     color: white;
   }
