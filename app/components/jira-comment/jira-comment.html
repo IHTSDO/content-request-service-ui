@@ -6,7 +6,7 @@
             <div class="comment-head">
                 <div class="comment-details" ng-if="comment.internal === false">
                     <a class="user-avatar" >
-                        <img ng-src="{{comment.user.avatarUrls['16x16']}}" alt="comment.user.name" />
+                        <img width="16" height="16" style="padding-bottom: 0px; margin-bottom: 2px;" ng-src="{{comment.user.avatarUrls['16x16']}}" alt="comment.user.name" />
                         <span class="user-name">{{comment.user.displayName}}</span>
                     </a>
                     <span>added a comment on</span>
@@ -14,7 +14,7 @@
                 </div>
                 <div class="comment-details" ng-if="comment.internal === true">
                     <a class="user-avatar" >
-                        <img ng-src="{{comment.user.avatarUrls['16x16']}}" alt="comment.user.name" />
+                        <img width="16" height="16" style="padding-bottom: 0px; margin-bottom: 2px;" ng-src="{{comment.user.avatarUrls['16x16']}}" alt="comment.user.name" />
                         <span class="user-name">{{comment.user.displayName}}</span>
                     </a>
                     <span>added an<span style="color: #5cb85c"> internal comment </span>on</span>

@@ -270,7 +270,7 @@ angular
                         if (usersList[i].key === authorKey) {
                             //return vm.authors[i].displayName;
                             return $sce.trustAsHtml([
-                                '<img style="padding-bottom:2px" src="' + usersList[i].avatarUrls['16x16'] + '"/>',
+                                '<img style="margin-bottom:2px" width="16" height="16" src="' + usersList[i].avatarUrls['16x16'] + '"/>',
                                 '<span style="vertical-align:middle">&nbsp;' + usersList[i].displayName + '</span>',
                             ].join(''));
                         }
@@ -286,7 +286,7 @@ angular
                         if (vm.staffs[i].key === staffKey) {
                             //return vm.authors[i].displayName;
                             return $sce.trustAsHtml([
-                                '<img style="padding-bottom:2px" src="' + vm.staffs[i].avatarUrls['16x16'] + '"/>',
+                                '<img style="margin-bottom:2px" width="16" height="16" src="' + vm.staffs[i].avatarUrls['16x16'] + '"/>',
                                 '<span style="vertical-align:middle">&nbsp;' + vm.staffs[i].displayName + '</span>'
                             ].join(''));
                         }
