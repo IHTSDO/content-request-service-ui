@@ -264,7 +264,7 @@
                         "nextRequest": "Next Request",
                         "previousRequest": "Previous Request",
                         "rejectSelectedRequests": "Reject Selected Requests",
-                        "resolvedWithoutContentChanges": "Resolved Without Content Changes"
+                        "resolvedWithoutContentChanges": "Resolve Without Content Changes"
                     },
                     "label": {
                         "batchId": "Batch ID",
@@ -333,7 +333,7 @@
                     "IN_INCEPTION_ELABORATION": "Inception/Elaboration",
                     "changeOriginatingOrganization": "Change Originating Organization",
                     "changeCollaborationAgreement": "Change Collaboration Agreement",
-                    "resolveWithoutChanges": "Resolved Without Content Changes"
+                    "resolveWithoutChanges": "Resolve Without Content Changes"
                 },
                 "comment": {
                     "label": "Reason",
