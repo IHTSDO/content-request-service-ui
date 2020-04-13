@@ -610,6 +610,50 @@ angular
                     } else if (requestData.requestType === REQUEST_TYPE.OTHER.value) {
                         vm.originalConcept = null;
                         vm.request.definitionOfChanges = buildOtherRequestDefinitionOfChanges();
+                    } else if (requestData.requestType === REQUEST_TYPE.CHANGE_RETIRE_CONCEPT.value) {
+                        if (vm.request.proposedStatus) {
+                            var conceptInactivationReason = vm.conceptInactivationReasons.filter(function(item) {
+                                return item.text === vm.request.proposedStatus;
+                            })[0];
+                            if (vm.request.historyAttribute) {                                
+
+                                var associationInactivationReason = vm.associationInactivationReasons.filter(function(item) {
+                                    return item.text === vm.request.historyAttribute;
+                                })[0];
+                                vm.isLagacyInactivationReason = !conceptInactivationReason || !associationInactivationReason || conceptInactivationReason.display.indexOf(associationInactivationReason.display) === -1;                                
+                            } else {
+                                vm.isLagacyInactivationReason = (typeof conceptInactivationReason === 'undefined');
+                            }                            
+                            if (!vm.isLagacyInactivationReason) {
+                                vm.historyAttributes = vm.associationInactivationReasons.filter(function(item) {
+                                    return conceptInactivationReason.display.indexOf(item.display) !== -1;
+                                });                                
+                            }                            
+                        }
+
+                        snowowlService.getFullConcept(null, null, requestData.requestItems[0].conceptId).then(function(response) {
+                            vm.originalConcept = response;
+                            for (var i in requestData.requestItems) {
+                                for (var j in vm.originalConcept.relationships) {
+                                    var arr = [];
+                                    if (vm.originalConcept.relationships[j].relationshipId === requestData.requestItems[i].relationshipId) {
+                                        var obj = {};
+                                        obj = vm.originalConcept.relationships[j];
+                                        arr.push(obj);
+
+                                        if (arr.length === 0 || arr.length === 2) {
+                                            return;
+                                        } else if (arr.length === 1) {
+                                            if(obj.active === false){
+                                                var rel = angular.copy(obj);
+                                                rel.active = true;
+                                                vm.originalConcept.relationships.push(rel);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        });
                     } else {
                         snowowlService.getFullConcept(null, null, requestData.requestItems[0].conceptId).then(function(response) {
                             vm.originalConcept = response;
@@ -716,7 +760,10 @@ angular
                         REQUEST_METADATA_KEY.CASE_SIGNIFICANCE,
                         REQUEST_METADATA_KEY.CONCEPT_HISTORY_ATTRIBUTE,
                         REQUEST_METADATA_KEY.NEW_DESCRIPTION_STATUS,
-                        REQUEST_METADATA_KEY.NEW_RELATIONSHIP_STATUS
+                        REQUEST_METADATA_KEY.NEW_RELATIONSHIP_STATUS,
+                        REQUEST_METADATA_KEY.CONCEPT_INACTIVATION_REASON,
+                        REQUEST_METADATA_KEY.DESCRIPTION_INACTIVATION_REASON,
+                        REQUEST_METADATA_KEY.ASSOCIATION_INACTIVATION_REASON
                     ])
                     .then(function(metadata) {
                         vm.relationshipTypes = metadata[REQUEST_METADATA_KEY.RELATIONSHIP_TYPE];
@@ -724,9 +771,16 @@ angular
                         vm.refinabilities = metadata[REQUEST_METADATA_KEY.REFINABILITY];
                         vm.newConceptStatuses = metadata[REQUEST_METADATA_KEY.NEW_CONCEPT_STATUS];
                         vm.caseSignificances = metadata[REQUEST_METADATA_KEY.CASE_SIGNIFICANCE];
-                        vm.historyAttributes = metadata[REQUEST_METADATA_KEY.CONCEPT_HISTORY_ATTRIBUTE];
+                        if(vm.pageMode !== REQUEST_MODE.NEW){
+                            vm.historyAttributes = metadata[REQUEST_METADATA_KEY.CONCEPT_HISTORY_ATTRIBUTE];
+                        }
                         vm.descriptionStatuses = metadata[REQUEST_METADATA_KEY.NEW_DESCRIPTION_STATUS];
                         vm.relationshipStatuses = metadata[REQUEST_METADATA_KEY.NEW_RELATIONSHIP_STATUS];
+                        vm.conceptInactivationReasons = metadata[REQUEST_METADATA_KEY.CONCEPT_INACTIVATION_REASON];
+                        vm.descriptionInactivationReasons = metadata[REQUEST_METADATA_KEY.DESCRIPTION_INACTIVATION_REASON];
+                        vm.associationInactivationReasons = metadata[REQUEST_METADATA_KEY.ASSOCIATION_INACTIVATION_REASON];
+
+
                     });
             };
 
@@ -2343,10 +2397,29 @@ angular
                 if(vm.requestType === REQUEST_TYPE.CHANGE_RETIRE_CONCEPT){
                     return vm.request.proposedStatus;
                 }
-            }, function(newVal) {
-               if(newVal === vm.newConceptStatuses[1]){
-                    vm.request.historyAttribute = vm.historyAttributes[4];
-               }
+            }, function(newVal) {                
+                if (newVal && vm.pageMode === REQUEST_MODE.NEW) {
+                    var inactivationReason = vm.conceptInactivationReasons.filter(function(item) {
+                        return item.text === newVal;
+                    })[0];
+                    if (inactivationReason) {
+                        vm.historyAttributes = vm.associationInactivationReasons.filter(function(item) {
+                            return inactivationReason && inactivationReason.display.indexOf(item.display) !== -1;
+                        });
+    
+                        if (vm.historyAttributes.length === 1) {
+                            vm.request.historyAttribute = vm.historyAttributes[0].text;
+                        }
+                        else {
+                            vm.request.historyAttribute = null;
+                        }
+                       
+                        if (newVal === 'Non-conformance to editorial policy') {
+                            vm.request.historyAttribute = null;
+                            vm.request.historyAttributeValue = null;
+                        }
+                    }                   
+                }
             });
 
             //auto fill preferred term field

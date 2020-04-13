@@ -208,7 +208,30 @@ angular.module('conceptRequestServiceApp.request')
 			metadata[REQUEST_METADATA_KEY.NEW_CONCEPT_STATUS].sort(function(a, b) {
 				return utilsService.compareStrings(a, b);
 			});
-			
+            
+            // component inactivation metadata
+            metadata[REQUEST_METADATA_KEY.CONCEPT_INACTIVATION_REASON] = [
+                {text: 'Ambiguous', display: [4]},
+                {text: 'Moved elsewhere', display: [3]},
+                {text: 'Duplicate', display: [7]},
+                {text: 'Erroneous', display: [6]},
+                {text: 'Limited', display: [9]},
+                {text: 'Outdated', display: [6]},
+                {text: 'Non-conformance to editorial policy', display: []}                
+            ];
+            
+            metadata[REQUEST_METADATA_KEY.ASSOCIATION_INACTIVATION_REASON] =
+                [
+                {text: 'Moved From', display: 2},
+                {text: 'Moved To', display: 3},
+                {text: 'Possibly Equivalent To',display: 4},
+                {text: 'Refers To',display: 5},
+                {text: 'Replaced By', display: 6},
+                {text: 'Same As',display: 7},
+                {text: 'Similar To', display: 8},
+                {text: 'Was a', display: 9}
+            ];            
+
             // New Description Statuses
             metadata[REQUEST_METADATA_KEY.NEW_DESCRIPTION_STATUS] = [
                 'Ambiguous',
@@ -219,6 +242,13 @@ angular.module('conceptRequestServiceApp.request')
                 'Outdated',
                 'Pending move',
                 'Retired'
+            ];
+
+            metadata[REQUEST_METADATA_KEY.DESCRIPTION_INACTIVATION_REASON] = [
+                {text: 'Not Semantically Equivalent', display: [5]},
+                {text: 'Outdated', display: []},
+                {text: 'Erroneous', display: []},
+                {text: 'Non-conformance to editorial policy', display: []}          
             ];
 
 			metadata[REQUEST_METADATA_KEY.NEW_DESCRIPTION_STATUS].sort(function(a, b) {

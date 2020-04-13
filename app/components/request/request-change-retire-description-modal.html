@@ -6,7 +6,17 @@
                       options="descriptionStatus for descriptionStatus in requestMetadata.descriptionStatuses"
                       label="crs.request.details.label.descriptionStatus"
                       title="{{'tooltips.request.details.label.descriptionStatus' | translate}}"
-                      name="slDescriptionStatus"></form-control>
+                      name="slDescriptionStatus"
+                      ng-if="isLagacyDescriptionInactivationReason"></form-control>
+                      
+        <form-control type="select"
+                      model="definitionOfChanges.descriptionStatus"
+                      options="descriptionStatus.text as descriptionStatus.text for descriptionStatus in requestMetadata.descriptionInactivationReasons"
+                      label="crs.request.details.label.descriptionStatus"
+                      title="{{'tooltips.request.details.label.descriptionStatus' | translate}}"
+                      name="slDescriptionStatus"
+                      ng-if="!isLagacyDescriptionInactivationReason"></form-control>        
+
         <form-control type="textarea"
                       model="definitionOfChanges.reasonForChange"
                       label="crs.request.details.label.reasonForChange"

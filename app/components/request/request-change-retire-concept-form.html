@@ -20,7 +20,16 @@
                       options="newConceptStatus for newConceptStatus in requestVM.newConceptStatuses"
                       label="crs.request.details.label.proposedStatus"
                       title="{{'tooltips.request.details.label.proposedStatus' | translate}}"
-                      name="slNewConceptStatus"></form-control>
+                      name="slNewConceptStatus"
+                      ng-if="requestVM.isLagacyInactivationReason"></form-control>
+        
+        <form-control type="select"
+                      model="requestVM.request.proposedStatus"
+                      options="newConceptStatus.text as newConceptStatus.text for newConceptStatus in requestVM.conceptInactivationReasons"
+                      label="crs.request.details.label.proposedStatus"
+                      title="{{'tooltips.request.details.label.proposedStatus' | translate}}"
+                      name="slNewConceptStatus"
+                      ng-if="!requestVM.isLagacyInactivationReason"></form-control>
 
         <form-control type="concept"
                       model="requestVM.duplicateConcept"
@@ -36,13 +45,22 @@
                       options="historyAttribute for historyAttribute in requestVM.historyAttributes"
                       label="crs.request.details.label.historyAttribute"
                       title="{{'tooltips.request.details.label.historyAttribute' | translate}}"
-                      name="slHistoryAttribute"></form-control>
+                      name="slHistoryAttribute"
+                      ng-if="requestVM.isLagacyInactivationReason"></form-control>
 
+        <form-control type="select"
+                      model="requestVM.request.historyAttribute"
+                      options="historyAttribute.text as historyAttribute.text for historyAttribute in requestVM.historyAttributes"
+                      label="crs.request.details.label.historyAttribute"
+                      title="{{'tooltips.request.details.label.historyAttribute' | translate}}"
+                      name="slHistoryAttribute"
+                      ng-if="!requestVM.isLagacyInactivationReason && requestVM.request.proposedStatus !== 'Non-conformance to editorial policy'"></form-control>
 
         <form-control type="text"
                       model="requestVM.request.historyAttributeValue"
                       label="crs.request.details.label.historyAttributeValue"
                       title="{{'tooltips.request.details.label.historyAttributeValue' | translate}}"
-                      name="txtHistoryAttributeValue"></form-control>
+                      name="txtHistoryAttributeValue"
+                      ng-if="requestVM.request.proposedStatus !== 'Non-conformance to editorial policy'"></form-control>
     </div>
 </form>
