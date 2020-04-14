@@ -2541,7 +2541,7 @@ angular
                 return detectedCurrentList;
             };
 
-            var getNextRequest = function(){
+            var gotoRequest = function(indexDiff) {
                 notificationService.sendMessage('Loading...');
                 var list = requestService.getCurrentList();
                 var newList = false,
@@ -2551,25 +2551,38 @@ angular
                 var pageMode = $routeParams.mode;
                 var currentId = Number($routeParams.param);
                 if(!currentIdList){
-                    getCurrentRequestIdList(currentList);
+                    getCurrentRequestIdList(currentList, null, indexDiff);
                 }else{
-                    if(currentId === currentIdList[currentIdList.length - 1]){
+                    if((indexDiff > 0 && currentId === currentIdList[currentIdList.length - 1]) || indexDiff < 0 && currentId === currentIdList[0]){
                         newList = true;
-                        currentList.offset = currentList.offset + 1;
-                        getCurrentRequestIdList(currentList, newList);
+                        currentList.offset = currentList.offset + indexDiff;
+                        if (currentList.offset < 0) {
+                            currentList.offset = 0;
+                            notificationService.clear();
+                            return;
+                        }
+                        getCurrentRequestIdList(currentList, newList, indexDiff);
                     }else{
                         for(var i = 0; i < currentIdList.length; i++){
                             if(currentId === currentIdList[i]){
-                                $location.path('requests/' + pageMode + '/' + currentIdList[i + 1]).search();
+                                $location.path('requests/' + pageMode + '/' + currentIdList[i + indexDiff]).search();
                             }else{
                                 isIdInCurrentList = false;
                             }
                         }
                         if(isIdInCurrentList === false){
-                            getCurrentRequestIdList(currentList);
+                            getCurrentRequestIdList(currentList, null, indexDiff);
                         }
                     }
                 }
+            };
+
+            var getNextRequest = function(){
+                gotoRequest(+1);
+            };
+
+            var getPreviousRequest = function(){
+                gotoRequest(-1);
             };
 
             var goBackToPreviousList = function(){
@@ -2577,24 +2590,29 @@ angular
                 $location.path('/' + list).search({});
             };
 
-            var getCurrentRequestIdList = function(currentList, newList){
+            var getCurrentRequestIdList = function(currentList, newList, indexDiff){
                 var list = requestService.getCurrentList();
                 var currentRequestId = Number($routeParams.param);
                 var pageMode = $routeParams.mode;
                 requestService.getNextRequestList(currentList).then(function(response){
                     if(response){
                         requestService.setCurrentIdList(response, list);
-                        if(currentRequestId === response[response.length - 1]){
+                        if((indexDiff > 0 && currentRequestId === response[response.length - 1]) || (indexDiff < 0 && currentRequestId === response[0])){
                             var tmpCurrentList = currentList;
-                            tmpCurrentList.offset = currentList.offset + 1;
+                            tmpCurrentList.offset = currentList.offset + indexDiff;
+                            if (tmpCurrentList.offset < 0) {
+                                tmpCurrentList.offset = 0;
+                                notificationService.clear();
+                                return;
+                            }
                             var tmpNewList = true;
-                            getCurrentRequestIdList(tmpCurrentList, tmpNewList);
+                            getCurrentRequestIdList(tmpCurrentList, tmpNewList, indexDiff);
                         }else{
                             for(var i = 0; i < response.length; i++){
                                 if(currentRequestId === response[i]){
-                                    $location.path('requests/' + pageMode + '/' + response[i + 1]).search();
+                                    $location.path('requests/' + pageMode + '/' + response[i + indexDiff]).search();
                                 }else if(newList){
-                                    $location.path('requests/' + pageMode + '/' + response[0]).search();
+                                    $location.path('requests/' + pageMode + '/' + response[indexDiff > 0 ? 0 : response.length - 1]).search();
                                 }
                             }
                         }
@@ -2749,6 +2767,7 @@ angular
             vm.extractJustification = extractJustification;
             vm.unassignAndRejectRequest = unassignAndRejectRequest;
             vm.getNextRequest = getNextRequest;
+            vm.getPreviousRequest = getPreviousRequest;
             vm.reassignToRequestor = reassignToRequestor;
             vm.changeLocalCode = changeLocalCode;
             vm.isAdmin = false;

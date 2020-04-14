@@ -230,6 +230,8 @@
                 },
                 "info": {
                     "button": {
+                        "nextRequest": "Next Request",
+                        "previousRequest": "Previous Request",
                         "submit": "Submit Request",
                         "save": "Save Request",
                         "edit": "Edit Request",
