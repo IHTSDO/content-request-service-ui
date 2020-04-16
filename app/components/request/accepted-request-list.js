@@ -247,7 +247,7 @@ angular
 
                 if(vm.enabledColumns === null || vm.enabledColumns === undefined){
                     requestService.getUserPreferences().then(function(response){
-                        if(response){
+                        if(response && (Object.keys(response).length > 1 || !response.hasOwnProperty('emailDaily') )){
                             vm.enabledColumns = response;
                         }else{
                             vm.enabledColumns = DEFAULT_COLUMNS;

@@ -63,11 +63,11 @@
         </ul>
         <ul class="nav navbar-nav navbar-right navbar-right-no-collapse col-md-4 pull-right" ng-if="header.isUserLoggedIn">
 
-            <!--<li class="pull-right">
-                <button class="dropdown-toggle pointer btn btn-round-sm btn-link withoutripple" >
+            <li class="pull-right">
+                <button class="dropdown-toggle pointer btn btn-round-sm btn-link withoutripple" ng-click="header.openSettingsModal()">
                     <i class="md md-settings f20"></i>
                 </button>
-            </li>-->
+            </li>
             <li class="pull-right notification-container">
                 <button id="btnNotification"
                         class="dropdown-toggle pointer btn btn-round-sm btn-link withoutripple"

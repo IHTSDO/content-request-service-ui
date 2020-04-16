@@ -3,7 +3,7 @@
 
   <div class="modal-header">
     <button type="button" class="close" ng-click="userPreferences.closeModal()">&times;</button>
-    <h4 class="modal-title">Settings and Preferences</h4>
+    <h4 class="modal-title">Settings</h4>
   </div>
 
 
@@ -14,6 +14,10 @@
     <form class="form-floating">
 
       <div class="form-group">
+        <input type="checkbox" id= "email_daily"class="small-checkbox ng-pristine ng-valid ng-touched" ng-model="userPreferences.userPreferences.emailDaily">
+        <label for="email_daily">  Send email daily for request status changed and new comments</label>
+        <br>      
+        <!--
         <label for="colourSchemeSelect">Colour Scheme</label>
         <select id="colourSchemeSelect" name="select-colour-scheme" class="form-control"
                 ng-model="userPreferences.colourScheme"
@@ -35,6 +39,7 @@
 
 
         <br>
+        -->
           <!--
                   <hr>
                   <label for="layoutGrid">Page Layout</label>
@@ -87,11 +92,15 @@
             ng-click="userPreferences.saveUserPreferences()">Save
     </button>
   </div>
+  
   <div class="col-md-4">
+    <!--
     <button type="button" ng-disabled="disabled" class="col-md-12 btn btn-warning no-margin"
             ng-click="userPreferences.revertChange()">Revert
     </button>
+    -->
   </div>
+  
   <div class="col-md-4">
     <button type="button" ng-disabled="disabled" class=" col-md-12 btn btn-danger no-margin "
             ng-click="userPreferences.closeModal()">Cancel

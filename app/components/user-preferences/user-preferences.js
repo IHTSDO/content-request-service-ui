@@ -4,12 +4,13 @@ angular.module('conceptRequestServiceApp.userPreferences', [])
         '$rootScope',
         '$scope',
         '$uibModalInstance',
-        'accountService',
-        function ($rootScope, $scope, $uibModalInstance, accountService) {
+        'requestService',
+        'notificationService',
+        function ($rootScope, $scope, $uibModalInstance, requestService, notificationService) {
             var vm = this;
 
             var loadUserPreferences = function () {
-                accountService.getUserPreferences().then(function (response) {
+                requestService.getUserPreferences().then(function (response) {
                     vm.userPreferences = response;
                 });
             };
@@ -20,26 +21,13 @@ angular.module('conceptRequestServiceApp.userPreferences', [])
             };
 
             var saveUserPreferences = function () {
-                accountService.applyUserPreferences(vm.userPreferences).then(function (userPreferences) {
-
-                    // if layout specified, attach/replace it in user preferences
-                    /*if ($rootScope.layout && $rootScope.layout.name) {
-                        if (!userPreferences.layout) {
-                            userPreferences.layout = {};
-                        }
-                        userPreferences.layout[$rootScope.layout.name] = $rootScope.layout;
-                    }*/
-
-                    accountService.saveUserPreferences(userPreferences).then(function (response) {
-                        if (!response) {
-                            //notificationService.sendError('Unexpected error saving settings. Your changes may not persist across sessions', 0);
-                        } else {
-                            //notificationService.sendMessage('Application preferences updated', 5000);
-                        }
-                    });
-                    $uibModalInstance.close(userPreferences);
-                }, function () {
-                    vm.errorMsg = 'Unexpected error applying settings';
+                requestService.saveUserPreferences(vm.userPreferences).then(function (response) {
+                    if (!response) {
+                        notificationService.sendError('Unexpected error saving settings. Your changes may not persist across sessions', 0);
+                    } else {
+                        notificationService.sendMessage('Settings updated', 5000);
+                        $uibModalInstance.close(response);
+                    }
                 });
             };
 
