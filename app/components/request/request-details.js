@@ -562,9 +562,35 @@ angular
             var checkPrePage = function(){
                 var listObj = requestService.getCurrentList();
                 if(listObj){
-                    vm.isCameFromRequestList = true;
+                    vm.isCameFromRequestList = true;                    
+                    
+                    var currentList = detectCurrentList(listObj);                                      
+                    var currentId = Number($routeParams.param);
+                    requestService.getNextRequestList(currentList).then(function(response){
+                        if(response){ 
+                            requestService.setCurrentIdList(response, listObj);                     
+                            if(currentId === response[response.length - 1] ||  currentId === response[0]){
+                                var previousList = angular.copy(currentList),
+                                    nextList = angular.copy(currentList);                            
+                                if (currentId === response[0]) {
+                                    previousList.offset = previousList.offset - 1;
+                                    if (previousList.offset < 0) {
+                                        vm.isFirstRequestInList = true;
+                                    }                                                               
+                                }
+                                if (currentId === response[response.length - 1]) {
+                                    nextList.offset = nextList.offset + 1;
+                                    requestService.getNextRequestList(nextList).then(function(response) {
+                                        if (response.length === 0) {
+                                            vm.isLastRequestInList = true;
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    });                    
                 }
-            };
+            };            
 
             var getNewForwardingRequestStatus = function (forwardDestinationId) {
                 requestService.getNewForwardingRequestStatus(forwardDestinationId).then(function (data) {
@@ -2774,6 +2800,8 @@ angular
             vm.isViewer = false;
             vm.permissionChecked = false;
             vm.isCameFromRequestList = false;
+            vm.isFirstRequestInList = false;
+            vm.isLastRequestInList = false;
             vm.error = {};
             vm.conceptStatus = {
                 loading: false,
