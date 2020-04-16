@@ -2650,7 +2650,7 @@ angular
             };
 
             var canWaitingForInternalInputAction = function () {
-                return (vm.request && vm.request !== undefined && (vm.request.requestHeader.status === STATISTICS_STATUS.UNDER_AUTHORING.value || vm.request.requestHeader.status === STATISTICS_STATUS.ACCEPTED.value));
+                return (vm.request && vm.request !== undefined && (vm.request.requestHeader.status === STATISTICS_STATUS.UNDER_AUTHORING.value || vm.request.requestHeader.status === STATISTICS_STATUS.ACCEPTED.value || vm.request.requestHeader.status === STATISTICS_STATUS.CLARIFICATION_NEEDED.value));
             };
 
             var moveWaitingForInternalInputRequest = function () {
