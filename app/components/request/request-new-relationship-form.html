@@ -25,20 +25,20 @@
                       required
                       domain-attribute="requestVM.request.relationshipType"
                       error-model="requestVM.error.destinationConcept"></form-control>
-
+        
         <form-control type="select"
                       model="requestVM.request.characteristicType"
                       options="characteristicType for characteristicType in requestVM.characteristicTypes"
                       label="crs.request.details.label.characteristicType"
                       title="{{'tooltips.request.details.label.characteristicType' | translate}}"
                       name="slCharacteristicType"></form-control>
-
+        <!--
         <form-control type="select"
                       model="requestVM.request.refinability"
                       options="refinability for refinability in requestVM.refinabilities"
                       label="crs.request.details.label.refinability"
                       title="{{'tooltips.request.details.label.refinability' | translate}}"
                       name="slRefinability"></form-control>
-
+        -->
     </div>
 </form>

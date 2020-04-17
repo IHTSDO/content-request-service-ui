@@ -480,6 +480,9 @@ angular
                                 vm.disableDirectMode = true;
                             }
 
+                            if (requestType === REQUEST_TYPE.NEW_RELATIONSHIP && inputMode === REQUEST_INPUT_MODE.SIMPLE.value) {
+                                vm.request.characteristicType = 'Defining relationship';
+                            }
 
                             accountService.getAccountInfo().then(function(accountDetails) {
                                 vm.request.requestHeader.ogirinatorId = accountDetails.login;
