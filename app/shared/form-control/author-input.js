@@ -158,7 +158,7 @@ angular
         function ($templateCache) {
             $templateCache.put('authorInputItemTemplate.html', [
                 '<a>',
-                '<img ng-src="{{match.model.avatarUrls[\'32x32\']}}" >',
+                '<img width="16" height="16" ng-src="{{match.model.avatarUrls[\'32x32\']}}" >',
                 '<span ng-bind-html="match.model.displayName | uibTypeaheadHighlight:query" style="margin-left: 10px"></span>',
                 '</a>'
             ].join(''));
