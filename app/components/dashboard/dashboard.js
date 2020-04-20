@@ -134,11 +134,11 @@ angular
             };
 
             var editRequest = function (requestId) {
-                  $location.path('requests/edit/' + requestId).search();
+                  $location.path('requests/edit/' + requestId).search({fromList: 'true'});
             };
 
             var previewRequest = function (requestId) {
-                  $location.path('requests/preview/' + requestId).search();
+                  $location.path('requests/preview/' + requestId).search({fromList: 'true'});
             };
 
             var importBatchFile = function (response) {

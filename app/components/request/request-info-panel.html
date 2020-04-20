@@ -177,12 +177,12 @@
     <div class="request-info">
         <div ng-if="requestVM.permissionChecked && (requestVM.pageMode.value === 'new' || requestVM.pageMode.value === 'edit' || (requestVM.pageMode.value === 'preview' && requestVM.isAdmin))" style="padding: 15px; width: 100%" class="classification-btn">
             <!-- Next request -->
-            <button ng-if="requestVM.pageMode.value !== 'new'" ng-disabled="!requestVM.isCameFromRequestList || requestVM.isLastRequestInList" class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.getNextRequest()" title="{{'tooltips.request.details.info.button.nextRequest' | translate}}">
+            <button ng-if="requestVM.isCameFromRequestList" ng-disabled="requestVM.isLastRequestInList" class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.getNextRequest()" title="{{'tooltips.request.details.info.button.nextRequest' | translate}}">
                 <span class="md md-arrow-forward blue darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.nextRequest"></span>
             </button>
 
-            <button ng-if="requestVM.pageMode.value !== 'new'" ng-disabled="!requestVM.isCameFromRequestList || requestVM.isFirstRequestInList" class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.getPreviousRequest()" title="{{'tooltips.request.details.info.button.previousRequest' | translate}}">
+            <button ng-if="requestVM.isCameFromRequestList" ng-disabled="requestVM.isFirstRequestInList" class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.getPreviousRequest()" title="{{'tooltips.request.details.info.button.previousRequest' | translate}}">
                 <span class="md md-arrow-back blue darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.previousRequest"></span>
             </button>

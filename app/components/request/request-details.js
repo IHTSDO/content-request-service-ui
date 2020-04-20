@@ -65,7 +65,8 @@ angular
             var mode = $routeParams.mode,
                 param = $routeParams.param,
                 inputMode = $routeParams.inputMode,
-                kbMode = $routeParams.kb;
+                kbMode = $routeParams.kb,
+                fromList = $routeParams.fromList;
 
             var requestId,
                 requestType;
@@ -564,7 +565,7 @@ angular
 
             var checkPrePage = function(){
                 var listObj = requestService.getCurrentList();
-                if(listObj){
+                if(fromList === 'true' && listObj){
                     vm.isCameFromRequestList = true;                    
                     
                     var currentList = detectCurrentList(listObj);                                      
