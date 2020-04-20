@@ -221,6 +221,10 @@ angular
         RESOLVED_WITHOUT_CONTENT_CHANGES: {
             value: 'RESOLVED_WITHOUT_CONTENT_CHANGES',
             langKey: 'crs.request.requestStatus.resolvedWithoutContentChanges'
+        },
+        AWAITING_AGREEMENT_COMPLIANCE: {
+            value: 'AWAITING_AGREEMENT_COMPLIANCE',
+            langKey: 'crs.request.requestStatus.awaitingAgreementCompliance'
         }
     })
     .value('STATISTICS_STATUS',{

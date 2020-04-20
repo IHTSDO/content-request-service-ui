@@ -179,7 +179,7 @@ footer {
     color: white;
   }
 
-  &.CLARIFICATION_NEEDED {
+  &.CLARIFICATION_NEEDED, &.AWAITING_AGREEMENT_COMPLIANCE {
     background-color: #e91e63;
     color: white;
   }

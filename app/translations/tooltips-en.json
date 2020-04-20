@@ -260,7 +260,8 @@
                         "unassign": "Unassign Request",
                         "unassignAndRejectRequest": "Unassign And Reject",
                         "rejectSelectedRequests": "Reject Selected Requests",
-                        "resolvedWithoutContentChanges" : "Resolved Without Content Changes"
+                        "resolvedWithoutContentChanges" : "Resolved Without Content Changes",
+                        "awaitingAgreementCompliance": "Move To Awaiting Agreement Compliance"
                     },
                     "label": {
                         "batchId": "Batch ID",

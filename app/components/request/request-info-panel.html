@@ -249,17 +249,17 @@
                 <span class="md md-done blue darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.moveToInInceptionElaboration"></span>
             </button>
-            <button ng-if="requestVM.pageMode.value === 'preview' && requestVM.request.requestHeader.status !== 'ACCEPTED' && requestVM.request.requestHeader.status !== 'UNDER_AUTHORING' && requestVM.request.requestHeader.status !== 'RELEASED' && requestVM.request.requestHeader.status !== 'READY_FOR_RELEASE'" ng-disabled="!requestVM.projects || !requestVM.authors" class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.acceptRequest()" title="{{'tooltips.request.details.info.button.accept' | translate}}">
+            <button ng-if="requestVM.pageMode.value === 'preview' && requestVM.request.requestHeader.status !== 'ACCEPTED' && requestVM.request.requestHeader.status !== 'UNDER_AUTHORING' && requestVM.request.requestHeader.status !== 'RELEASED' && requestVM.request.requestHeader.status !== 'READY_FOR_RELEASE' && requestVM.request.requestHeader.status !== 'AWAITING_AGREEMENT_COMPLIANCE'" ng-disabled="!requestVM.projects || !requestVM.authors" class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.acceptRequest()" title="{{'tooltips.request.details.info.button.accept' | translate}}">
                 <span class="md md-done blue darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.accept"></span>
             </button>
             
-            <button ng-if="requestVM.pageMode.value === 'preview' && requestVM.request.requestHeader.status !== 'RELEASED' && requestVM.request.requestHeader.status !== 'IN_APPEAL_CLARIFICATION' && requestVM.request.requestHeader.status !== 'ON_HOLD' && requestVM.request.requestHeader.status !== 'INTERNAL_INPUT_NEEDED'" ng-disabled="!requestVM.projects || !requestVM.authors" class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.assignRequestToStaff(requestVM.request.requestHeader.status)" title="{{'tooltips.request.details.info.button.assignToStaff' | translate}}">
+            <button ng-if="requestVM.pageMode.value === 'preview' && requestVM.request.requestHeader.status !== 'RELEASED' && requestVM.request.requestHeader.status !== 'IN_APPEAL_CLARIFICATION' && requestVM.request.requestHeader.status !== 'ON_HOLD' && requestVM.request.requestHeader.status !== 'INTERNAL_INPUT_NEEDED' && requestVM.request.requestHeader.status !== 'AWAITING_AGREEMENT_COMPLIANCE'" ng-disabled="!requestVM.projects || !requestVM.authors" class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.assignRequestToStaff(requestVM.request.requestHeader.status)" title="{{'tooltips.request.details.info.button.assignToStaff' | translate}}">
                 <span class="md md-assignment-ind blue darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.assignToStaff"></span>
             </button>
 
-            <button ng-if="requestVM.pageMode.value === 'preview' && requestVM.request.requestHeader.status !== 'RELEASED' && requestVM.request.requestHeader.status !== 'IN_APPEAL_CLARIFICATION' && requestVM.request.requestHeader.status !== 'ON_HOLD' && requestVM.request.requestHeader.status !== 'INTERNAL_INPUT_NEEDED'" ng-disabled="!requestVM.projects || !requestVM.authors" class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.reassignToRequestor(requestVM.request.requestHeader.status)" title="{{'tooltips.request.details.info.button.reassignToRequestor' | translate}}">
+            <button ng-if="requestVM.pageMode.value === 'preview' && requestVM.request.requestHeader.status !== 'RELEASED' && requestVM.request.requestHeader.status !== 'IN_APPEAL_CLARIFICATION' && requestVM.request.requestHeader.status !== 'ON_HOLD' && requestVM.request.requestHeader.status !== 'INTERNAL_INPUT_NEEDED' && requestVM.request.requestHeader.status !== 'AWAITING_AGREEMENT_COMPLIANCE'" ng-disabled="!requestVM.projects || !requestVM.authors" class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.reassignToRequestor(requestVM.request.requestHeader.status)" title="{{'tooltips.request.details.info.button.reassignToRequestor' | translate}}">
                 <span class="md md-recent-actors blue darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.reassignToRequestor"></span>
             </button>
@@ -269,7 +269,7 @@
                 <span class="button-link" translate="crs.request.details.info.button.acceptAndAssign"></span>
             </button>
 
-            <button ng-if="requestVM.pageMode.value === 'preview' && requestVM.request.requestHeader.status === 'ACCEPTED' && !requestVM.request.authoringTaskTicket" ng-disabled="!requestVM.projects || !requestVM.authors" ng-disabled="requestVM.request.requestHeader.assignedProject" class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.assignRequest()" title="{{'tooltips.request.details.info.button.assign' | translate}}">
+            <button ng-if="requestVM.pageMode.value === 'preview' && requestVM.request.requestHeader.status === 'ACCEPTED' && !requestVM.request.authoringTaskTicket" ng-disabled="!requestVM.projects || !requestVM.authors || requestVM.request.requestHeader.assignedProject" class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.assignRequest()" title="{{'tooltips.request.details.info.button.assign' | translate}}">
                 <span class="md md-content-paste blue darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.assign"></span>
             </button>
@@ -294,9 +294,15 @@
                 <span class="button-link" translate="crs.request.details.info.button.appealReject"></span>
             </button>
 			
-            <button ng-if="requestVM.pageMode.value === 'preview' && requestVM.request.requestHeader.status !== 'APPEAL' && requestVM.request.requestHeader.status !== 'CLARIFICATION_NEEDED' && requestVM.request.requestHeader.status !== 'IN_INCEPTION_ELABORATION' && requestVM.request.requestHeader.status !== 'UNDER_AUTHORING' && requestVM.request.requestHeader.status !== 'RELEASED' && requestVM.request.requestHeader.status !== 'READY_FOR_RELEASE' && requestVM.request.requestHeader.status !== 'IN_APPEAL_CLARIFICATION'" class="btn btn-default pink1 darken-1 review" style="text-transform: none" ng-click="requestVM.requestClarification()" title="{{'tooltips.request.details.info.button.pendingForClarification' | translate}}">
+            <button ng-if="requestVM.pageMode.value === 'preview' && requestVM.request.requestHeader.status !== 'APPEAL' && requestVM.request.requestHeader.status !== 'CLARIFICATION_NEEDED' && requestVM.request.requestHeader.status !== 'IN_INCEPTION_ELABORATION' && requestVM.request.requestHeader.status !== 'UNDER_AUTHORING' && requestVM.request.requestHeader.status !== 'RELEASED' && requestVM.request.requestHeader.status !== 'READY_FOR_RELEASE' && requestVM.request.requestHeader.status !== 'IN_APPEAL_CLARIFICATION' && requestVM.request.requestHeader.status !== 'AWAITING_AGREEMENT_COMPLIANCE'" class="btn btn-default pink1 darken-1 review" style="text-transform: none" ng-click="requestVM.requestClarification()" title="{{'tooltips.request.details.info.button.pendingForClarification' | translate}}">
                 <span class="md md-mode-edit pink darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.pendingForClarification"></span>
+            </button>
+
+            <button ng-if="requestVM.pageMode.value === 'preview' && requestVM.request.requestHeader.status === 'ACCEPTED'"
+                class="btn btn-default pink1 darken-1 review" style="text-transform: none" ng-click="requestVM.requestAwaitingAgreementCompliance()" title="{{'tooltips.request.details.info.button.awaitingAgreementCompliance' | translate}}">
+                <span class="md md-mode-edit pink darken-2 iconbase"></span>
+                <span class="button-link" translate="crs.request.details.info.button.awaitingAgreementCompliance"></span>
             </button>
 
             <button ng-if="requestVM.pageMode.value === 'preview' && (requestVM.request.requestHeader.status === 'ACCEPTED' || requestVM.request.requestHeader.status === 'CLARIFICATION_NEEDED' || requestVM.request.requestHeader.status === 'INTERNAL_INPUT_NEEDED')"

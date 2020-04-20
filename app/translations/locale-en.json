@@ -264,7 +264,8 @@
                         "nextRequest": "Next Request",
                         "previousRequest": "Previous Request",
                         "rejectSelectedRequests": "Reject Selected Requests",
-                        "resolvedWithoutContentChanges": "Resolve Without Content Changes"
+                        "resolvedWithoutContentChanges": "Resolve Without Content Changes",
+                        "awaitingAgreementCompliance": "Move To Awaiting Agreement Compliance"
                     },
                     "label": {
                         "batchId": "Batch ID",
@@ -333,7 +334,8 @@
                     "IN_INCEPTION_ELABORATION": "Inception/Elaboration",
                     "changeOriginatingOrganization": "Change Originating Organization",
                     "changeCollaborationAgreement": "Change Collaboration Agreement",
-                    "resolveWithoutChanges": "Resolve Without Content Changes"
+                    "resolveWithoutChanges": "Resolve Without Content Changes",
+                    "awaitingAgreementCompliance" : "Awaiting Agreement compliance"
                 },
                 "comment": {
                     "label": "Reason",
@@ -378,7 +380,7 @@
                 "requestForwarded": "Request has been forwarded successfully",
                 "requestWaitingForInternalInput": "Request has been moved to pending internal input successfully",
                 "resolveWithoutChanges": "Request has been moved to Resolved Without Content Changes successfully",
-
+                "awaitingAgreementCompliance": "Request has been moved to Awaiting Agreement Compliance successfully",
                 "error": {
                     "requestTypeRequired": "Please select request type",
                     "invalidPage": "The page you request is not available",
@@ -428,7 +430,8 @@
                 "submitted": "Submitted",
                 "inAppealClarification": "In Appeal Clarification",
                 "resolvedWithoutContentChanges": "Resolved Without Content Changes",
-                "waitingForInternalInput": "Pending Internal Input"                
+                "waitingForInternalInput": "Pending Internal Input"   ,
+                "awaitingAgreementCompliance": "Awaiting Agreement Compliance"             
             },
             "bulkAction": {
                 "status": {

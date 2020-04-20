@@ -2307,6 +2307,20 @@ angular
                 });
             };
 
+            var requestAwaitingAgreementCompliance = function() {
+                var modalInstance = openStatusCommentModal('awaitingAgreementCompliance');
+
+                modalInstance.result.then(function(rejectComment) {
+                    changeRequestStatus(vm.request.id, REQUEST_STATUS.AWAITING_AGREEMENT_COMPLIANCE, { reason: rejectComment })
+                        .then(function() {
+                            notificationService.sendMessage('crs.request.message.awaitingAgreementCompliance', 5000);
+                            goBackToPreviousList();
+                        }, function(e) {
+                            showErrorMessage(e.message);
+                        });
+                });
+            };
+
             var appealRequest = function() {
                 var modalInstance = openStatusCommentModal('appeal');
 
@@ -2779,6 +2793,7 @@ angular
             vm.moveToInInceptionElaboration = moveToInInceptionElaboration;
             vm.requestClarification = requestClarification;
             vm.requestResolveWithoutChanges = requestResolveWithoutChanges;
+            vm.requestAwaitingAgreementCompliance = requestAwaitingAgreementCompliance;
             vm.requestInAppealClarification = requestInAppealClarification;
             vm.saveAndSubmitRequest = saveAndSubmitRequest;
             vm.startEditingConcept = startEditingConcept;
