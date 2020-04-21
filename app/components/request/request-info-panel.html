@@ -249,7 +249,7 @@
                 <span class="md md-done blue darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.moveToInInceptionElaboration"></span>
             </button>
-            <button ng-if="requestVM.pageMode.value === 'preview' && requestVM.request.requestHeader.status !== 'ACCEPTED' && requestVM.request.requestHeader.status !== 'UNDER_AUTHORING' && requestVM.request.requestHeader.status !== 'RELEASED' && requestVM.request.requestHeader.status !== 'READY_FOR_RELEASE' && requestVM.request.requestHeader.status !== 'AWAITING_AGREEMENT_COMPLIANCE'" ng-disabled="!requestVM.projects || !requestVM.authors" class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.acceptRequest()" title="{{'tooltips.request.details.info.button.accept' | translate}}">
+            <button ng-if="requestVM.pageMode.value === 'preview' && requestVM.request.requestHeader.status !== 'ACCEPTED' && requestVM.request.requestHeader.status !== 'UNDER_AUTHORING' && requestVM.request.requestHeader.status !== 'RELEASED' && requestVM.request.requestHeader.status !== 'READY_FOR_RELEASE'" ng-disabled="!requestVM.projects || !requestVM.authors" class="btn btn-default blue darken-1 promote" style="text-transform: none" ng-click="requestVM.acceptRequest()" title="{{'tooltips.request.details.info.button.accept' | translate}}">
                 <span class="md md-done blue darken-2 iconbase"></span>
                 <span class="button-link" translate="crs.request.details.info.button.accept"></span>
             </button>
