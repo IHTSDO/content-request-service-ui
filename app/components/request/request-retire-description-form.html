@@ -21,7 +21,15 @@
                       error-model="requestVM.error.descriptionId"
                       loading-mask="requestVM.conceptStatus.loading || requestVM.conceptStatus.searching"></form-control>
 
-        
+        <form-control type="select"
+                      model="requestVM.request.descriptionStatus"
+                      options="descriptionStatus.text as descriptionStatus.text for descriptionStatus in requestVM.descriptionInactivationReasons"
+                      label="crs.request.details.label.descriptionStatus"
+                      title="{{'tooltips.request.details.label.descriptionStatus' | translate}}"
+                      name="slDescriptionStatus"
+                      required
+                      error-model="requestVM.error.descriptionId"></form-control>
+
         <!-- <form-control type="select"
                       model="requestVM.request.descriptionStatus"
                       options="descriptionStatus for descriptionStatus in requestVM.descriptionStatuses"
