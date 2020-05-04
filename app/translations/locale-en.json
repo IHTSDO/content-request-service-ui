@@ -645,7 +645,7 @@
         },
         "setting": {
             "userPreference": {
-                "emailDaily": "Receive a single email each day for request status changed and new comments. When selected, you will no longer receive an email for each notification but you will receive a daily digest email summarising all the changes"
+                "emailDaily": "Receive a single email each day for request status changed and new comments. When selected, you will no longer receive an email for each notification but you will receive a daily digest email summarising all the changes."
             }
         }
     }
