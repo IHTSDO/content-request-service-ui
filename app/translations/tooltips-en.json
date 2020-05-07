@@ -253,6 +253,7 @@
                         "moveToClarification": "Move to Clarification",
                         "moveToInception": "Move to Inception/Elaboration",
                         "moveToResolvedWithoutContentChanges": "Move to Resolved Without Content Changes",
+                        "moveToAwaitingAgreementCompliance": "Move to Awaiting Agreement Compliance",
                         "changeSNOMEDCode": "Change Local SNOMED CT Code",
                         "changeOriginatingOrganization": "Change Originating Organization",
                         "changeCollaborationAgreement": "Change Collaboration Agreement",

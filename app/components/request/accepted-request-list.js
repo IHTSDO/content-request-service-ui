@@ -225,7 +225,8 @@ angular
                 forward: 'FORWARD',
                 clarification: 'PENDING_CLARIFICATION',
                 inceptionElaboration: 'INCEPTION_ELABORATION',
-                resolveWithoutContentChanges: 'RESOLVED_WITHOUT_CONTENT_CHANGES'
+                resolveWithoutContentChanges: 'RESOLVED_WITHOUT_CONTENT_CHANGES',
+                awaitingAgreementCompliance: 'AWAITING_AGREEMENT_COMPLIANCE'
             };
 
             var initView = function() {
@@ -1224,9 +1225,56 @@ angular
                 }
             };
 
+            var awaitingAgreementComplianceSelectedRequests = function () {
+                var action = bulkAction.awaitingAgreementCompliance;
+                var selectedRequests = vm.selectedRequests,
+                requestIds = [];
+                if (selectedRequests &&
+                    selectedRequests.items) {
+                    angular.forEach(selectedRequests.items, function (isSelected, requestId) {
+                        if (isSelected) {
+                            requestIds.push(requestId);
+                        }
+                    });
+                    if (requestIds.length > 0) {
+                        var modalInstance = $uibModal.open({
+                            templateUrl: 'components/request/modal-change-request-status.html',
+                            controller: 'ModalChangeRequestStatusCtrl as modal',
+                            resolve: {
+                                requestStatus: function () {
+                                    return 'awaitingAgreementCompliance';
+                                },
+                                data: function () {
+                                    return [];
+                                }
+                            }
+                        });
+
+                        modalInstance.result.then(function (rs) {
+                            var data = {
+                                data: {
+                                    additionalInfo: {
+                                        reason: rs
+                                    }
+                                },
+                                requestIds: requestIds
+                            };
+                            requestService.bulkAction(data, action).then(function (response) {
+                                if (response.status === BULK_ACTION_STATUS.STATUS_IN_PROGRESS.value) {
+                                    bulkActionRespondingModal(response.id, BULK_ACTION.AWAITING_AGREEMENT_COMPLIANCE.langKey);
+                                }
+                            });
+                        });
+                    } else {
+                        notificationService.sendMessage('Please select at least a request to move to Awaiting Agreement Compliance.', 5000);
+                    }
+                }
+            };
+
             vm.clearSearch = clearSearch;
             vm.inceptionElaborationSelectedRequests = inceptionElaborationSelectedRequests;
             vm.resolveWithoutContentChangesSelectedRequests = resolveWithoutContentChangesSelectedRequests;
+            vm.awaitingAgreementComplianceSelectedRequests = awaitingAgreementComplianceSelectedRequests;
             vm.pendingClarificationSelectedRequests = pendingClarificationSelectedRequests;
             vm.canForwardRequest = canForwardRequest;
             vm.forwardSelectedRequests = forwardSelectedRequests;

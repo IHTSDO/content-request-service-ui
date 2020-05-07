@@ -319,6 +319,10 @@ angular
         RESOLVED_WITHOUT_CONTENT_CHANGES: {
             value: 'RESOLVED_WITHOUT_CONTENT_CHANGES',
             langKey: 'crs.request.requestStatus.resolvedWithoutContentChanges'
+        },
+        AWAITING_AGREEMENT_COMPLIANCE: {
+            value: 'AWAITING_AGREEMENT_COMPLIANCE',
+            langKey: 'crs.request.requestStatus.awaitingAgreementCompliance'
         }
     })
     .value('STATISTICS_LABEL',{
@@ -501,6 +505,10 @@ angular
         RESOLVED_WITHOUT_CONTENT_CHANGES: {
             value: 'RESOLVED_WITHOUT_CONTENT_CHANGES',
             langKey: 'crs.request.bulkAction.action.resolvedWithoutContentChanges'
+        },
+        AWAITING_AGREEMENT_COMPLIANCE: {
+            value: 'AWAITING_AGREEMENT_COMPLIANCE',
+            langKey: 'crs.request.bulkAction.action.awatingAgreementCompliance'
         }
     })
     .value('DEFAULT_COLUMNS',{

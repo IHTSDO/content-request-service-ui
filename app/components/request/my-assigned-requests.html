@@ -69,6 +69,12 @@
                             <span class="md md-launch darken-2 iconbase"></span>
                             <div class="ripple-wrapper"></div>
                         </button>
+                        
+                        <button ng-if="dashboard.permissionChecked && dashboard.isAdmin" type="button" class="btn btn-round btn-default " title="{{'tooltips.request.details.info.button.moveToAwaitingAgreementCompliance' | translate}}"
+                            ng-click="vm.awaitingAgreementComplianceSelectedRequests()">
+                            <span class="md md-image-aspect-ratio darken-2 iconbase"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
 
                         <button ng-if="dashboard.permissionChecked && dashboard.isAdmin" type="button" class="btn btn-round btn-default " title="{{'tooltips.request.details.info.button.moveToResolvedWithoutContentChanges' | translate}}"
                             ng-click="vm.resolveWithoutContentChangesSelectedRequests()">
