@@ -465,7 +465,8 @@
                     "forward": "Forward Requests",
                     "clarification": "Clarification Needed",
                     "inInceptionElaboration": "In Inception/Elaboration",
-                    "forwarded": "Forwarded Requests"
+                    "forwarded": "Forwarded Requests",
+                    "resolvedWithoutContentChanges": "Resolved Without Content Changes"
                 },
                 "button": {
                     "close": "Close",

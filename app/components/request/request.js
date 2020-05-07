@@ -315,6 +315,10 @@ angular
         INTERNAL_INPUT_NEEDED: {
             value: 'INTERNAL_INPUT_NEEDED',
             langKey: 'crs.request.requestStatus.waitingForInternalInput'
+        },
+        RESOLVED_WITHOUT_CONTENT_CHANGES: {
+            value: 'RESOLVED_WITHOUT_CONTENT_CHANGES',
+            langKey: 'crs.request.requestStatus.resolvedWithoutContentChanges'
         }
     })
     .value('STATISTICS_LABEL',{
@@ -493,6 +497,10 @@ angular
         IN_INCEPTION_ELABORATION: {
             value: 'IN_INCEPTION_ELABORATION',
             langKey: 'crs.request.bulkAction.action.inInceptionElaboration'
+        },
+        RESOLVED_WITHOUT_CONTENT_CHANGES: {
+            value: 'RESOLVED_WITHOUT_CONTENT_CHANGES',
+            langKey: 'crs.request.bulkAction.action.resolvedWithoutContentChanges'
         }
     })
     .value('DEFAULT_COLUMNS',{
