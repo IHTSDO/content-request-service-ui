@@ -187,7 +187,7 @@
                     "relationship": "Relationship",
                     "inferredRel": "Show Inferred Relationships",
                     "statedRel": "Show Stated Relationships",
-                    "historyAttributeValue": "Historical Attribute Value",
+                    "historyAttributeValue": "Historical Association Value",
                     "notes": "Notes",
                     "relationshipType": "Relationship Type",
                     "characteristicType": "Characteristic Type",
