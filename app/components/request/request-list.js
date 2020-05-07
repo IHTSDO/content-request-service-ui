@@ -167,8 +167,16 @@ angular
                 },
                 {
                     id: "INTERNAL_INPUT_NEEDED",
-                    title: "Waiting For Internal Input"
-                }
+                    title: "Pending Internal Input"
+                },
+                {
+                    id: "AWAITING_AGREEMENT_COMPLIANCE",
+                    title: "Awaiting Agreement Compliance"
+                },
+                {
+                    id: "RESOLVED_WITHOUT_CONTENT_CHANGES",
+                    title: "Resolved Without Content Changes"
+                },
             ];
 
             vm.requestTypes = [
