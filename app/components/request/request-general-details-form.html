@@ -133,13 +133,6 @@
                       title="{{'tooltips.request.details.label.notes'| translate}}"
                       name="txtNotes"></form-control>
 
-        <form-control type="text-readonly"
-                      ng-if="requestVM.request.requestHeader.status !== 'DRAFT'"
-                      model="requestVM.request.additionalFields.notes"
-                      label="crs.request.details.label.notes"
-                      title="{{'tooltips.request.details.label.notes' | translate}}"
-                      name="txtNotes"></form-control>         
-
         <form-control type="text"
                       ng-if="requestVM.request.requestHeader.status === 'DRAFT'"
                       model="requestVM.request.additionalFields.namespace"
