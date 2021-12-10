@@ -1,0 +1,34 @@
+<h4 translate="crs.request.requestType.newDescription"></h4>
+<form class="form-floating" form-control-readonly="requestVM.request.requestHeader.status !== 'DRAFT'">
+
+    <div class="form-group">
+
+        <form-control type="concept"
+                      model="requestVM.originalConcept"
+                      label="crs.request.details.label.concept"
+                      title="{{'tooltips.request.details.label.concept' | translate}}"
+                      required
+                      error-model="requestVM.error.concept"></form-control>
+
+        <form-control type="text"
+                      model="requestVM.request.proposedDescription"
+                      label="crs.request.details.label.description"
+                      title="{{'tooltips.request.details.label.description' | translate}}"
+                      name="txtDescription"
+                      required
+                      error-model="requestVM.error.proposedDescription"></form-control>
+        <form-control type="select"
+                      model="requestVM.request.proposedCaseSignificance"
+                      options="caseSignificance.value as caseSignificance.text for caseSignificance in requestVM.caseSignificances"
+                      label="crs.request.details.label.proposedCaseSignificance"
+                      title="{{'tooltips.request.details.label.proposedCaseSignificance' | translate}}"
+                      name="slCaseSignificance"></form-control>
+
+        <div class="form-control-element">
+            <input type="checkbox"
+                   ng-model="requestVM.request.descriptionIsPT"
+                   name="chkIsPT">
+            <label translate="crs.request.details.label.isPt" title="{{'tooltips.request.details.label.isPt' | translate}}"></label>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,50 @@
+<div id="createRequestMModal">
+
+
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="modal.closeModal()">&times;</button>
+        <h4 class="modal-title" title="{{'tooltips.request.createModal.title' | translate}}">{{'crs.request.createModal.title' | translate}}</h4>
+    </div>
+
+    <div class="modal-body">
+        <div class="col-md-12">
+            <form class="form-floating">
+                <div class="form-group">
+                    <label for="requestTypeSelect" translate="crs.request.createModal.inputMode.label" title="{{'tooltips.request.createModal.inputMode.label' | translate}}"></label>
+                    <select id="inputModeSelect" name="select-input-mode" class="form-control"
+                            ng-model="modal.inputMode"
+                            ng-options="inputMode.value as inputMode.langKey | translate for inputMode in modal.inputModes">
+                    </select>
+                    <br>
+
+                    <label for="requestTypeSelect" translate="crs.request.createModal.requestType.label" title="{{'tooltips.request.createModal.requestType.label' | translate}}"></label>
+                    <select id="requestTypeSelect" name="select-request-type" class="form-control"
+                            ng-model="modal.requestType"
+                            ng-options="requestType.value as requestType.langKey | translate for requestType in modal.requestTypes">
+                    </select>
+                    <br>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-12 alert alert-success" ng-show="modal.msgSuccess" >{{modal.msgSuccess | translate}}</div>
+        <div class="col-md-12 alert alert-danger" ng-show="modal.msgError" >{{modal.msgError | translate}}</div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="col-md-6">
+            <button type="button" ng-disabled="disabled" class="col-md-12 btn btn-info no-margin "
+                    ng-click="modal.createNewRequest()" title="{{'tooltips.request.createModal.button.createRequest' | translate}}">{{'tooltips.request.createModal.button.createRequest' | translate}}
+            </button>
+        </div>
+        <div class="col-md-6">
+            <button type="button" ng-disabled="disabled" class=" col-md-12 btn btn-danger no-margin "
+                    ng-click="modal.closeModal()" title="{{'tooltips.request.createModal.button.cancel' | translate}}">{{'crs.request.createModal.button.cancel' | translate}}
+            </button>
+        </div>
+    </div>
+
+</div>
+
+
+</div>

@@ -1,0 +1,80 @@
+<div id="request-info-panel" style="padding-top:15px">
+    <!-- Timeline formatter and concept ids.extension input -->
+    <div class="row">
+        <div class="col col-md-12">
+            <div style="border-radius: 4px; border: solid 1px #ddd">
+                <div style="border-radius: 4px;background-color: #009cd7;color:white;padding: 10px;margin: -1px;font-weight: 500;cursor: pointer"
+                        ng-click="fileListCollapsed = !fileListCollapsed">
+                    {{'crs.batch.preview.title.uploadedFiles' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': !fileListCollapsed, 'glyphicon-chevron-up': fileListCollapsed}"></i>
+                </div>
+                <div style="padding:10px 5px;background-color:white"
+                     uib-collapse="fileListCollapsed">
+                    <div class="table-responsive white">
+                        <table ng-table="batchPreviewVM.filesTableParams" template-pagination="layout/template/small-data-table-pager.html"
+                               class="table table-full table-full-small">
+                            <tr ng-repeat="file in $data" class="clickable-row" ng-click="batchPreviewVM.selectFile(file)" ng-class="{'file-selected':batchPreviewVM.selectedFile.id === file.id}">
+                                <td class="col-checkbox" header="'ng-table/headers/checkbox.html'" ng-click="$event.stopPropagation()">
+                                    <input type="checkbox" class="small-checkbox" ng-model="batchPreviewVM.selectedFiles.items[file.id]" ng-click="batchPreviewVM.pushSelectedFile($event, file)">
+                                </td>
+                                <td data-title="'crs.batch.preview.fileList.tableHeader.name' | translate" sortable="'fileName'" >
+                                    {{file.fileName}}
+                                </td>
+                                <td data-title="'crs.batch.preview.fileList.tableHeader.uploaded' | translate" sortable="'uploadedTime'" >
+                                    {{file.uploadedTime | date:'yyyy-MM-dd H:mm:ss'}}
+                                </td>
+                                <td style="overflow: inherit">
+                                    <a class="tooltips-left tooltips-light ">
+                                        <i class="md fileStatus {{file.status}} "
+                                              ng-class="{'md-error': file.status === 'ERROR',
+                                              'md-done': file.status === 'COMPLETED_UPLOAD',
+                                              'md-done-all': file.status === 'COMPLETED_IMPORT',
+                                              'md-spin md-autorenew': file.status === 'PROCESSING_IMPORT' || file.status === 'PROCESSING_UPLOAD'}"></i>
+                                        <span style="text-transform: none"> {{file.status | batchImportStatus | translate }}</span>
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                 </div>
+            </div>
+            <div>
+                <div ngf-select ngf-drag-over-class="'dragover'" ngf-drop ngf-change="batchPreviewVM.uploadFile($file)" class="drop-box">
+                    <span class="md md-file-upload"></span> {{'crs.batch.preview.upload.hint' | translate}}
+                    <div ng-if="batchPreviewVM.uploading"  style="line-height: initial">
+                        <label>{{'crs.batch.preview.upload.uploading' | translate}}... <span>{{batchPreviewVM.uploadingProgress}} %</span></label>
+                        <uib-progressbar animate="true" value="batchPreviewVM.uploadingProgress" ></uib-progressbar>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-if="batchPreviewVM.uploadFileErrorMessage" style="margin-top: 17px;">
+        <div class="col col-md-12">
+            <div style="background-color: #D32F2F; color: #fff; padding-left: 5px; padding-top: 5px; padding-bottom: 5px;" ng-bind-html="batchPreviewVM.uploadFileErrorMessage"></div>
+        </div>
+    </div>
+    <hr style="width:93%; border-color:#ddd; margin-bottom: 5px">
+    <a ng-href="{{link.batchTemplate || '#/'}}" role="button" style="margin-left: 15px; color: #5cbaff;" translate="crs.batch.preview.button.downloadTemplate"></a>
+
+    <div class="request-info" style="margin-top: 5px">
+
+        <div style="padding: 15px; width: 100%" class="classification-btn">
+            <button ng-disabled="batchPreviewVM.disabledImportButton"
+                    class="btn btn-default green darken-1 import" style="text-transform: none"
+                    ng-click="batchPreviewVM.openBatchImportModal()">
+                <span class="md md-system-update-tv green darken-2 iconbase" style="line-height: initial;padding-top:10px"></span>
+                <span class="button-link" translate="crs.batch.preview.button.import"></span>
+            </button>
+            <button 
+                    class="btn btn-default red darken-1 import" style="text-transform: none"
+                    ng-click="batchPreviewVM.removeSelectedRequest()">
+                <span class="md md-highlight-remove red darken-2 iconbase" style="line-height: initial;padding-top:10px"></span>
+                <span class="button-link" translate="crs.batch.preview.button.remove"></span>
+            </button>
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="ng-table/headers/checkbox.html">
+    <input type="checkbox" ng-model="batchPreviewVM.selectedFiles.checked" class="select-all-rqs" />
+</script>

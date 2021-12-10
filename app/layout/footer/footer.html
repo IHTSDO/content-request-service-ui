@@ -1,0 +1,18 @@
+<div>
+    <div class="navbar navbar-default grey darken-3 crs-footer">
+        <ul class="nav navbar-nav navbar-left navbar-left-no-collapse identity-services">
+            <li><a href="http://www.snomed.org/#" target="_blank">&copy; {{'crs.app.copyright' | translate}}</a></li>
+            <li><a ng-href="{{link.userGuide || '#'}}" target="_blank">{{'crs.link.help' | translate}}</a></li>
+            <li><a href="{{link.termOfService}}" target="_blank">{{'crs.link.tos' | translate}}</a></li>
+            <li><a href="{{link.privacyPolicy}}" target="_blank">{{'crs.link.policy' | translate}}</a></li>
+            <li><a href="{{link.contactUs}}" target="_blank">{{'crs.link.contact' | translate}}</a></li>
+        </ul>
+        <!--<button class="btn btn-primary navbar-right" style="margin:5px; padding:5px; font-size:10px;" id="myCustomTrigger" >{{'crs.link.feedback' | translate}}</button>-->
+        <ul class="nav navbar-nav navbar-right navbar-right-no-margin identity-services">
+            <li><a>web: v{{clientVersion}} | server: v{{serverVersion}}</a></li>
+        </ul>
+        <button type="button" class="btn btn-primary navbar-right" id="myCustomTrigger" style="margin:5px; padding:5px; font-size:10px;" onclick="FreshWidget.show();
+                                    return false;">{{'crs.link.feedback' | translate}}
+        </button>
+    </div>
+</div>

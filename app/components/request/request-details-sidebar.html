@@ -1,0 +1,59 @@
+<aside class="sidebar-bg no-padding" style="height: 100%" >
+
+    <!-- show if sidebar not hidden -->
+    <div role="tabpanel sidebar-tabs ">
+
+        <!-- Nav tabs -->
+        <ul style="display: inline; border-bottom: 0px;" class="nav nav-tabs sidebar-tabs col-md-12 no-padding"
+            role="tablist" ng-init="requestVM.actionTab=4">
+            <li role="presentation" class=""><a style="margin: 0px" ng-click="requestVM.actionTab=1" aria-controls="home"
+                                                      role="tab"
+                                                      data-toggle="tab" class="tooltips-btm tooltips-light normal-case">
+                <div class="fa fa-book"></div>
+                <span translate="crs.request.details.sidebar.tip.taxonomy"></span></a></li>
+            <li role="presentation" class=""><a ng-click="requestVM.actionTab=2" aria-controls="home" role="tab" data-toggle="tab"
+                                                class="tooltips-btm tooltips-light normal-case">
+                <div class="fa fa-search"></div>
+                <span translate="crs.request.details.sidebar.tip.search"></span></a></li>
+            <li role="presentation"><a ng-click="requestVM.actionTab=3" aria-controls="home" role="tab" data-toggle="tab"
+                                       class="tooltips-btm tooltips-btm normal-case">
+                <div class="fa fa-list-ol"></div>
+                <span translate="crs.request.details.sidebar.tip.savedList"></span></a></li>
+            <li role="presentation" class="active"><a ng-click="requestVM.actionTab=4" aria-controls="home" role="tab"
+                                                      data-toggle="tab"
+                                                      class="tooltips-btm tooltips-light normal-case">
+                <div class="fa fa-info-circle"></div>
+                <span translate="crs.request.details.sidebar.tip.requestInfo"></span></a></li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content col-md-12 no-padding ">
+            <div role="tabpanel" class="tab-pane" ng-class="{active: requestVM.actionTab===1}">
+                <div class="col-md-12 no-padding">
+                    <div ng-include="'shared/taxonomy/taxonomy.html'"></div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" ng-class="{active: requestVM.actionTab===2}">
+                <div ng-include="'shared/search/search.html'"></div>
+            </div>
+            <div role="tabpanel" class="tab-pane" ng-class="{active: requestVM.actionTab===3}">
+                <div ng-include="'shared/saved-list/saved-list-panel.html'"></div>
+            </div>
+            <div role="tabpanel" class="tab-pane" ng-class="{active: requestVM.actionTab===4}">
+                <div ng-include="'components/request/request-info-panel.html'"></div>
+            </div>
+        </div>
+        <!--<div class="tab-content col-md-12 no-padding ">
+            <div role="tabpanel" class="tab-pane" ng-class="{active: requestVM.actionTab===1}">
+                <div ng-include="'shared/taxonomy/taxonomy.html'"></div>
+            </div>
+            <div role="tabpanel" class="tab-pane" ng-class="{active: requestVM.actionTab===2}">
+                <div ng-include="'shared/search/search.html'"></div>
+            </div>
+            <div role="tabpanel" class="tab-pane" ng-class="{active: requestVM.actionTab===3}">
+                <div ng-include="'shared/savedList/savedList.html'"></div>
+            </div>
+        </div>-->
+    </div>
+
+    <div style="float: right; width: 10px; color: red"></div>
+</aside>

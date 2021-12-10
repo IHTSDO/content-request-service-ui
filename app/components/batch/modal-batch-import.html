@@ -1,0 +1,50 @@
+<div id="batchImportModal">
+
+
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="modal.closeModal()">&times;</button>
+        <h4 class="modal-title">{{'crs.batch.importModal.title' | translate}}</h4>
+    </div>
+
+    <div class="modal-body">
+        <div class="col-md-12">
+            <form class="form-floating" >
+                <div class="form-group" style="margin-bottom: 25px; margin-top: 5px">
+                    <div ng-if="modal.selectedFile">
+                        <label>Selected File</label>
+                        <div>{{modal.selectedFile.name}}</div>
+                    </div>
+
+                    <div ng-if="modal.uploading">
+                        <label>Uploading... <span>{{modal.progress}} %</span></label>
+                        <uib-progressbar animate="true" value="modal.progress" ></uib-progressbar>
+                    </div>
+
+                    <div ng-if="!modal.uploading" ngf-select ngf-drop ng-model="modal.selectedFile" class="drop-box">
+                        Select or Drop Batch File Here
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-12 alert alert-success" ng-show="modal.msgSuccess" >{{modal.msgSuccess | translate}}</div>
+        <div class="col-md-12 alert alert-danger" ng-show="modal.msgError" >{{modal.msgError | translate}}</div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="col-md-6">
+            <button type="button" ng-disabled="disabled" class="col-md-12 btn btn-info no-margin "
+                    ng-click="modal.importFile()">{{'crs.batch.importModal.button.upload' | translate}}
+            </button>
+        </div>
+        <div class="col-md-6">
+            <button type="button" ng-disabled="disabled" class=" col-md-12 btn btn-danger no-margin "
+                    ng-click="modal.closeModal()">{{'crs.batch.importModal.button.cancel' | translate}}
+            </button>
+        </div>
+    </div>
+
+</div>
+
+
+</div>

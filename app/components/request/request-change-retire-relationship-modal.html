@@ -1,0 +1,24 @@
+<form class="form-floating" form-control-readonly="isStatic">
+
+    <div class="form-group">
+        <form-control type="select"
+                      model="definitionOfChanges.refinability"
+                      options="refinability for refinability in requestMetadata.refinabilities"
+                      label="crs.request.details.label.newRefinability"
+                      title="{{'tooltips.request.details.label.newRefinability' | translate}}"
+                      name="slRefinability"></form-control>
+
+        <form-control type="select"
+                      model="definitionOfChanges.relationshipStatus"
+                      options="relationshipStatus for relationshipStatus in requestMetadata.relationshipStatuses"
+                      label="crs.request.details.label.relationshipStatus"
+                      title="{{'tooltips.request.details.label.relationshipStatus' | translate}}"
+                      name="slRelationshipStatus"></form-control>
+
+        <form-control type="textarea"
+                      model="definitionOfChanges.reasonForChange"
+                      label="crs.request.details.label.reasonForChange"
+                      title="{{'crs.request.details.label.reasonForChange' | translate}}"
+                      name="slRefinability"></form-control>
+    </div>
+</form>

@@ -1,0 +1,179 @@
+<h4 >{{requestVM.pageMode.langKey | translate}}</h4>
+<form class="form-floating" form-control-readonly="requestVM.request.requestHeader.status !== 'DRAFT'">
+
+    <div class="form-group" >
+
+        <form-control type="text"
+                      model="requestVM.request.requestorInternalId"
+                      label="crs.request.details.label.requestorInternalId"
+                      title="{{'tooltips.request.details.label.requestorInternalId' | translate}}"
+                      error-model="requestVM.error.requestorInternalId"></form-control>
+
+        <form-control type="text-readonly"
+                      ng-if="requestVM.requestType.value === 'NEW_CONCEPT' && requestVM.request.requestHeader.status !== 'DRAFT'"
+                      model="requestVM.request.localCode"
+                      label="crs.request.details.label.localCode"
+                      title="{{'tooltips.request.details.label.localCode' | translate}}"
+                      name="txtReference"></form-control>
+
+        <form-control type="text"
+                      ng-if="requestVM.requestType.value === 'NEW_CONCEPT' && requestVM.request.requestHeader.status === 'DRAFT'"
+                      model="requestVM.request.localCode"
+                      label="crs.request.details.label.localCode"
+                      title="{{'tooltips.request.details.label.localCode' | translate}}"
+                      name="txtReference"></form-control>
+
+        <form-control type="select"
+                      ng-if="requestVM.canShowOriginatingOrganization()"
+                      model="requestVM.request.organization"
+                      label="crs.request.details.label.organizationOptions"
+                      title="{{'tooltips.request.details.label.organizationOptions' | translate}}"
+                      options="suggestion.value as suggestion.value for suggestion in requestVM.organizationOptions"
+                      required
+                      error-model="requestVM.error.organization"></form-control>
+
+        <form-control type="select"
+                      ng-if="requestVM.canShowCollaborationAgreement()"
+                      model="requestVM.request.collaborationAgreement"
+                      label="crs.request.details.label.collaborationAgreementOptions"
+                      title="{{'tooltips.request.details.label.collaborationAgreementOptions' | translate}}"
+                      options="suggestion.value as suggestion.value for suggestion in requestVM.collaborationAgreementOptions"></form-control>
+
+        <form-control type="select"
+                      model="requestVM.request.additionalFields.topic"
+                      label="crs.request.details.label.topic"
+                      title="{{'tooltips.request.details.label.topic' | translate}}"
+                      options="suggestion.value as suggestion.value for suggestion in requestVM.topicOptions"
+                      required
+                      error-model="requestVM.error.topic"></form-control>
+
+        <form-control type="text"
+                      ng-if="requestVM.request.requestHeader.status === 'DRAFT'"
+                      model="requestVM.request.additionalFields.summary"
+                      label="crs.request.details.label.summary"
+                      title="{{'tooltips.request.details.label.summary' | translate}}"
+                      name="txtReference"
+                      required
+                      error-model="requestVM.error.summary"></form-control>
+
+        <form-control type="text-readonly"
+                      ng-if="requestVM.request.requestHeader.status !== 'DRAFT'"
+                      model="requestVM.request.additionalFields.summary"
+                      label="crs.request.details.label.summary"
+                      title="{{'tooltips.request.details.label.summary' | translate}}"
+                      name="txtTopic"
+                      required
+                      error-model="requestVM.error.summary"></form-control>  
+
+        <!-- rename Reason For Change to proposed use case--> 
+        <form-control type="textarea"
+                      ng-if="requestVM.request.requestHeader.status === 'DRAFT'"
+                      model="requestVM.request.additionalFields.reasonForChange"
+                      label="crs.request.details.label.reasonForChange"
+                      title="{{'tooltips.request.details.label.reasonForChange' | translate}}"
+                      name="txtReasonForChange"
+                      required
+                      error-model="requestVM.error.reasonForChange"></form-control>
+
+        <form-control type="text-readonly"
+                      ng-if="requestVM.request.requestHeader.status !== 'DRAFT'"
+                      model="requestVM.request.additionalFields.reasonForChange"
+                      label="crs.request.details.label.reasonForChange"
+                      title="{{'tooltips.request.details.label.reasonForChange' | translate}}"
+                      name="txtReasonForChange"
+                      required
+                      error-model="requestVM.error.reasonForChange"></form-control>  
+
+        <form-control type="select"
+                      ng-if="requestVM.requestType.value === 'NEW_RELATIONSHIP' || requestVM.requestType.value === 'RETIRE_RELATIONSHIP' || requestVM.requestType.value === 'CHANGE_RELATIONSHIP'"
+                      model="requestVM.request.destinationTerminology"
+                      label="crs.request.details.label.destinationTerminology"
+                      title="{{'tooltips.request.details.label.destinationTerminology' | translate}}"
+                      options="suggestion.destinationTerminology as suggestion.terminologyName for suggestion in requestVM.destinationTerminologies"></form-control>
+
+        <form-control ng-if="requestVM.request.requestHeader.status === 'DRAFT'"
+                      type="textarea"
+                      model="requestVM.request.additionalFields.reference"
+                      label="crs.request.details.label.reference"
+                      title="{{'tooltips.request.details.label.reference' | translate}}"
+                      name="txtReference"
+                      required
+                      error-model="requestVM.error.reference"></form-control>
+
+        <form-control type="text-readonly"
+                      ng-if="requestVM.request.requestHeader.status !== 'DRAFT'"
+                      model="requestVM.request.additionalFields.reference"
+                      label="crs.request.details.label.reference"
+                      title="{{'tooltips.request.details.label.reference' | translate}}"
+                      name="txtTopic"
+                      required
+                      error-model="requestVM.error.reference"></form-control>
+
+        <!-- rename Proposed Use to Use Case -->
+        <!-- <form-control type="text"
+                      ng-if="requestVM.requestType.value === 'NEW_CONCEPT' && requestVM.request.requestHeader.status === 'DRAFT'"
+                      model="requestVM.request.proposedUse"
+                      label="crs.request.details.label.proposedUse"
+                      title="{{'tooltips.request.details.label.proposedUse' | translate}}"
+                      name="txtReference"
+                      required
+                      error-model="requestVM.error.proposedUse"></form-control> --> 
+
+        <form-control type="textarea"
+                      ng-if="requestVM.requestType.value === 'NEW_CONCEPT'"
+                      label="crs.request.details.label.proposedDefinition"
+                      model="requestVM.request.requestDescription"   
+                      title="{{'crs.request.details.label.proposedDefinition' | translate}}"                   
+                      name="requestDescription"></form-control>                            
+
+        <form-control type="textarea"
+                      ng-if="requestVM.request.requestHeader.status === 'DRAFT'"
+                      model="requestVM.request.additionalFields.notes"
+                      label="crs.request.details.label.notes"
+                      title="{{'tooltips.request.details.label.notes'| translate}}"
+                      name="txtNotes"></form-control>
+
+        <form-control type="text-readonly"
+                      ng-if="requestVM.request.requestHeader.status !== 'DRAFT'"
+                      model="requestVM.request.additionalFields.notes"
+                      label="crs.request.details.label.notes"
+                      title="{{'tooltips.request.details.label.notes' | translate}}"
+                      name="txtNotes"></form-control>         
+
+        <form-control type="text"
+                      ng-if="requestVM.request.requestHeader.status === 'DRAFT'"
+                      model="requestVM.request.additionalFields.namespace"
+                      label="crs.request.details.label.namespace"
+                      title="{{'tooltips.request.details.label.namespace' | translate}}"
+                      name="txtReference"></form-control>
+
+
+        <form-control type="text-readonly"
+                      ng-if="requestVM.request.requestHeader.status !== 'DRAFT'"
+                      model="requestVM.request.additionalFields.namespace"
+                      label="crs.request.details.label.namespace"
+                      title="{{'tooltips.request.details.label.namespace' | translate}}"
+                      name="txtNotes"></form-control>   
+
+        <form-control type="text-readonly"
+                      ng-if="requestVM.request.requestHeader.status !== 'DRAFT' && requestVM.requestType.value === 'NEW_CONCEPT'"
+                      model="requestVM.request.proposedUse"
+                      label="crs.request.details.label.proposedUse"
+                      title="{{'tooltips.request.details.label.proposedUse' | translate}}"
+                      name="txtNotes"></form-control>                 
+
+        <form-control type="text"
+                      ng-if="requestVM.requestType.value === 'NEW_CONCEPT' && requestVM.request.requestHeader.status === 'DRAFT'"
+                      model="requestVM.request.umlsCui"
+                      label="crs.request.details.label.umlsCui"
+                      title="{{'tooltips.request.details.label.umlsCui' | translate}}"
+                      name="txtReference"></form-control>
+
+        <form-control type="text-readonly"
+                      ng-if="requestVM.request.requestHeader.status !== 'DRAFT' && requestVM.requestType.value === 'NEW_CONCEPT'"
+                      model="requestVM.request.umlsCui"
+                      label="crs.request.details.label.umlsCui"
+                      title="{{'tooltips.request.details.label.umlsCui' | translate}}"
+                      name="txtNotes"></form-control>
+    </div>
+</form>

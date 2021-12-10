@@ -1,0 +1,62 @@
+<h4 translate="crs.request.requestType.changeRetireDescription"></h4>
+<form class="form-floating" form-control-readonly="requestVM.request.requestHeader.status !== 'DRAFT'">
+
+    <div class="form-group">
+        <div ng-if="requestVM.originalConcept || requestVM.pageMode.value === 'new'">
+            <form-control type="concept"
+                      model="requestVM.originalConcept"
+                      label="crs.request.details.label.concept"
+                      title="{{'tooltips.request.details.label.concept' | translate}}"
+                      required
+                      error-model="requestVM.error.concept"
+                      concept-status="requestVM.conceptStatus"></form-control>
+        </div>
+
+        <div ng-if="!requestVM.originalConcept && requestVM.pageMode.value !== 'new'">
+          <form-control type="text"
+                        model="requestVM.requestItems[0].conceptId"
+                        label="crs.request.details.label.concept"
+                        title="{{'tooltips.request.details.label.concept' | translate}}"
+                        readonly></form-control>
+        </div>
+
+        <div ng-if="requestVM.originalConcept.descriptions || requestVM.pageMode.value === 'new'">
+          <form-control type="select"
+                      model="requestVM.request.descriptionId"
+                      options="suggestion.descriptionId as suggestion.term for suggestion in requestVM.originalConcept.descriptions"
+                      label="crs.request.details.label.currentDescription"
+                      title="{{'tooltips.request.details.label.currentDescription' | translate}}"
+                      name="slCurrentDescription"
+                      required
+                      error-model="requestVM.error.descriptionId"
+                      loading-mask="requestVM.conceptStatus.loading || requestVM.conceptStatus.searching"></form-control>
+        </div>
+        
+        <div ng-if="!requestVM.originalConcept.descriptions && requestVM.pageMode.value !== 'new'">
+          <form-control type="text"
+                      model="requestVM.request.descriptionId"
+                      label="crs.request.details.label.currentDescription"
+                      title="{{'tooltips.request.details.label.currentDescription' | translate}}"
+                      readonly></form-control>
+        </div>
+
+        <form-control type="text"
+                      model="requestVM.request.proposedDescription"
+                      label="crs.request.details.label.proposedDescription"
+                      title="{{'tooltips.request.details.label.proposedDescription' | translate}}"
+                      name="txtProposedDescription"></form-control>
+
+        <form-control type="select"
+                      model="requestVM.request.proposedCaseSignificance"
+                      options="caseSignificance.value as caseSignificance.text for caseSignificance in requestVM.caseSignificances"
+                      label="crs.request.details.label.proposedCaseSignificance"
+                      title="{{'tooltips.request.details.label.proposedCaseSignificance' | translate}}"
+                      name="slCaseSignificance"></form-control>
+        <!-- <form-control type="select"
+                      model="requestVM.request.descriptionStatus"
+                      options="descriptionStatus for descriptionStatus in requestVM.descriptionStatuses"
+                      label="crs.request.details.label.descriptionStatus"
+                      name="slDescriptionStatus"></form-control> -->
+
+    </div>
+</form>

@@ -1,0 +1,297 @@
+<div ng-controller="RequestListCtrl as vm">
+    <!-- Submitted Requests -->
+    <section ng-cloak ng-if="vm.submittedTableParams" class="tables-data">
+        <div class="card">
+            <div class="row">
+                <div class="col-md-3 no-padding">
+                    <h3 class="table-title p-20" translate="crs.request.list.title.submittedRequests"></h3>
+                </div>
+                <div class="col-md-5">
+                     <div class="table-search">
+                        <input type="text" ng-keypress="vm.searchTask($event,'submitted-requests')" ng-model="vm.searchText" class="form-control"
+                               placeholder="{{'crs.request.list.searchPlaceHolder.submittedRequests' | translate}}" autofocus/>
+                        <button type="button" class="btn btn-round btn-default btn-small" ng-click="vm.clearSearch('submitted-requests')" title="{{'tooltips.notification.button.clear' | translate}}">
+                            <span class="md md-clear"></span>
+                            <span class="button-link"></span>
+                        </button>
+                    </div> 
+                </div>
+                <div class="col-md-4">
+                    <div class="p-t-20">
+                        <button type="button" class="btn btn-round btn-info ng-scope " title="{{'crs.request.list.tip.count' | translate}}" >
+                            {{vm.submittedTableParams.total()}} <div class="ripple-wrapper"></div>
+                        </button>
+                        <button ng-if="dashboard.permissionChecked && dashboard.isAdmin" type="button" class="btn btn-round btn-default " title="{{'tooltips.request.list.tip.assignToStaff' | translate}}" ng-click="vm.assignSelectedRequestsToStaff()">
+                            <span class="md md-assignment-ind"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
+                        <button ng-if="dashboard.permissionChecked && dashboard.isAdmin" type="button" class="btn btn-round btn-default " title="{{'tooltips.request.list.tip.reassignToRequestor' | translate}}" ng-click="vm.reassignSelectedRequestsToRequestor()">
+                            <span class="md md-recent-actors"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
+                        <button ng-if="dashboard.permissionChecked && dashboard.isAdmin" type="button" class="btn btn-round btn-default"  ng-click="vm.acceptSelectedRequests()" title="{{'tooltips.request.details.info.button.accept' | translate}}">
+                            <span class="md md-done"></span>
+                            <span class="button-link"></span>
+                        </button>
+                        <button ng-if="dashboard.permissionChecked && dashboard.isAdmin" type="button" class="btn btn-round btn-default"  ng-click="vm.addNote()" title="{{'tooltips.request.details.info.button.addNote' | translate}}">
+                            <span class="md md-event-note"></span>
+                            <span class="button-link"></span>
+                        </button>
+
+                        <button ng-if="dashboard.permissionChecked && dashboard.isAdmin" type="button" class="btn btn-round btn-default " title="{{'tooltips.request.details.info.button.rejectSelectedRequests' | translate}}" ng-click="vm.rejectSelectedRequests()">
+                            <span class="md md-dnd-forwardslash darken-2 iconbase"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
+                        <button ng-if="dashboard.permissionChecked && dashboard.isAdmin" type="button" class="btn btn-round btn-default " title="{{'tooltips.request.details.info.button.moveToOnHold' | translate}}"
+                            ng-click="vm.onHoldSelectedRequests()">
+                            <span class="md md-pause darken-2 iconbase"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
+
+                        <button ng-if="dashboard.permissionChecked && dashboard.isAdmin" type="button" class="btn btn-round btn-default " title="{{'tooltips.request.details.info.button.moveToWaitingForInternalInput' | translate}}"
+                            ng-click="vm.waitingForInternalInputSelectedRequests()">
+                            <span class="md md-input darken-2 iconbase"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
+
+                        <button ng-if="dashboard.permissionChecked && dashboard.isAdmin && vm.canForwardRequest()" type="button" class="btn btn-round btn-default " title="{{'tooltips.request.details.info.button.moveToForward' | translate}}"
+                            ng-click="vm.forwardSelectedRequests()">
+                            <span class="md md-forward darken-2 iconbase"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
+
+                        <button ng-if="dashboard.permissionChecked && dashboard.isAdmin" type="button" class="btn btn-round btn-default " title="{{'tooltips.request.details.info.button.moveToClarification' | translate}}"
+                            ng-click="vm.pendingClarificationSelectedRequests()">
+                            <span class="md md-info darken-2 iconbase"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
+
+                        <button ng-if="dashboard.permissionChecked && dashboard.isAdmin" type="button" class="btn btn-round btn-default " title="{{'tooltips.request.details.info.button.moveToInception' | translate}}"
+                            ng-click="vm.inceptionElaborationSelectedRequests()">
+                            <span class="md md-launch darken-2 iconbase"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
+
+                        <button ng-if="dashboard.permissionChecked && dashboard.isAdmin" type="button" class="btn btn-round btn-default " title="{{'tooltips.request.details.info.button.moveToAwaitingAgreementCompliance' | translate}}"
+                            ng-click="vm.awaitingAgreementComplianceSelectedRequests()">
+                            <span class="md md-image-aspect-ratio darken-2 iconbase"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
+
+                        <button ng-if="dashboard.permissionChecked && dashboard.isAdmin" type="button" class="btn btn-round btn-default " title="{{'tooltips.request.details.info.button.moveToResolvedWithoutContentChanges' | translate}}"
+                            ng-click="vm.resolveWithoutContentChangesSelectedRequests()">
+                            <span class="md md-assignment-turned-in darken-2 iconbase"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="selectColumns p-t-15">
+                        <div id="dropbtn" onclick="myFunction()" class="dropbtn">
+                            Columns
+                            <span class="md md-keyboard-arrow-down"></span>
+                        </div>
+                        <div id="saveButton" class="saveButton" ng-click="vm.saveColumns()">
+                            <button>Save</button>
+                        </div>
+                        <div id="myDropdown" class="dropdown-content">
+                            <label>
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.submittedRequests.columns.batchId" /> {{'crs.request.list.tableHeader.batchId' | translate}}
+                            </label>
+                            <label>
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.submittedRequests.columns.requestId" /> {{'crs.request.list.tableHeader.requestId' | translate}}
+                            </label>
+                            <label>
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.submittedRequests.columns.concept" /> {{'crs.request.list.tableHeader.conceptFSN' | translate}}
+                            </label>
+                            <label>
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.submittedRequests.columns.jiraTicketId" /> {{'crs.request.list.tableHeader.ticketId' | translate}}
+                            </label>
+                            <label>
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.submittedRequests.columns.requestor" /> {{'crs.request.list.tableHeader.originator' | translate}}
+                            </label>
+                            <label>
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.submittedRequests.columns.createdDate" /> {{'crs.request.list.tableHeader.createdDate' | translate}}
+                            </label>
+                            <label>
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.submittedRequests.columns.modifiedDate" /> {{'crs.request.list.tableHeader.lastModified' | translate}}
+                            </label>
+                            <label>
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.submittedRequests.columns.lastStatusModifier" /> {{'crs.request.list.tableHeader.lastStatusModifier' | translate}}
+                            </label>
+                            <label>
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.submittedRequests.columns.type" /> {{'crs.request.list.tableHeader.requestType' | translate}}
+                            </label>
+                            <label>
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.submittedRequests.columns.topic" /> {{'crs.request.list.tableHeader.topic' | translate}}
+                            </label>
+                            <label>
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.submittedRequests.columns.summary" /> {{'crs.request.list.tableHeader.summary' | translate}}
+                            </label>
+                            <label>
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.submittedRequests.columns.trackerId" /> {{'crs.request.list.tableHeader.trackerId' | translate}}
+                            </label>
+                            <label>
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.submittedRequests.columns.forwardDestinationId" /> {{'crs.request.list.tableHeader.forwardDestinationId' | translate}}
+                            </label>
+                            <label>
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.submittedRequests.columns.manager" /> {{'crs.request.list.tableHeader.manager' | translate}}
+                            </label>
+                            <label>
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.submittedRequests.columns.status" /> {{'crs.request.list.tableHeader.status' | translate}}
+                            </label>
+                            <label>
+                                <input type="checkbox" class="small-checkbox" ng-model="vm.enabledColumns.submittedRequests.columns.memberCountry" /> {{'crs.request.list.tableHeader.memberCountry' | translate}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1 promoted-check-box">
+                    <button class="btn btn-default" ng-class="[{'md-check-box' : vm.showClosedRequests}, {'md-check-box-outline-blank' : !vm.showClosedRequests}]" ng-click="vm.toggleShowClosedRequests('submitted-requests')" style="background: transparent">
+                        <span class="promoted-check-box">Show Closed Requests</span></button>
+                </div>
+            </div>
+            <div class="table-responsive white" style="min-height: 416px;">
+                <div class="fa fa-remove reset-table-sorting" title="Reset sorting" ng-show="vm.showResetTableSorting" ng-click="vm.resetTableSorting(vm.submittedTableParams, {'requestHeader.requestDate': 'desc', batchRequest: 'desc', id: 'desc'})"></div>
+                <table ng-table="vm.submittedTableParams" template-pagination="layout/template/review-table-pager.html"
+                       class="table table-full table-full-small table-requests" show-filter="">
+                    <tr ng-repeat="request in $data" ng-class="[{'row-selected': vm.selectedSubmittedRequests.items[request.id] === true}, {'row-new': request.isModified}]" ng-click="dashboard.previewRequest(request.id)" class="clickable-row">
+                        <td class="col-checkbox" header="'ng-table/headers/checkbox.html'" ng-click="$event.stopPropagation()">
+                            <input type="checkbox" class="small-checkbox" ng-model="vm.selectedSubmittedRequests.items[request.id]" >
+                        </td>
+                        <td data-title="'crs.request.list.tableHeader.batchId' | translate" sortable="'batchRequest'" filter="vm.filterRequests.batchRequest" ng-if="vm.enabledColumns.submittedRequests.columns.batchId">
+                            <!--<a class="tooltips-right" ng-href="#/batches/view/{{request.batchRequest}}">{{request.batchRequest}} <span translate="crs.request.list.tip.batchId"></span></a>-->
+                            {{request.batchRequest}}
+                        </td>
+                        <td data-title="'crs.request.list.tableHeader.requestId' | translate" sortable="'id'" filter="vm.filterRequests.requestId" ng-if="vm.enabledColumns.submittedRequests.columns.requestId">
+                            {{request.id}}
+                        </td>                        
+                        <td data-title="'crs.request.list.tableHeader.conceptFSN' | translate" sortable="'fsn'" filter="vm.filterRequests.fsn" ng-if="vm.enabledColumns.submittedRequests.columns.concept">
+                            <!--<a class="tooltips-right" ng-href="#/requests/edit/{{request.id}}">{{request.fsn}} <span translate="crs.request.list.tip.conceptFSN"></span></a>-->
+                            {{request.fsn}}
+                        </td>
+                        <td data-title="'crs.request.list.tableHeader.ticketId' | translate" sortable="'jiraTicketId'" jira-link="request.jiraTicketId" filter="vm.filterRequests.jiraTicketId" ng-if="vm.enabledColumns.submittedRequests.columns.jiraTicketId"></td>
+                        <td data-title="'crs.request.list.tableHeader.originator' | translate" sortable="'requestHeader.ogirinatorId'" style="min-width: 150px" filter="vm.filterRequests.ogirinatorId" ng-if="vm.enabledColumns.submittedRequests.columns.requestor">
+                            <span ng-show="!vm.authors" class="md md-autorenew" ng-class="{'md-spin':!vm.authors}"></span>
+                            <div ng-if="vm.authors" ng-bind-html="(vm.getAuthorName(request.requestHeader.ogirinatorId))?vm.getAuthorName(request.requestHeader.ogirinatorId):request.requestHeader.ogirinatorId"></div>
+                        </td>
+                        <td data-title="'crs.request.list.tableHeader.createdDate' | translate" sortable="'requestHeader.requestDate'" filter="{requestDate: 'ng-table/datetime-picker-startdate.html'}" ng-if="vm.enabledColumns.submittedRequests.columns.createdDate">
+                            {{request.requestHeader.requestDate | date:'yyyy-MM-dd'}}
+                        </td>
+                        <td data-title="'crs.request.list.tableHeader.lastModified' | translate" sortable="'requestHeader.statusDate'" filter="{requestDate: 'ng-table/datetime-picker-last-modified.html'}" ng-if="vm.enabledColumns.submittedRequests.columns.modifiedDate">
+                            {{request.requestHeader.statusDate | date:'yyyy-MM-dd'}}
+                        </td>
+                        <td data-title="'crs.request.list.tableHeader.lastStatusModifier' | translate" sortable="'requestHeader.lastStatusModifier'"
+                            style="min-width: 150px" filter="vm.filterRequests.lastStatusModifier" ng-if="vm.enabledColumns.submittedRequests.columns.lastStatusModifier">
+                            <span ng-show="!vm.authors" class="md md-autorenew" ng-class="{'md-spin':!vm.authors}"></span>
+                            <div ng-if="vm.authors" ng-bind-html="(vm.getAuthorName(request.requestHeader.lastStatusModifier))?vm.getAuthorName(request.requestHeader.lastStatusModifier):request.requestHeader.lastStatusModifier"></div>
+                        </td>
+                        <td data-title="'crs.request.list.tableHeader.requestType' | translate" sortable="'requestType'" filter="{requestType: 'ng-table/request-type-select.html'}" ng-if="vm.enabledColumns.submittedRequests.columns.type">
+                            {{request.requestType | requestType | translate}}
+                        </td>
+                        <td data-title="'crs.request.list.tableHeader.topic' | translate" sortable="'additionalFields.topic'" filter="{topic: 'ng-table/topic-multi-select.html'}" ng-if="vm.enabledColumns.submittedRequests.columns.topic">
+                            {{(request.additionalFields)?request.additionalFields.topic:''}}
+                        </td>
+                        <td data-title="'crs.request.list.tableHeader.summary' | translate" sortable="'additionalFields.summary'" filter="vm.filterRequests.summary" ng-if="vm.enabledColumns.submittedRequests.columns.summary">
+                            {{(request.additionalFields)?request.additionalFields.summary:''}}
+                        </td>
+                        <td data-title="'crs.request.list.tableHeader.memberCountry' | translate" sortable="'organization'" filter="{memberCountry: 'ng-table/member-country-select.html'}" ng-if="vm.enabledColumns.submittedRequests.columns.memberCountry">
+                            {{request.organization}}
+                        </td>
+                        <td data-title="'crs.request.list.tableHeader.trackerId' | translate" sortable="'trackerId'" filter="vm.filterRequests.trackerId" ng-if="vm.enabledColumns.submittedRequests.columns.trackerId">
+                            {{request.trackerId}}
+                        </td>
+                        <td data-title="'crs.request.list.tableHeader.forwardDestinationId' | translate" sortable="'id'" filter="vm.filterRequests.forwardDestinationId" ng-if="vm.enabledColumns.submittedRequests.columns.forwardDestinationId">
+                            {{request.forwardDestinationId}}
+                        </td>
+                        <td data-title="'crs.request.list.tableHeader.manager' | translate" sortable="'requestHeader.manager'" style="min-width: 150px" filter="{manager: 'ng-table/manager-select.html'}" ng-if="vm.enabledColumns.submittedRequests.columns.manager">
+                            <span ng-show="!vm.staffs" class="md md-autorenew" ng-class="{'md-spin':!vm.staffs}"></span>
+                            <div  ng-bind-html="(vm.getAuthorName(request.requestHeader.manager))?vm.getAuthorName(request.requestHeader.manager):request.requestHeader.manager"></div>
+                        </td>                      
+                        <td data-title="'crs.request.list.tableHeader.status' | translate" sortable="'requestHeader.status'" filter="{status: 'ng-table/status-select.html'}" ng-if="vm.enabledColumns.submittedRequests.columns.status">
+                            <span class="badge requestStatus {{request.requestHeader.status}}">{{request.requestHeader.status | requestStatus | translate}}</span>
+                        </td>
+                    </tr>
+                </table>
+                <div ng-if="vm.requests.total === 0" class="no-request-found">
+                    No requests found!
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>
+<script type="text/ng-template" id="ng-table/headers/checkbox.html">
+    <input type="checkbox" ng-model="vm.selectedSubmittedRequests.checked" class="select-all-rqs" />
+</script>
+<script type="text/ng-template" id="ng-table/datetime-picker-startdate.html">
+    <div class="input-group select-filter">
+          <span ng-if="(vm.daterangeSQ.startDate !== undefined && vm.daterangeSQ.endDate !== undefined) && (vm.daterangeSQ.startDate !== '' && vm.daterangeSQ.endDate !== '') && (vm.daterangeSQ.startDate !== null && vm.daterangeSQ.endDate !== null)" ng-click="vm.onDateRangeChangeSQ(true)" class="md md-remove-circle" style="color: red; float: right; margin-bottom: -16px; cursor: pointer"></span>
+        <input type="text" class="" ng-change="vm.onDateRangeChangeSQ()" placeholder="Dates..." readonly="" options="vm.options" name="some_name" ng-model="vm.daterangeSQ" style="background: transparent; border: none; box-shadow: inset 0 -1px 0 #ddd; font-size: 13px;" date-range-picker /> 
+    </div>
+</script>
+<script type="text/ng-template" id="ng-table/datetime-picker-last-modified.html">
+    <div class="input-group select-filter">
+          <span ng-if="(vm.lastModifiedDateRangeSR.startDate !== undefined && vm.lastModifiedDateRangeSR.endDate !== undefined) && (vm.lastModifiedDateRangeSR.startDate !== '' && vm.lastModifiedDateRangeSR.endDate !== '') && (vm.lastModifiedDateRangeSR.startDate !== null && vm.lastModifiedDateRangeSR.endDate !== null)" ng-click="vm.onLastModifiedChangeSR(true)" class="md md-remove-circle" style="color: red; float: right; margin-bottom: -16px; cursor: pointer"></span>
+        <input type="text" class="" ng-change="vm.onLastModifiedChangeSR()" placeholder="Dates..." readonly="" options="vm.options" name="some_name" ng-model="vm.lastModifiedDateRangeSR" style="background: transparent; border: none; box-shadow: inset 0 -1px 0 #ddd; font-size: 13px;" date-range-picker /> 
+    </div>
+</script>
+<script type="text/ng-template" id="ng-table/manager-select.html">
+    <span ng-if="params.filter().manager !== undefined && params.filter().manager !== '' && params.filter().manager !== null" ng-click="params.filter().manager = null" class="md md-remove-circle" style="color: red; float: right; margin-bottom: -11px; font-size: 14px; cursor: pointer"></span>
+    <form-control type="select"
+                  model="params.filter()[name]"
+                  options="suggestion.id as suggestion.title for suggestion in vm.staffs"
+                  ></form-control>
+</script>
+<script type="text/ng-template" id="ng-table/topic-multi-select.html">
+    <div
+        isteven-multi-select
+        input-model="vm.topicOptions"
+        output-model="vm.selectedTopics"
+        button-label="value"
+        item-label="value"
+        tick-property="ticked"
+        max-labels = "1"
+        checkboxes="true"
+        extra-settings="vm.multiSelectSettings"
+        translation="vm.multiSelectTranslation"
+        >
+    </div>
+</script>
+<script type="text/ng-template" id="ng-table/author-select.html">
+    <span ng-if="params.filter().author !== undefined && params.filter().author !== '' && params.filter().author !== null" ng-click="params.filter().author = ''" class="md md-remove-circle" style="color: red; float: right; margin-bottom: -11px; font-size: 14px; cursor: pointer"></span>
+    <form-control type="select"
+                  model="params.filter()[name]"
+                  options="suggestion.id as suggestion.title for suggestion in vm.authors"
+                  ></form-control>
+</script>
+<script type="text/ng-template" id="ng-table/status-select.html">
+    <span ng-if="params.filter().status !== undefined && params.filter().status !== '' && params.filter().status !== null" ng-click="params.filter().status = ''" class="md md-remove-circle" style="color: red; float: right; margin-bottom: -11px; font-size: 14px; cursor: pointer"></span>
+    <form-control type="select"
+                  model="params.filter()[name]"
+                  options="suggestion.id as suggestion.title for suggestion in vm.requestStatus"
+                  ></form-control>
+</script>
+<script type="text/ng-template" id="ng-table/member-country-select.html">
+    <span ng-if="params.filter().memberCountry !== undefined && params.filter().memberCountry !== '' && params.filter().memberCountry !== null" ng-click="params.filter().memberCountry = ''" class="md md-remove-circle" style="color: red; float: right; margin-bottom: -11px; font-size: 14px; cursor: pointer"></span>
+    <form-control type="select"
+                  model="params.filter()[name]"
+                  options="suggestion.value as suggestion.value for suggestion in vm.organizationOptions"
+                  ></form-control>
+</script>
+<script type="text/ng-template" id="ng-table/request-type-select.html">
+    <span ng-if="params.filter().requestType !== undefined && params.filter().requestType !== '' && params.filter().requestType !== null" ng-click="params.filter().requestType = ''" class="md md-remove-circle" style="color: red; float: right; margin-bottom: -11px; font-size: 14px; cursor: pointer"></span>
+    <form-control type="select"
+                  model="params.filter()[name]"
+                  options="suggestion.id as suggestion.title for suggestion in vm.requestTypes"
+                  ></form-control>
+</script>
+<script>
+/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+function myFunction() {
+    document.getElementById("saveButton").classList.toggle("show");
+    document.getElementById("myDropdown").classList.toggle("show");
+    document.getElementById("dropbtn").classList.toggle("btn-active");
+}
+</script>

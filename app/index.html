@@ -1,0 +1,311 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="apple-touch-icon-57x57.png"/>
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="apple-touch-icon-114x114.png"/>
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="apple-touch-icon-144x144.png"/>
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="apple-touch-icon-120x120.png"/>
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="apple-touch-icon-152x152.png"/>      
+    <link rel="stylesheet" type="text/css" href="lib/isteven-multi-select/isteven-multi-select.css">
+    <meta name="application-name" content="Content Request Service"/>
+    <meta name="msapplication-TileColor" content="#00A4E4"/>
+    <meta name="msapplication-TileImage" content="mstile-144x144.png"/>
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/ng-table/dist/ng-table.css" />
+    <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
+    <link rel="stylesheet" href="bower_components/angular-ui-tree/dist/angular-ui-tree.min.css" />
+    <link rel="stylesheet" href="bower_components/textAngular/dist/textAngular.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap-daterangepicker-reloaded/daterangepicker-bs3.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+
+    <!-- make sure ng-cloak works before angularjs finish loading -->
+    <style>
+        [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body class="crs-default">
+<!--[if lte IE 8]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<!-- Add your site or application content here -->
+<header>
+    <div ng-include="'layout/header/header.html'"></div>
+</header>
+<div class="crs-theme-wrapper">
+    <div class="content">
+        <div ng-cloak ng-view style="height: 100%"></div>
+    </div>
+</div>
+<footer>
+    <!-- Using Freshdesk Widget for feedback -->
+    <script type="text/javascript" src="https://s3.amazonaws.com/assets.freshdesk.com/widget/freshwidget.js"></script>
+    <script type="text/javascript">
+       FreshWidget.init("", {
+          "queryString": "&widgetType=popup&formTitle=SNOMED+CT+Request Service+Feedback&submitTitle=Send+Feedback&submitThanks=Thank+you+for+your+feedback&captcha=yes&searchArea=no",
+          "utf8": "✓",
+          "backgroundImage": "https://s3.amazonaws.com/assets.freshdesk.com/widget/help-button.png",
+          "widgetType": "popup",
+          "buttonType": "image",
+          "buttonText": "Support",
+          "buttonColor": "white",
+          "buttonBg": "#00aadd",
+          "alignment": "1",
+          "offset": "-1500px",
+          "submitThanks": "Thank you for your feedback",
+          "formHeight": "500px",
+          "captcha": "yes",
+          "url": "https://ihtsdo.freshdesk.com"
+       });
+    </script>
+    <div ng-include="'layout/footer/footer.html'"></div>
+</footer>
+<div ng-show="showSplash" ng-include="'layout/splash/splash.html'"></div>
+<div ng-show="showAppLoading" class="loadingMask"></div>
+<script>
+    function changeFavicon(iconPrefix) {
+      var link;
+      link = document.createElement('link');
+      link.type = 'image/x-icon';
+      link.rel = 'shortcut icon';
+      link.href = iconPrefix + 'favicon-16x16.png';
+      document.getElementsByTagName('head')[0].appendChild(link);
+    }
+  
+    function getIconPrefixFromEnv() {
+      const env = window.location.hostname.split(/[.]/)[0];
+      let prefix;
+      if (env.startsWith('dev-')) {
+        prefix = 'dev-';
+      }
+      else if (env.startsWith('uat-')) {
+        prefix = 'uat-';
+      }
+      else {
+        prefix = '';
+      }
+  
+      return prefix;
+    }
+    
+    changeFavicon(getIconPrefixFromEnv());
+  </script>
+
+<!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+<!--<script>
+    !function (A, n, g, u, l, a, r) {
+        A.GoogleAnalyticsObject = l, A[l] = A[l] || function () {
+            (A[l].q = A[l].q || []).push(arguments)
+        }, A[l].l = +new Date, a = n.createElement(g),
+                r = n.getElementsByTagName(g)[0], a.src = u, r.parentNode.insertBefore(a, r)
+    }(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-108834658-1', 'auto');
+    ga('send', 'pageview');
+</script>-->
+
+
+<!-- build:js(.) scripts/vendor.js -->
+<!-- bower:js -->
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/affix.js"></script>
+<script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/alert.js"></script>
+<script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/button.js"></script>
+<script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/carousel.js"></script>
+<script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/collapse.js"></script>
+<script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/dropdown.js"></script>
+<script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tab.js"></script>
+<script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/transition.js"></script>
+<script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/scrollspy.js"></script>
+<script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/modal.js"></script>
+<script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tooltip.js"></script>
+<script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/popover.js"></script>
+<script src="bower_components/angular-animate/angular-animate.js"></script>
+<script src="bower_components/angular-cookies/angular-cookies.js"></script>
+<script src="bower_components/angular-messages/angular-messages.js"></script>
+<script src="bower_components/angular-resource/angular-resource.js"></script>
+<script src="bower_components/angular-route/angular-route.js"></script>
+<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="bower_components/ng-table/dist/ng-table.js"></script>
+<script src="bower_components/angular-translate/angular-translate.js"></script>
+<script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
+<script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
+<script src="bower_components/angular-native-dragdrop/draganddrop.js"></script>
+<script src="bower_components/angular-ui-tree/dist/angular-ui-tree.js"></script>
+<script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
+<script src="bower_components/ng-file-upload-shim/ng-file-upload-shim.js"></script>
+<script src="bower_components/rangy/rangy-core.js"></script>
+<script src="bower_components/rangy/rangy-classapplier.js"></script>
+<script src="bower_components/rangy/rangy-highlighter.js"></script>
+<script src="bower_components/rangy/rangy-selectionsaverestore.js"></script>
+<script src="bower_components/rangy/rangy-serializer.js"></script>
+<script src="bower_components/rangy/rangy-textrange.js"></script>
+<script src="bower_components/textAngular/dist/textAngular.js"></script>
+<script src="bower_components/textAngular/dist/textAngular-sanitize.js"></script>
+<script src="bower_components/textAngular/dist/textAngularSetup.js"></script>
+<script src="bower_components/angular-elastic/elastic.js"></script>
+<script src="bower_components/moment/moment.js"></script>
+<script src="bower_components/bootstrap-daterangepicker-reloaded/daterangepicker.js"></script>
+<script src="bower_components/nDaterangepicker/build/ndaterangepicker.js"></script>
+<!-- endbower -->
+<!-- endbuild -->
+
+<!-- build:js({.tmp,app}) scripts/scripts.js -->
+<script src="app.js"></script>
+
+<script src="components/crs/crs.js"></script>
+<script src="components/crs/crs-service.js"></script>
+<script src="components/crs/crs-jira-service.js"></script>
+<script src="components/error/error.js"></script>
+<script src="components/error/error-handler-service.js"></script>
+<script src="components/dashboard/dashboard.js"></script>
+<script src="components/dashboard/statistics-filter.js"></script>
+<script src="components/dashboard/label-filter.js"></script>
+<script src="components/request/request.js"></script>
+<script src="components/user-preferences/user-preferences.js"></script>
+<script src="components/request/modal-create-request.js"></script>
+<script src="components/request/modal-assign-request.js"></script>
+<script src="components/request/modal-change-request-status.js"></script>
+<script src="components/request/request-service.js"></script>
+<script src="components/request/request-metadata-service.js"></script>
+<script src="components/request/request-list.js"></script>
+<script src="components/request/accepted-request-list.js"></script>
+<script src="components/request/request-details.js"></script>
+<script src="components/request/request-type-filter.js"></script>
+<script src="components/request/request-status-filter.js"></script>
+<script src="components/request/modal-assign-request-to-staff.js"></script>
+<script src="components/request/modal-reassign-request-to-requestor.js"></script>
+<script src="components/request/confirm-modal.js"></script>
+<script src="components/batch/batch.js"></script>
+<script src="components/batch/batch-list.js"></script>
+<script src="components/batch/batch-details.js"></script>
+<script src="components/batch/batch-service.js"></script>
+<script src="components/batch/modal-batch-import.js"></script>
+<script src="components/batch/modal-batch-import-confirm.js"></script>
+<script src="components/batch/batch-preview.js"></script>
+<script src="components/batch/batch-import-status-filter.js"></script>
+<script src="components/batch/batch-status-filter.js"></script>
+<script src="components/notification/notification-service.js"></script>
+<script src="components/message/message.js"></script>
+<script src="components/message/message-service.js"></script>
+<script src="components/message/message-item-directive.js"></script>
+<script src="components/jira-comment/jira-comment.js"></script>
+<script src="components/jira-comment/jira-comment-ctrl.js"></script>
+<script src="components/jira-comment/jira-comment-service.js"></script>
+<script src="components/request/bulk-action-responding-modal.js"></script>
+<script src="components/request/add-note-modal.js"></script>
+<script src="components/request/modal-withdraw-or-reject-requests.js"></script>
+
+
+<script src="lib/isteven-multi-select/isteven-multi-select.js"></script>
+<script src="lib/repeat-end/repeatend.js"></script>
+
+<script src="shared/configuration/config-service.js"></script>
+<script src="shared/ims/ims.js"></script>
+<script src="shared/ims/account-service.js"></script>
+<script src="shared/form-control/form-control.js"></script>
+<script src="shared/form-control/multi-input.js"></script>
+<script src="shared/form-control/multi-textarea.js"></script>
+<script src="shared/form-control/multi-concept-input.js"></script>
+<script src="shared/form-control/concept-input.js"></script>
+<script src="shared/form-control/author-input.js"></script>
+<script src="shared/form-control/author-input-focus.js"></script>
+<script src="shared/form-control/relationship-type-input.js"></script>
+<script src="shared/form-control/attribute-value-input.js"></script>
+<script src="shared/form-control/form-control-readonly.js"></script>
+<script src="shared/search/search.js"></script>
+<script src="shared/search/search-panel.js"></script>
+<script src="shared/concept-information/concept-info-modal.js"></script>
+<script src="shared/taxonomy/taxonomy.js"></script>
+<script src="shared/taxonomy/taxonomyCtrl.js"></script>
+<script src="shared/taxonomy/taxonomyPlugin.js"></script>
+<script src="shared/taxonomy-tree/taxonomyTree.js"></script>
+<script src="shared/saved-list/saved-list.js"></script>
+<script src="shared/saved-list/saved-list-service.js"></script>
+<script src="shared/saved-list/saved-list-panel.js"></script>
+<script src="shared/snowowl/snowowl.js"></script>
+<script src="shared/snowowl/snowowl-service.js"></script>
+<script src="shared/snowowl/snowowl-metadata-service.js"></script>
+<script src="shared/snowowl/sca-service.js"></script>
+<script src="shared/jira/jira.js"></script>
+<script src="shared/jira/jira-service.js"></script>
+<script src="shared/jira/jira-link-directive.js"></script>
+<script src="shared/concept-edit/concept-edit.js"></script>
+<script src="shared/concept-edit/typeahead-focus-directive.js"></script>
+<script src="shared/concept-edit/concept-edit-directive.js"></script>
+<script src="shared/concept-edit/inactivate-component-modal.js"></script>
+<script src="shared/concept-edit/definition-of-change-modal.js"></script>
+<script src="shared/object-service/object-service.js"></script>
+<script src="shared/scroll/scrolly-directive.js"></script>
+<script src="shared/utils/utils-service.js"></script>
+<script src="shared/form-control/disable-drag-and-drop.js"></script>
+
+<script src="layout/header/header.js"></script>
+
+
+<!-- endbuild -->
+<script type="application/javascript">
+    (function ($) {
+        angular.element(document).ready(function () {
+            $.get('config.json', function (data) {
+
+                angular.module('conceptRequestServiceApp')
+                        .config([
+                            'configServiceProvider',
+                            'snowowlServiceProvider',
+                            'scaServiceProvider',
+                            'jiraServiceProvider',
+                            function (configServiceProvider, snowowlServiceProvider, scaServiceProvider, jiraServiceProvider) {
+                                configServiceProvider.config(data);
+
+                                snowowlServiceProvider.config(data['snomed-ct']);
+                                snowowlServiceProvider.setSnowowlEndpoint(data.endpoint.termServer);
+                                snowowlServiceProvider.setUseAdapter(data.endpoint.useAdapter);
+
+                                scaServiceProvider.config(data['sca']);
+                                scaServiceProvider.setSnowowlEndpoint(data.endpoint.termServer);
+
+                                jiraServiceProvider.config(data['jira']);
+                                jiraServiceProvider.setJiraEndpoint(data.endpoint.jira);
+
+                                var gaTrackingId = data.app.gaTrackingId;
+                                if(gaTrackingId && gaTrackingId !== '') {
+                                   !function (A, n, g, u, l, a, r) {
+                                      A.GoogleAnalyticsObject = l, A[l] = A[l] || function () {
+                                            (A[l].q = A[l].q || []).push(arguments)
+                                         }, A[l].l = +new Date, a = n.createElement(g),
+                                         r = n.getElementsByTagName(g)[0], a.src = u, r.parentNode.insertBefore(a, r)
+                                   }(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+                                   ga('create', gaTrackingId, 'auto');
+                                   var firstLocationSent = window.location.hash.replace('#','');
+                                   window.ga('send', 'pageview', firstLocationSent === '' ? '/' : firstLocationSent);
+                                }
+                            }]);
+
+                angular.bootstrap(document, ['conceptRequestServiceApp']);
+            });
+        });
+    })(jQuery);
+</script> 
+
+</body>
+
+</html>

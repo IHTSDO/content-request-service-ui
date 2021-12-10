@@ -1,0 +1,43 @@
+{
+    "app": {
+        "title": "SNOMED International CRS (Content Request Service)",
+        "header": "Content Request Service",
+        "gaTrackingId": "UA-108834658-1",
+        "announcement": ""
+    },
+    "endpoint": {
+        "crs": "/crs/",
+        "ims": "https://dev-ims.ihtsdotools.org/",
+        "snowowl": "/snowowl/",
+        "termServer": "/term-server/",
+        "authoring": "/authoring-services/",
+        "jira": "https://dev-workflow.ihtsdotools.org/",
+        "ims-api": "https://dev-ims.ihtsdotools.org/api/",
+        "useAdapter": true
+    },
+    "xhrTimeout": 50000,
+    "fileStatusPollingInterval": 5000,
+    "messagePollingInterval": 10000,
+    "snomed-ct": {
+        "path": "snomed-ct/v2/",
+        "edition": "MAIN",
+        "release": ""
+    },
+    "sca": {
+        "path": "ihtsdo-sca/"
+    },
+    "jira": {
+        "rest-api": {
+            "path": "rest/api/",
+            "version": "2"
+        },
+        "author-group": "ihtsdo-sca-author",
+        "staff-group": "crs-staff",
+        "requestor-group": "crs-requestor"
+    },
+    "link": {
+        "userGuide": "https://confluence.ihtsdotools.org/display/SCTCR/CRS+User+Guide",
+        "batchTemplate": "https://confluence.ihtsdotools.org/display/SCTCR/CRS+Template+File+For+Batch+Import",
+        "snomedInfo": "http://snomed.info/id/"
+    }
+}

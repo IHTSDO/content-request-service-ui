@@ -1,0 +1,102 @@
+<div>
+    <!-- My Batche Requests -->
+    <section class="tables-data">
+        <div class="card">
+            <div class="row">
+                <div class="col-md-6 no-padding">
+                    <div class="p-20">
+                        <h4 ng-bind="batchPreviewVM.selectedFile.fileName"></h4>
+
+                        <div style="margin-top: -8px">Uploaded: {{batchPreviewVM.selectedFile.uploadedTime |
+                            date:'yyyy-MM-dd h:mm:ss a'}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <!--<div class="table-search p-20">
+                        <input type="text" ng-model="batchPreviewVM.previewTableParams.filter()['search']" class="form-control"
+                               placeholder="Search Batch Requests" autofocus/>
+                    </div>-->
+                </div>
+            </div>
+
+            <div role="tabpanel">
+
+                <!-- Nav tabs -->
+                <ul style="background-color: #d1d1d1;display: inline; border-bottom: 0px;"
+                    class="nav nav-tabs sidebar-tabs batch-preview-tabs col-md-12 no-padding"
+                    role="tablist" >
+                    <li role="presentation" ng-class="{active: batchPreviewVM.previewTab.value === 'NEW_CONCEPT'}">
+                        <a ng-click="batchPreviewVM.loadPreviewData('NEW_CONCEPT', true)" aria-controls="home" role="tab" data-toggle="tab">
+                            NEW CONCEPT ({{batchPreviewVM.selectedFile.requestTypeNumber.NEW_CONCEPT || 0}})
+                        </a>
+                    </li>
+                    <li role="presentation" ng-class="{active: batchPreviewVM.previewTab.value === 'NEW_DESCRIPTION'}">
+                        <a ng-click="batchPreviewVM.loadPreviewData('NEW_DESCRIPTION', true)" aria-controls="home" role="tab" data-toggle="tab">
+                            NEW SYNONYM ({{batchPreviewVM.selectedFile.requestTypeNumber.NEW_DESCRIPTION || 0}})
+                        </a>
+                    </li>
+                    <li role="presentation" ng-class="{active: batchPreviewVM.previewTab.value === 'SUB_TYPE_ADD_PARENT'}">
+                        <a ng-click="batchPreviewVM.loadPreviewData('SUB_TYPE_ADD_PARENT', true)" aria-controls="home" role="tab" data-toggle="tab">
+                            ADD PARENT ({{batchPreviewVM.selectedFile.requestTypeNumber.SUB_TYPE_ADD_PARENT || 0}})
+                        </a>
+                    </li>
+                    <li role="presentation" ng-class="{active: batchPreviewVM.previewTab.value === 'NEW_RELATIONSHIP'}">
+                        <a ng-click="batchPreviewVM.loadPreviewData('NEW_RELATIONSHIP', true)" aria-controls="home" role="tab" data-toggle="tab">
+                            NEW RELATIONSHIP ({{batchPreviewVM.selectedFile.requestTypeNumber.NEW_RELATIONSHIP || 0}})
+                        </a>
+                    </li>
+                </ul>
+                <ul style="background-color: #d1d1d1;display: inline; border-bottom: 0px;" class="nav nav-tabs sidebar-tabs batch-preview-tabs col-md-12 no-padding"
+                    role="tablist">
+                    <li role="presentation" ng-class="{active: batchPreviewVM.previewTab.value === 'CHANGE_RETIRE_CONCEPT'}">
+                        <a ng-click="batchPreviewVM.loadPreviewData('CHANGE_RETIRE_CONCEPT', true)" aria-controls="home" role="tab" data-toggle="tab">
+                            RETIRE CONCEPT ({{batchPreviewVM.selectedFile.requestTypeNumber.CHANGE_RETIRE_CONCEPT || 0}})
+                        </a>
+                    </li>
+                    <li role="presentation" ng-class="{active: batchPreviewVM.previewTab.value === 'CHANGE_DESCRIPTION'}">
+                        <a ng-click="batchPreviewVM.loadPreviewData('CHANGE_DESCRIPTION', true)" aria-controls="home" role="tab" data-toggle="tab">
+                            CHANGE DESCRIPTION ({{batchPreviewVM.selectedFile.requestTypeNumber.CHANGE_DESCRIPTION || 0}})
+                        </a>
+                    </li>
+                    <li role="presentation" ng-class="{active: batchPreviewVM.previewTab.value === 'SUB_TYPE_CHANGE_PARENT'}">
+                        <a ng-click="batchPreviewVM.loadPreviewData('SUB_TYPE_CHANGE_PARENT', true)" aria-controls="home" role="tab" data-toggle="tab">
+                            CHANGE PARENT ({{batchPreviewVM.selectedFile.requestTypeNumber.SUB_TYPE_CHANGE_PARENT || 0}})
+                        </a>
+                    </li>
+                    <li role="presentation" ng-class="{active: batchPreviewVM.previewTab.value === 'RETIRE_DESCRIPTION'}">
+                        <a ng-click="batchPreviewVM.loadPreviewData('RETIRE_DESCRIPTION', true)" aria-controls="home" role="tab" data-toggle="tab">
+                            RETIRE DESCRIPTION ({{batchPreviewVM.selectedFile.requestTypeNumber.RETIRE_DESCRIPTION || 0}})
+                        </a>
+                    </li>
+                    <li role="presentation" ng-class="{active: batchPreviewVM.previewTab.value === 'RETIRE_RELATIONSHIP'}">
+                        <a ng-click="batchPreviewVM.loadPreviewData('RETIRE_RELATIONSHIP', true)" aria-controls="home" role="tab" data-toggle="tab">
+                            RETIRE RELATIONSHIP ({{batchPreviewVM.selectedFile.requestTypeNumber.RETIRE_RELATIONSHIP || 0}})
+                        </a>
+                    </li>
+                    <li role="presentation" ng-class="{active: batchPreviewVM.previewTab.value === 'CHANGE_RELATIONSHIP'}">
+                        <a ng-click="batchPreviewVM.loadPreviewData('CHANGE_RELATIONSHIP', true)" aria-controls="home" role="tab" data-toggle="tab">
+                            CHANGE RELATIONSHIP ({{batchPreviewVM.selectedFile.requestTypeNumber.CHANGE_RELATIONSHIP || 0}})
+                        </a>
+                    </li>
+                    <li role="presentation" ng-class="{active: batchPreviewVM.previewTab.value === 'OTHER'}">
+                        <a ng-click="batchPreviewVM.loadPreviewData('OTHER', true)" aria-controls="home" role="tab" data-toggle="tab">
+                            OTHER ({{batchPreviewVM.selectedFile.requestTypeNumber.OTHER || 0}})
+                        </a>
+                    </li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content col-md-12 no-padding ">
+
+                    <div role="tabpanel" class="tab-pane active" >
+                        <div class="batch-preview-table" ng-include="batchPreviewVM.previewTab.previewTable"></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+</div>

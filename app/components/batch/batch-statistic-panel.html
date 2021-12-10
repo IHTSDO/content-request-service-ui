@@ -1,0 +1,154 @@
+<div id="request-info-panel">
+    <div class="row">
+        <div class="col col-md-12">
+            <h4 >Statistics</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-md-12">
+
+            <ul class="timeline batch-statistic">
+                
+                <li>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.batch.details.statistic.label.draft"></label>
+                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['DRAFT'] || '0'):'0'}}</span>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.batch.details.statistic.label.new"></label>
+                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['NEW'] || '0'):'0'}}</span>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.batch.details.statistic.label.accepted"></label>
+                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['ACCEPTED'] || '0'):'0'}}</span>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.batch.details.statistic.label.rejected"></label>
+                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['REJECTED'] || '0'):'0'}}</span>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.batch.details.statistic.label.appeal"></label>
+                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['APPEAL'] || '0'):'0'}}</span>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.batch.details.statistic.label.inAppealClarification"></label>
+                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['IN_APPEAL_CLARIFICATION'] || '0'):'0'}}</span>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.batch.details.statistic.label.appealReject"></label>
+                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['APPEAL_REJECTED'] || '0'):'0'}}</span>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.batch.details.statistic.label.forwarded"></label>
+                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['FORWARDED'] || '0'):'0'}}</span>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.batch.details.statistic.label.withdrawn"></label>
+                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['WITHDRAWN'] || '0'):'0'}}</span>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.batch.details.statistic.label.clarificationNeeded"></label>
+                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['CLARIFICATION_NEEDED'] || '0'):'0'}}</span>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.batch.details.statistic.label.inInception"></label>
+                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['IN_INCEPTION_ELABORATION'] || '0'):'0'}}</span>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.batch.details.statistic.label.complete"></label>
+                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['RELEASED'] || '0'):'0'}}</span>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.batch.details.statistic.label.underAuthoring"></label>
+                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['UNDER_AUTHORING'] || '0'):'0'}}</span>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.batch.details.statistic.label.readyForRelease"></label>
+                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['READY_FOR_RELEASE'] || '0'):'0'}}</span>
+                        </div>
+                    </div>
+                </li>
+
+
+                <!--<li>
+                    <div class="timeline-badge">
+                        <i class="md md-done-all APPROVED"></i>
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <label class="control-label" translate="crs.batch.details.statistic.label.approved"></label>
+                            <span class="timeline-title">{{(batchVM.batchSummary.statistics)?(batchVM.batchSummary.statistics['APPROVED'] || '0'):'0'}}</span>
+                        </div>
+                    </div>
+                </li> -->
+
+            </ul>
+        </div>
+    </div>
+</div>

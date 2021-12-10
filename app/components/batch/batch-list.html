@@ -1,0 +1,62 @@
+<!-- My Batchs -->
+<div ng-controller="BatchListCtrl as vm">
+    <section class="tables-data">
+        <div class="card">
+            <div class="row">
+                <div class="col-md-4 no-padding">
+                    <h3 class="table-title p-20">My Batches</h3>
+                </div>
+                <div class="col-md-6">
+                    <div class="table-search">
+                        <input type="text" ng-model="vm.tableParams.filter()['search']" class="form-control"
+                               placeholder="{{'crs.batch.list.searchPlaceHolder' | translate}}" autofocus/>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="pull-right p-t-20">
+                        <button type="button" class="btn btn-round btn-info ng-scope " title="{{'crs.batch.list.tip.count' | translate}}" title="Total Batch Count">
+                            {{vm.tableParams.total()}} <div class="ripple-wrapper"></div>
+                        </button>
+                        <a href="#/batches/preview">
+                            <button type="button" class="btn btn-round btn-default " title="{{'crs.batch.list.tip.create' | translate}}" ng-click="dashboard.openBatchImportModal()">
+                                <span class="md md-add"></span>
+                                <div class="ripple-wrapper"></div>
+                            </button>
+                            </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive white">
+                <table ng-table="vm.tableParams" template-pagination="layout/template/review-table-pager.html"
+                       class="table table-full table-full-small">
+                    <tr ng-repeat="batch in $data" ng-click="dashboard.showBatchDetails(batch.id)" class="clickable-row">
+
+                        <td data-title="'crs.batch.list.tableHeader.batchId' | translate" sortable="'id'" >
+                            <!--<a class="tooltips-right" ng-href="#/batches/{{batch.batchId}}/view">{{batch.id}} <span translate="crs.batch.list.tip.batchId"></span></a>-->
+                            {{batch.id}}
+                        </td>
+                        <td data-title="'crs.batch.list.tableHeader.fileName' | translate" sortable="'fileName'" >
+                            {{batch.fileName}}
+                        </td>
+                        <td data-title="'crs.batch.list.tableHeader.ticketId' | translate" sortable="'jiraTicketId'" jira-link="batch.jiraTicketId"></td>
+                        <td data-title="'crs.batch.list.tableHeader.uploaded' | translate" sortable="'requestHeader.requestDate'" >
+                            {{batch.requestHeader.requestDate | date:'yyyy-MM-dd'}}
+                        </td>
+                        <!--<td data-title="'crs.batch.list.tableHeader.lastModified' | translate" sortable="'requestHeader.statusDate'" >
+                            {{batch.requestHeader.statusDate | date:'MM-dd-yyyy'}}
+                        </td>-->
+                        <td data-title="'crs.batch.list.tableHeader.status' | translate" sortable="'status'">
+                            <span class="badge batchStatus {{batch.requestHeader.status}}">{{batch.requestHeader.status | batchStatus | translate}}</span>
+                        </td>
+                        <td ng-click="dashboard.downloadConceptsFromBatchRequest(batch.id); $event.stopPropagation();">
+                            <span class="md md-get-app green-text iconbase" title="{{'crs.batch.list.tip.downloadConcepts' | translate}}"></span>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+        </div>
+    </section>
+</div>

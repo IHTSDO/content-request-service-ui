@@ -1,0 +1,619 @@
+{
+    "tooltips": {
+        "message": {
+            "unknownUser": "Logged in as unknown user",
+            "profileTip":"Display name will link to profile services in later updates",
+            "loading": "Loading..."
+        },
+        "link": {
+            "logout": "Logout",
+            "login": "Login",
+            "help": "Help",
+            "tos": "Terms of Service",
+            "policy": "Privacy Policy",
+            "contact": "Contact Us",
+            "feedback": "Feedback"
+        },
+        "app": {
+            "name": "Content Request Service",
+            "copyright": "Copyright SNOMED International 2017"
+        },
+        "notification": {
+            "title": "Notifications",
+            "message": {
+                "noNotification": "You have no notifications at the moment",
+                "batchImportStatusChange": "The batch file status has been changed",
+                "requestStatusChange": "The Request status has been changed",
+                "batchImportSuccess": "The Batch requests have been imported successfully",
+                "commentAdded": "The Comment has been added",
+                "bulkActionCompleted": "The Bulk Action has been completed",
+                "managerChanged": "Assigned Request"
+            },
+            "button": {
+                "clear": "Clear"
+            },
+            "bulkAction": {
+                "UNASSIGN_AUTHOR": "Unassign the selected requests",
+                "ADD_NOTE": "Add notes to the selected requests",
+                "SUBMIT": "Submit the selected requests",
+                "ACCEPT": "Accept the selected requests",
+                "ASSIGN_AUTHOR": "Assign the selected requests to an authoring task in SCA",
+                "ASSIGN_MANAGER": "Assign the selected requests to a Manager",
+                "ACCEPT_ASSIGN_AUTHOR": "Accept and assign the selected requests to a Manager",
+                "failedRequests": "Failed",
+                "REJECT": "Rejected Requests",
+                "WITHDRAW": "Withdrawed Requests",
+                "bulkActionCompleted": "The Bulk Action has been completed",
+                "modalTitle": {
+                    "UNASSIGN_AUTHOR": "Unassigned Requests",
+                    "ADD_NOTE": "Add Note",
+                    "SUBMIT": "Submit Request(s)",
+                    "ACCEPT": "Accept Request(s)",
+                    "ASSIGN_AUTHOR": "Assign request(s) to authoing task in SCA",
+                    "ASSIGN_MANAGER": "Assign request(s) to Manager",
+                    "ACCEPT_ASSIGN_AUTHOR": "Accept and assign request(s) to a Manager",
+                    "REJECT": "Reject Requests",
+                    "WITHDRAW": "Withdraw Requests",
+                    "UPDATE_REPORTER": "Change Requestor"
+                }
+            }
+        },
+        "dashboard": {
+            "title": "Dashboard",
+            "sidebar": {
+                "myRequest": "My Requests",
+                "myBatch": "My Batch Requests",
+                "createRequest": "Create New Request",
+                "importBatch": "Create a New Batch Import",
+                "acceptedRequest": "Accepted Requests",
+                "myAssignedRequests": "My Assigned Requests",
+                "submittedRequest": "Submitted Requests",
+                "submitted": "Submitted",
+                "ACCEPTED": "Following initial review, the request is assigned to a manager from the Content Team",
+                "approved": "Approved",
+                "draft": "The request has been saved but not yet submitted",
+                "allRequests": "All requests",
+                "all": "All",
+                "assigned": "Assigned",
+                "assignedMe": "Assigned to me",
+                "unassigned": "Unassigned",
+                "accepted": "Following initial review, the request is assigned to a manager from the Content Team",
+                "appealNotAccepted": "Appeals that have not been accepted",
+                "inProgress": "Requests currently in progress",
+                "clarificationRequested": "Requests where clarification has been requested",
+                "completed": "Completed requests that should appear in an International release",
+                "forwarded": "Forwarded requests",
+                "new": "The request has been submitted and is waiting to be triaged by a member of SNOMED International staff",
+                "notAccepted": "Requests that have not been accepted",
+                "withdraw": "Requests that have been withdrawn",
+                "underAppeal": "Rquests which are under appeal",
+                "released": "Completed requests that should appear in an International release",
+                "rejected": "Rejected requests",
+                "underAuthoring": "Requests which are currently being authored",
+                "appealRejected": "Reqeusts whose appeal has been rejected",
+                "appeal": "Appeal",
+                "clarificationNeeded": "Where insufficient information is provided to proceed with a request, the request manager will incorporate questions to be resolved into the comments text field",
+            	"in_inception_elaboration": "Where a new request aligns with an ongoing content project, the request will be placed on hold until editorial policy is available to support the requested change or addition",
+            	"my_assigned": "My Assigned Requests",
+    		    "readyForRelease": "Ready For Release",
+                "inAppealClarification": "In Appeal Clarification"
+            }
+        },
+        "request": {
+            "list": {
+                "title": {
+                    "requests": "Requests",
+                    "myRequests": "My Requests",
+                    "acceptedRequests": "Accepted Requests",
+                    "submittedRequests": "Submitted Requests",
+                    "myAssignedRequests": "My Assigned Requests"
+                },
+                "tip": {
+                    "count": "Number of Requests",
+                    "create": "Create A New Request",
+                    "remove": "Remove Selected Requests",
+                    "requestorInternalId": "Click to open request editing view",
+                    "assign": "Assign requests to an authoring task within SCA",
+                    "assignToStaff": "Assign requests to a Manager",
+                    "reassignToRequestor": "Change Requestor",
+                    "batchId": "Click to open batch details view",
+                    "conceptFSN": "Click to open request editing view",
+                    "filter": "Filter requests",
+                    "submitRequests": "Submit selected request(s)",
+                    "unassignRequests": "Unassign seleceted request(s)",
+                    "withdrawRequests": "Withdraw Request(s)"
+                },
+                "searchPlaceHolder": {
+                    "myRequests": "Search my requests",
+                    "acceptedRequests": "Search accepted requests",
+                    "submittedRequests": "Search submitted requests"
+                },
+                "tableHeader": {
+                    "batchId": "Batch ID",
+                    "requestorInternalId": "Local and valid SNOMED CT ID of the concept in question",
+                    "ticketId": "Jira ticket number",
+                    "requestId": "Request number",
+                    "description": "A request can be to change a description or a relationship that a concept has",
+                    "lastModified": "The date when the request was last modified",
+                    "requestType": "Request Type",
+                    "status": "Status",
+                    "conceptFSN": "Concept",
+                    "reasonForChange": "Reason(s) for Change",
+                    "topic": "The category the request falls under",
+                    "assignee": "Assignee",
+                    "project": "Project",
+                    "validationResult": "Validation Result",
+                    "originator": "Created By",
+                    "createdDate": "Created On",
+                    "requestDescription": "Request Description",
+                    "manager": "Team member from Content team",
+                    "summary": "Request Summary",
+                    "trackerId": "Tracker Id"
+                }
+            },
+            "details": {
+                "title": {
+                    "new": "New Request",
+                    "edit": "Edit Request",
+                    "preview": "Preview Request"
+                },
+                "button": {
+                    "save": "Save Request",
+                    "submit": "Save and Submit Request",
+                    "cancel": "Cancel",
+                    "clearDropdownList": "Clear"
+                },
+                "label": {
+                    "organizationOptions": "Originating Organization",
+                    "collaborationAgreementOptions": "Collaboration Agreement",
+                    "topic": "The category the request falls under",
+                    "requestorInternalId": "Local and valid SNOMED CT ID of the concept in question",
+                    "proposedFSN": "New Concept's Fully Specified Name",
+                    "parentConcept": "Parent Concept",
+                    "concept": "A Concept",
+                    "sourceConcept": "Source Concept",
+                    "destinationConcept": "Destination Concept",
+                    "conceptPT": "Concept Preferred Term – a Fully Specified Name (FSN), Definition (DEF) and Synonym (SYN) can be Preferred or Acceptable terms",
+                    "proposedSynonym": "Synonym(s)",
+                    "proposedDefinition": " Definition identifies the exact nature of the request",
+                    "reasonForChange": "Proposed Use Case and reason for the request",
+                    "reference": "Submissions for a change to the International Edition of SNOMED CT should be supported by at least one reference. The reference can be added to the justification field in the request batch template.",
+                    "description": "The Description of a concept",
+                    "descriptionId": "Description ID",
+                    "currentDescription": "Active Description",
+                    "proposedDescription": "Proposed New Description",
+                    "relationshipGroup": "Relationship Group",
+                    "relationshipId": "Relationship ID",
+                    "relationship": "Relationship",
+                    "inferredRel": "Show Inferred Relationships",
+                    "statedRel": "Show Stated Relationships",
+                    "historyAttributeValue": "Historical Association Value",
+                    "notes": "Notes",
+                    "relationshipType": "Relationship Type",
+                    "characteristicType": "Characteristic Type",
+                    "refinability": "Refinability",
+                    "newRefinability": "New Refinability",
+                    "proposedStatus": "Inactivation reason",
+                    "historyAttribute": "Historical association",
+                    "proposedCaseSignificance": "New Case Significance",
+                    "descriptionStatus": "Inactivation reason",
+                    "relationshipStatus": "Relationship Status",
+                    "isPt": "Description is PT",
+                    "requestDescription": "Description of Request",
+                    "manager": "Manager",
+                    "namespace": "Namespace",
+                    "proposedRefinability": "Proposed Refinability",
+                    "proposedCharacteristicType": "Proposed Characteristic Type",
+                    "proposedRelationshipType": "Proposed Relationship Type",
+                    "proposedDestinationConcept": "Proposed Destination Concept",
+                    "groupId": "Proposed Relationship Group",
+                    "localTerm": "Local Term",
+                    "proposedUse": "Use Case",
+                    "semanticTag": "Semantic Tag",
+                    "summary": "Summary",
+                    "umlsCui": "UMLS CUI",
+                    "sourceTerminology": "Terminology",
+                    "destinationTerminology": "Destination Terminology",
+                    "duplicateConcept": "Duplicated Concept",
+                    "localCode": "Local Code"
+                },
+                "tip": {
+                    "editConceptHint": "Edit a concept from Saved List or drag and drop concept here"
+                },
+                "sidebar":{
+                    "tip": {
+                        "taxonomy": "Taxonomy",
+                        "search": "Search",
+                        "savedList": "Saved List",
+                        "requestInfo": "Request Details"
+                    }
+                },
+                "info": {
+                    "button": {
+                        "nextRequest": "Next Request",
+                        "previousRequest": "Previous Request",
+                        "submit": "Submit Request",
+                        "save": "Save Request",
+                        "edit": "Edit Request",
+                        "accept": "Accept Request",
+                        "reject": "Reject Request",
+                        "appealReject": "Reject Appeal",
+                        "appeal": "Appeal Rejection",
+                        "withdraw": "Withdraw Request",
+                        "pendingForClarification": "Request Clarification",
+                        "inAppealClarification": "In Appeal Clarification",
+                        "acceptAndAssign": "Accept and assign to an authoring task in SCA",
+                        "assign": "Assign request to an authoring task in SCA",
+                        "assignToStaff": "Assign request to Manager",
+                        "reassignToRequestor": "Change Requestor",
+                        "moveToInInceptionElaboration": "Move request to In Inception/Elaboration status",
+                        "moveToOnHold": "Move to On Hold",
+                        "moveToWaitingForInternalInput": "Move to Waiting For Internal Input",
+                        "moveToForward": "Move to Forward",
+                        "moveToClarification": "Move to Clarification",
+                        "moveToInception": "Move to Inception/Elaboration",
+                        "moveToResolvedWithoutContentChanges": "Move to Resolved Without Content Changes",
+                        "moveToAwaitingAgreementCompliance": "Move to Awaiting Agreement Compliance",
+                        "changeSNOMEDCode": "Change Local SNOMED CT Code",
+                        "changeOriginatingOrganization": "Change Originating Organization",
+                        "changeCollaborationAgreement": "Change Collaboration Agreement",
+                        "updateInformation": "Update Request Information",
+                        "addNote": "Add Note",
+                        "unassign": "Unassign Request",
+                        "unassignAndRejectRequest": "Unassign And Reject",
+                        "rejectSelectedRequests": "Reject Selected Requests",
+                        "resolvedWithoutContentChanges" : "Resolved Without Content Changes",
+                        "awaitingAgreementCompliance": "Move To Awaiting Agreement Compliance"
+                    },
+                    "label": {
+                        "batchId": "Batch ID",
+                        "ticketId": "Jira Ticket ID",
+                        "status": "Status",
+                        "lastModified": "Last Modified Date",
+                        "createdDate": "Created Date",
+                        "originator": "Created By",
+                        "manager": "Manager",
+                        "requestUrl": "Request Url",
+                        "trackerId": "Tracker Id",
+                        "authoringTicket":"Authoring task ID",
+                        "forwardTicket": "Forwarding request ID",
+                        "forwardTicketStatus": "Forwarding request status",
+                        "impactedConceptId":"Impacted/New Concept ID",
+                        "newFSN": "New FSN",                        
+                        "sourceTicket":"Source request ID"
+                    }
+                }
+            },
+            "createModal": {
+                "title": "Create New Request",
+                "requestType": {
+                    "label": "Request Type"
+                },
+                "inputMode": {
+                    "label": "Input Mode"
+                },
+                "button": {
+                    "createRequest": "Create Request",
+                    "cancel": "Cancel"
+                }
+            },
+            "assignModal": {
+                "title": "Assign Requests to a single authoring task in SCA",
+                "assignToStaffTitle": "Assign Requests to Manager",
+                "reassignToRequestorTitle": "Change Requestor",
+                "project": {
+                    "label": "Project"
+                },
+                "assignee": {
+                    "label": "Assignee"
+                },
+                "summary": {
+                    "label": "Summary"
+                },
+                "button": {
+                    "assignRequest": "Assign Requests",
+                    "cancel": "Cancel"
+                }
+            },
+            "requestStatusModal": {
+                "title": {
+                    "reject": "Reject Request",
+                    "withdraw": "Withdraw Request",
+                    "appeal": "Appeal Request Rejection",
+                    "needClarify": "Request Clarification",
+                    "inAppealClarification": "In Appeal Clarification",
+                    "inInceptionElaboration": "Move to In Inception/Elaboration status",
+                    "unassignAndReject": "Unassign And Reject Request"
+                },
+                "comment": {
+                    "label": "Reason",
+                    "inInceptionElaboration": "Content Tracker Url (where applicable)",
+                    "trackerId": "Tracker Id"
+                },
+                "button": {
+                    "confirm": "Confirm",
+                    "cancel": "Cancel"
+                },
+                "message": {
+                    "error": {
+                        "commentRequired": "Please provide a reason"
+                    }
+                }
+            },
+            "message": {
+                "listLoading": "Loading requests...",
+                "listLoaded": "Requests loaded",
+                "requestLoading": "Loading request {{requestId}}...",
+                "requestLoaded": "Request {{requestId}} loaded",
+                "requestSaving": "Saving request {{requestId}}...",
+                "requestSaved": "Request {{requestId}} has successfully saved",
+                "requestSubmitting": "Submitting request",
+                "requestSubmitted": "Request has been submitted successfully",
+                "requestProcessing": "Processing request...",
+                "requestAccepted": "Request has been successfully moved to Accepted status",
+                "requestRejected": "Request has been rejected",
+                "requestAppealed": "Request has been successfully moved to Appealed status",
+                "requestWithdrawn": "Request has been successfully withdrawn",
+                "requestClarification": "Request has been pended to clarification",
+                "requestRemoved": "Requests have been removed",
+                "requestUnassigned": "Request has been unassigned",
+                "requestUnassigning": "Unassigning request...",
+                "requestUnassigningAndRejecting": "Unassigning And Rejecting Request...",
+                "requestUnassignedAndRejected": "Request has been Unassigned And Rejected successfully",
+
+                "error": {
+                    "requestTypeRequired": "Please select request type",
+                    "invalidPage": "The page you have requested is not available",
+                    "invalidInput": "Please correct request data before saving or generating the request",
+                    "fieldRequired": "required",
+                    "fieldInvalid": "invalid",
+                    "conceptError": "Invalid Concept"
+                }
+
+            },
+            "requestType": {
+                "newConcept": "New Concept",
+                "newDescription": "New Description",
+                "newRelationship": "New Relationship",
+                "changeRetireConcept": "Change or Inactivate Concept",
+                "changeRetireDescription": "Change Description",
+                "retireDescription": "Inactivate Description",
+                "changeRetireRelationship": "Inactivate Relationship",
+                "changeRelationship": "Change Relationship",
+                "other": "Other"
+            },
+            "inputMode": {
+                "simple": "In Simple mode, you can create the following types of request: 'New Concept', 'New Description', 'New Relationship', 'Change Description', 'Change Relationship', 'Inactivate Description', 'Inactivate Relationship', 'Change or Inactivate Concept' or 'Other'",
+                "direct": "In Direct mode, you can create multiple changes on one request for either a 'New Concept' or 'Change or Inactivate an existing Concept'"
+            },
+            "requestMode": {
+                "newRequest": "New Request",
+                "editRequest": "Edit Request",
+                "viewRequest": "View Request",
+                "previewRequest": "Preview Request"
+            },
+            "requestStatus": {
+                "draft": "The request has been saved but not yet submitted",
+                "new": "New",
+                "accepted": "Following initial review, the request is assigned to a manager from the Content Team",
+                "rejected": "The reqeust has been rejected",
+                "clarificationNeeded": "A request for clarification has been made",
+                "appeal": "The requested is under appeal",
+                "appealRejected": "The appeal has been rejected",
+                "withdraw": "The rquest has been withdrawn",
+                "underAuthoring": "The request is currently being authored by SNOMED International",
+                "released": "The request has been released in the International Edition",
+                "onHold": "The request is on hold",
+                "forwarded": "The request has been forwarded",
+                "approved": "The request has been approved",
+                "inInceptionElaboration": "The request is  in the Inception/Elaboration phase",
+                "readyForRelease": "The request has been authored and will be in the next International Release",
+                "submitted": "The request has been submitted but not yet reviewed by the SNOMED International team",
+                "inAppealClarification": "In Appeal Clarification"
+            },
+            "bulkAction": {
+                "status": {
+                    "inProgress": "In Progress",
+                    "completed": "Completed",
+                    "error": "Error"
+                },
+                "title": {
+                    "bulkType": "Submit Selected Requests",
+                    "countRequests": "Total",
+                    "processedRequests": "Processed Requests",
+                    "ignoredRequest": "Failed Request",
+                    "error": "Error",
+                    "status": "Status",
+                    "totalFailed": "Failed Requests",
+                    "message": "Message"
+                },
+                "action": {
+                    "submit": "Submit Requests",
+                    "assignAuthor": "Assign to an authoring task in SCA",
+                    "acceptAndAssign": "Accept and assign to an authoring task in SCA",
+                    "assignToStaff": "Assign to a Manager",
+                    "reassignToRequestor": "Change Requestor",
+                    "accept": "Accept Requests",
+                    "unassignAuthor": "Unassign from authoring tasks in SCA",
+                    "addNote": "Add Note",
+                    "withdraw": "Withdrawn",
+                    "reject": "Reject Requests"
+                },
+                "button": {
+                    "close": "Close",
+                    "addNote": "Add Note"
+                }
+            }
+        },
+        "batch": {
+            "list": {
+                "title": "My Batches",
+                "tip": {
+                    "count": "Number of batches",
+                    "create": "Import batch",
+                    "batchId": "Click to open batch details view"
+                },
+                "searchPlaceHolder": "Search Batches",
+                "tableHeader": {
+                    "batchId": "Batch ID",
+                    "uploaded": "Uploaded On",
+                    "submitted": "Submitted On",
+                    "lastModified": "Last Modified",
+                    "fileName": "File Name",
+                    "ticketId": "Jira Ticket",
+                    "status": "Status"
+                }
+            },
+            "details": {
+                "info": {
+                    "label": {
+                        "batchId": "BatchId",
+                        "fileName": "Batch File",
+                        "importedTime": "Imported on",
+                        "jiraTicket":"Jira Ticket",
+                        "status": "Status"
+                    }
+                },
+                "statistic": {
+                    "label": {
+                        "submitted": "Requests submitted but not yet reviewed by the SNOMED International team",
+                        "accepted": "Following initial review, requests ssigned to a manager from the Content Team",
+                        "rejected": "Requests that have been Rejected",
+                        "underAuthoring": "Requests currently being authored by SNOMED International",
+                        "approved": "Approved requests",
+                        "draft": "Requests which have been saved but not yet submitted",
+                        "new": "Requests submitted but not yet reviewed by the SNOMED International team",
+                        "appeal": "Requests under appeal",
+                        "appealReject": "Requests whose appeals have been rejected",
+                        "forwarded": "Forwarded Requests",
+                        "withdrawn": "Withdrawn Requests",
+                        "clarificationNeeded": "Requests wherer clarification is needed",
+                        "inInception": "Requests in the Inception/Elbaoration phase",
+                        "complete": "Completed requests",
+			            "readyForRelease": "Ready For Release",
+                        "inAppealClarification": "In Appeal Clarification"
+                    }
+                }
+            },
+            "button": {
+                "delete": "Delete Batch"
+            },
+            "message": {
+                "listLoading": "Loading batches...",
+                "listLoaded": "All batches loaded",
+                "requestRemoved": "Requests has been removed successfully",
+                "error": {
+                    "fileRequired": "Please select a file to upload file format?."
+                }
+            },
+            "importModal": {
+                "title": "Import Batch File",
+                "button": {
+                    "cancel": "Cancel",
+                    "upload": "Upload",
+                    "import": "Import"
+                }
+            },
+            "batchStatus": {
+                "new": "New",
+                "inProgress": "In Progress",
+                "completed": "Completed"
+            },
+            "batchImportStatus": {
+                "processingUpload": "Uploading",
+                "completedUpload": "Uploaded",
+                "processingImport": "Importing",
+                "completedImport": "Imported",
+                "error": "Error",
+                "aborted": "Aborted"
+            },
+            "preview": {
+                "title": {
+                    "pageTitle": "Batch Import",
+                    "uploadedFiles": "Uploaded Files"
+                },
+                "fileList": {
+                    "tableHeader": {
+                        "name": "Name",
+                        "uploaded": "Uploaded",
+                        "status": "Status"
+                    }
+                },
+                "upload": {
+                    "hint": "Select or Drag Batch File Here",
+                    "uploading": "Uploading"
+                },
+                "button": {
+                    "import": "Import Requests",
+                    "remove": "Remove Request",
+                    "downloadTemplate": "Download batch template"
+                },
+                "requestList": {
+                    "tableHeader": {
+                        "sourceTerminology": "Terminology",
+                        "sourceTerminologyVersion": "Source Terminology Version",
+                        "requestorInternalId": "Local SNOMED CT ID",
+                        "reasonForChange": "Proposed Use Case",
+                        "topic": "The category the request falls under",
+                        "notes": "Notes",
+                        "references": "References",
+                        "parentId": "Parent ID",
+                        "parentFSN": "Parent FSN",
+                        "localRequestId": "Request Id",
+                        "parentTerminology1": "Terminology (1)",
+                        "parentTerminology2": "Terminology (2)",
+                        "proposedParentId1": "Parent Concept Id(1)",
+                        "proposedParentId2": "Parent Concept Id(2)",
+                        "FSN": "Fully Specified Name",
+                        "semanticTag": "Semantic Tag",
+                        "synonym": "Synonym",
+                        "definition": "Definition identifies the exact nature of the request",
+                        "conceptId": "Concept ID",
+                        "sourceConceptId": "Concept ID",
+                        "conceptFSN": "Concept FSN",
+                        "description": "A request can be a Description of a concept or a Relationship a concept has",
+                        "descriptionIsPT": "Description is PT",
+                        "relationshipType": "Relationship Type",
+                        "destinationTerminology": "Destination Terminology",
+                        "destinationConceptId": "Destination Concept ID",
+                        "characteristicType": "Characteristic Type",
+                        "refinability": "Refinability",
+                        "relationshipGroup": "Relationship Group",
+                        "newFSN": "New FSN",
+                        "newConceptStatus": "New Concept Status",
+                        "historyAttribute": "Concept History Attribute",
+                        "historyAttributeValue": "Concept History Attribute Value",
+                        "descriptionId": "Description ID",
+                        "currentDescription": "Active Description",
+                        "newDescription": "Term",
+                        "newCaseSignature": "Case Significance",
+                        "newDescriptionStatus": "Proposed New Description Status",
+                        "relationshipId": "Relationship ID",
+                        "newRefinability": "Refinability",
+                        "newRelationshipStatus": "Proposed New Relationship Status",
+                        "validationResult": "Validation Result",
+                        "originator": "Created By",
+                        "createdDate": "Created On",
+                        "requestDescription": "Description",
+                        "proposedDestinationConcept": "Proposed Destination Concept ID",
+                        "proposedRelationshipType": "Proposed Relationship Type",
+                        "proposedCharacteristicType": "Characteristic Type",
+                        "summary": "Summary",
+                        "requestorInternalTerm": "Local Term",
+                        "proposedUse": "Use Case",
+                        "preferedTerm": " a Fully Specified Name (FSN), Definition (DEF) and Synonym (SYN) can be Preferred or Acceptable terms ",
+                        "umlsCui": "UMLS CUI",
+                        "proposedCaseSignificance": "Case Significance",
+                        "parentConceptId": "Parent Concept Id",
+                        "newParentTerminology": "New Parent Terminology",
+                        "newParentConceptId": "New Parent Concept Id",
+                        "changeConceptToStatus": "Change Concept To Status",
+                        "duplicateConceptId": "Duplicate Concept Id",
+                        "changeDescriptionStatusTo": "Change Description Status To",
+                        "trackerId": "trackerId"
+                    }
+                }
+            }
+        }
+    }
+}

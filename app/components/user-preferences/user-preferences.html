@@ -1,0 +1,113 @@
+<div id="userPreferencesModal">
+
+
+  <div class="modal-header">
+    <button type="button" class="close" ng-click="userPreferences.closeModal()">&times;</button>
+    <h4 class="modal-title">Settings</h4>
+  </div>
+
+
+  <div class="modal-body">
+
+    <div class="col-md-12">
+
+    <form class="form-floating">
+
+      <div class="form-group">
+        <input type="checkbox" id= "email_daily"class="small-checkbox ng-pristine ng-valid ng-touched col-md-1" ng-model="userPreferences.userPreferences.emailDaily">
+        <label for="email_daily" class="col-md-11 no-padding" translate="crs.setting.userPreference.emailDaily"></label>              
+        <!--
+        <label for="colourSchemeSelect">Colour Scheme</label>
+        <select id="colourSchemeSelect" name="select-colour-scheme" class="form-control"
+                ng-model="userPreferences.colourScheme"
+                ng-change="userPreferences.clearMessages()">
+          <option value="crs-colours">Colours</option>
+          <option value="crs-light">Light</option>
+          <option value="crs-dark">Dark</option>
+        </select>
+
+        <br>
+        <label for="appViewSelect">Application View</label>
+        <select id="appViewSelect" name="select-app-view" class="form-control"
+                ng-model="userPreferences.appView"
+                ng-change="userPreferences.clearMessages()">
+          <option value="crs-default">Default</option>
+          <option value="crs-comfy">Comfy</option>
+          <option value="crs-compact">Compact</option>
+        </select>
+
+
+        <br>
+        -->
+          <!--
+                  <hr>
+                  <label for="layoutGrid">Page Layout</label>
+
+                  <div id="layoutGrid" class="row no-gutter no-padding">
+
+                    <div ng-repeat="col1 in layout.children" class="crs-layout-elem" ng-class="getLayoutWidths(col1.name)">
+
+
+                      <div ng-if="$index !== layout.children.length -1" class="pull-right crs-layout-elem layout-slider {{col1.name}}">
+                        <span class="pull-left slider-title">{{col1.name}}</span>
+                          <button class="btn btn-default plus" ng-click="resizeLayoutElement(col1.name, 1)">+</button>
+                        <button class="btn btn-default minus" ng-click="resizeLayoutElement(col1.name, -1)">-</button>
+
+                      </div>
+                      <div class="row no-gutter no-padding">
+                        <div ng-repeat="col2 in col1.children" class="crs-layout-elem {{col2.name}} pull-left" ng-class="getLayoutWidths(col2.name)">
+                          <span class="pull-left slider-title">{{col2.name}}</span>
+
+                          <div ng-if="$index !== col1.children.length -1" class="pull-right">
+                             <button class="btn btn-default plus" ng-click="resizeLayoutElement(col2.name, 1)">+</button>
+                            <button class="btn btn-default minus" ng-click="resizeLayoutElement(col2.name, -1)">-</button>
+
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div ng-if="!layout.name">
+                    Customizable layout not yet implemented for this view.
+                  </div>
+          -->
+
+
+      </div>
+    </form>
+  </div>
+  </form>
+
+
+
+  <div class="alert alert-success" ng-show="userPreferences.msgSuccess">{{userPreferences.msgSuccess}}</div>
+  <div class="alert alert-danger" ng-show="userPreferences.msgError">{{userPreferences.msgError}}</div>
+</div>
+
+<div class="modal-footer">
+  <div class="col-md-4">
+    <button type="button" ng-disabled="disabled" class="col-md-12 btn btn-info no-margin "
+            ng-click="userPreferences.saveUserPreferences()">Save
+    </button>
+  </div>
+  
+  <div class="col-md-4">
+    <!--
+    <button type="button" ng-disabled="disabled" class="col-md-12 btn btn-warning no-margin"
+            ng-click="userPreferences.revertChange()">Revert
+    </button>
+    -->
+  </div>
+  
+  <div class="col-md-4">
+    <button type="button" ng-disabled="disabled" class=" col-md-12 btn btn-danger no-margin "
+            ng-click="userPreferences.closeModal()">Cancel
+    </button>
+  </div>
+</div>
+
+</div>
+
+
+</div>

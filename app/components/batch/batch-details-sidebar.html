@@ -1,0 +1,31 @@
+<aside class="sidebar-bg no-padding" style="height: 100%">
+
+    <!-- show if sidebar not hidden -->
+    <div role="tabpanel sidebar-tabs ">
+
+        <!-- Nav tabs -->
+        <ul style="background-color: #d1d1d1;display: inline; border-bottom: 0px;" class="nav nav-tabs sidebar-tabs col-md-12 no-padding"
+            role="tablist" ng-init="actionTab=4">
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content col-md-12 no-padding ">
+
+            <div role="tabpanel" class="tab-pane" ng-class="{active: actionTab===4}">
+                <div ng-include="'components/batch/batch-info-panel.html'"></div>
+                <div ng-include="'components/batch/batch-statistic-panel.html'"></div>
+            </div>
+        </div>
+        <div class="tab-content col-md-12 request-info">
+            <div class="classification-btn">
+                <button ng-disabled="batchVM.batchSummary.status !== 'NEW'"
+                    class="btn btn-default red darken-1 import" style="text-transform: none"
+                    ng-click="batchVM.removeBatchRequest(batchVM.batchSummary.id)">
+                <span class="md md-highlight-remove red darken-2 iconbase" style="line-height: initial;padding-top:10px"></span>
+                <span class="button-link" translate="crs.batch.button.delete"></span>
+            </button>
+        </div>
+        </div>
+    </div>
+
+    <div style="float: right; width: 10px; color: red"></div>
+</aside>
