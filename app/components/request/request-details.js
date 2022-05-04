@@ -2728,12 +2728,12 @@ angular
 
             var canShowOriginatingOrganization = function () {
                 var config = configService.getConfigFromServer();
-                return (config && config !== undefined && config.crsId === 'int-crs');
+                return (config && config !== undefined && config.crsId.includes('int-crs'));
             };
 
             var canShowCollaborationAgreement = function () {
                 var config = configService.getConfigFromServer();
-                return (config && config !== undefined && config.crsId === 'int-crs');
+                return (config && config !== undefined && config.crsId.includes('int-crs'));
             };
 
             var canForwardRequest = function () {

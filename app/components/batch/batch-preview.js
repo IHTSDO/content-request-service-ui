@@ -75,7 +75,7 @@ angular
                         if (error && error.data && error.data.message) {
                             vm.uploadFileErrorMessage = error.data.message;
                             if (error.data.errorCode === 10139 || error.data.errorCode === 10140) {
-                                vm.uploadFileErrorMessage += '. Please download the latest version <a href=' + $rootScope.link.batchTemplate +'>here</a>'
+                                vm.uploadFileErrorMessage += '. Please download the latest version <a href=' + $rootScope.link.batchTemplate +'>here</a>';
                             }
                         }
                     }, function (evt) { // uploadingProgress
