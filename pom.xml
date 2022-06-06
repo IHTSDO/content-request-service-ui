@@ -6,7 +6,7 @@
 
 	<groupId>org.ihtsdo.otf</groupId>
 	<artifactId>crs-web-ui</artifactId>
-	<version>1.7.1-SNAPSHOT</version>
+	<version>1.7.1</version>
 	<name>IHTSDO Content Request Service Web Front End Angular</name>
 	<description>IHTSDO Content Request Service Web Front End</description>
 	<url>https://dev-request.ihtsdotools.org/</url>
