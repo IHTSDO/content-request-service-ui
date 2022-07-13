@@ -151,7 +151,7 @@
                        class="table table-full table-full-small table-requests" show-filter="">
                     <tr ng-repeat="request in $data" ng-click="dashboard.previewRequest(request.id)" class="clickable-row" ng-class="[{'row-selected': vm.selectedMyAssignedRequests.items[request.id] === true}, {'row-new': request.isModified}]">
                         <td class="col-checkbox" header="'ng-table/headers/checkbox.html'" ng-click="$event.stopPropagation()">
-                            <input type="checkbox" class="small-checkbox" ng-model="vm.selectedMyAssignedRequests.items[request.id]">
+                            <input type="checkbox" ng-if="request.additionalFields.topic !== 'Content Promotion'" class="small-checkbox" ng-model="vm.selectedMyAssignedRequests.items[request.id]">
                         </td>
 
                         <td data-title="'crs.request.list.tableHeader.batchId' | translate" sortable="'batchRequest'" filter="vm.filterRequests.batchRequest" ng-if="vm.enabledColumns.myAssignedRequests.columns.batchId">

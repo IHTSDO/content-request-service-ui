@@ -163,7 +163,7 @@
                 <table ng-table="vm.tableParams" template-pagination="layout/template/review-table-pager.html" class="table table-full table-full-small table-requests" show-filter="">
                     <tr ng-repeat="request in $data" ng-click="dashboard.previewRequest(request.id)" class="clickable-row" ng-class="[{'row-selected': vm.selectedRequests.items[request.id] === true}, {'row-new': request.isModified}]">
                         <td class="col-checkbox" header="'ng-table/headers/checkbox.html'" ng-click="$event.stopPropagation()">
-                            <input type="checkbox" class="small-checkbox" ng-model="vm.selectedRequests.items[request.id]" ng-click="vm.pushSelectedRequest($event, request)">
+                            <input type="checkbox" class="small-checkbox" ng-if="request.additionalFields.topic !== 'Content Promotion'" ng-model="vm.selectedRequests.items[request.id]" ng-click="vm.pushSelectedRequest($event, request)">
                         </td>
                         <td data-title="'crs.request.list.tableHeader.batchId' | translate" sortable="'batchRequest'" filter="vm.filterRequests.batchRequest" class="batch-id-heading" ng-if="vm.enabledColumns.acceptedRequests.columns.batchId">
                             <!--<a class="tooltips-right" ng-href="#/batches/view/{{request.batchRequest}}">{{request.batchRequest}} <span translate="crs.request.list.tip.batchId"></span></a>-->

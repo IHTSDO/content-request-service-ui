@@ -640,7 +640,7 @@ angular
             }, function(newVal) {
                 if(vm.requests){
                     angular.forEach(vm.requests.items, function(item) {
-                        if (angular.isDefined(item.id)) {
+                        if (angular.isDefined(item.id) && item.additionalFields.topic !== 'Content Promotion') {
                             vm.selectedSubmittedRequests.items[item.id] = newVal;
                             vm.selectedSubmittedRequests.requests[item.id] = item;
                         }
@@ -654,7 +654,7 @@ angular
             }, function(newVal) {
                 if(vm.requests){
                     angular.forEach(vm.requests.items, function(item) {
-                        if (angular.isDefined(item.id)) {
+                        if (angular.isDefined(item.id) && item.additionalFields.topic !== 'Content Promotion') {
                             vm.selectedMyAssignedRequests.items[item.id] = newVal;
                             vm.selectedMyAssignedRequests.requests[item.id] = item;
                         }

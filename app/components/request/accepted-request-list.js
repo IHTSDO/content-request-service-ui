@@ -745,7 +745,7 @@ angular
             }, function(newVal) {
                 if(vm.requests){
                     angular.forEach(vm.requests.items, function(item) {
-                        if (angular.isDefined(item.id)) {
+                        if (angular.isDefined(item.id) && item.additionalFields.topic !== 'Content Promotion') {
                             vm.selectedRequests.items[item.id] = newVal;
                             vm.selectedRequests.requests[item.id] = item;
                         }
