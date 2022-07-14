@@ -307,13 +307,18 @@ angular.module('conceptRequestServiceApp.snowowl')
                 var convertRelationshipSnowstormToSnowowl = function(relationship, isAxiom) {
                    var convertedRelationship = relationship;
                    if(isAxiom) {
-                      convertedRelationship.relationshipId = relationship.sourceId + "_" + relationship.target.conceptId + "_" + relationship.type.conceptId;
+                      convertedRelationship.relationshipId = relationship.sourceId + "_" + (relationship.target ? relationship.target.conceptId : relationship.concreteValue.valueWithPrefix) + "_" + relationship.type.conceptId;
                    }
-                   convertedRelationship.target = {
-                      conceptId: relationship.target.conceptId,
-                      fsn: relationship.target.fsn.term,
-                      definitionStatus: relationship.definitionStatus
-                   };
+                   if (relationship.target) {
+                    convertedRelationship.target = {
+                        conceptId: relationship.target.conceptId,
+                        fsn: relationship.target.fsn.term,
+                        definitionStatus: relationship.definitionStatus
+                     };
+                   }
+                   if (relationship.concreteValue) {
+                        convertedRelationship.concreteValue = relationship.concreteValue;
+                   }
                    convertedRelationship.type = {
                      fsn: relationship.type.fsn.term,
                      pt: relationship.type.pt.term,

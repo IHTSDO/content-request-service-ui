@@ -106,7 +106,7 @@ angular
                             }
                             
                             for(var name in $scope.concept.relationships){
-                                $scope.concept.relationships[name].viewName = $scope.concept.relationships[name].type.fsn + " " + $scope.concept.relationships[name].target.fsn;
+                                $scope.concept.relationships[name].viewName = $scope.concept.relationships[name].type.fsn + " " + ($scope.concept.relationships[name].target ? $scope.concept.relationships[name].target.fsn : $scope.concept.relationships[name].concreteValue.valueWithPrefix);
                             }
                             $scope.showError = false;
                             $scope.conceptStatus.valid = true;
@@ -247,7 +247,7 @@ angular
                                     $scope.concept.sourceTerminology = conceptItem.sourceTerminology;
                                 }
                                 for(var name in $scope.concept.relationships){
-                                    $scope.concept.relationships[name].viewName = $scope.concept.relationships[name].type.fsn + " " + $scope.concept.relationships[name].target.fsn;
+                                    $scope.concept.relationships[name].viewName = $scope.concept.relationships[name].type.fsn + " " + ($scope.concept.relationships[name].target ? $scope.concept.relationships[name].target.fsn : $scope.concept.relationships[name].concreteValue.valueWithPrefix);
                                 }
                                 $scope.showError = false;
                                 $scope.conceptStatus.valid = true;
