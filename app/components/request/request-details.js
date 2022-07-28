@@ -2769,6 +2769,43 @@ angular
                 });
             };
 
+            var startWatchingRequest = function () {
+                var requestIds = [];
+                requestIds.push(vm.request.id);
+                notificationService.sendMessage('Start watching this rquest...', 8000);
+                requestService.startWatchingRequests(requestIds).then(function () {
+                    requestService.getRequest(vm.request.id).then(function (requestData) {
+                        vm.request.requestHeader = requestData.requestHeader;
+                        notificationService.sendMessage('This request has been started watching successfully!', 5000);
+                    });                    
+                }, function(error){
+                    notificationService.sendMessage(error.message, 5000);
+                });
+            };
+
+            var stopWatchingRequest = function () {
+                var requestIds = [];
+                requestIds.push(vm.request.id);
+                notificationService.sendMessage('Stop watching this request...', 8000);
+                requestService.stopWatchingRequests(requestIds).then(function () {
+                    requestService.getRequest(vm.request.id).then(function (requestData) {
+                        vm.request.requestHeader = requestData.requestHeader;
+                        notificationService.sendMessage('This request has been stopped watching successfully!', 5000); 
+                    });
+                }, function(error){
+                    notificationService.sendMessage(error.message, 5000);
+                });
+            };
+
+            var isWathchingRequest = function() {
+                return vm.request && vm.request.requestHeader && vm.request.requestHeader.watchers && vm.request.requestHeader.watchers.includes(vm.requestOwner);
+            }
+
+            var requestCameFromSubmittedList = function() {
+                var list = requestService.getCurrentList();
+                return list === 'submitted-requests';
+            }
+
             vm.changeOriginatingOrganization = changeOriginatingOrganization;
             vm.changeCollaborationAgreement = changeCollaborationAgreement;
             vm.canShowOriginatingOrganization = canShowOriginatingOrganization;
@@ -2781,6 +2818,10 @@ angular
             vm.canWaitingForInternalInputAction = canWaitingForInternalInputAction;
             vm.moveToOnHoldRequest = moveToOnHoldRequest;
             vm.canOnHoldAction = canOnHoldAction;
+            vm.isWathchingRequest = isWathchingRequest;
+            vm.startWatchingRequest = startWatchingRequest;
+            vm.stopWatchingRequest = stopWatchingRequest;
+            vm.requestCameFromSubmittedList = requestCameFromSubmittedList;
             vm.cancelEditing = cancelEditing;
             vm.saveRequest = saveRequest;
             vm.acceptRequest = acceptRequest;

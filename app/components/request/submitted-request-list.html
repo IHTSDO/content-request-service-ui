@@ -16,7 +16,7 @@
                         </button>
                     </div> 
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 no-padding">
                     <div class="p-t-20">
                         <button type="button" class="btn btn-round btn-info ng-scope " title="{{'crs.request.list.tip.count' | translate}}" >
                             {{vm.submittedTableParams.total()}} <div class="ripple-wrapper"></div>
@@ -83,6 +83,18 @@
                             <span class="md md-assignment-turned-in darken-2 iconbase"></span>
                             <div class="ripple-wrapper"></div>
                         </button>
+
+                        <button ng-if="dashboard.permissionChecked && dashboard.isAdmin" type="button" class="btn btn-round btn-default " title="{{'tooltips.request.details.info.button.startWatchingSelectedRequests' | translate}}"
+                            ng-click="vm.startWatchingSelectedRequests()">
+                            <span class="md md-visibility darken-2 iconbase"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
+
+                        <button ng-if="dashboard.permissionChecked && dashboard.isAdmin" type="button" class="btn btn-round btn-default " title="{{'tooltips.request.details.info.button.stopWatchingSelectedRequests' | translate}}"
+                            ng-click="vm.stopWatchingSelectedRequests()">
+                            <span class="md md-visibility-off darken-2 iconbase"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -146,9 +158,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-1 promoted-check-box">
+                <div class="col-md-4 promoted-check-box">
                     <button class="btn btn-default" ng-class="[{'md-check-box' : vm.showClosedRequests}, {'md-check-box-outline-blank' : !vm.showClosedRequests}]" ng-click="vm.toggleShowClosedRequests('submitted-requests')" style="background: transparent">
                         <span class="promoted-check-box">Show Closed Requests</span></button>
+                    <button class="btn btn-default" ng-class="[{'md-check-box' : vm.showWatchingRequests}, {'md-check-box-outline-blank' : !vm.showWatchingRequests}]" ng-click="vm.toggleShowWatchingRequests('submitted-requests')" style="background: transparent">
+                        <span class="promoted-check-box">Show Watching Requests</span></button>
                 </div>
             </div>
             <div class="table-responsive white" style="min-height: 416px;">

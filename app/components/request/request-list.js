@@ -427,6 +427,7 @@ angular
                 vm.selectedSubmittedRequests = {checked: false, items: {}, requests: {}};
                 vm.selectedMyAssignedRequests = {checked: false, items: {}, requests: {}};
                 vm.showClosedRequests = $routeParams.showClosedRequest?$routeParams.showClosedRequest: false;
+                vm.showWatchingRequests = $routeParams.showWatchingRequest?$routeParams.showWatchingRequest: false;
 				
 				vm.requestStatus = vm.requestStatus.sort(function(a, b) {
 					return utilsService.compareStrings(a.title, b.title);
@@ -1226,7 +1227,7 @@ angular
                 return milliseconds.getTime();
             };
 
-            var buildRequestList = function (typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, summary, trackerId, manager, status, author, requestId, requestType, showClosedRequests, statusDateFrom, statusDateTo, lastStatusModifier, forwardDestinationId, memberCountry){
+            var buildRequestList = function (typeList, page, pageCount, search, sortFields, sortDirs, batchRequest, fsn, jiraTicketId, requestDateFrom, requestDateTo, topic, summary, trackerId, manager, status, author, requestId, requestType, showClosedRequests, showWatchingRequests, statusDateFrom, statusDateTo, lastStatusModifier, forwardDestinationId, memberCountry){
                 var requestList = {};
                 requestList.batchRequest = batchRequest;
                 requestList.concept = fsn;
@@ -1246,6 +1247,7 @@ angular
                 requestList.requestType = requestType;
                 requestList.search = search;
                 requestList.showClosedRequests = showClosedRequests;
+                requestList.showWatchingRequests = showWatchingRequests;
                 requestList.statusDateFrom = convertDateToMilliseconds(statusDateFrom);
                 requestList.statusDateTo = convertDateToMilliseconds(statusDateTo);
                 requestList.summary = summary;
@@ -1321,6 +1323,7 @@ angular
                             params.filter().requestId,
                             params.filter().requestType,
                             vm.showClosedRequests,
+                            false,
                             params.filter().statusDate.startDate,
                             params.filter().statusDate.endDate,
                             params.filter().lastStatusModifier,
@@ -1416,6 +1419,7 @@ angular
                             params.filter().requestId,
                             params.filter().requestType,
                             vm.showClosedRequests,
+                            false,
                             params.filter().statusDate.startDate,
                             params.filter().statusDate.endDate,
                             params.filter().lastStatusModifier,
@@ -1516,6 +1520,7 @@ angular
                             params.filter().requestId,
                             params.filter().requestType,
                             vm.showClosedRequests,
+                            vm.showWatchingRequests,
                             params.filter().statusDate.startDate,
                             params.filter().statusDate.endDate,
                             params.filter().lastStatusModifier,
@@ -1682,6 +1687,16 @@ angular
                           break;
                     case 'my-assigned-requests':
                           vm.assignedRequestTableParams.reload();
+                          break;
+                }
+            };
+
+            var toggleShowWatchingRequests = function(list) {
+                vm.selectedRequests = { checked: false, items: {}, requests: {} };
+                vm.showWatchingRequests = !vm.showWatchingRequests;
+                switch(list) {
+                    case 'submitted-requests':
+                          vm.submittedTableParams.reload();
                           break;
                 }
             };
@@ -2039,7 +2054,7 @@ angular
                 }
             };
 
-            var resolveWithoutContentChangesSelectedRequests = function () {                
+            var resolveWithoutContentChangesSelectedRequests = function () {
                 var action = bulkAction.resolveWithoutContentChanges;
                 var selectedRequests = vm.selectedRequests,
                     requestIds = [];
@@ -2094,6 +2109,58 @@ angular
                         });
                     } else {
                         notificationService.sendMessage('Please select at least a request to move to Resolved Without Content Changes.', 5000);
+                    }
+                }
+            };
+
+            var startWatchingSelectedRequests = function () {
+                var selectedRequests = vm.selectedRequests,
+                    requestIds = [];
+                if ($routeParams.list === 'submitted-requests') {
+                    selectedRequests = vm.selectedSubmittedRequests;
+                } 
+                if (selectedRequests && selectedRequests.items) {
+                    angular.forEach(selectedRequests.items, function (isSelected, requestId) {
+                        if (isSelected) {
+                            requestIds.push(requestId);
+                        }
+                    });
+                    if (requestIds.length > 0) {
+                        notificationService.sendMessage('Start watching Requests...', 8000);
+                        requestService.startWatchingRequests(requestIds).then(function () {                                
+                            vm.submittedTableParams.reload();
+                            notificationService.sendMessage('Requests have been started watching successfully!', 5000);
+                        }, function(error){
+                            notificationService.sendMessage(error.message, 5000);
+                        });
+                    } else {
+                        notificationService.sendMessage('Please select at least a request to start watching.', 5000);
+                    }
+                }
+            };
+
+            var stopWatchingSelectedRequests = function () {
+                var selectedRequests = vm.selectedRequests,
+                    requestIds = [];
+                if ($routeParams.list === 'submitted-requests') {
+                    selectedRequests = vm.selectedSubmittedRequests;
+                } 
+                if (selectedRequests && selectedRequests.items) {
+                    angular.forEach(selectedRequests.items, function (isSelected, requestId) {
+                        if (isSelected) {
+                            requestIds.push(requestId);
+                        }
+                    });
+                    if (requestIds.length > 0) {
+                        notificationService.sendMessage('Stop watching Requests...', 8000);
+                        requestService.stopWatchingRequests(requestIds).then(function () {                                
+                            vm.submittedTableParams.reload();
+                            notificationService.sendMessage('Requests have been stopped watching successfully!', 5000);
+                        }, function(error){
+                            notificationService.sendMessage(error.message, 5000);
+                        });
+                    } else {
+                        notificationService.sendMessage('Please select at least a request to stop watching.', 5000);
                     }
                 }
             };
@@ -2160,6 +2227,8 @@ angular
             vm.clearSearch = clearSearch;
             vm.inceptionElaborationSelectedRequests = inceptionElaborationSelectedRequests;
             vm.resolveWithoutContentChangesSelectedRequests = resolveWithoutContentChangesSelectedRequests;
+            vm.startWatchingSelectedRequests = startWatchingSelectedRequests;
+            vm.stopWatchingSelectedRequests = stopWatchingSelectedRequests;
             vm.awaitingAgreementComplianceSelectedRequests = awaitingAgreementComplianceSelectedRequests;
             vm.pendingClarificationSelectedRequests = pendingClarificationSelectedRequests;
             vm.canForwardRequest = canForwardRequest;
@@ -2177,8 +2246,10 @@ angular
             vm.onDateRangeChangeSQ = onDateRangeChangeSQ;
             vm.onDateRangeChangeMAR = onDateRangeChangeMAR;
             vm.toggleShowClosedRequests = toggleShowClosedRequests;
+            vm.toggleShowWatchingRequests = toggleShowWatchingRequests;
             vm.submitSelectedRequests = submitSelectedRequests;
             vm.showClosedRequests = false;
+            vm.showWatchingRequests = false;
             vm.assignSelectedRequestsToStaff = assignSelectedRequestsToStaff;
             vm.acceptSelectedRequests = acceptSelectedRequests;
             vm.assignSelectedRequests = assignSelectedRequests;

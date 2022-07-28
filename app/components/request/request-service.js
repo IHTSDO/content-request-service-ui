@@ -195,6 +195,34 @@ angular.module('conceptRequestServiceApp.request')
                 }
             };
 
+            var startWatchingRequests = function (requestList) {
+                var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
+                var params;
+
+                if (requestList !== undefined &&
+                    requestList !== null) {
+                    params = {
+                        requests: requestList
+                    };
+
+                    return crsService.sendPost(requestEndpoint + '/startWatching', params, null);
+                }
+            };
+
+            var stopWatchingRequests = function (requestList) {
+                var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
+                var params;
+
+                if (requestList !== undefined &&
+                    requestList !== null) {
+                    params = {
+                        requests: requestList
+                    };
+
+                    return crsService.sendPost(requestEndpoint + '/stopWatching', params, null);
+                }
+            };
+
             var assignRequests = function (requestList, projectKey, assigneeKey, summary) {
                 var requestEndpoint = CRS_API_ENDPOINT.REQUEST;
                 var params;
@@ -522,6 +550,8 @@ angular.module('conceptRequestServiceApp.request')
                 saveRequest: saveRequest,
                 submitRequest: submitRequest,
                 removeRequests: removeRequests,
+                startWatchingRequests: startWatchingRequests,
+                stopWatchingRequests: stopWatchingRequests,
                 assignRequests: assignRequests,
                 assignRequestsToStaff: assignRequestsToStaff,
                 changeRequestStatus: changeRequestStatus,

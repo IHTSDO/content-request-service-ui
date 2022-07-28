@@ -13,6 +13,17 @@
                             <h4 class="timeline-title">{{(requestVM.request.batchRequest)?requestVM.request.batchRequest:'N/A'}}</h4>
                         </div>
                     </div>
+                    <div style="position: absolute; right: 0;" ng-if="requestVM.pageMode.value === 'preview' && requestVM.request && requestVM.requestCameFromSubmittedList()">
+                        <button type="button" ng-if="requestVM.isWathchingRequest()" class="btn btn-round btn-default " style="background-color: transparent;" title="{{'tooltips.request.details.info.button.startWatchingSelectedRequest' | translate}}"
+                            ng-click="requestVM.stopWatchingRequest()">
+                            <span class="md md-visibility darken-2 iconbase text-primary" style="font-size: x-large;"></span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
+                        <button type="button" ng-if="!requestVM.isWathchingRequest()" class="btn btn-round btn-default " style="background-color: transparent;" title="{{'tooltips.request.details.info.button.stopWatchingSelectedRequest' | translate}}"
+                            ng-click="requestVM.startWatchingRequest()">
+                            <span class="md md-visibility-off darken-2 iconbase text-danger" style="font-size: x-large;"></span>
+                            <div class="ripple-wrapper"></div>
+                    </div>
                 </li>
                 <li>
                     <div class="timeline-badge">
